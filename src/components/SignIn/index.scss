@@ -1,0 +1,52 @@
+div.loginWindow {
+	background-color: #f9f9f9;
+	border: 1px solid #444;
+	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	margin: 50px auto 0;
+	text-align: left;
+	width: fit-content;
+
+	& input {
+		margin: 0 15px 2px;
+	}
+}
+
+div.loginWindow .header {
+	width: 100%;
+	height: 25px;
+	background-image: url("/includes/img/top-bottom.gif");
+	color: #fff;
+	text-align: center;
+	padding-top: 5px;
+	margin-bottom: 10px;
+	font-variant: small-caps;
+	font-weight: bold;
+}
+
+div.loginWindow table {
+	font-size: 0.95em;
+	width: 100px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+div.loginWindow table label {
+	float: right;
+}
+
+div.loginWindow table input[type="text"],
+div.loginWindow table input[type="password"] {
+	border: 1px solid #000;
+	width: 190px;
+}
+
+div.loginWindow table input[type="submit"],
+div.loginWindow table input[type="button"] {
+	font-size: 10px;
+	margin-top: 5px;
+}
+
+div.loginWindow a {
+	text-decoration: none;
+}
