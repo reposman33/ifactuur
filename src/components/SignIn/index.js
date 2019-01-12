@@ -1,27 +1,45 @@
 import React from "react";
+import { compose } from "recompose";
+import { WithFireBase } from "../Firebase/index.js";
+import { withRouter, Link } from "react-router-dom";
 import "./index.scss";
-
 import { SignUpLink } from "../SignUp/index.js";
+import * as ROUTES from "../../constants/routes.js";
+
+const INITIAL_STATE = {
+	email: "",
+	password: "",
+	error: null
+};
 
 class SignIn extends React.Component {
+	constructor(props) {
+		super(props);
+		this.setState({ ...INITIAL_STATE });
+	}
+	onSubmit = event => {
+		const { email, password } = this.state;
+		this.props.WithFireBase.signInWithEmailAndPassword(email, password)
+			.then(res => {
+				this.setState({ ...INITIAL_STATE });
+				this.props.history.push(ROUTES.INVOICES);
+			})
+			.catch(error => this.setState({ error }));
+
+		event.preventDefault();
+	};
+
+	onChange = event => {
+		this.setState({ [event.target.name]: event.target.value });
+	};
+
 	render() {
+		const { email, password, error } = this.state;
 		return (
 			<div>
-				<div className='loginWindow'>
+				<div className='signContainer'>
 					<div className='header'>login ifactuur</div>
-					<form name='login' method='post'>
-						<input
-							type='hidden'
-							name='token'
-							value='3B9CC5E0-0096-4E20-84B258199F745C48'
-						/>
-						<input
-							type='hidden'
-							name='userTimeStamp'
-							id='userTimeStamp'
-							value=''
-						/>
-
+					<form name='login' onSubmit={this.onSubmit}>
 						<table id='loginTable'>
 							<tbody>
 								<tr>
@@ -33,8 +51,7 @@ class SignIn extends React.Component {
 									<td>
 										<input
 											type='text'
-											id='email'
-											name='username'
+											name='email'
 											maxLength='55'
 											size='30'
 											autoComplete='off'
@@ -50,7 +67,6 @@ class SignIn extends React.Component {
 									<td>
 										<input
 											type='password'
-											id='password'
 											name='password'
 											maxLength='55'
 											size='30'
@@ -60,13 +76,18 @@ class SignIn extends React.Component {
 								</tr>
 								<tr>
 									<td
-										colspan='2'
+										colSpan='2'
 										style={{ textAlign: "right" }}>
 										<input
 											type='submit'
 											name='register'
 											value='Login'
 										/>
+										{error && (
+											<p className='alert'>
+												{error.message}
+											</p>
+										)}
 									</td>
 								</tr>
 							</tbody>
@@ -79,4 +100,7 @@ class SignIn extends React.Component {
 	}
 }
 
-export default SignIn;
+export default compose(
+	WithFireBase,
+	withRouter
+)(SignIn);

@@ -14,12 +14,34 @@ import SignUp from "../SignUp/index.js";
 import Stats from "../Stats/index.js";
 
 class App extends Component {
+	constructor(props) {
+		super(props);
+		this.state = { authenticatedUser: null };
+	}
+
+	componentDidMount() {
+		this.listener = this.props.Firebase.auth.onAuthStateChanged(
+			authUser => {
+				authUser
+					? this.setState({
+							authenticatedUser: authUser
+					  })
+					: this.setState({ authenticatedUser: null });
+			}
+		);
+	}
+
+	componentWillUnmount() {
+		this.listener();
+	}
+
 	render() {
 		return (
 			<Router>
 				<div>
-					<Navigation />
-
+					<Navigation
+						authenticatedUser={this.state.authenticatedUser}
+					/>
 					<Route exact path={ROUTES.ADMIN} component={Admin} />
 					<Route path={ROUTES.BILLS} component={Bills} />
 					<Route path={ROUTES.COMPANIES} component={Companies} />

@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import "./index.scss";
 import "../SignIn/index.scss";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
+import { compose } from "recompose";
 import * as ROUTES from "../../constants/routes.js";
-import AuthenticationAPI from "../Firebase/firebase.js";
+import { WithFireBase } from "../Firebase/index.js";
 
 const INITIAL_STATE = {
 	username: "",
@@ -13,19 +13,26 @@ const INITIAL_STATE = {
 	error: ""
 };
 
-class SignUp extends Component {
+class SignUpForm extends Component {
 	constructor(props) {
 		super(props);
+
 		this.state = { ...INITIAL_STATE };
 	}
 
 	onSubmit = event => {
 		const { username, email, password1 } = this.state;
-		AuthenticationAPI.createUserWithEmailAndPassword(email, password)
+		this.props.AuthenticationAPI.createUserWithEmailAndPassword(
+			email,
+			password1
+		)
 			.then(authUser => {
-				this.setState(...this.INITIAL_STATE);
+				this.setState({ ...INITIAL_STATE });
+				this.props.history.push(ROUTES.SIGN_IN);
 			})
-			.catch(error => this.setState({ error }));
+			.catch(error => {
+				this.setState({ error });
+			});
 		event.preventDefault();
 	};
 
@@ -43,9 +50,9 @@ class SignUp extends Component {
 			email === "";
 
 		return (
-			<div class='loginWindow'>
-				<div class='header'>Registreer</div>
-				<form name='register' method='post' onSubmit={this.onSubmit}>
+			<div className='signContainer'>
+				<div className='header'>Registreer</div>
+				<form onSubmit={this.onSubmit}>
 					<table>
 						<tbody>
 							<tr>
@@ -56,10 +63,8 @@ class SignUp extends Component {
 									<input
 										type='text'
 										name='username'
-										id='userName'
-										maxlength='55'
+										maxLength='55'
 										size='45'
-										autocomplete='off'
 										style={{
 											backgroundRepeat: "no-repeat",
 											backgroundAttachment: "scroll",
@@ -84,10 +89,8 @@ class SignUp extends Component {
 									<input
 										type='text'
 										name='email'
-										id='email'
-										maxlength='55'
+										maxLength='55'
 										size='45'
-										autocomplete='off'
 										style={{
 											backgroundRepeat: "no-repeat",
 											backgroundAttachment: "scroll",
@@ -112,10 +115,8 @@ class SignUp extends Component {
 									<input
 										type='password'
 										name='password1'
-										id='password1'
-										maxlength='55'
+										maxLength='55'
 										size='45'
-										autocomplete='off'
 										style={{
 											backgroundRepeat: "no-repeat",
 											backgroundAttachment: "scroll",
@@ -140,10 +141,8 @@ class SignUp extends Component {
 									<input
 										type='password'
 										name='password2'
-										id='password2'
-										maxlength='55'
+										maxLength='55'
 										size='45'
-										autocomplete='off'
 										style={{
 											backgroundRepeat: "no-repeat",
 											backgroundAttachment: "scroll",
@@ -157,13 +156,13 @@ class SignUp extends Component {
 								</td>
 							</tr>
 							<tr>
-								<td colspan='2' style={{ textAlign: "right" }}>
-									<input
-										type='submit'
-										name='register'
-										value='Registreer'
-									/>
-									{error && <p>{error.message}</p>}
+								<td colSpan='2' style={{ textAlign: "right" }}>
+									<button type='submit' disabled={isInvalid}>
+										Registreer
+									</button>
+									{error && (
+										<p className='alert'>{error.message}</p>
+									)}
 								</td>
 							</tr>
 						</tbody>
@@ -174,6 +173,11 @@ class SignUp extends Component {
 	}
 }
 
+const SignUpPage = compose(
+	withRouter,
+	WithFireBase
+)(SignUpForm);
+
 const SignUpLink = () => (
 	<div style={{ margin: 20 + "px auto", width: 300 + "px" }}>
 		Nog geen account? Klik <Link to={ROUTES.SIGN_UP}>hier</Link> om te
@@ -181,5 +185,5 @@ const SignUpLink = () => (
 	</div>
 );
 
-export default SignUp;
+export default SignUpPage;
 export { SignUpLink };

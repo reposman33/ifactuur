@@ -1,4 +1,4 @@
-div.loginWindow {
+div.signContainer {
 	background-color: #f9f9f9;
 	border: 1px solid #444;
 	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
@@ -12,7 +12,7 @@ div.loginWindow {
 	}
 }
 
-div.loginWindow .header {
+div.signContainer .header {
 	width: 100%;
 	height: 25px;
 	background-image: url("/includes/img/top-bottom.gif");
@@ -24,29 +24,29 @@ div.loginWindow .header {
 	font-weight: bold;
 }
 
-div.loginWindow table {
+div.signContainer table {
 	font-size: 0.95em;
 	width: 100px;
 	margin-left: auto;
 	margin-right: auto;
 }
 
-div.loginWindow table label {
+div.signContainer table label {
 	float: right;
 }
 
-div.loginWindow table input[type="text"],
-div.loginWindow table input[type="password"] {
+div.signContainer table input[type="text"],
+div.signContainer table input[type="password"] {
 	border: 1px solid #000;
 	width: 190px;
 }
 
-div.loginWindow table input[type="submit"],
-div.loginWindow table input[type="button"] {
+div.signContainer table input[type="submit"],
+div.signContainer table input[type="button"] {
 	font-size: 10px;
 	margin-top: 5px;
 }
 
-div.loginWindow a {
+div.signContainer a {
 	text-decoration: none;
 }

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import * as ROUTES from "../../constants/routes.js";
+import SignOut from "../SignOut/index.js";
 
 import "./index.scss";
 
@@ -9,13 +10,15 @@ class Navigation extends Component {
 		return (
 			<div>
 				<div>
-					<div class='mainMenu'>
+					<div className='mainMenu'>
 						<ul>
-							<li id='factuur' class='navMenuItemSelected'>
+							<li id='factuur' className='navMenuItemSelected'>
 								<Link to={ROUTES.INVOICES}>invoices</Link>
 								<ul>
 									<li>
-										<a href='#' class='navMenuItemSelected'>
+										<a
+											href='#'
+											className='navMenuItemSelected'>
 											list invoices
 										</a>
 									</li>
@@ -66,7 +69,7 @@ class Navigation extends Component {
 								</ul>
 							</li>
 						</ul>
-						<img alt='logout' src='/includes/img/logout.png' />
+						{this.props.authenticatedUser && <SignOut />}
 					</div>
 				</div>
 				<div id='topContentBar'>
@@ -77,13 +80,11 @@ class Navigation extends Component {
 					<div id='languageSwitch'>
 						<a
 							href='/index.cfm?event=factuur.list&amp;dir=desc&amp;order=id&amp;page=1&amp;ISOEndDate=&amp;ISOStartDate=&amp;language=en'
-							class='active'>
+							className='active'>
 							engels
 						</a>
 						&nbsp;/
-						<a
-							href='/index.cfm?event=factuur.list&amp;dir=desc&amp;order=id&amp;page=1&amp;ISOEndDate=&amp;ISOStartDate=&amp;language=nl'
-							class=''>
+						<a href='/index.cfm?event=factuur.list&amp;dir=desc&amp;order=id&amp;page=1&amp;ISOEndDate=&amp;ISOStartDate=&amp;language=nl'>
 							nederlands
 						</a>
 					</div>
