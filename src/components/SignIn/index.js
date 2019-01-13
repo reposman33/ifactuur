@@ -1,6 +1,6 @@
 import React from "react";
 import { compose } from "recompose";
-import { WithFireBase } from "../Firebase/index.js";
+import { WithFirebase } from "../Firebase/index.js";
 import { withRouter, Link } from "react-router-dom";
 import "./index.scss";
 import { SignUpLink } from "../SignUp/index.js";
@@ -19,7 +19,8 @@ class SignIn extends React.Component {
 	}
 	onSubmit = event => {
 		const { email, password } = this.state;
-		this.props.WithFireBase.signInWithEmailAndPassword(email, password)
+		this.props.fireBase
+			.signInWithEmailAndPassword(email, password)
 			.then(res => {
 				this.setState({ ...INITIAL_STATE });
 				this.props.history.push(ROUTES.INVOICES);
@@ -101,6 +102,6 @@ class SignIn extends React.Component {
 }
 
 export default compose(
-	WithFireBase,
+	WithFirebase,
 	withRouter
 )(SignIn);

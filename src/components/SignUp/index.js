@@ -3,7 +3,7 @@ import "../SignIn/index.scss";
 import { Link, withRouter } from "react-router-dom";
 import { compose } from "recompose";
 import * as ROUTES from "../../constants/routes.js";
-import { WithFireBase } from "../Firebase/index.js";
+import { WithFirebase } from "../Firebase/index.js";
 
 const INITIAL_STATE = {
 	username: "",
@@ -13,7 +13,8 @@ const INITIAL_STATE = {
 	error: ""
 };
 
-class SignUpForm extends Component {
+const SignUpPage = () => <SignUpForm />;
+class SignUpFormBase extends Component {
 	constructor(props) {
 		super(props);
 
@@ -22,10 +23,8 @@ class SignUpForm extends Component {
 
 	onSubmit = event => {
 		const { username, email, password1 } = this.state;
-		this.props.AuthenticationAPI.createUserWithEmailAndPassword(
-			email,
-			password1
-		)
+		this.props.firebase
+			.createUserWithEmailAndPassword(email, password1)
 			.then(authUser => {
 				this.setState({ ...INITIAL_STATE });
 				this.props.history.push(ROUTES.SIGN_IN);
@@ -157,7 +156,10 @@ class SignUpForm extends Component {
 							</tr>
 							<tr>
 								<td colSpan='2' style={{ textAlign: "right" }}>
-									<button type='submit' disabled={isInvalid}>
+									<button
+										type='button'
+										disabled={isInvalid}
+										onClick={this.onSubmit}>
 										Registreer
 									</button>
 									{error && (
@@ -173,10 +175,10 @@ class SignUpForm extends Component {
 	}
 }
 
-const SignUpPage = compose(
+const SignUpForm = compose(
 	withRouter,
-	WithFireBase
-)(SignUpForm);
+	WithFirebase
+)(SignUpFormBase);
 
 const SignUpLink = () => (
 	<div style={{ margin: 20 + "px auto", width: 300 + "px" }}>
@@ -186,4 +188,4 @@ const SignUpLink = () => (
 );
 
 export default SignUpPage;
-export { SignUpLink };
+export { SignUpForm, SignUpLink };

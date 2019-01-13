@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import * as ROUTES from "../../constants/routes.js";
+import { WithFirebase } from "../Firebase/index.js";
 import Admin from "../Admin/index.js";
 import Bills from "../Bills/index.js";
 import Companies from "../Companies/index.js";
@@ -20,7 +21,7 @@ class App extends Component {
 	}
 
 	componentDidMount() {
-		this.listener = this.props.Firebase.auth.onAuthStateChanged(
+		this.listener = this.props.firebase.auth.onAuthStateChanged(
 			authUser => {
 				authUser
 					? this.setState({
@@ -32,7 +33,7 @@ class App extends Component {
 	}
 
 	componentWillUnmount() {
-		this.listener();
+		// this.listener();
 	}
 
 	render() {
@@ -64,4 +65,4 @@ class App extends Component {
 	}
 }
 
-export default App;
+export default WithFirebase(App);
