@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Route, withRouter } from "react-router-dom";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import { withAuthentication } from "../Session/index.js";
 import * as ROUTES from "../../constants/routes.js";
 
