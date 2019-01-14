@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import "../SignIn/index.scss";
 import { Link, withRouter } from "react-router-dom";
-import { compose } from "recompose";
 import * as ROUTES from "../../constants/routes.js";
-import { WithFirebase } from "../Firebase/index.js";
+import { withFirebase } from "../Firebase/index.js";
+import { compose } from "recompose";
 
 const INITIAL_STATE = {
 	username: "",
@@ -18,7 +18,7 @@ class SignUpFormBase extends Component {
 	constructor(props) {
 		super(props);
 
-		this.state = { ...INITIAL_STATE };
+		this.state = INITIAL_STATE;
 	}
 
 	onSubmit = event => {
@@ -177,7 +177,7 @@ class SignUpFormBase extends Component {
 
 const SignUpForm = compose(
 	withRouter,
-	WithFirebase
+	withFirebase
 )(SignUpFormBase);
 
 const SignUpLink = () => (

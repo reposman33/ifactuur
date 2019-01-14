@@ -1,20 +1,15 @@
 import React, { Component } from "react";
+import { withFirebase } from "../Firebase/index.js";
 import "./index.scss";
-import * as ROUTES from "../../constants/routes.js";
-import { Link } from "react-router-dom";
 
-class SignOut extends Component {
-	constructor(props) {
-		super(props);
-	}
+const SignOut = ({ firebase }) => {
+	return (
+		<img
+			alt='logout'
+			src='/includes/img/logout.png'
+			onClick={this.props.firebase.SignOut}
+		/>
+	);
+};
 
-	render() {
-		return (
-			<Link to={ROUTES.SIGN_IN}>
-				<img alt='logout' src='/includes/img/logout.png' />
-			</Link>
-		);
-	}
-}
-
-export default SignOut;
+export default withFirebase(SignOut);

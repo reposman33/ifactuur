@@ -1,6 +1,6 @@
 import React from "react";
 import { compose } from "recompose";
-import { WithFirebase } from "../Firebase/index.js";
+import { withFirebase } from "../Firebase/index.js";
 import { withRouter, Link } from "react-router-dom";
 import "./index.scss";
 import { SignUpLink } from "../SignUp/index.js";
@@ -9,20 +9,24 @@ import * as ROUTES from "../../constants/routes.js";
 const INITIAL_STATE = {
 	email: "",
 	password: "",
+	lastSignInTime: "",
 	error: null
 };
 
 class SignIn extends React.Component {
 	constructor(props) {
 		super(props);
-		this.setState({ ...INITIAL_STATE });
+		this.state = { ...INITIAL_STATE };
 	}
+
 	onSubmit = event => {
 		const { email, password } = this.state;
-		this.props.fireBase
+		this.props.firebase
 			.signInWithEmailAndPassword(email, password)
-			.then(res => {
-				this.setState({ ...INITIAL_STATE });
+			.then(() => {
+				this.setState({
+					...INITIAL_STATE
+				});
 				this.props.history.push(ROUTES.INVOICES);
 			})
 			.catch(error => this.setState({ error }));
@@ -35,7 +39,8 @@ class SignIn extends React.Component {
 	};
 
 	render() {
-		const { email, password, error } = this.state;
+		const { email, password, error, lastSignInTime } = this.state;
+		const isInvalid = password === "" || email === "";
 		return (
 			<div>
 				<div className='signContainer'>
@@ -55,7 +60,7 @@ class SignIn extends React.Component {
 											name='email'
 											maxLength='55'
 											size='30'
-											autoComplete='off'
+											onChange={this.onChange}
 										/>
 									</td>
 								</tr>
@@ -71,7 +76,7 @@ class SignIn extends React.Component {
 											name='password'
 											maxLength='55'
 											size='30'
-											autoComplete='off'
+											onChange={this.onChange}
 										/>
 									</td>
 								</tr>
@@ -81,8 +86,7 @@ class SignIn extends React.Component {
 										style={{ textAlign: "right" }}>
 										<input
 											type='submit'
-											name='register'
-											value='Login'
+											disabled={isInvalid}
 										/>
 										{error && (
 											<p className='alert'>
@@ -100,8 +104,8 @@ class SignIn extends React.Component {
 		);
 	}
 }
-
+// export default withFirebase(SignIn);
 export default compose(
-	WithFirebase,
-	withRouter
+	withRouter,
+	withFirebase
 )(SignIn);
