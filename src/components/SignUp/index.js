@@ -13,8 +13,12 @@ const INITIAL_STATE = {
 	error: ""
 };
 
-const SignUpPage = () => <SignUpForm />;
-class SignUpFormBase extends Component {
+const SignUpPage = () =>
+	compose(
+		withRouter,
+		withFirebase
+	)(SignUpForm);
+class SignUpForm extends Component {
 	constructor(props) {
 		super(props);
 
@@ -22,7 +26,7 @@ class SignUpFormBase extends Component {
 	}
 
 	onSubmit = event => {
-		const { username, email, password1 } = this.state;
+		const { email, password1 } = this.state;
 		this.props.firebase
 			.createUserWithEmailAndPassword(email, password1)
 			.then(authUser => {
@@ -174,11 +178,6 @@ class SignUpFormBase extends Component {
 		);
 	}
 }
-
-const SignUpForm = compose(
-	withRouter,
-	withFirebase
-)(SignUpFormBase);
 
 const SignUpLink = () => (
 	<div style={{ margin: 20 + "px auto", width: 300 + "px" }}>

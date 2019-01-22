@@ -1,25 +1,23 @@
-import React, { Component } from "react";
-import { Link, withRouter } from "react-router-dom";
-import { compose } from "recompose";
+import React from "react";
+import { Link } from "react-router-dom";
 import { withAuthentication } from "../Session/index.js";
+import { AuthUserContext } from "../Session/index.js";
+import { compose } from "recompose";
 import * as ROUTES from "../../constants/routes.js";
+import { withRouter } from "react-router-dom";
 import SignOut from "../SignOut/index.js";
 
 import "./index.scss";
 
-class Navigation extends Component {
+class NavigationForm extends React.Component {
 	constructor(props) {
 		super(props);
-	}
-
-	componentDidMount() {
-		!this.props.authenticatedUser &&
-			this.props.history.push(ROUTES.SIGN_IN);
 	}
 
 	render() {
 		return (
 			<div>
+				<div />
 				<div>
 					<div className='mainMenu'>
 						<ul>
@@ -80,20 +78,11 @@ class Navigation extends Component {
 								</ul>
 							</li>
 						</ul>
-						{this.props.authenticatedUser && <SignOut />}
+						{this.props.authUser &&
+							this.props.authUser.authUser && <SignOut />}
 					</div>
 				</div>
 				<div id='topContentBar'>
-					<div id='welcomeMessage'>
-						{this.props.authenticatedUser &&
-							`Last login: ${this.props.lastSignInTime}`}
-					</div>
-					<div>
-						{this.props.authenticatedUser
-							? `Last signed in @ ${this.props.lastSignInTime}`
-							: "not logged in"}
-					</div>
-
 					<div id='languageSwitch'>
 						<a
 							href='/index.cfm?event=factuur.list&amp;dir=desc&amp;order=id&amp;page=1&amp;ISOEndDate=&amp;ISOStartDate=&amp;language=en'
@@ -111,7 +100,16 @@ class Navigation extends Component {
 	}
 }
 
-export default compose(
+const AddAuthentication = Component => props => (
+	<AuthUserContext.Consumer>
+		{authUser => <Component authUser={authUser} />}
+	</AuthUserContext.Consumer>
+);
+
+const Navigation = compose(
 	withAuthentication,
+	AddAuthentication,
 	withRouter
-)(Navigation);
+)(NavigationForm);
+
+export default Navigation;

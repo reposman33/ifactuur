@@ -1,7 +1,8 @@
 import React from "react";
 import { compose } from "recompose";
 import { withFirebase } from "../Firebase/index.js";
-import { withRouter, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import "./index.scss";
 import { SignUpLink } from "../SignUp/index.js";
 import * as ROUTES from "../../constants/routes.js";
@@ -13,7 +14,7 @@ const INITIAL_STATE = {
 	error: null
 };
 
-class SignIn extends React.Component {
+class SignInForm extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = { ...INITIAL_STATE };
@@ -39,7 +40,7 @@ class SignIn extends React.Component {
 	};
 
 	render() {
-		const { email, password, error, lastSignInTime } = this.state;
+		const { email, password, error } = this.state;
 		const isInvalid = password === "" || email === "";
 		return (
 			<div>
@@ -100,12 +101,19 @@ class SignIn extends React.Component {
 					</form>
 				</div>
 				<SignUpLink />
+				<div style={{ margin: 20 + "px auto", width: 300 + "px" }}>
+					<Link to={ROUTES.PASSWORD_FORGET}>
+						wachtwoord vergeten?
+					</Link>
+				</div>
 			</div>
 		);
 	}
 }
-// export default withFirebase(SignIn);
-export default compose(
+
+const SignInPage = compose(
 	withRouter,
 	withFirebase
-)(SignIn);
+)(SignInForm);
+
+export default SignInPage;

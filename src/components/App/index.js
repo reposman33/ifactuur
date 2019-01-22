@@ -1,7 +1,7 @@
-import React, { Component } from "react";
+import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
-import { withAuthentication } from "../Session/index.js";
 import * as ROUTES from "../../constants/routes.js";
+import { withAuthentication } from "../Session/index.js";
 
 import Admin from "../Admin/index.js";
 import Bills from "../Bills/index.js";
@@ -14,8 +14,20 @@ import SignIn from "../SignIn/index.js";
 import SignUp from "../SignUp/index.js";
 import Stats from "../Stats/index.js";
 
-class App extends Component {
+class App extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			errorMessage: null
+		};
+	}
+	componentDidCatch(error, info) {
+		this.setState({ errorMessage: error.message });
+	}
 	render() {
+		if (this.state.errorMessage) {
+			return <div>An error occurred: {this.state.errorMessage}</div>;
+		}
 		return (
 			<Router>
 				<div>

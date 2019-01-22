@@ -21,7 +21,7 @@ const config_dev = {
 
 const config = process.env.NODE_ENV === "production" ? config_prod : config_dev;
 class Firebase {
-	constructor() {
+	constructor(props) {
 		app.initializeApp(config);
 
 		this.auth = app.auth();
@@ -32,14 +32,14 @@ class Firebase {
 	createUserWithEmailAndPassword = (email, password) =>
 		this.auth.createUserWithEmailAndPassword(email, password);
 
-	passWordForget = () => this.auth.passWordForget();
+	passwordReset = email => this.auth.sendPasswordResetEmail(email);
 
-	passwordReset = () => this.auth.passwordReset();
+	passwordUpdate = password => this.auth.currentUser.updatePassword(password);
 
 	signInWithEmailAndPassword = (email, password) =>
 		this.auth.signInWithEmailAndPassword(email, password);
 
-	signout = () => this.auth.signOut();
+	signOut = () => this.auth.signOut();
 }
 
 export default Firebase;
