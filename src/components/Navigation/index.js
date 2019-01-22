@@ -14,7 +14,22 @@ class NavigationForm extends React.Component {
 		super(props);
 	}
 
+	shouldComponentUpdate(nextProps, nextState) {
+		if (
+			!(
+				nextProps.authUser.authUser ||
+				this.props.location.pathname === "/signin"
+			)
+		) {
+			this.props.history.push(ROUTES.SIGN_IN);
+		}
+		console.log("shouldComponentUpdate: nextProps =", nextProps);
+		console.log("shouldComponentUpdate: nextState =", nextState);
+		return true;
+	}
+
 	render() {
+		console.log("props=", this.props);
 		return (
 			<div>
 				<div />
