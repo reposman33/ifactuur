@@ -1,10 +1,12 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { withAuthentication } from "../Session/index.js";
-import { AuthUserContext } from "../Session/index.js";
+import {
+	AuthUserContext,
+	withAuthentication,
+	withAuthorization
+} from "../Session/index.js";
 import { compose } from "recompose";
 import * as ROUTES from "../../constants/routes.js";
-import { withRouter } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import SignOut from "../SignOut/index.js";
 
 import "./index.scss";
@@ -14,22 +16,7 @@ class NavigationForm extends React.Component {
 		super(props);
 	}
 
-	shouldComponentUpdate(nextProps, nextState) {
-		if (
-			!(
-				nextProps.authUser.authUser ||
-				this.props.location.pathname === "/signin"
-			)
-		) {
-			this.props.history.push(ROUTES.SIGN_IN);
-		}
-		console.log("shouldComponentUpdate: nextProps =", nextProps);
-		console.log("shouldComponentUpdate: nextState =", nextState);
-		return true;
-	}
-
 	render() {
-		console.log("props=", this.props);
 		return (
 			<div>
 				<div />
@@ -121,10 +108,12 @@ const AddAuthentication = Component => props => (
 	</AuthUserContext.Consumer>
 );
 
+const authCondition = authUser => authUser && authUser.authUser !== null;
+
 const Navigation = compose(
 	withAuthentication,
 	AddAuthentication,
 	withRouter
 )(NavigationForm);
 
-export default Navigation;
+export default withAuthorization(authCondition)(Navigation);
