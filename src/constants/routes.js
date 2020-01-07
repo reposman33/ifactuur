@@ -1,7 +1,10 @@
 export const ADMIN = "/admin";
 export const BILLS = "/bills";
+export const BILL = "/bill";
 export const COMPANIES = "/companies";
+export const COMPANY = "/company";
 export const INVOICES = "/invoices";
+export const INVOICE = "/invoice";
 export const NAVIGATION = "/navigation";
 export const PASSWORD_CHANGE = "/passwordchange";
 export const PASSWORD_FORGET = "/passwordforget";

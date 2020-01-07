@@ -6,5 +6,10 @@ class Bills extends Component {
 		return <div>Bills</div>;
 	}
 }
+class Bill extends Component {
+	render() {
+		return <div>Bill works!</div>;
+	}
+}
 
-export default Bills;
+export { Bill, Bills };

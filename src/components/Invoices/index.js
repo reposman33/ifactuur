@@ -7,4 +7,10 @@ class Invoices extends Component {
 	}
 }
 
-export default Invoices;
+class Invoice extends Component {
+	render() {
+		return <div>Invoice works!</div>;
+	}
+}
+
+export { Invoices, Invoice };

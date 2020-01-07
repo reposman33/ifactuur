@@ -6,5 +6,10 @@ class Companies extends Component {
 		return <div>Companies</div>;
 	}
 }
+class Company extends Component {
+	render() {
+		return <div>Company works!</div>;
+	}
+}
 
-export default Companies;
+export { Company, Companies };

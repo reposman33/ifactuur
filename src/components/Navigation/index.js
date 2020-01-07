@@ -1,9 +1,5 @@
 import React from "react";
-import {
-	AuthUserContext,
-	withAuthentication,
-	withAuthorization
-} from "../Session/index.js";
+import { AuthUserContext, withAuthentication, withAuthorization } from "../Session/index.js";
 import { compose } from "recompose";
 import * as ROUTES from "../../constants/routes.js";
 import { Link, withRouter } from "react-router-dom";
@@ -24,55 +20,53 @@ class NavigationForm extends React.Component {
 					<div className='mainMenu'>
 						<ul>
 							<li id='factuur' className='navMenuItemSelected'>
-								<Link to={ROUTES.INVOICES}>invoices</Link>
+								invoices
 								<ul>
 									<li>
-										<a
-											href='#'
-											className='navMenuItemSelected'>
+										<Link to={ROUTES.INVOICES} className='navMenuItemSelected'>
 											list invoices
-										</a>
+										</Link>
 									</li>
 									<li>
-										<a href='#'>new invoice</a>
+										<Link to={ROUTES.INVOICE}>new invoice</Link>
 									</li>
 								</ul>
 							</li>
 							<li id='nota'>
-								<Link to={ROUTES.BILLS}>bills</Link>
+								bills
 								<ul>
 									<li>
-										<a href='#'>list bills</a>
+										<Link to={ROUTES.BILLS}>list bills</Link>
 									</li>
 									<li>
-										<a href='#'>new bill</a>
+										<Link to={ROUTES.BILL}>new bill</Link>
 									</li>
 								</ul>
 							</li>
 							<li id='bedrijf'>
-								<Link to={ROUTES.COMPANIES}>companies</Link>
+								Company
 								<ul>
 									<li>
-										<a href='#'>list companies</a>
+										<Link to={ROUTES.COMPANIES}>list companies</Link>
 									</li>
 									<li>
-										<a href='#'>new company</a>
+										<Link to={ROUTES.COMPANY}>new company</Link>
 									</li>
 								</ul>
 							</li>
 							<li id='userSettings'>
-								<Link to={ROUTES.ADMIN}>my data</Link>
+								User settings
 								<ul>
 									<li>
-										<a href='#'>edit</a>
+										<Link to={ROUTES.ADMIN}>Settings</Link>
 									</li>
 								</ul>
 							</li>
 							<li id='stats'>
-								<Link to={ROUTES.STATS}>overview</Link>
+								overview
 								<ul>
 									<li>
-										<a href='#'>Income and expenses</a>
+										<Link to={ROUTES.STATS}>Income and expenses</Link>
 									</li>
 									<li>
 										<a href='#'>revenue</a>
@@ -80,8 +74,7 @@ class NavigationForm extends React.Component {
 								</ul>
 							</li>
 						</ul>
-						{this.props.authUser &&
-							this.props.authUser.authUser && <SignOut />}
+						{this.props.authUser && this.props.authUser.authUser && <SignOut />}
 					</div>
 				</div>
 				<div id='topContentBar'>
@@ -103,17 +96,11 @@ class NavigationForm extends React.Component {
 }
 
 const AddAuthentication = Component => props => (
-	<AuthUserContext.Consumer>
-		{authUser => <Component authUser={authUser} />}
-	</AuthUserContext.Consumer>
+	<AuthUserContext.Consumer>{authUser => <Component authUser={authUser} />}</AuthUserContext.Consumer>
 );
 
 const authCondition = authUser => authUser && authUser.authUser !== null;
 
-const Navigation = compose(
-	withAuthentication,
-	AddAuthentication,
-	withRouter
-)(NavigationForm);
+const Navigation = compose(withAuthentication, AddAuthentication, withRouter)(NavigationForm);
 
 export default withAuthorization(authCondition)(Navigation);
