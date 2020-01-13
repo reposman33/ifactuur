@@ -2,7 +2,6 @@ import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import * as ROUTES from "../../constants/routes.js";
 import { withAuthentication } from "../Session/index.js";
-
 import Admin from "../Admin/index.js";
 import { Bill, Bills } from "../Bills/index.js";
 import { Company, Companies } from "../Companies/index.js";
@@ -13,6 +12,7 @@ import PasswordForget from "../PasswordForget/index.js";
 import SignIn from "../SignIn/index.js";
 import SignUp from "../SignUp/index.js";
 import Stats from "../Stats/index.js";
+import "./index.scss";
 
 class App extends React.Component {
 	constructor(props) {
@@ -29,23 +29,18 @@ class App extends React.Component {
 			return <div>An error occurred: {this.state.errorMessage}</div>;
 		}
 		return (
-			<Router>
-				<React.Fragment>
-					<Navigation />
-					<Route exact path={ROUTES.COMPANIES} component={Companies} />
-					<Route exact path={ROUTES.COMPANY} component={Company} />
-					<Route exact path={ROUTES.ADMIN} component={Admin} />
-					<Route exact path={ROUTES.BILLS} component={Bills} />
-					<Route exact path={ROUTES.BILL} component={Bill} />
-					<Route exact path={ROUTES.INVOICES} component={Invoices} />
-					<Route exact path={ROUTES.INVOICE} component={Invoice} />
-					<Route exact path={ROUTES.PASSWORD_CHANGE} component={PasswordChange} />
-					<Route exact path={ROUTES.PASSWORD_FORGET} component={PasswordForget} />
-					<Route exact path={ROUTES.SIGN_IN} component={SignIn} />
-					<Route exact path={ROUTES.SIGN_UP} component={SignUp} />
-					<Route exact path={ROUTES.STATS} component={Stats} />
-				</React.Fragment>
-			</Router>
+			<div className='container'>
+				<Router>
+					<React.Fragment>
+						<Navigation></Navigation>
+						<Route path={ROUTES.INVOICES} component={Invoices}></Route>
+						<Route path={ROUTES.BILLS} component={Bills}></Route>
+						<Route path={ROUTES.COMPANIES} component={Companies}></Route>
+						<Route path={ROUTES.ADMIN} component={Admin}></Route>
+						<Route path={ROUTES.STATS} component={Stats}></Route>
+					</React.Fragment>
+				</Router>
+			</div>
 		);
 	}
 }

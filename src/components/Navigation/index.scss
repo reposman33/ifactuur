@@ -1,12 +1,10 @@
 div.mainMenu {
 	background-color: #ccc;
-	background-image: url(/includes/img/header_bg.jpg);
+	background: linear-gradient(#07456c, #206e95);
 	border-top: 1px solid #444;
 	border-bottom: 1px solid #444;
 	font-size: 12px;
 	height: 30px;
-	margin: 0 auto;
-	width: 1024px;
 
 	& ul {
 		cursor: pointer;
@@ -25,16 +23,13 @@ div.mainMenu {
 			text-align: center;
 			width: 165px;
 
+			&:hover {
+				background: linear-gradient(#206e95, #07456c);
+			}
+
 			&.navMenuItemSelected {
-				color: #ff0;
-			}
-
-			&:first-child {
-				border-bottom: 1px solid #fff;
-			}
-
-			&:hover ul {
-				display: block;
+				background-color: #798cac;
+				border: none;
 			}
 
 			& a,
@@ -45,56 +40,29 @@ div.mainMenu {
 				color: #fff;
 				display: block;
 				margin: 0 auto;
-				padding: 5px;
+				padding-top: 5px;
 				text-decoration: none;
 				text-align: center;
 				white-space: nowrap;
 			}
-
-			& ul {
-				background-color: #206e95;
-				border-bottom: 1px solid #ccc;
-				display: none;
-				margin: 0;
-				padding: 0;
-				position: absolute;
-				top: 31px;
-				width: 166px;
-
-				& li:first-child {
-					border-top: 1px solid #ccc;
-				}
-
-				& li:last-child {
-					border-bottom: none;
-				}
-			}
-		}
-
-		& .navMenuItemSelected {
-			background-color: #2f4f4f;
 		}
 	}
 }
 
-#topContentBar {
+.topContentBar {
 	height: 15px;
-	margin: 0 auto;
+	margin: 0 auto 1rem;
 	width: 1024px;
+	background-color: #cacbd4;
 }
 
-#welcomeMessage {
-	float: left;
-	font-size: 8pt;
-	font-weight: bold;
-}
-
-#languageSwitch {
+.languageSwitch {
 	float: right;
 
 	& a {
 		font-size: 8pt;
 		font-weight: bold;
+		padding: 0.5rem;
 		text-decoration: none;
 
 		& .active {
