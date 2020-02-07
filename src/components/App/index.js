@@ -13,6 +13,9 @@ import SignIn from "../SignIn/index.js";
 import SignUp from "../SignUp/index.js";
 import Stats from "../Stats/index.js";
 import "./index.scss";
+import { config_dev, config_prod } from "../../environments.js";
+
+const config = process.env.NODE_ENV === "production" ? config_prod : config_dev;
 
 class App extends React.Component {
 	constructor(props) {
@@ -24,6 +27,11 @@ class App extends React.Component {
 	componentDidCatch(error, info) {
 		this.setState({ errorMessage: error.message });
 	}
+
+	componentDidMount() {
+		document.title = `${config.documentTitle} - ${process.env.NODE_ENV}`;
+	}
+
 	render() {
 		if (this.state.errorMessage) {
 			return <div>An error occurred: {this.state.errorMessage}</div>;
