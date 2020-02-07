@@ -1,5 +1,7 @@
 import React from "react";
 import { withFirebase } from "../Firebase/index.js";
+import { Link } from "react-router-dom";
+import * as ROUTES from "../../constants/routes.js";
 import "./index.scss";
 
 class PasswordForget extends React.Component {
@@ -17,7 +19,7 @@ class PasswordForget extends React.Component {
 			.passwordReset(this.state.email)
 			.then(res => {
 				this.setState({
-					errorMessage: "Success! An email with instructions is verzonden"
+					message: "Success! An email with instructions is sent to the address you provided"
 				});
 			})
 			.catch(error => {
@@ -65,7 +67,12 @@ class PasswordForget extends React.Component {
 								<tr>
 									<td colSpan='2' style={{ textAlign: "right" }}>
 										<input type='submit' disabled={isInvalid} value='Go!' />
-										errorMessage && <p className='alert'>{this.state.errorMessage}</p>
+										{this.state.message && (
+											<React.Fragment>
+												<p className='alert'>{this.state.message}</p>
+												<Link to={ROUTES.SIGN_IN}>Login</Link>{" "}
+											</React.Fragment>
+										)}
 									</td>
 								</tr>
 							</tbody>
