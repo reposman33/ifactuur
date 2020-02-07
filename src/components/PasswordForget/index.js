@@ -17,8 +17,7 @@ class PasswordForget extends React.Component {
 			.passwordReset(this.state.email)
 			.then(res => {
 				this.setState({
-					errorMessage:
-						"Success! An email with instructions is verzonden"
+					errorMessage: "Success! An email with instructions is verzonden"
 				});
 			})
 			.catch(error => {
@@ -32,13 +31,12 @@ class PasswordForget extends React.Component {
 	};
 
 	validateEmail = email => {
-		var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 		return re.test(email);
 	};
 
 	render() {
-		const isInvalid =
-			this.state.email === null || !this.validateEmail(this.state.email);
+		const isInvalid = this.state.email === null || !this.validateEmail(this.state.email);
 
 		return (
 			<div>
@@ -49,9 +47,7 @@ class PasswordForget extends React.Component {
 							<tbody>
 								<tr>
 									<td>
-										<label
-											htmlFor='useremail'
-											style={{ whiteSpace: "nowrap" }}>
+										<label htmlFor='useremail' style={{ whiteSpace: "nowrap" }}>
 											E-mail
 										</label>
 									</td>
@@ -67,18 +63,9 @@ class PasswordForget extends React.Component {
 									</td>
 								</tr>
 								<tr>
-									<td
-										colSpan='2'
-										style={{ textAlign: "right" }}>
-										<input
-											type='submit'
-											disabled={isInvalid}
-											value='Go!'
-										/>
-										errorMessage &&{" "}
-										<p className='alert'>
-											{this.state.errorMessage}
-										</p>
+									<td colSpan='2' style={{ textAlign: "right" }}>
+										<input type='submit' disabled={isInvalid} value='Go!' />
+										errorMessage && <p className='alert'>{this.state.errorMessage}</p>
 									</td>
 								</tr>
 							</tbody>
