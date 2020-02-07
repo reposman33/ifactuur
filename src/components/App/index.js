@@ -29,18 +29,23 @@ class App extends React.Component {
 			return <div>An error occurred: {this.state.errorMessage}</div>;
 		}
 		return (
-			<div className='container'>
-				<Router>
-					<React.Fragment>
-						<Navigation></Navigation>
-						<Route path={ROUTES.INVOICES} component={Invoices}></Route>
-						<Route path={ROUTES.BILLS} component={Bills}></Route>
-						<Route path={ROUTES.COMPANIES} component={Companies}></Route>
-						<Route path={ROUTES.ADMIN} component={Admin}></Route>
-						<Route path={ROUTES.STATS} component={Stats}></Route>
-					</React.Fragment>
-				</Router>
-			</div>
+			<Router>
+				<React.Fragment>
+					<Navigation />
+					<Route exact path={ROUTES.COMPANIES} component={Companies} />
+					<Route exact path={ROUTES.COMPANY} component={Company} />
+					<Route exact path={ROUTES.ADMIN} component={Admin} />
+					<Route exact path={ROUTES.BILLS} component={Bills} />
+					<Route exact path={ROUTES.BILL} component={Bill} />
+					<Route exact path={ROUTES.INVOICES} component={Invoices} />
+					<Route exact path={ROUTES.INVOICE} component={Invoice} />
+					<Route exact path={ROUTES.PASSWORD_CHANGE} component={PasswordChange} />
+					<Route exact path={ROUTES.PASSWORD_FORGET} component={PasswordForget} />
+					<Route exact path={ROUTES.SIGN_IN} component={SignIn} />
+					<Route exact path={ROUTES.SIGN_UP} component={SignUp} />
+					<Route exact path={ROUTES.STATS} component={Stats} />
+				</React.Fragment>
+			</Router>
 		);
 	}
 }
