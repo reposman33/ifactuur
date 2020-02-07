@@ -8,16 +8,11 @@ import { compose } from "recompose";
 const INITIAL_STATE = {
 	username: "",
 	email: "",
-	password1: "",
-	password2: "",
+	password: "",
+	passwordRepeat: "",
 	error: ""
 };
 
-const SignUpPage = () =>
-	compose(
-		withRouter,
-		withFirebase
-	)(SignUpForm);
 class SignUpForm extends Component {
 	constructor(props) {
 		super(props);
@@ -26,9 +21,9 @@ class SignUpForm extends Component {
 	}
 
 	onSubmit = event => {
-		const { email, password1 } = this.state;
+		const { email, password } = this.state;
 		this.props.firebase
-			.createUserWithEmailAndPassword(email, password1)
+			.createUserWithEmailAndPassword(email, password)
 			.then(authUser => {
 				this.setState({ ...INITIAL_STATE });
 				this.props.history.push(ROUTES.SIGN_IN);
@@ -44,13 +39,9 @@ class SignUpForm extends Component {
 	};
 
 	render() {
-		const { username, email, password1, password2, error } = this.state;
+		const { username, email, password, passwordRepeat, error } = this.state;
 
-		const isInvalid =
-			password1 !== password2 ||
-			password1 === "" ||
-			username === "" ||
-			email === "";
+		const isInvalid = password !== passwordRepeat || password === "" || username === "" || email === "";
 
 		return (
 			<div className='signContainer'>
@@ -82,9 +73,7 @@ class SignUpForm extends Component {
 							</tr>
 							<tr>
 								<td>
-									<label
-										htmlFor='email'
-										style={{ whiteSpace: "nowrap" }}>
+									<label htmlFor='email' style={{ whiteSpace: "nowrap" }}>
 										E-mail
 									</label>
 								</td>
@@ -108,16 +97,14 @@ class SignUpForm extends Component {
 							</tr>
 							<tr>
 								<td>
-									<label
-										htmlFor='password1'
-										style={{ whiteSpace: "nowrap" }}>
+									<label htmlFor='password' style={{ whiteSpace: "nowrap" }}>
 										Wachtwoord
 									</label>
 								</td>
 								<td>
 									<input
 										type='password'
-										name='password1'
+										name='password'
 										maxLength='55'
 										size='45'
 										style={{
@@ -127,23 +114,21 @@ class SignUpForm extends Component {
 											backgroundPosition: "98% 50%",
 											cursor: "auto"
 										}}
-										value={password1}
+										value={password}
 										onChange={this.onChange}
 									/>
 								</td>
 							</tr>
 							<tr>
 								<td>
-									<label
-										htmlFor='password2'
-										style={{ whiteSpace: "nowrap" }}>
+									<label htmlFor='passwordRepeat' style={{ whiteSpace: "nowrap" }}>
 										Herhaal wachtwoord
 									</label>
 								</td>
 								<td>
 									<input
 										type='password'
-										name='password2'
+										name='passwordRepeat'
 										maxLength='55'
 										size='45'
 										style={{
@@ -153,22 +138,17 @@ class SignUpForm extends Component {
 											backgroundPosition: "98% 50%",
 											cursor: "auto"
 										}}
-										value={password2}
+										value={passwordRepeat}
 										onChange={this.onChange}
 									/>
 								</td>
 							</tr>
 							<tr>
 								<td colSpan='2' style={{ textAlign: "right" }}>
-									<button
-										type='button'
-										disabled={isInvalid}
-										onClick={this.onSubmit}>
+									<button type='button' disabled={isInvalid} onClick={this.onSubmit}>
 										Registreer
 									</button>
-									{error && (
-										<p className='alert'>{error.message}</p>
-									)}
+									{error && <p className='alert'>{error.message}</p>}
 								</td>
 							</tr>
 						</tbody>
@@ -181,10 +161,9 @@ class SignUpForm extends Component {
 
 const SignUpLink = () => (
 	<div style={{ margin: 20 + "px auto", width: 300 + "px" }}>
-		Nog geen account? Klik <Link to={ROUTES.SIGN_UP}>hier</Link> om te
-		registreren.
+		Nog geen account? Klik <Link to={ROUTES.SIGN_UP}>hier</Link> om te registreren.
 	</div>
 );
 
-export default SignUpPage;
+export default compose(withRouter, withFirebase)(SignUpForm);
 export { SignUpForm, SignUpLink };
