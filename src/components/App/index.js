@@ -38,21 +38,23 @@ class App extends React.Component {
 		}
 		return (
 			<Router>
-				<React.Fragment>
-					<Navigation />
-					<Route exact path={ROUTES.COMPANIES} component={Companies} />
-					<Route exact path={ROUTES.COMPANY} component={Company} />
-					<Route exact path={ROUTES.ADMIN} component={Admin} />
-					<Route exact path={ROUTES.BILLS} component={Bills} />
-					<Route exact path={ROUTES.BILL} component={Bill} />
-					<Route exact path={ROUTES.INVOICES} component={Invoices} />
-					<Route exact path={ROUTES.INVOICE} component={Invoice} />
-					<Route exact path={ROUTES.PASSWORD_CHANGE} component={PasswordChange} />
-					<Route exact path={ROUTES.PASSWORD_FORGET} component={PasswordForget} />
-					<Route exact path={ROUTES.SIGN_IN} component={SignIn} />
-					<Route exact path={ROUTES.SIGN_UP} component={SignUp} />
-					<Route exact path={ROUTES.STATS} component={Stats} />
-				</React.Fragment>
+				<div className='container'>
+					<React.Fragment>
+						<Navigation />
+						<Route exact path={ROUTES.COMPANIES} component={Companies} />
+						<Route exact path={ROUTES.COMPANY} component={Company} />
+						<Route exact path={ROUTES.ADMIN} component={Admin} />
+						<Route exact path={ROUTES.BILLS} component={Bills} />
+						<Route exact path={ROUTES.BILL} component={Bill} />
+						<Route exact path={ROUTES.INVOICES} component={Invoices} />
+						<Route exact path={ROUTES.INVOICE} component={Invoice} />
+						<Route exact path={ROUTES.PASSWORD_CHANGE} component={PasswordChange} />
+						<Route exact path={ROUTES.PASSWORD_FORGET} component={PasswordForget} />
+						<Route exact path={ROUTES.SIGN_IN} component={SignIn} />
+						<Route exact path={ROUTES.SIGN_UP} component={SignUp} />
+						<Route exact path={ROUTES.STATS} component={Stats} />
+					</React.Fragment>
+				</div>
 			</Router>
 		);
 	}
