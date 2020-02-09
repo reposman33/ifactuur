@@ -3,7 +3,7 @@ import { compose } from "recompose";
 import { withFirebase } from "../Firebase/index.js";
 import { Link } from "react-router-dom";
 import { withRouter } from "react-router-dom";
-import "./index.scss";
+import index from "./index.module.scss";
 import { SignUpLink } from "../SignUp/index.js";
 import * as ROUTES from "../../constants/routes.js";
 
@@ -44,16 +44,14 @@ class SignInForm extends React.Component {
 		const isInvalid = password === "" || email === "";
 		return (
 			<div>
-				<div className='signContainer'>
-					<div className='header'>login ifactuur</div>
+				<div className={index.signinContainer}>
+					<div className={index.header}>login ifactuur</div>
 					<form name='login' onSubmit={this.onSubmit}>
 						<table id='loginTable'>
 							<tbody>
 								<tr>
 									<td>
-										<label htmlFor='useremail'>
-											E-mail
-										</label>
+										<label htmlFor='useremail'>E-mail</label>
 									</td>
 									<td>
 										<input
@@ -67,9 +65,7 @@ class SignInForm extends React.Component {
 								</tr>
 								<tr>
 									<td>
-										<label htmlFor='password'>
-											Wachtwoord
-										</label>
+										<label htmlFor='password'>Wachtwoord</label>
 									</td>
 									<td>
 										<input
@@ -82,18 +78,9 @@ class SignInForm extends React.Component {
 									</td>
 								</tr>
 								<tr>
-									<td
-										colSpan='2'
-										style={{ textAlign: "right" }}>
-										<input
-											type='submit'
-											disabled={isInvalid}
-										/>
-										{error && (
-											<p className='alert'>
-												{error.message}
-											</p>
-										)}
+									<td colSpan='2' style={{ textAlign: "right" }}>
+										<input type='submit' disabled={isInvalid} />
+										{error && <p className={index.alert}>{error.message}</p>}
 									</td>
 								</tr>
 							</tbody>
@@ -102,18 +89,13 @@ class SignInForm extends React.Component {
 				</div>
 				<SignUpLink />
 				<div style={{ margin: 20 + "px auto", width: 300 + "px" }}>
-					<Link to={ROUTES.PASSWORD_FORGET}>
-						wachtwoord vergeten?
-					</Link>
+					<Link to={ROUTES.PASSWORD_FORGET}>wachtwoord vergeten?</Link>
 				</div>
 			</div>
 		);
 	}
 }
 
-const SignInPage = compose(
-	withRouter,
-	withFirebase
-)(SignInForm);
+const SignInPage = compose(withRouter, withFirebase)(SignInForm);
 
 export default SignInPage;
