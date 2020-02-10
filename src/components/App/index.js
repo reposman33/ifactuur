@@ -38,9 +38,11 @@ class App extends React.Component {
 		}
 		return (
 			<Router>
-				<div className={index.container}>
-					<React.Fragment>
+				<React.Fragment>
+					<div className={index.navContainer}>
 						<Navigation />
+					</div>
+					<div className={index.main}>
 						<Route exact path={ROUTES.COMPANIES} component={Companies} />
 						<Route exact path={ROUTES.COMPANY} component={Company} />
 						<Route exact path={ROUTES.ADMIN} component={Admin} />
@@ -53,8 +55,8 @@ class App extends React.Component {
 						<Route exact path={ROUTES.SIGN_IN} component={SignIn} />
 						<Route exact path={ROUTES.SIGN_UP} component={SignUp} />
 						<Route exact path={ROUTES.STATS} component={Stats} />
-					</React.Fragment>
-				</div>
+					</div>
+				</React.Fragment>
 			</Router>
 		);
 	}

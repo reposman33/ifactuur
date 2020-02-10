@@ -1,4 +1,55 @@
-.container {
+@import url("https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css");
+@import url("https://fonts.googleapis.com/css?family=Montserrat&display=swap");
+
+.navContainer {
 	width: 1024px;
 	margin: auto;
+}
+
+.main {
+	background-color: #d1e9f3;
+	border-radius: 1rem;
+	font-family: "Montserrat", sans-serif;
+	height: 800px;
+	margin: auto;
+	padding: 1rem;
+	width: 1024px;
+}
+
+// style the row
+
+.row {
+	height: 25%;
+
+	&.high {
+		height: 30%;
+	}
+	&.slim {
+		height: 20%;
+	}
+}
+// style the columns
+*[class^="col"] {
+	font-family: "Montserrat", sans-serif;
+	background-color: lightskyblue;
+	border-radius: 0.5rem;
+	border: 1px solid #ccc;
+	box-shadow: 4px 4px 14px 5px #ccc;
+	padding: 1rem;
+
+	& h1 {
+		font-size: 14pt;
+		margin: 0 1rem;
+	}
+
+	& fieldset {
+		border: 1px solid red;
+		border-radius: 0.5rem;
+		padding: 1rem;
+		height: 100%;
+
+		& legend {
+			width: max-content;
+		}
+	}
 }
