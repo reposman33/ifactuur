@@ -4,16 +4,15 @@ import { compose } from "recompose";
 import * as ROUTES from "../../constants/routes.js";
 import { Link } from "react-router-dom";
 import SignOut from "../SignOut/index.js";
-
-import "./index.scss";
+import * as index from "./index.module.scss";
 
 class NavigationForm extends React.Component {
 	render() {
 		return (
 			<div>
-				<div className='mainMenu'>
+				<div className={index.mainMenu}>
 					<ul>
-						<li id='factuur' className='navMenuItemSelected'>
+						<li id='factuur' className={index.navMenuItemSelected}>
 							<Link to={ROUTES.INVOICES}>Invoices</Link>
 						</li>
 						<li id='nota'>
@@ -31,11 +30,11 @@ class NavigationForm extends React.Component {
 					</ul>
 					{this.props.authUser && this.props.authUser.authUser && <SignOut />}
 				</div>
-				<div className='topContentBar'>
-					<div className='languageSwitch'>
+				<div className={index.topContentBar}>
+					<div className={index.languageSwitch}>
 						<a
 							href='/index.cfm?event=factuur.list&amp;dir=desc&amp;order=id&amp;page=1&amp;ISOEndDate=&amp;ISOStartDate=&amp;language=en'
-							className='active'>
+							className={index.active}>
 							engels
 						</a>
 						&nbsp;/
