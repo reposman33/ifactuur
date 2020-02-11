@@ -12,7 +12,7 @@ import PasswordForget from "../PasswordForget/index.js";
 import SignIn from "../SignIn/index.js";
 import SignUp from "../SignUp/index.js";
 import Stats from "../Stats/index.js";
-import * as index from "./index.module.scss";
+import "./index.scss";
 import { config_dev, config_prod } from "../../environments.js";
 
 const config = process.env.NODE_ENV === "production" ? config_prod : config_dev;
@@ -39,10 +39,10 @@ class App extends React.Component {
 		return (
 			<Router>
 				<React.Fragment>
-					<div className={index.navContainer}>
+					<div className='navContainer'>
 						<Navigation />
 					</div>
-					<div className={index.main}>
+					<div>
 						<Route exact path={ROUTES.COMPANIES} component={Companies} />
 						<Route exact path={ROUTES.COMPANY} component={Company} />
 						<Route exact path={ROUTES.ADMIN} component={Admin} />

@@ -1,11 +1,10 @@
 import React, { Component } from "react";
-import * as index from "./index.module.scss";
 
 class Admin extends Component {
 	render() {
 		return (
-			<div className={index.container}>
-				<div className='row high'>
+			<div className='container'>
+				<div className='row slim'>
 					<div className='col-lg-8'>
 						<fieldset>
 							<legend>
