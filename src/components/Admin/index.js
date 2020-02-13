@@ -2,14 +2,14 @@ import React, { Component } from "react";
 import { InputGroup, FormControl } from "react-bootstrap";
 import "./../App/index.scss";
 import "./index.scss";
-import EN from "../I18n/EN";
-import NL from "../I18n/NL";
+import Languages from "../I18n";
 
 class Admin extends Component {
 	constructor(props) {
 		super(props);
-		this.lang = navigator.language;
+		this._Languages = new Languages();
 	}
+
 	render() {
 		return (
 			<div className='container'>
@@ -17,7 +17,7 @@ class Admin extends Component {
 					<div className='col-lg-8'>
 						<fieldset>
 							<legend>
-								<h1>Address</h1>
+								<h1>{this._Languages.get("ADMIN.ADDRESS.TITLE")}</h1>
 							</legend>
 							<div className='row'>
 								<div className='inputSmall mb-3 ml-3'>
@@ -70,7 +70,7 @@ class Admin extends Component {
 					<div className='col-lg-4'>
 						<fieldset>
 							<legend>
-								<h1>Registrations</h1>
+								<h1>{this._Languages.get("ADMIN.REGISTRATIONS.TITLE")}</h1>
 							</legend>
 							<div className='row'>
 								<div className='input mb-3 mx-3 inputFull'>
@@ -88,6 +88,24 @@ class Admin extends Component {
 							</div>
 						</fieldset>
 					</div>
+				</div>
+				<div className='row mt-8'>
+					<div className='col-lg-12'>
+						<fieldset className='mb-0'>
+							<legend>
+								<h1>{this._Languages.get("ADMIN.DELIVERYCONDITIONS.TITLE")}</h1>
+							</legend>
+							<div className='form-group'>
+								<textarea
+									name='deliveryConditions'
+									id=''
+									cols='30'
+									rows='3'
+									className='form-control'></textarea>
+							</div>
+						</fieldset>
+					</div>
+					<button className='btn btn-primary float-right'>Save</button>
 				</div>
 			</div>
 		);
