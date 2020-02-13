@@ -41,13 +41,15 @@
 
 	& h1 {
 		font-size: $h1-font-size;
-		margin-top: 0.3rem;
+		margin: 0 1rem;
+		margin-top: -1rem;
 	}
 
 	& fieldset {
 		border: 1px solid #aaa;
 		border-radius: 0.5rem;
 		padding: 1rem;
+		margin-bottom: 1rem;
 		height: 100%;
 
 		& legend {
@@ -61,5 +63,13 @@
 
 	.inputXSmall {
 		width: 10%;
+	}
+
+	.inputFull {
+		width: 100%;
+	}
+
+	.inputRest {
+		width: 68%;
 	}
 }

@@ -2,8 +2,14 @@ import React, { Component } from "react";
 import { InputGroup, FormControl } from "react-bootstrap";
 import "./../App/index.scss";
 import "./index.scss";
+import EN from "../I18n/EN";
+import NL from "../I18n/NL";
 
 class Admin extends Component {
+	constructor(props) {
+		super(props);
+		this.lang = navigator.language;
+	}
 	render() {
 		return (
 			<div className='container'>
@@ -13,7 +19,6 @@ class Admin extends Component {
 							<legend>
 								<h1>Address</h1>
 							</legend>
-
 							<div className='row'>
 								<div className='inputSmall mb-3 ml-3'>
 									<InputGroup size='sm'>
@@ -32,19 +37,33 @@ class Admin extends Component {
 								</div>
 							</div>
 							<div className='row'>
-								<div className='input mb-3 mx-3'>
+								<div className='input mb-3 mx-3 inputFull'>
 									<InputGroup size='sm'>
 										<FormControl placeholder='Address' aria-label='Address'></FormControl>
 									</InputGroup>
 								</div>
 							</div>
-							<div>
-								<label htmlFor=''>Naam</label>
-								<input type='text' />
+							<div className='row'>
+								<div className='input mb-3 mx-3 inputSmall'>
+									<InputGroup size='sm'>
+										<FormControl placeholder='PC' aria-label='PostCode'></FormControl>
+									</InputGroup>
+								</div>
+
+								<div className='input mb-3 mx-3 inputRest'>
+									<InputGroup size='sm'>
+										<FormControl placeholder='Stad' aria-label='Stad'></FormControl>
+									</InputGroup>
+								</div>
 							</div>
 							<div>
-								<label htmlFor=''>Naam</label>
-								<input type='text' />
+								<div className='row'>
+									<div className='input mb-3 mx-3 inputFull'>
+										<InputGroup size='sm'>
+											<FormControl placeholder='Land' aria-label='Land'></FormControl>
+										</InputGroup>
+									</div>
+								</div>
 							</div>
 						</fieldset>
 					</div>
@@ -53,6 +72,20 @@ class Admin extends Component {
 							<legend>
 								<h1>Registrations</h1>
 							</legend>
+							<div className='row'>
+								<div className='input mb-3 mx-3 inputFull'>
+									<InputGroup size='sm'>
+										<FormControl placeholder='KvK' aria-label='KvK'></FormControl>
+									</InputGroup>
+								</div>
+							</div>
+							<div className='row'>
+								<div className='input mb-3 mx-3 inputFull'>
+									<InputGroup size='sm'>
+										<FormControl placeholder='BTW' aria-label='BTW'></FormControl>
+									</InputGroup>
+								</div>
+							</div>
 						</fieldset>
 					</div>
 				</div>
