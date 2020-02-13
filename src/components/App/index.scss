@@ -20,6 +20,7 @@
 
 .row {
 	height: $row-height;
+	justify-content: flex-end;
 
 	&.high {
 		height: $row-height-high;
@@ -35,7 +36,7 @@
 	border-radius: $column-border-radius;
 	border: $column-border;
 	padding: $column-padding;
-	// add margin between cols
+	// hack to add margin between cols
 	background-clip: padding-box;
 	border: 10px solid transparent;
 
