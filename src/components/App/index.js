@@ -12,24 +12,41 @@ import PasswordForget from "../PasswordForget/index.js";
 import SignIn from "../SignIn/index.js";
 import SignUp from "../SignUp/index.js";
 import Stats from "../Stats/index.js";
-import "./index.scss";
+import Languages from "../I18n";
+
 import { config_dev, config_prod } from "../../environments.js";
+import "./index.scss";
 
 const config = process.env.NODE_ENV === "production" ? config_prod : config_dev;
 
 class App extends React.Component {
 	constructor(props) {
 		super(props);
+		this.setLanguage = this.setLanguage.bind(this);
+		this.getLanguageString = this.getLanguageString.bind(this);
+		this._Languages = new Languages();
 		this.state = {
+			language: this._Languages.getSelectedLanguage(),
 			errorMessage: null
 		};
 	}
+
 	componentDidCatch(error, info) {
 		this.setState({ errorMessage: error.message });
 	}
 
 	componentDidMount() {
 		document.title = `${config.documentTitle} - ${process.env.NODE_ENV}`;
+		this.setState({ language: "en" });
+	}
+
+	setLanguage(lang) {
+		this._Languages.setLanguage(lang);
+		this.setState({ language: lang });
+	}
+
+	getLanguageString(token) {
+		return this._Languages.get(token);
 	}
 
 	render() {
@@ -40,12 +57,19 @@ class App extends React.Component {
 			<Router>
 				<React.Fragment>
 					<div className='navContainer'>
-						<Navigation />
+						<Navigation
+							setLanguage={this.setLanguage}
+							selectedLanguage={this._Languages.getSelectedLanguage()}
+						/>
 					</div>
 					<div>
 						<Route exact path={ROUTES.COMPANIES} component={Companies} />
 						<Route exact path={ROUTES.COMPANY} component={Company} />
-						<Route exact path={ROUTES.ADMIN} component={Admin} />
+						<Route
+							exact
+							path={ROUTES.ADMIN}
+							render={props => <Admin {...props} getLanguageString={this.getLanguageString} />}
+						/>
 						<Route exact path={ROUTES.BILLS} component={Bills} />
 						<Route exact path={ROUTES.BILL} component={Bill} />
 						<Route exact path={ROUTES.INVOICES} component={Invoices} />
