@@ -1,3 +1,6 @@
+@import "../../constants/variables.scss";
+@import "../../constants/variables.scss";
+
 div.mainMenu {
 	background-color: #ccc;
 	background: linear-gradient(#07456c, #206e95);
@@ -59,5 +62,8 @@ div.languageButtons {
 		border: none;
 		margin-bottom: 0.2rem;
 		padding: 0;
+		&:hover {
+			color: $link-color-hover-blue;
+		}
 	}
 }
