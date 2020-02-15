@@ -1,9 +1,9 @@
 import React from "react";
 import { withFirebase } from "../Firebase/index.js";
-import "./index.scss";
+import * as styles from "./index.module.scss";
 
 const SignOut = ({ firebase }) => (
-	<button type='button' onClick={firebase.signOut}>
+	<button onClick={firebase.signOut} className={styles.signOutButton}>
 		logout
 	</button>
 );

@@ -4,44 +4,60 @@ import { compose } from "recompose";
 import * as ROUTES from "../../constants/routes.js";
 import { Link } from "react-router-dom";
 import SignOut from "../SignOut/index.js";
-import * as index from "./index.module.scss";
+import * as styles from "./index.module.scss";
 
 class NavigationForm extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = { selectedLanguage: this.props.selectedLanguage };
+	}
+
+	setLanguage(lang) {
+		this.props.setLanguage(lang);
+		this.setState({ selectedLanguage: lang });
+	}
+
 	render() {
 		return (
 			<div>
-				<div className={index.mainMenu}>
+				<div className={styles.mainMenu}>
 					<ul>
-						<li id='factuur' className={index.navMenuItemSelected}>
+						<li
+							id='factuur'
+							className={this.props.location.pathname === "/invoices" ? styles.navMenuItemSelected : ""}>
 							<Link to={ROUTES.INVOICES}>Invoices</Link>
 						</li>
-						<li id='nota'>
+						<li
+							id='nota'
+							className={this.props.location.pathname === "/bills" ? styles.navMenuItemSelected : ""}>
 							<Link to={ROUTES.BILLS}>Bills</Link>
 						</li>
-						<li id='bedrijf'>
+						<li
+							id='bedrijf'
+							className={this.props.location.pathname === "/companies" ? styles.navMenuItemSelected : ""}>
 							<Link to={ROUTES.COMPANIES}>Companies</Link>
 						</li>
-						<li id='userSettings'>
+						<li
+							id='userSettings'
+							className={this.props.location.pathname === "/admin" ? styles.navMenuItemSelected : ""}>
 							<Link to={ROUTES.ADMIN}>Settings</Link>
 						</li>
-						<li id='stats'>
+						<li
+							id='stats'
+							className={this.props.location.pathname === "/stats" ? styles.navMenuItemSelected : ""}>
 							<Link to={ROUTES.STATS}>Income and expenses</Link>
 						</li>
 					</ul>
 					{this.props.authUser && this.props.authUser.authUser && <SignOut />}
 				</div>
-				<div className={index.topContentBar}>
-					<div className={index.languageSwitch}>
-						<a
-							href='/index.cfm?event=factuur.list&amp;dir=desc&amp;order=id&amp;page=1&amp;ISOEndDate=&amp;ISOStartDate=&amp;language=en'
-							className={index.active}>
-							engels
-						</a>
-						&nbsp;/
-						<a href='/index.cfm?event=factuur.list&amp;dir=desc&amp;order=id&amp;page=1&amp;ISOEndDate=&amp;ISOStartDate=&amp;language=nl'>
-							nederlands
-						</a>
-					</div>
+				<div className={styles.languageButtons}>
+					<button onClick={() => this.setLanguage("en")} disabled={this.state.selectedLanguage === "en"}>
+						engels
+					</button>
+					&nbsp;/
+					<button onClick={() => this.setLanguage("nl")} disabled={this.state.selectedLanguage === "nl"}>
+						nederlands
+					</button>
 				</div>
 			</div>
 		);
@@ -49,7 +65,7 @@ class NavigationForm extends React.Component {
 }
 
 const AddAuthentication = Component => props => (
-	<AuthUserContext.Consumer>{authUser => <Component authUser={authUser} />}</AuthUserContext.Consumer>
+	<AuthUserContext.Consumer>{authUser => <Component authUser={authUser} {...props} />}</AuthUserContext.Consumer>
 );
 
 const authCondition = authUser => authUser && authUser.authUser !== null;

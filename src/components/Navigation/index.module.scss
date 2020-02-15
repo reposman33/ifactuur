@@ -49,28 +49,15 @@ div.mainMenu {
 	}
 }
 
-.topContentBar {
-	height: 15px;
-	margin: 0 auto 1rem;
-	padding-bottom: 1.5rem;
-	width: 1024px;
-	background-color: #cacbd4;
-}
+div.languageButtons {
+	display: flex;
+	justify-content: flex-end;
 
-.languageSwitch {
-	float: right;
-
-	& a {
-		font-size: 8pt;
-		font-weight: bold;
-		padding: 0.5rem;
-		text-decoration: none;
-
-		& .active {
-			color: #ff8080;
-		}
+	button {
+		color: black;
+		background-color: transparent;
+		border: none;
+		margin-bottom: 0.2rem;
+		padding: 0;
 	}
-}
-button {
-	margin: 0.3rem 0.9rem;
 }
