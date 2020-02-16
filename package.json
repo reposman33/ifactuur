@@ -17,7 +17,8 @@
 		"start": "react-scripts start",
 		"build": "react-scripts build",
 		"test": "react-scripts test",
-		"eject": "react-scripts eject"
+		"eject": "react-scripts eject",
+		"typescript": "webpack"
 	},
 	"eslintConfig": {
 		"extends": "react-app"
@@ -27,5 +28,12 @@
 		"not dead",
 		"not ie <= 11",
 		"not op_mini all"
-	]
+	],
+	"devDependencies": {
+		"@types/react": "^16.9.19",
+		"@types/react-dom": "^16.9.5",
+		"react-test-renderer": "^16.12.0",
+		"ts-loader": "^6.2.1",
+		"typescript": "^3.7.5"
+	}
 }
