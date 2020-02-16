@@ -12,7 +12,7 @@ import PasswordForget from "../PasswordForget/index.js";
 import SignIn from "../SignIn/index.js";
 import SignUp from "../SignUp/index.js";
 import Stats from "../Stats/index.js";
-import Languages from "../I18n";
+import Languages from "../../services/I18n/I18n";
 
 import { config_dev, config_prod } from "../../environments.js";
 import "./index.scss";
@@ -24,9 +24,8 @@ class App extends React.Component {
 		super(props);
 		this.setLanguage = this.setLanguage.bind(this);
 		this.getLanguageString = this.getLanguageString.bind(this);
-		this._Languages = new Languages();
 		this.state = {
-			language: this._Languages.getSelectedLanguage(),
+			language: Languages.getSelectedLanguage(),
 			errorMessage: null
 		};
 	}
@@ -41,12 +40,12 @@ class App extends React.Component {
 	}
 
 	setLanguage(lang) {
-		this._Languages.setLanguage(lang);
+		Languages.setLanguage(lang);
 		this.setState({ language: lang });
 	}
 
 	getLanguageString(token) {
-		return this._Languages.get(token);
+		return Languages.get(token);
 	}
 
 	render() {
@@ -57,19 +56,12 @@ class App extends React.Component {
 			<Router>
 				<React.Fragment>
 					<div className='navContainer'>
-						<Navigation
-							setLanguage={this.setLanguage}
-							selectedLanguage={this._Languages.getSelectedLanguage()}
-						/>
+						<Navigation setLanguage={this.setLanguage} selectedLanguage={Languages.getSelectedLanguage()} />
 					</div>
 					<div>
 						<Route exact path={ROUTES.COMPANIES} component={Companies} />
 						<Route exact path={ROUTES.COMPANY} component={Company} />
-						<Route
-							exact
-							path={ROUTES.ADMIN}
-							render={props => <Admin {...props} getLanguageString={this.getLanguageString} />}
-						/>
+						<Route exact path={ROUTES.ADMIN} component={Admin} />
 						<Route exact path={ROUTES.BILLS} component={Bills} />
 						<Route exact path={ROUTES.BILL} component={Bill} />
 						<Route exact path={ROUTES.INVOICES} component={Invoices} />
