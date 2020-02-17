@@ -189,7 +189,7 @@ class Admin extends Component {
 							</div>
 						</fieldset>
 					</div>
-					<button className='btn btn-primary' onClick={this.handleSubmit}>
+					<button className='btn btn-primary float-right' onClick={this.handleSubmit}>
 						{Languages.get("BUTTONS.SAVE")}
 					</button>
 				</div>
