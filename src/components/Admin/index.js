@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { InputGroup, FormControl } from "react-bootstrap";
-import Languages from "../../services/I18n/I18n";
+import I18n from "../../services/I18n/I18n";
 import API from "../../services/API/API";
 import "./../App/index.scss";
 import "./index.scss";
@@ -48,13 +48,13 @@ class Admin extends Component {
 					<div className='col-lg-8'>
 						<fieldset>
 							<legend>
-								<h1>{Languages.get("ADMIN.ADDRESS.TITLE")}</h1>
+								<h1>{I18n.get("ADMIN.ADDRESS.TITLE")}</h1>
 							</legend>
 							<div className='row'>
 								<div className='inputSmall mb-3 ml-3'>
 									<InputGroup size='sm'>
 										<FormControl
-											placeholder={Languages.get("ADMIN.ADDRESS.NAME_INITIALS")}
+											placeholder={I18n.get("ADMIN.ADDRESS.NAME_INITIALS")}
 											aria-label='Initialen'
 											name='Initialen'
 											data-input='true'
@@ -65,7 +65,7 @@ class Admin extends Component {
 								<div className='inputXSmall mx-3'>
 									<InputGroup size='sm'>
 										<FormControl
-											placeholder={Languages.get("ADMIN.ADDRESS.NAME_INFIX")}
+											placeholder={I18n.get("ADMIN.ADDRESS.NAME_INFIX")}
 											aria-label='Tussenvoegsel'
 											name='Tussenvoegsel'
 											data-input
@@ -76,7 +76,7 @@ class Admin extends Component {
 								<div className='input mb-3 mr-3 surname'>
 									<InputGroup size='sm'>
 										<FormControl
-											placeholder={Languages.get("ADMIN.ADDRESS.NAME_LASTNAME")}
+											placeholder={I18n.get("ADMIN.ADDRESS.NAME_LASTNAME")}
 											aria-label='Achternaam'
 											name='Achternaam'
 											data-input
@@ -89,7 +89,7 @@ class Admin extends Component {
 								<div className='input mb-3 mx-3 inputFull'>
 									<InputGroup size='sm'>
 										<FormControl
-											placeholder={Languages.get("ADMIN.ADDRESS.ADDRESS")}
+											placeholder={I18n.get("ADMIN.ADDRESS.ADDRESS")}
 											aria-label='Adres'
 											name='Adres'
 											data-input
@@ -102,7 +102,7 @@ class Admin extends Component {
 								<div className='input mb-3 mx-3 inputSmall'>
 									<InputGroup size='sm'>
 										<FormControl
-											placeholder={Languages.get("ADMIN.ADDRESS.ZIPCODE")}
+											placeholder={I18n.get("ADMIN.ADDRESS.ZIPCODE")}
 											aria-label='PostCode'
 											name='PostCode'
 											data-input
@@ -114,7 +114,7 @@ class Admin extends Component {
 								<div className='input mb-3 mx-3 inputRest'>
 									<InputGroup size='sm'>
 										<FormControl
-											placeholder={Languages.get("ADMIN.ADDRESS.CITY")}
+											placeholder={I18n.get("ADMIN.ADDRESS.CITY")}
 											aria-label='Stad'
 											name='Stad'
 											data-input
@@ -128,7 +128,7 @@ class Admin extends Component {
 									<div className='input mb-3 mx-3 inputFull'>
 										<InputGroup size='sm'>
 											<FormControl
-												placeholder={Languages.get("ADMIN.ADDRESS.COUNTRY")}
+												placeholder={I18n.get("ADMIN.ADDRESS.COUNTRY")}
 												aria-label='Land'
 												name='Land'
 												data-input
@@ -143,13 +143,13 @@ class Admin extends Component {
 					<div className='col-lg-4'>
 						<fieldset>
 							<legend>
-								<h1>{Languages.get("ADMIN.REGISTRATIONS.TITLE")}</h1>
+								<h1>{I18n.get("ADMIN.REGISTRATIONS.TITLE")}</h1>
 							</legend>
 							<div className='row'>
 								<div className='input mb-3 mx-3 inputFull'>
 									<InputGroup size='sm'>
 										<FormControl
-											placeholder={Languages.get("ADMIN.REGISTRATIONS.COC_NUMBER")}
+											placeholder={I18n.get("ADMIN.REGISTRATIONS.COC_NUMBER")}
 											aria-label='KvKNummer'
 											name='KvKNummer'
 											data-input
@@ -162,7 +162,7 @@ class Admin extends Component {
 								<div className='input mb-3 mx-3 inputFull'>
 									<InputGroup size='sm'>
 										<FormControl
-											placeholder={Languages.get("ADMIN.REGISTRATIONS.VAT_NUMBER")}
+											placeholder={I18n.get("ADMIN.REGISTRATIONS.VAT_NUMBER")}
 											aria-label='BTWNummer'
 											name='BTWNummer'
 											data-input
@@ -178,7 +178,7 @@ class Admin extends Component {
 					<div className='col-lg-12'>
 						<fieldset className='mb-0'>
 							<legend>
-								<h1>{Languages.get("ADMIN.DELIVERYCONDITIONS.TITLE")}</h1>
+								<h1>{I18n.get("ADMIN.DELIVERYCONDITIONS.TITLE")}</h1>
 							</legend>
 							<div className='form-group'>
 								<textarea
@@ -189,17 +189,17 @@ class Admin extends Component {
 									name='Leveringsvoorwaarden'
 									data-input
 									onBlur={this.handleOnBlur}
-									placeholder={Languages.get("ADMIN.DELIVERYCONDITIONS.TITLE")}
+									placeholder={I18n.get("ADMIN.DELIVERYCONDITIONS.TITLE")}
 									rows='3'
 									defaultValue={this.state.Leveringsvoorwaarden}></textarea>
 							</div>
 						</fieldset>
 					</div>
 					<button className='btn btn-primary mr-3' onClick={this.handleClear}>
-						{Languages.get("INVOICES.BUTTONS.CLEAR")}
+						{I18n.get("INVOICES.BUTTONS.CLEAR")}
 					</button>
 					<button className='btn btn-primary float-right' onClick={this.handleSubmit}>
-						{Languages.get("BUTTONS.SAVE")}
+						{I18n.get("BUTTONS.SAVE")}
 					</button>
 				</div>
 			</div>
