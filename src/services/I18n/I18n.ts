@@ -31,6 +31,15 @@ export default class Languages {
 				}
 			}
 		},
+		INVOICES: {
+			TABLE: {
+				HEADER_DATE: { en: "Date", nl: "Datum" },
+				HEADER_CLIENT: { en: "Client", nl: "Klant" },
+				HEADER_SUM: { en: "Sum", nl: "Bedrag" },
+				HEADER_STATUS: { en: "Status", nl: "Status" }
+			},
+			BUTTONS: { NEW_INVOICE: { en: "New", nl: "Nieuw" } }
+		},
 		BUTTONS: { SAVE: { en: "Save", nl: "Bewaar" } }
 	};
 
