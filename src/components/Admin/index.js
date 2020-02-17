@@ -9,7 +9,7 @@ class Admin extends Component {
 	constructor(props) {
 		super(props);
 		this.PAGE = "ADMIN";
-		this.state = {};
+		this.state = API.getPage(this.PAGE);
 	}
 
 	handleOnBlur = event => {
@@ -44,7 +44,6 @@ class Admin extends Component {
 	render() {
 		return (
 			<div>
-				{JSON.stringify(this.state)}
 				<div className='row'>
 					<div className='col-lg-8'>
 						<fieldset>
