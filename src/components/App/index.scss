@@ -19,7 +19,7 @@
 // style the row
 
 .row {
-	height: $row-height;
+	height: $row-height-fit-content;
 	justify-content: flex-end;
 
 	&.high {
@@ -35,10 +35,24 @@
 	background-color: $column-background-color;
 	border-radius: $column-border-radius;
 	border: $column-border;
+	color: $text-color;
 	padding: $column-padding;
 	// hack to add margin between cols
 	background-clip: padding-box;
 	border: 10px solid transparent;
+
+	button {
+		background-color: #737f8c;
+	}
+
+	.displayFlex {
+		display: flex;
+	}
+
+	label {
+		font-size: $label-font-size;
+		margin-bottom: 0;
+	}
 
 	& h1 {
 		font-size: $h1-font-size;
@@ -56,10 +70,6 @@
 		legend {
 			color: white;
 			font-weight: bold;
-		}
-
-		button {
-			background-color: $button-background-color;
 		}
 
 		& legend {

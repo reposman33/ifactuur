@@ -15,3 +15,17 @@ table[class^="table"] {
 		}
 	}
 }
+.inputDate {
+	width: 40%;
+	&.selectCompanies {
+		display: block;
+	}
+}
+
+label {
+	display: block;
+}
+
+textarea {
+	width: 100%;
+}
