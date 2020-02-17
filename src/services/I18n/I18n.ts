@@ -38,7 +38,7 @@ export default class Languages {
 				HEADER_SUM: { en: "Sum", nl: "Bedrag" },
 				HEADER_STATUS: { en: "Status", nl: "Status" }
 			},
-			BUTTONS: { NEW_INVOICE: { en: "New", nl: "Nieuw" } }
+			BUTTONS: { NEW_INVOICE: { en: "New", nl: "Nieuw" }, CLEAR: { en: "Clear", nl: "Formulier leegmaken" } }
 		},
 		BUTTONS: { SAVE: { en: "Save", nl: "Bewaar" } }
 	};

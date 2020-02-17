@@ -6,30 +6,10 @@ import "./../App/index.scss";
 import "./index.scss";
 
 class Admin extends Component {
-	_Languages;
-	PAGE;
-	inputFields;
-
 	constructor(props) {
 		super(props);
 		this.PAGE = "ADMIN";
 		this.state = {};
-		this.inputFields = {
-			Initialen: "",
-			Tussenvoegsel: "",
-			Achternaam: "",
-			Adres: "",
-			PostCode: "",
-			Stad: "",
-			Land: "",
-			KvKNummer: "",
-			BTWNummer: "",
-			Leveringsvoorwaarden: ""
-		};
-		const _data = API.getPage(this.PAGE);
-		if (_data) {
-			this.inputFields = _data;
-		}
 	}
 
 	handleOnBlur = event => {
@@ -40,17 +20,31 @@ class Admin extends Component {
 
 	handleSubmit = () => {
 		API.savePage({ [this.PAGE]: this.state });
-		this.setState({ ...this.inputFields });
+		// clear the state
+		const newState = this.resetObjectValues(this.state, "");
+		this.setState({ ...newState });
 	};
 
-	handleClear() {
-		const dataFields = document.querySelectorAll("[data-input]");
-		Array.from(dataFields).map(field => (field.value = null));
+	handleClear = () => {
+		// clear state...
+		const newState = this.resetObjectValues(this.state, "");
+		this.setState({ ...newState });
+		// ...clear input fields
+		const dataInputFields = document.querySelectorAll("[data-input]");
+		Array.from(dataInputFields).map(field => (field.value = ""));
+	};
+
+	resetObjectValues(ob, resetValue) {
+		return Object.keys(ob).reduce((acc, prop) => {
+			acc[prop] = resetValue;
+			return acc;
+		}, {});
 	}
 
 	render() {
 		return (
 			<div>
+				{JSON.stringify(this.state)}
 				<div className='row'>
 					<div className='col-lg-8'>
 						<fieldset>
@@ -64,8 +58,8 @@ class Admin extends Component {
 											placeholder={Languages.get("ADMIN.ADDRESS.NAME_INITIALS")}
 											aria-label='Initialen'
 											name='Initialen'
-											data-input
-											defaultValue={this.inputFields.Initialen}
+											data-input='true'
+											defaultValue={this.state.Initialen}
 											onBlur={this.handleOnBlur}></FormControl>
 									</InputGroup>
 								</div>
@@ -76,7 +70,7 @@ class Admin extends Component {
 											aria-label='Tussenvoegsel'
 											name='Tussenvoegsel'
 											data-input
-											defaultValue={this.inputFields.Tussenvoegsel}
+											defaultValue={this.state.Tussenvoegsel}
 											onBlur={this.handleOnBlur}></FormControl>
 									</InputGroup>
 								</div>
@@ -87,7 +81,7 @@ class Admin extends Component {
 											aria-label='Achternaam'
 											name='Achternaam'
 											data-input
-											defaultValue={this.inputFields.Achternaam}
+											defaultValue={this.state.Achternaam}
 											onBlur={this.handleOnBlur}></FormControl>
 									</InputGroup>
 								</div>
@@ -100,7 +94,7 @@ class Admin extends Component {
 											aria-label='Adres'
 											name='Adres'
 											data-input
-											defaultValue={this.inputFields.Adres}
+											defaultValue={this.state.Adres}
 											onBlur={this.handleOnBlur}></FormControl>
 									</InputGroup>
 								</div>
@@ -113,7 +107,7 @@ class Admin extends Component {
 											aria-label='PostCode'
 											name='PostCode'
 											data-input
-											defaultValue={this.inputFields.PostCode}
+											defaultValue={this.state.PostCode}
 											onBlur={this.handleOnBlur}></FormControl>
 									</InputGroup>
 								</div>
@@ -125,7 +119,7 @@ class Admin extends Component {
 											aria-label='Stad'
 											name='Stad'
 											data-input
-											defaultValue={this.inputFields.Stad}
+											defaultValue={this.state.Stad}
 											onBlur={this.handleOnBlur}></FormControl>
 									</InputGroup>
 								</div>
@@ -139,7 +133,7 @@ class Admin extends Component {
 												aria-label='Land'
 												name='Land'
 												data-input
-												defaultValue={this.inputFields.Land}
+												defaultValue={this.state.Land}
 												onBlur={this.handleOnBlur}></FormControl>
 										</InputGroup>
 									</div>
@@ -160,7 +154,7 @@ class Admin extends Component {
 											aria-label='KvKNummer'
 											name='KvKNummer'
 											data-input
-											defaultValue={this.inputFields.KvKNummer}
+											defaultValue={this.state.KvKNummer}
 											onBlur={this.handleOnBlur}></FormControl>
 									</InputGroup>
 								</div>
@@ -173,7 +167,7 @@ class Admin extends Component {
 											aria-label='BTWNummer'
 											name='BTWNummer'
 											data-input
-											defaultValue={this.inputFields.BTWNummer}
+											defaultValue={this.state.BTWNummer}
 											onBlur={this.handleOnBlur}></FormControl>
 									</InputGroup>
 								</div>
@@ -198,7 +192,7 @@ class Admin extends Component {
 									onBlur={this.handleOnBlur}
 									placeholder={Languages.get("ADMIN.DELIVERYCONDITIONS.TITLE")}
 									rows='3'
-									defaultValue={this.inputFields.Leveringsvoorwaarden}></textarea>
+									defaultValue={this.state.Leveringsvoorwaarden}></textarea>
 							</div>
 						</fieldset>
 					</div>
