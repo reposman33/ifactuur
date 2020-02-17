@@ -10,7 +10,7 @@ class Admin extends Component {
 	PAGE;
 	inputFields;
 
-	constructor(props, data) {
+	constructor(props) {
 		super(props);
 		this.PAGE = "ADMIN";
 		this.state = {};
@@ -26,7 +26,6 @@ class Admin extends Component {
 			BTWNummer: "",
 			Leveringsvoorwaarden: ""
 		};
-		this.dataFields = Object.keys(this.inputFields);
 		const _data = API.getPage(this.PAGE);
 		if (_data) {
 			this.inputFields = _data;
@@ -34,9 +33,8 @@ class Admin extends Component {
 	}
 
 	handleOnBlur = event => {
-		const field = event.currentTarget.getAttribute("name");
-		if (this.dataFields.includes(field)) {
-			this.setState({ [field]: event.currentTarget.value });
+		if (event.currentTarget.getAttribute("data-input")) {
+			this.setState({ [event.currentTarget.name]: event.currentTarget.value });
 		}
 	};
 
@@ -44,6 +42,11 @@ class Admin extends Component {
 		API.savePage({ [this.PAGE]: this.state });
 		this.setState({ ...this.inputFields });
 	};
+
+	handleClear() {
+		const dataFields = document.querySelectorAll("[data-input]");
+		Array.from(dataFields).map(field => (field.value = null));
+	}
 
 	render() {
 		return (
@@ -61,6 +64,7 @@ class Admin extends Component {
 											placeholder={Languages.get("ADMIN.ADDRESS.NAME_INITIALS")}
 											aria-label='Initialen'
 											name='Initialen'
+											data-input
 											defaultValue={this.inputFields.Initialen}
 											onBlur={this.handleOnBlur}></FormControl>
 									</InputGroup>
@@ -71,6 +75,7 @@ class Admin extends Component {
 											placeholder={Languages.get("ADMIN.ADDRESS.NAME_INFIX")}
 											aria-label='Tussenvoegsel'
 											name='Tussenvoegsel'
+											data-input
 											defaultValue={this.inputFields.Tussenvoegsel}
 											onBlur={this.handleOnBlur}></FormControl>
 									</InputGroup>
@@ -81,6 +86,7 @@ class Admin extends Component {
 											placeholder={Languages.get("ADMIN.ADDRESS.NAME_LASTNAME")}
 											aria-label='Achternaam'
 											name='Achternaam'
+											data-input
 											defaultValue={this.inputFields.Achternaam}
 											onBlur={this.handleOnBlur}></FormControl>
 									</InputGroup>
@@ -93,6 +99,7 @@ class Admin extends Component {
 											placeholder={Languages.get("ADMIN.ADDRESS.ADDRESS")}
 											aria-label='Adres'
 											name='Adres'
+											data-input
 											defaultValue={this.inputFields.Adres}
 											onBlur={this.handleOnBlur}></FormControl>
 									</InputGroup>
@@ -105,6 +112,7 @@ class Admin extends Component {
 											placeholder={Languages.get("ADMIN.ADDRESS.ZIPCODE")}
 											aria-label='PostCode'
 											name='PostCode'
+											data-input
 											defaultValue={this.inputFields.PostCode}
 											onBlur={this.handleOnBlur}></FormControl>
 									</InputGroup>
@@ -116,6 +124,7 @@ class Admin extends Component {
 											placeholder={Languages.get("ADMIN.ADDRESS.CITY")}
 											aria-label='Stad'
 											name='Stad'
+											data-input
 											defaultValue={this.inputFields.Stad}
 											onBlur={this.handleOnBlur}></FormControl>
 									</InputGroup>
@@ -129,6 +138,7 @@ class Admin extends Component {
 												placeholder={Languages.get("ADMIN.ADDRESS.COUNTRY")}
 												aria-label='Land'
 												name='Land'
+												data-input
 												defaultValue={this.inputFields.Land}
 												onBlur={this.handleOnBlur}></FormControl>
 										</InputGroup>
@@ -149,6 +159,7 @@ class Admin extends Component {
 											placeholder={Languages.get("ADMIN.REGISTRATIONS.COC_NUMBER")}
 											aria-label='KvKNummer'
 											name='KvKNummer'
+											data-input
 											defaultValue={this.inputFields.KvKNummer}
 											onBlur={this.handleOnBlur}></FormControl>
 									</InputGroup>
@@ -161,6 +172,7 @@ class Admin extends Component {
 											placeholder={Languages.get("ADMIN.REGISTRATIONS.VAT_NUMBER")}
 											aria-label='BTWNummer'
 											name='BTWNummer'
+											data-input
 											defaultValue={this.inputFields.BTWNummer}
 											onBlur={this.handleOnBlur}></FormControl>
 									</InputGroup>
@@ -169,7 +181,7 @@ class Admin extends Component {
 						</fieldset>
 					</div>
 				</div>
-				<div className='row mt-8'>
+				<div className='row'>
 					<div className='col-lg-12'>
 						<fieldset className='mb-0'>
 							<legend>
@@ -182,6 +194,7 @@ class Admin extends Component {
 									cols='30'
 									id=''
 									name='Leveringsvoorwaarden'
+									data-input
 									onBlur={this.handleOnBlur}
 									placeholder={Languages.get("ADMIN.DELIVERYCONDITIONS.TITLE")}
 									rows='3'
@@ -189,6 +202,9 @@ class Admin extends Component {
 							</div>
 						</fieldset>
 					</div>
+					<button className='btn btn-primary mr-3' onClick={this.handleClear}>
+						{Languages.get("INVOICES.BUTTONS.CLEAR")}
+					</button>
 					<button className='btn btn-primary float-right' onClick={this.handleSubmit}>
 						{Languages.get("BUTTONS.SAVE")}
 					</button>
