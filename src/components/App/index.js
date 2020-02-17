@@ -58,7 +58,7 @@ class App extends React.Component {
 					<div className='navContainer'>
 						<Navigation setLanguage={this.setLanguage} selectedLanguage={Languages.getSelectedLanguage()} />
 					</div>
-					<div>
+					<div className='container'>
 						<Route exact path={ROUTES.COMPANIES} component={Companies} />
 						<Route exact path={ROUTES.COMPANY} component={Company} />
 						<Route exact path={ROUTES.ADMIN} component={Admin} />

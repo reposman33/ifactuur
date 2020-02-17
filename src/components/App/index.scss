@@ -1,5 +1,5 @@
 @import url("https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css");
-@import url("https://fonts.googleapis.com/css?family=Montserrat&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Montserrat:400,500,700,900&display=swap");
 @import "./../../constants/variables.scss";
 
 .navContainer {
@@ -52,6 +52,15 @@
 		padding: 1rem;
 		margin-bottom: 1rem;
 		height: 100%;
+
+		legend {
+			color: white;
+			font-weight: bold;
+		}
+
+		button {
+			background-color: $button-background-color;
+		}
 
 		& legend {
 			width: max-content;

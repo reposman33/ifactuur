@@ -28,11 +28,13 @@ div.mainMenu {
 
 			&:hover {
 				background: linear-gradient(#206e95, #07456c);
+				margin-top: -2px;
 			}
 
 			&.navMenuItemSelected {
 				background-color: #798cac;
 				border: none;
+				margin-top: -2px;
 			}
 
 			& a,
