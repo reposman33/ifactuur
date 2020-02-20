@@ -308,18 +308,14 @@ class Invoice extends Component {
 											</option>
 										))}
 									</select>{" "}
-									&nbsp; %
+									%
 								</div>
 							</div>
 							<div className={styles.total}>
 								{I18n.get("INVOICE.TOTAL")}: <span>{this.totalBeforeTaxFormatted}</span>
-								&nbsp;
 								{this.taxFormatted ? "+" : ""}
-								&nbsp;
 								<span>{this.taxFormatted}</span>
-								&nbsp;
 								{this.totalFormatted ? "=" : ""}
-								&nbsp;
 								<span>{this.totalFormatted}</span>
 							</div>
 						</div>
