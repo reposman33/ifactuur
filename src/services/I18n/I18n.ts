@@ -54,6 +54,7 @@ export default class I18n {
 			INPUT_RATE: { en: "Rate/hour", nl: "Tarief / uur" },
 			INPUT_HOURS: { en: "Hours", nl: "Uren" },
 			INPUT_TAX: { en: "VAT", nl: "BTW" },
+			TOTAL: { en: "Total", nl: "Totaal" },
 			BUTTONS: {
 				NEW_COMPANY: { en: "New company", nl: "Nieuw bedrijf" },
 				DELETE: { en: "Delete", nl: "Verwijder" },
@@ -62,6 +63,9 @@ export default class I18n {
 		},
 		BUTTONS: { SAVE: { en: "Save", nl: "Bewaar" } }
 	};
+
+	public static getLocale = () =>
+		navigator.language.search("en") > -1 ? "en" : navigator.language.search("nl") > -1 ? "nl" : "";
 
 	public static setLanguage = (lang?: string) => (I18n._language = lang || I18n._defaultLanguage);
 
