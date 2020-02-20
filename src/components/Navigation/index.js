@@ -10,6 +10,13 @@ class NavigationForm extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = { selectedLanguage: this.props.selectedLanguage };
+		this.routes = {
+			INVOICES: ["/invoice", "/invoices"],
+			BILLS: ["/bill", "/bills"],
+			COMPANIES: ["/company", "/companies"],
+			SETTINGS: ["/settings"],
+			STATS: ["/stats"]
+		};
 	}
 
 	setLanguage(lang) {
@@ -24,27 +31,47 @@ class NavigationForm extends React.Component {
 					<ul>
 						<li
 							id='factuur'
-							className={this.props.location.pathname === "/invoices" ? styles.navMenuItemSelected : ""}>
+							className={
+								this.routes.INVOICES.includes(this.props.location.pathname)
+									? styles.navMenuItemSelected
+									: ""
+							}>
 							<Link to={ROUTES.INVOICES}>Invoices</Link>
 						</li>
 						<li
 							id='nota'
-							className={this.props.location.pathname === "/bills" ? styles.navMenuItemSelected : ""}>
+							className={
+								this.routes.BILLS.includes(this.props.location.pathname)
+									? styles.navMenuItemSelected
+									: ""
+							}>
 							<Link to={ROUTES.BILLS}>Bills</Link>
 						</li>
 						<li
 							id='bedrijf'
-							className={this.props.location.pathname === "/companies" ? styles.navMenuItemSelected : ""}>
+							className={
+								this.routes.COMPANIES.includes(this.props.location.pathname)
+									? styles.navMenuItemSelected
+									: ""
+							}>
 							<Link to={ROUTES.COMPANIES}>Companies</Link>
 						</li>
 						<li
 							id='userSettings'
-							className={this.props.location.pathname === "/admin" ? styles.navMenuItemSelected : ""}>
-							<Link to={ROUTES.ADMIN}>Settings</Link>
+							className={
+								this.routes.SETTINGS.includes(this.props.location.pathname)
+									? styles.navMenuItemSelected
+									: ""
+							}>
+							<Link to={ROUTES.SETTINGS}>Settings</Link>
 						</li>
 						<li
 							id='stats'
-							className={this.props.location.pathname === "/stats" ? styles.navMenuItemSelected : ""}>
+							className={
+								this.routes.STATS.includes(this.props.location.pathname)
+									? styles.navMenuItemSelected
+									: ""
+							}>
 							<Link to={ROUTES.STATS}>Income and expenses</Link>
 						</li>
 					</ul>
