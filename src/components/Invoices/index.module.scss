@@ -29,3 +29,59 @@ label {
 textarea {
 	width: 100%;
 }
+
+.inputRow {
+	display: flex;
+	flex-direction: column;
+}
+
+.inputRow {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	margin-top: -1rem;
+	width: 100%;
+}
+
+.rateInputs {
+	display: flex;
+	justify-content: space-evenly;
+	& .hourlyRate,
+	& .hours,
+	& .tax {
+		border: none;
+		margin: 0;
+		& label {
+			margin-bottom: 0.7rem;
+			width: 7rem;
+		}
+		& :first-of-type[type="number"],
+		:nth-of-type(2)[type="number"],
+		select {
+			background-color: white;
+			border: 1px solid #ccc;
+			font-weight: bold;
+			margin: 0 0.3rem 0.5rem 0;
+			padding: 0.2rem 0.5rem;
+			text-align: right;
+			width: 4rem;
+		}
+		& :nth-of-type(2)[type="number"] {
+			margin-left: 0.3rem;
+			padding-left: 0.5rem;
+			text-align: left;
+		}
+	}
+}
+.total {
+	display: flex;
+	justify-content: space-between;
+	font-size: 1.4rem;
+	font-weight: bold;
+	margin-top: 1.5rem;
+	width: 75%;
+
+	& span {
+		align-self: flex-end;
+	}
+}

@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import Table from "react-bootstrap/Table";
-import DropdownButton from "react-bootstrap/DropdownButton";
 import I18n from "../../services/I18n/I18n";
 import * as ROUTES from "../../constants/routes";
-import API from "../../services/API/API";
+//import API from "../../services/API/API";
 import * as styles from "./index.module.scss";
+import * as CONSTANTS from "../../constants/misc";
 
 function getDummyState() {
 	return {
@@ -119,9 +119,105 @@ class Invoices extends Component {
 class Invoice extends Component {
 	constructor(props) {
 		super(props);
-		this.state = { ...getDummyState() }; //API.getPage(this.PAGE);
+		this.DECIMAL_SIGN = I18n.getLocale() === "en" ? "." : ",";
+		this.totalBeforeTax = undefined;
+		this.tax = undefined;
+		this.FIELDNAMES = {
+			HOURLYRATEINT: "hourlyRateInt",
+			HOURLYRATEDEC: "hourlyRateDec",
+			HOURS: "hours",
+			TAX: "tax"
+		};
+		this.taxFormatted = undefined;
+		this.totalBeforeTaxFormatted = undefined;
+		this.totalFormatted = undefined;
+		this.state = {
+			[this.FIELDNAMES.HOURLYRATEINT]: undefined,
+			[this.FIELDNAMES.HOURLYRATEDEC]: undefined,
+			[this.FIELDNAMES.HOURS]: undefined,
+			[this.FIELDNAMES.TAX]: undefined,
+			totalBeforeTax: null,
+			tax: undefined,
+			...getDummyState()
+		}; //API.getPage(this.PAGE);
 	}
 
+	handleOnBlur = event => {
+		const { name, value } = event.target;
+		if (name === this.FIELDNAMES.HOURLYRATEINT) {
+			this.setState(
+				state => ({ [name]: value }),
+				() => {
+					this.calculateTotal();
+				}
+			);
+		}
+		if (name === this.FIELDNAMES.HOURLYRATEDEC) {
+			this.setState(
+				state => ({ [name]: value }),
+				() => {
+					this.calculateTotal();
+				}
+			);
+		}
+		if (name === this.FIELDNAMES.HOURS) {
+			this.setState(
+				state => ({ [name]: value }),
+				() => {
+					this.calculateTotal();
+				}
+			);
+		}
+		if (name === this.FIELDNAMES.TAX) {
+			this.setState(
+				state => ({ [name]: value }),
+				() => {
+					this.calculateTotal();
+				}
+			);
+		}
+	};
+
+	// calculate total sum by multiplying hours with rate and tax
+	calculateTotal() {
+		let totalBeforeTaxUnformatted = undefined;
+		let taxUnformatted = undefined;
+		if (typeof this.state.hourlyRateInt === "string" && typeof this.state.hours === "string") {
+			// calculate number
+			const integers = this.state.hourlyRateInt ? parseInt(this.state.hourlyRateInt) : 0;
+			const decimals = this.state.hourlyRateDec ? parseInt(this.state.hourlyRateDec) / 100 : 0;
+			const hours = this.state.hours ? parseInt(this.state.hours) : 0;
+			totalBeforeTaxUnformatted = (integers + decimals) * hours;
+
+			this.setState({
+				totalBeforeTax: totalBeforeTaxUnformatted
+			});
+			// format as currency
+			this.totalBeforeTaxFormatted = totalBeforeTaxUnformatted
+				? this.formatNumberAsCurrency(totalBeforeTaxUnformatted)
+				: this.totalBeforeTaxFormatted;
+		}
+
+		if (typeof this.state.tax === "string" && totalBeforeTaxUnformatted) {
+			const taxAmount = this.state.tax ? parseInt(this.state.tax) / 100 : 0;
+			taxUnformatted = taxAmount * totalBeforeTaxUnformatted;
+			this.setState({
+				tax: taxUnformatted
+			});
+
+			// format tax as currency
+			this.taxFormatted = this.formatNumberAsCurrency(taxUnformatted);
+			// format total as currency
+			this.totalFormatted = this.formatNumberAsCurrency(totalBeforeTaxUnformatted + taxUnformatted);
+		}
+	}
+
+	formatNumberAsCurrency(number) {
+		return new Intl.NumberFormat(I18n.getLocale(), {
+			style: "currency",
+			currency: "EUR"
+		}).format(number);
+	}
 	render() {
 		return (
 			<React.Fragment>
@@ -154,7 +250,6 @@ class Invoice extends Component {
 						</div>
 					</div>
 				</div>
-
 				<div className='row'>
 					<div className='col'>
 						<label htmlFor='invoice-period'>{I18n.get("INVOICE.INPUT_PERIOD")}</label>
@@ -174,11 +269,60 @@ class Invoice extends Component {
 						</div>
 					</div>
 				</div>
-
 				<div className='row'>
 					<div className='col'>
 						<label htmlFor='description'>{I18n.get("INVOICE.INPUT_SERVICES")}</label>
 						<textarea name='description' id='description' rows='10' className='mt-3'></textarea>
+					</div>
+				</div>
+				<div className='row'>
+					<div className='col'>
+						<div className={styles.inputRow}>
+							<div className={styles.rateInputs}>
+								<div className={styles.hourlyRate}>
+									<label htmlFor='hourlyRate'>{I18n.get("INVOICE.INPUT_RATE")}</label>
+									<input
+										type='number'
+										name={this.FIELDNAMES.HOURLYRATEINT}
+										onBlur={this.handleOnBlur}
+									/>
+									{this.DECIMAL_SIGN}
+									<input
+										type='number'
+										min='0'
+										max='99'
+										name={this.FIELDNAMES.HOURLYRATEDEC}
+										onBlur={this.handleOnBlur}
+									/>
+								</div>
+								<div className={styles.hours}>
+									<label htmlFor='hours'>{I18n.get("INVOICE.INPUT_HOURS")}</label>
+									<input type='number' name={this.FIELDNAMES.HOURS} onBlur={this.handleOnBlur} />
+								</div>
+								<div className={styles.tax}>
+									<label htmlFor='tax'>{I18n.get("INVOICE.INPUT_TAX")}</label>
+									<select id='tax' name={this.FIELDNAMES.TAX} onBlur={this.handleOnBlur}>
+										{CONSTANTS.TAX_VALUES.map(value => (
+											<option key={value} value={value}>
+												{value}
+											</option>
+										))}
+									</select>{" "}
+									&nbsp; %
+								</div>
+							</div>
+							<div className={styles.total}>
+								{I18n.get("INVOICE.TOTAL")}: <span>{this.totalBeforeTaxFormatted}</span>
+								&nbsp;
+								{this.taxFormatted ? "+" : ""}
+								&nbsp;
+								<span>{this.taxFormatted}</span>
+								&nbsp;
+								{this.totalFormatted ? "=" : ""}
+								&nbsp;
+								<span>{this.totalFormatted}</span>
+							</div>
+						</div>
 					</div>
 				</div>
 			</React.Fragment>
