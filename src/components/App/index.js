@@ -12,7 +12,7 @@ import PasswordForget from "../PasswordForget/";
 import SignIn from "../SignIn/";
 import SignUp from "../SignUp/";
 import Stats from "../Stats/";
-import Languages from "../../services/I18n/I18n";
+import I18n from "../../services/I18n/I18n";
 
 import { config_dev, config_prod } from "../../environments.js";
 import "./index.scss";
@@ -25,7 +25,7 @@ class App extends React.Component {
 		this.setLanguage = this.setLanguage.bind(this);
 		this.getLanguageString = this.getLanguageString.bind(this);
 		this.state = {
-			language: Languages.getSelectedLanguage(),
+			language: I18n.getSelectedLanguage(),
 			errorMessage: null
 		};
 	}
@@ -40,12 +40,12 @@ class App extends React.Component {
 	}
 
 	setLanguage(lang) {
-		Languages.setLanguage(lang);
+		I18n.setLanguage(lang);
 		this.setState({ language: lang });
 	}
 
 	getLanguageString(token) {
-		return Languages.get(token);
+		return I18n.get(token);
 	}
 
 	render() {
@@ -56,7 +56,7 @@ class App extends React.Component {
 			<Router>
 				<React.Fragment>
 					<div className='navContainer'>
-						<Navigation setLanguage={this.setLanguage} selectedLanguage={Languages.getSelectedLanguage()} />
+						<Navigation setLanguage={this.setLanguage} selectedLanguage={I18n.getSelectedLanguage()} />
 					</div>
 					<div className='container'>
 						<Route exact path={ROUTES.COMPANIES} component={Companies} />
