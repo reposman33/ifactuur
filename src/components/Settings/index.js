@@ -5,7 +5,7 @@ import API from "../../services/API/API";
 import "./../App/index.scss";
 import "./index.scss";
 
-class Admin extends Component {
+class Settings extends Component {
 	constructor(props) {
 		super(props);
 		this.PAGE = "ADMIN";
@@ -207,4 +207,4 @@ class Admin extends Component {
 	}
 }
 
-export default Admin;
+export default Settings;

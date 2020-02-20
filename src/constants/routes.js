@@ -1,4 +1,4 @@
-export const ADMIN = "/admin";
+export const SETTINGS = "/settings";
 export const BILLS = "/bills";
 export const BILL = "/bill";
 export const COMPANIES = "/companies";
