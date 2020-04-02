@@ -1,122 +1,10 @@
-import React, { Component } from "react";
-import Table from "react-bootstrap/Table";
+import React from "react";
 import I18n from "../../services/I18n/I18n";
-import * as ROUTES from "../../constants/routes";
-//import API from "../../services/API/API";
 import * as styles from "./index.module.scss";
 import * as CONSTANTS from "../../constants/misc";
+import { state } from "../../constants/dummyState";
 
-function getDummyState() {
-	return {
-		rowData: [
-			{
-				id: "100",
-				date: "17 februari 2020",
-				company: "Akzo",
-				sum: "9.855, -",
-				status: "open"
-			},
-			{
-				id: "101",
-				date: "17 februari 2020",
-				company: "Akzo",
-				sum: "9.855, -",
-				status: "open"
-			},
-			{
-				id: "102",
-				date: "17 februari 2020",
-				company: "Akzo",
-				sum: "9.855, -",
-				status: "open"
-			},
-			{
-				id: "103",
-				date: "17 februari 2020",
-				company: "Akzo",
-				sum: "9.855, -",
-				status: "open"
-			},
-			{
-				id: "104",
-				date: "17 februari 2020",
-				company: "Akzo",
-				sum: "9.855, -",
-				status: "open"
-			},
-			{
-				id: "105",
-				date: "17 februari 2020",
-				company: "Akzo",
-				sum: "9.855, -",
-				status: "open"
-			}
-		]
-	};
-}
-class Invoices extends Component {
-	constructor(props) {
-		super(props);
-		this.PAGE = "INVOICES";
-		this.state = {};
-		this.emptyRowData = {
-			id: "",
-			date: "",
-			client: "",
-			sum: "",
-			status: ""
-		};
-		this.handleNewInvoice = this.handleNewInvoice.bind(this);
-		// retrieve data to show in table view
-
-		this.state = { ...getDummyState() }; //API.getPage(this.PAGE);
-	}
-
-	handleNewInvoice() {
-		this.props.history.push(ROUTES.INVOICE);
-	}
-	renderRows = () => {
-		const rows = [];
-		for (let i = 0; i < 10; i++) {
-			const rowData = this.state.rowData.length > i ? this.state.rowData[i] : this.emptyRowData;
-			rows.push(
-				<tr key={i}>
-					<td>{rowData.id}</td>
-					<td>{rowData.date}</td>
-					<td>{rowData.client}</td>
-					<td>{rowData.sum}</td>
-					<td>{rowData.status}</td>
-					<td></td>
-				</tr>
-			);
-		}
-		return rows;
-	};
-	render() {
-		return (
-			<div>
-				<Table striped bordered hover>
-					<thead>
-						<tr>
-							<th></th>
-							<th>{I18n.get("INVOICES.TABLE.HEADER_DATE")}</th>
-							<th>{I18n.get("INVOICES.TABLE.HEADER_CLIENT")}</th>
-							<th>{I18n.get("INVOICES.TABLE.HEADER_SUM")}</th>
-							<th>{I18n.get("INVOICES.TABLE.HEADER_STATUS")}</th>
-							<th></th>
-						</tr>
-					</thead>
-					<tbody>{this.renderRows()}</tbody>
-				</Table>
-				<button className='btn btn-primary float-right' onClick={this.handleNewInvoice}>
-					{I18n.get("INVOICES.BUTTONS.NEW_INVOICE")}
-				</button>
-			</div>
-		);
-	}
-}
-
-class Invoice extends Component {
+class Invoice extends React.Component {
 	constructor(props) {
 		super(props);
 		this.DECIMAL_SIGN = I18n.getLocale() === "en" ? "." : ",";
@@ -138,7 +26,7 @@ class Invoice extends Component {
 			[this.FIELDNAMES.TAX]: undefined,
 			totalBeforeTax: null,
 			tax: undefined,
-			...getDummyState()
+			...state
 		}; //API.getPage(this.PAGE);
 	}
 
@@ -326,4 +214,4 @@ class Invoice extends Component {
 	}
 }
 
-export { Invoices, Invoice };
+export { Invoice };
