@@ -1,5 +1,4 @@
 @import "../../constants/variables.scss";
-@import "../../constants/variables.scss";
 
 div.mainMenu {
 	background-color: #ccc;
@@ -18,13 +17,15 @@ div.mainMenu {
 		& li {
 			border-right: 1px solid #fff;
 			color: #ccc;
-			display: inline;
 			float: left;
 			height: 31px;
 			line-height: 22px;
 			position: relative;
 			text-align: center;
-			width: 165px;
+			width: 17%;
+			&:last-child {
+				width: 10%;
+			}
 
 			&:hover {
 				background: linear-gradient(#206e95, #07456c);
