@@ -9,8 +9,8 @@ import { Invoice, Invoices } from "../Invoices/";
 import Navigation from "../Navigation/";
 import PasswordChange from "../PasswordChange/";
 import PasswordForget from "../PasswordForget/";
-import SignIn from "../SignIn/";
-import SignUp from "../SignUp/";
+import SignIn from "../Security/signin";
+import SignUp from "../Security/signup";
 import Stats from "../Stats/";
 import I18n from "../../services/I18n/I18n";
 

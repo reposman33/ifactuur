@@ -3,7 +3,7 @@ import { AuthUserContext, withAuthentication, withAuthorization } from "../Sessi
 import { compose } from "recompose";
 import * as ROUTES from "../../constants/routes.js";
 import { Link } from "react-router-dom";
-import SignOut from "../SignOut/index.js";
+import SignOut from "../Security/signout.js";
 import * as styles from "./index.module.scss";
 
 class NavigationForm extends React.Component {
@@ -74,8 +74,8 @@ class NavigationForm extends React.Component {
 							}>
 							<Link to={ROUTES.STATS}>Income and expenses</Link>
 						</li>
+						<li> {this.props.authUser && this.props.authUser.authUser && <SignOut />}</li>
 					</ul>
-					{this.props.authUser && this.props.authUser.authUser && <SignOut />}
 				</div>
 				<div className={styles.languageButtons}>
 					<button onClick={() => this.setLanguage("en")} disabled={this.state.selectedLanguage === "en"}>

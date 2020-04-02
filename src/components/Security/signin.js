@@ -3,8 +3,8 @@ import { compose } from "recompose";
 import { withFirebase } from "../Firebase/index.js";
 import { Link } from "react-router-dom";
 import { withRouter } from "react-router-dom";
-import index from "./index.module.scss";
-import { SignUpLink } from "../SignUp/index.js";
+import * as styles from "./index.module.scss";
+import { SignUpLink } from "./signup.js";
 import * as ROUTES from "../../constants/routes.js";
 
 const INITIAL_STATE = {
@@ -44,10 +44,10 @@ class SignInForm extends React.Component {
 		const isInvalid = password === "" || email === "";
 		return (
 			<div>
-				<div className={index.signinContainer}>
-					<div className={index.header}>login ifactuur</div>
+				<div className={styles.signinContainer}>
+					<div className={styles.header}>login ifactuur</div>
 					<form name='login' onSubmit={this.onSubmit}>
-						<table id='loginTable'>
+						<table>
 							<tbody>
 								<tr>
 									<td>
@@ -79,8 +79,12 @@ class SignInForm extends React.Component {
 								</tr>
 								<tr>
 									<td colSpan='2' style={{ textAlign: "right" }}>
-										<input type='submit' disabled={isInvalid} />
-										{error && <p className={index.alert}>{error.message}</p>}
+										<input
+											type='submit'
+											className={isInvalid && styles.invalid}
+											disabled={isInvalid}
+										/>
+										{error && <p className={styles.alert}>{error.message}</p>}
 									</td>
 								</tr>
 							</tbody>

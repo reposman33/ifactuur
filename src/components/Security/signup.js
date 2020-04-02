@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import index from "../SignIn/index.module.scss";
+import index from "./index.module.scss";
 import { Link, withRouter } from "react-router-dom";
 import * as ROUTES from "../../constants/routes.js";
 import { withFirebase } from "../Firebase/index.js";
@@ -44,7 +44,7 @@ class SignUpForm extends Component {
 		const isInvalid = password !== passwordRepeat || password === "" || username === "" || email === "";
 
 		return (
-			<div className={index.signContainer}>
+			<div className={index.signinContainer}>
 				<div className={index.header}>Registreer</div>
 				<form onSubmit={this.onSubmit}>
 					<table>
@@ -145,9 +145,12 @@ class SignUpForm extends Component {
 							</tr>
 							<tr>
 								<td colSpan='2' style={{ textAlign: "right" }}>
-									<button type='button' disabled={isInvalid} onClick={this.onSubmit}>
-										Registreer
-									</button>
+									<input
+										type='submit'
+										value='Registreer'
+										disabled={isInvalid}
+										onClick={this.onSubmit}
+									/>
 									{error && <p className={index.alert}>{error.message}</p>}
 								</td>
 							</tr>
