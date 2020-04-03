@@ -1,11 +1,12 @@
 @import "./../../constants/variables.scss";
 
-table[class^="table"] {
+.table {
 	background-color: $column-background-color;
 
 	tr {
 		height: 3rem;
 		th {
+			background-color: #4c4c50;
 			color: white;
 			font-weight: bold;
 		}

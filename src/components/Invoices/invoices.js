@@ -1,8 +1,11 @@
 import React from "react";
-import Table from "react-bootstrap/Table";
+import BootstrapTable from "react-bootstrap-table-next";
+import "react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css";
+import paginationFactory from "react-bootstrap-table2-paginator";
 import I18n from "../../services/I18n/I18n";
 import { state } from "../../constants/dummyState";
 import * as ROUTES from "../../constants/routes";
+import "./index.scss";
 //import API from "../../services/API/API";
 
 class Invoices extends React.Component {
@@ -17,34 +20,58 @@ class Invoices extends React.Component {
 			sum: "",
 			status: ""
 		};
+		this.columns = [
+			{ dataField: "id", text: "" },
+			{ dataField: "date", text: I18n.get("INVOICES.TABLE.HEADER_DATE") },
+			{ dataField: "client", text: I18n.get("INVOICES.TABLE.HEADER_CLIENT") },
+			{ dataField: "sum", text: I18n.get("INVOICES.TABLE.HEADER_SUM") },
+			{ dataField: "status", text: I18n.get("INVOICES.TABLE.HEADER_STATUS") }
+		];
 		this.handleNewInvoice = this.handleNewInvoice.bind(this);
+		//		const paginationReplacer = (_, p) => (p === "{from}" ? from : p === "{to}" ? to : p === "{size}" ? size : "");
+		this.paginationConfig = {
+			sizePerPage: 10,
+			hideSizePerPage: true,
+			hidePageListOnlyOnePage: true,
+			showTotal: true,
+			prePageTitle: I18n.get("PAGINATION.PREVIOUS_PAGE"),
+			nextPageTitle: I18n.get("PAGINATION.NEXT_PAGE"),
+			firstPageTitle: I18n.get("PAGINATION.FIRST_PAGE"),
+			lastPageTitle: I18n.get("PAGINATION.LAST_PAGE"),
+			paginationTotalRenderer: (from, to, size) => (
+				<span className='react-bootstrap-table-pagination-total'>
+					{I18n.get("PAGINATION.TOTAL")
+						.split(" ")
+						.map(word =>
+							word === "{from}" ? from : word === "{to}" ? to : word === "{size}" ? size : word
+						)
+						.join(" ")}
+				</span>
+			)
+		};
 	}
 
 	handleNewInvoice() {
 		this.props.history.push(ROUTES.INVOICE);
 	}
-	renderRows = () => {
-		const rows = [];
-		for (let i = 0; i < 10; i++) {
-			const rowData = this.state.rowData.length > i ? this.state.rowData[i] : this.emptyRowData;
-			rows.push(
-				<tr key={i}>
-					<td>{rowData.id}</td>
-					<td>{rowData.date}</td>
-					<td>{rowData.client}</td>
-					<td>{rowData.sum}</td>
-					<td>{rowData.status}</td>
-					<td></td>
-				</tr>
-			);
-		}
-		return rows;
+
+	onRowClick = (e, row, rowIndex) => {
+		this.props.history.push({ pathname: ROUTES.INVOICE, state: { id: state.rowData[rowIndex].id } });
 	};
+
 	render() {
 		return (
 			<div>
-				<Table striped bordered hover>
-					<thead>
+				<BootstrapTable
+					data={state.rowData}
+					classes='table'
+					columns={this.columns}
+					keyField='id'
+					bordered
+					hover
+					rowEvents={{ onClick: this.onRowClick }}
+					pagination={paginationFactory(this.paginationConfig)}>
+					{/* <thead>
 						<tr>
 							<th></th>
 							<th>{I18n.get("INVOICES.TABLE.HEADER_DATE")}</th>
@@ -53,9 +80,8 @@ class Invoices extends React.Component {
 							<th>{I18n.get("INVOICES.TABLE.HEADER_STATUS")}</th>
 							<th></th>
 						</tr>
-					</thead>
-					<tbody>{this.renderRows()}</tbody>
-				</Table>
+					</thead> */}
+				</BootstrapTable>
 				<button className='btn btn-primary float-right' onClick={this.handleNewInvoice}>
 					{I18n.get("INVOICES.BUTTONS.NEW_INVOICE")}
 				</button>

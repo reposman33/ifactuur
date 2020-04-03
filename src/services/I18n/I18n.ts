@@ -61,7 +61,17 @@ export default class I18n {
 				SAVE: { en: "Save", nl: "Bewaar" }
 			}
 		},
-		BUTTONS: { SAVE: { en: "Save", nl: "Bewaar" } }
+		BUTTONS: { SAVE: { en: "Save", nl: "Bewaar" } },
+		PAGINATION: {
+			NEXT_PAGE: { en: "next page", nl: "volgende pagina" },
+			PREVIOUS_PAGE: { en: "previous page", nl: "vorige pagina" },
+			FIRST_PAGE: { en: "first page", nl: "eerste pagina" },
+			LAST_PAGE: { en: "last page", nl: "laatste pagina" },
+			TOTAL: {
+				en: "Showing page {from} to {to} of {size}",
+				nl: "Toon pagina {from} tot {to} van {size}"
+			}
+		}
 	};
 
 	public static getLocale = () =>
