@@ -1,8 +1,25 @@
-export default class I18n {
-	private static _availableLanguages = ["en", "nl"];
-	private static _defaultLanguage = I18n._availableLanguages.includes(navigator.language) ? navigator.language : "nl";
-	private static _language = I18n._defaultLanguage;
-	private static _LANGUAGES: object = {
+export class I18n {
+	private _availableLanguages: string[];
+	private _defaultLanguage: string;
+	private _language: string;
+
+	private constructor() {
+		this._availableLanguages = ["en", "nl"];
+		this._defaultLanguage = this._availableLanguages.includes(navigator.language.substr(0, 2))
+			? navigator.language.substr(0, 2)
+			: "nl";
+		this._language = this._defaultLanguage;
+		console.log("this._defaultLanguage = ", this._defaultLanguage);
+	}
+
+	private _LANGUAGES: object = {
+		NAVIGATION: {
+			MENU_TITLE_INVOICES: { en: "Invoices", nl: "Facturen" },
+			MENU_TITLE_BILLS: { en: "Bills", nl: "Notas" },
+			MENU_TITLE_COMPANIES: { en: "Companies", nl: "Bedrijven" },
+			MENU_TITLE_SETTINGS: { en: "Settings", nl: "Instellingen" },
+			MENU_TITLE_STATS: { en: "Stats", nl: "Berekeningen" }
+		},
 		ADMIN: {
 			TITLE: { en: "Settings", nl: "Instellingen" },
 			ADDRESS: {
@@ -74,15 +91,14 @@ export default class I18n {
 		}
 	};
 
-	public static getLocale = () =>
-		navigator.language.search("en") > -1 ? "en" : navigator.language.search("nl") > -1 ? "nl" : "";
+	getLocale = () => (navigator.language.search("en") > -1 ? "en" : navigator.language.search("nl") > -1 ? "nl" : "");
 
-	public static setLanguage = (lang?: string) => (I18n._language = lang || I18n._defaultLanguage);
+	setLanguage = (lang?: string) => (this._language = lang || this._defaultLanguage);
 
-	public static getSelectedLanguage = () => I18n._language;
+	getSelectedLanguage = () => this._language;
 
-	public static get = (key: string) => {
-		const langOb = key.split(".").reduce((ob: { [index: string]: any }, key) => ob[key] || "--", I18n._LANGUAGES);
-		return langOb[I18n.getSelectedLanguage()] || "--";
+	get = (key: string) => {
+		const langOb = key.split(".").reduce((ob: { [index: string]: any }, key) => ob[key] || "--", this._LANGUAGES);
+		return langOb[this._language] || "--";
 	};
 }

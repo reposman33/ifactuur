@@ -3,13 +3,15 @@ import { AuthUserContext, withAuthentication, withAuthorization } from "../Sessi
 import { compose } from "recompose";
 import * as ROUTES from "../../constants/routes.js";
 import { Link } from "react-router-dom";
+import { I18n } from "../../services/I18n/I18n";
 import SignOut from "../Security/signout.js";
 import * as styles from "./index.module.scss";
 
 class NavigationForm extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = { selectedLanguage: this.props.selectedLanguage };
+		this.I18n = new I18n();
+		this.state = {};
 		this.routes = {
 			INVOICES: ["/invoice", "/invoices"],
 			BILLS: ["/bill", "/bills"],
@@ -20,8 +22,9 @@ class NavigationForm extends React.Component {
 	}
 
 	setLanguage(lang) {
-		this.props.setLanguage(lang);
-		this.setState({ selectedLanguage: lang });
+		this.I18n.setLanguage(lang);
+		// force an idempotent setState to re-render...
+		this.setState(this.state);
 	}
 
 	render() {
@@ -36,7 +39,7 @@ class NavigationForm extends React.Component {
 									? styles.navMenuItemSelected
 									: ""
 							}>
-							<Link to={ROUTES.INVOICES}>Invoices</Link>
+							<Link to={ROUTES.INVOICES}>{this.I18n.get("NAVIGATION.MENU_TITLE_INVOICES")}</Link>
 						</li>
 						<li
 							id='nota'
@@ -45,7 +48,7 @@ class NavigationForm extends React.Component {
 									? styles.navMenuItemSelected
 									: ""
 							}>
-							<Link to={ROUTES.BILLS}>Bills</Link>
+							<Link to={ROUTES.BILLS}>{this.I18n.get("NAVIGATION.MENU_TITLE_BILLS")}</Link>
 						</li>
 						<li
 							id='bedrijf'
@@ -54,7 +57,7 @@ class NavigationForm extends React.Component {
 									? styles.navMenuItemSelected
 									: ""
 							}>
-							<Link to={ROUTES.COMPANIES}>Companies</Link>
+							<Link to={ROUTES.COMPANIES}>{this.I18n.get("NAVIGATION.MENU_TITLE_COMPANIES")}</Link>
 						</li>
 						<li
 							id='userSettings'
@@ -63,7 +66,7 @@ class NavigationForm extends React.Component {
 									? styles.navMenuItemSelected
 									: ""
 							}>
-							<Link to={ROUTES.SETTINGS}>Settings</Link>
+							<Link to={ROUTES.SETTINGS}>{this.I18n.get("NAVIGATION.MENU_TITLE_SETTINGS")}</Link>
 						</li>
 						<li
 							id='stats'
@@ -72,17 +75,17 @@ class NavigationForm extends React.Component {
 									? styles.navMenuItemSelected
 									: ""
 							}>
-							<Link to={ROUTES.STATS}>Income and expenses</Link>
+							<Link to={ROUTES.STATS}>{this.I18n.get("NAVIGATION.MENU_TITLE_STATS")}</Link>
 						</li>
 						<li> {this.props.authUser && this.props.authUser.authUser && <SignOut />}</li>
 					</ul>
 				</div>
 				<div className={styles.languageButtons}>
-					<button onClick={() => this.setLanguage("en")} disabled={this.state.selectedLanguage === "en"}>
+					<button onClick={() => this.setLanguage("en")} disabled={this.I18n.getSelectedLanguage() === "en"}>
 						engels
 					</button>
 					&nbsp;/
-					<button onClick={() => this.setLanguage("nl")} disabled={this.state.selectedLanguage === "nl"}>
+					<button onClick={() => this.setLanguage("nl")} disabled={this.I18n.getSelectedLanguage() === "nl"}>
 						nederlands
 					</button>
 				</div>

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { InputGroup, FormControl } from "react-bootstrap";
-import I18n from "../../services/I18n/I18n";
+import { I18n } from "../../services/I18n/I18n";
 import API from "../../services/API/API";
 import "./../App/index.scss";
 import "./index.scss";
