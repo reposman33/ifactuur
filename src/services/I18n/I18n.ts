@@ -9,7 +9,6 @@ export class I18n {
 			? navigator.language.substr(0, 2)
 			: "nl";
 		this._language = this._defaultLanguage;
-		console.log("this._defaultLanguage = ", this._defaultLanguage);
 	}
 
 	private _LANGUAGES: object = {
