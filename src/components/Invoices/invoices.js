@@ -21,8 +21,10 @@ class Invoices extends React.Component {
 			sum: "",
 			status: "",
 		};
+		const DateSortFunction = (a, b, order, dataField, rowA, rowB) =>
+			order === "asc" ? new Date(a) - new Date(b) : new Date(b) - new Date(a);
 		this.columns = [
-			{ dataField: "invoiceID", text: "#", sort: true },
+			{ dataField: "invoiceID", text: "#", sort: true, sortFunc: DateSortFunction },
 			{ dataField: "dateTimeCreated", text: this.i18N.get("INVOICES.TABLE.HEADER_DATE"), sort: true },
 			{ dataField: "companyName", text: this.i18N.get("INVOICES.TABLE.HEADER_CLIENT"), sort: true },
 			{ dataField: "statustitle", text: this.i18N.get("INVOICES.TABLE.HEADER_STATUS"), sort: true },
