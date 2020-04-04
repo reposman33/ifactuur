@@ -26,4 +26,3 @@ src/.env
 .env.development
 .history/
 src/environments.js
-src/environments.js
