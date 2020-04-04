@@ -25,3 +25,4 @@ src/.env
 .env.production
 .env.development
 .history/
+src/environments.js
