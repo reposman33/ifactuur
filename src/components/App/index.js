@@ -5,7 +5,7 @@ import { withAuthentication } from "../Session/";
 import Settings from "../Settings";
 import { Bill, Bills } from "../Bills/";
 import { Company, Companies } from "../Companies/";
-import { Invoices } from "../Invoices/invoices";
+import Invoices from "../Invoices/invoices";
 import { Invoice } from "../Invoices/invoice";
 import Navigation from "../Navigation/";
 import PasswordChange from "../PasswordChange/";
@@ -13,7 +13,7 @@ import PasswordForget from "../PasswordForget/";
 import SignIn from "../Security/signin";
 import SignUp from "../Security/signup";
 import Stats from "../Stats/";
-import I18n from "../../services/I18n/I18n";
+import { I18n } from "../../services/I18n/I18n";
 
 import { config_dev, config_prod } from "../../environments.js";
 import "./index.scss";
@@ -23,10 +23,9 @@ const config = process.env.NODE_ENV === "production" ? config_prod : config_dev;
 class App extends React.Component {
 	constructor(props) {
 		super(props);
-		this.setLanguage = this.setLanguage.bind(this);
-		this.getLanguageString = this.getLanguageString.bind(this);
+		this.I18n = new I18n();
 		this.state = {
-			language: I18n.getSelectedLanguage(),
+			language: this.I18n.getSelectedLanguage(),
 			errorMessage: null
 		};
 	}
@@ -37,16 +36,6 @@ class App extends React.Component {
 
 	componentDidMount() {
 		document.title = `${config.documentTitle} - ${process.env.NODE_ENV}`;
-		this.setState({ language: "en" });
-	}
-
-	setLanguage(lang) {
-		I18n.setLanguage(lang);
-		this.setState({ language: lang });
-	}
-
-	getLanguageString(token) {
-		return I18n.get(token);
 	}
 
 	render() {
@@ -57,7 +46,7 @@ class App extends React.Component {
 			<Router>
 				<React.Fragment>
 					<div className='navContainer'>
-						<Navigation setLanguage={this.setLanguage} selectedLanguage={I18n.getSelectedLanguage()} />
+						<Navigation />
 					</div>
 					<div className='container'>
 						<Route exact path={ROUTES.COMPANIES} component={Companies} />

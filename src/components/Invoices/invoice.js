@@ -1,13 +1,14 @@
 import React from "react";
-import I18n from "../../services/I18n/I18n";
-import * as styles from "./index.module.scss";
+import { I18n } from "../../services/I18n/I18n";
+import "./index.scss";
 import * as CONSTANTS from "../../constants/misc";
 import { state } from "../../constants/dummyState";
 
 class Invoice extends React.Component {
 	constructor(props) {
 		super(props);
-		this.DECIMAL_SIGN = I18n.getLocale() === "en" ? "." : ",";
+		this.I18n = new I18n();
+		this.DECIMAL_SIGN = this.I18n.getLocale() === "en" ? "." : ",";
 		this.totalBeforeTax = undefined;
 		this.tax = undefined;
 		this.FIELDNAMES = {
@@ -101,7 +102,7 @@ class Invoice extends React.Component {
 	}
 
 	formatNumberAsCurrency(number) {
-		return new Intl.NumberFormat(I18n.getLocale(), {
+		return new Intl.NumberFormat(this.I18n.getLocale(), {
 			style: "currency",
 			currency: "EUR"
 		}).format(number);
@@ -113,19 +114,19 @@ class Invoice extends React.Component {
 					<div className='col'>
 						<div>
 							<label htmlFor='date' className='mb-2'>
-								{I18n.get("INVOICE.INPUT_INVOICE_DATE")}
+								{this.I18n.get("INVOICE.INPUT_INVOICE_DATE")}
 							</label>
-							<input type='date' className={styles.inputDate} id='date' />
+							<input type='date' className='inputDate' id='date' />
 						</div>
 					</div>
 
 					<div className='col'>
 						<div>
-							<label htmlFor='companies'>{I18n.get("INVOICE.INPUT_COMPANY")}</label>
+							<label htmlFor='companies'>{this.I18n.get("INVOICE.INPUT_COMPANY")}</label>
 							<select
 								id='companies'
-								className={styles.selectCompanies}
-								title={I18n.get("INVOICE.INPUT_COMPANY")}>
+								className='selectCompanies'
+								title={this.I18n.get("INVOICE.INPUT_COMPANY")}>
 								{this.state.rowData.map((row, index) => (
 									<option key={index} value={row.company}>
 										{row.company}
@@ -133,24 +134,24 @@ class Invoice extends React.Component {
 								))}
 							</select>
 							<button className='btn btn-primary slateGrey mx-3'>
-								{I18n.get("INVOICE.BUTTONS.NEW_COMPANY")}
+								{this.I18n.get("INVOICE.BUTTONS.NEW_COMPANY")}
 							</button>
 						</div>
 					</div>
 				</div>
 				<div className='row'>
 					<div className='col'>
-						<label htmlFor='invoice-period'>{I18n.get("INVOICE.INPUT_PERIOD")}</label>
+						<label htmlFor='invoice-period'>{this.I18n.get("INVOICE.INPUT_PERIOD")}</label>
 						<div className='displayFlex mt-2' id='invoice-period'>
 							<div className='mr-3'>
 								<label htmlFor='invoice-period-from' className='mb-1'>
-									{I18n.get("INVOICE.INPUT_PERIOD_FROM")}
+									{this.I18n.get("INVOICE.INPUT_PERIOD_FROM")}
 								</label>
 								<input type='date' name='invoice-period-from' id='invoice-period-from'></input>
 							</div>
 							<div className='ml-3'>
 								<label htmlFor='invoice-period-to' className='mb-1'>
-									{I18n.get("INVOICE.INPUT_PERIOD_TO")}
+									{this.I18n.get("INVOICE.INPUT_PERIOD_TO")}
 								</label>
 								<input type='date' name='invoice-period-to' id='invoice-period-to'></input>
 							</div>
@@ -159,16 +160,16 @@ class Invoice extends React.Component {
 				</div>
 				<div className='row'>
 					<div className='col'>
-						<label htmlFor='description'>{I18n.get("INVOICE.INPUT_SERVICES")}</label>
+						<label htmlFor='description'>{this.I18n.get("INVOICE.INPUT_SERVICES")}</label>
 						<textarea name='description' id='description' rows='10' className='mt-3'></textarea>
 					</div>
 				</div>
 				<div className='row'>
 					<div className='col'>
-						<div className={styles.inputRow}>
-							<div className={styles.rateInputs}>
-								<div className={styles.hourlyRate}>
-									<label htmlFor='hourlyRate'>{I18n.get("INVOICE.INPUT_RATE")}</label>
+						<div className='inputRow'>
+							<div className='rateInputs'>
+								<div className='hourlyRate'>
+									<label htmlFor='hourlyRate'>{this.I18n.get("INVOICE.INPUT_RATE")}</label>
 									<input
 										type='number'
 										name={this.FIELDNAMES.HOURLYRATEINT}
@@ -183,12 +184,12 @@ class Invoice extends React.Component {
 										onBlur={this.handleOnBlur}
 									/>
 								</div>
-								<div className={styles.hours}>
-									<label htmlFor='hours'>{I18n.get("INVOICE.INPUT_HOURS")}</label>
+								<div className='hours'>
+									<label htmlFor='hours'>{this.I18n.get("INVOICE.INPUT_HOURS")}</label>
 									<input type='number' name={this.FIELDNAMES.HOURS} onBlur={this.handleOnBlur} />
 								</div>
-								<div className={styles.tax}>
-									<label htmlFor='tax'>{I18n.get("INVOICE.INPUT_TAX")}</label>
+								<div className='tax'>
+									<label htmlFor='tax'>{this.I18n.get("INVOICE.INPUT_TAX")}</label>
 									<select id='tax' name={this.FIELDNAMES.TAX} onBlur={this.handleOnBlur}>
 										{CONSTANTS.TAX_VALUES.map(value => (
 											<option key={value} value={value}>
@@ -199,8 +200,8 @@ class Invoice extends React.Component {
 									%
 								</div>
 							</div>
-							<div className={styles.total}>
-								{I18n.get("INVOICE.TOTAL")}: <span>{this.totalBeforeTaxFormatted}</span>
+							<div className='total'>
+								{this.I18n.get("INVOICE.TOTAL")}: <span>{this.totalBeforeTaxFormatted}</span>
 								{this.taxFormatted ? "+" : ""}
 								<span>{this.taxFormatted}</span>
 								{this.totalFormatted ? "=" : ""}
