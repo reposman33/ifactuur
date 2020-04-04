@@ -5,9 +5,7 @@ export class I18n {
 
 	private constructor() {
 		this._availableLanguages = ["en", "nl"];
-		this._defaultLanguage = this._availableLanguages.includes(navigator.language.substr(0, 2))
-			? navigator.language.substr(0, 2)
-			: "nl";
+		this._defaultLanguage = this._availableLanguages.includes(navigator.language) ? navigator.language : "nl";
 		this._language = this._defaultLanguage;
 	}
 
