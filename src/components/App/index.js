@@ -15,6 +15,10 @@ import SignUp from "../Security/signup";
 import Stats from "../Stats/";
 import { I18n } from "../../services/I18n/I18n";
 
+import "react-bootstrap";
+import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
+import "react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css";
+
 import { config_dev, config_prod } from "../../environments.js";
 import "./index.scss";
 
@@ -26,7 +30,7 @@ class App extends React.Component {
 		this.I18n = new I18n();
 		this.state = {
 			language: this.I18n.getSelectedLanguage(),
-			errorMessage: null
+			errorMessage: null,
 		};
 	}
 
