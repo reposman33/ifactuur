@@ -1,4 +1,5 @@
 import app from "firebase/app";
+import { I18n } from "../services/I18n/I18n";
 import "firebase/auth";
 import "firebase/firestore";
 import { config_dev } from "../environments";
@@ -8,6 +9,13 @@ const config = process.env.NODE_ENV === "production" ? config_prod : config_dev;
 
 class Firebase {
 	constructor(props) {
+		this.i18N = new I18n();
+		this.dateFormat = new Intl.DateTimeFormat(this.i18N.getLocale(), {
+			weekday: "long",
+			year: "numeric",
+			month: "long",
+			day: "numeric"
+		});
 		app.initializeApp(config);
 		this.auth = app.auth();
 		this.db = app.firestore();
@@ -15,17 +23,22 @@ class Firebase {
 
 	// INVOICES
 
-	getInvoices = columns => {
+	getInvoices = (columns, orderBy = "invoiceID", dir = "desc") => {
 		const rowData = [];
 		return this.db
 			.collection("invoices")
+			.orderBy(orderBy, dir)
 			.get()
 			.then(querySnapshot => {
 				querySnapshot.forEach(doc => {
 					const data = doc.data();
 					rowData.push(
 						columns.reduce((acc, col) => {
-							acc[col.dataField] = data[col.dataField];
+							const val =
+								col.dataField === "dateTimeCreated"
+									? this.dateFormat.format(new Date(data[col.dataField]))
+									: data[col.dataField];
+							acc[col.dataField] = val;
 							return acc;
 						}, {})
 					);
