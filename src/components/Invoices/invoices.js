@@ -18,18 +18,18 @@ class Invoices extends React.Component {
 			date: "",
 			client: "",
 			sum: "",
-			status: ""
+			status: "",
 		};
 		this.columns = [
-			{ dataField: "invoiceID", text: "" },
-			{ dataField: "dateTimeCreated", text: this.i18N.get("INVOICES.TABLE.HEADER_DATE") },
-			{ dataField: "companyName", text: this.i18N.get("INVOICES.TABLE.HEADER_CLIENT") },
-			{ dataField: "statustitle", text: this.i18N.get("INVOICES.TABLE.HEADER_STATUS") }
+			{ dataField: "invoiceID", text: "#", sort: true },
+			{ dataField: "dateTimeCreated", text: this.i18N.get("INVOICES.TABLE.HEADER_DATE"), sort: true },
+			{ dataField: "companyName", text: this.i18N.get("INVOICES.TABLE.HEADER_CLIENT"), sort: true },
+			{ dataField: "statustitle", text: this.i18N.get("INVOICES.TABLE.HEADER_STATUS"), sort: true },
 		];
 		this.handleNewInvoice = this.handleNewInvoice.bind(this);
-		//		const paginationReplacer = (_, p) => (p === "{from}" ? from : p === "{to}" ? to : p === "{size}" ? size : "");
+
 		this.paginationConfig = {
-			sizePerPage: 12,
+			sizePerPage: 10,
 			hideSizePerPage: true,
 			hidePageListOnlyOnePage: true,
 			showTotal: true,
@@ -42,17 +42,17 @@ class Invoices extends React.Component {
 					{this.i18N
 						.get("PAGINATION.TOTAL")
 						.split(" ")
-						.map(word =>
+						.map((word) =>
 							word === "{from}" ? from : word === "{to}" ? to : word === "{size}" ? size : word
 						)
 						.join(" ")}
 				</span>
-			)
+			),
 		};
 	}
 
 	componentDidMount() {
-		this.props.firebase.getInvoices(this.columns).then(res => this.setState({ rowData: res }));
+		this.props.firebase.getInvoices(this.columns, "dateTimeCreated").then((res) => this.setState({ rowData: res }));
 	}
 
 	handleNewInvoice() {
