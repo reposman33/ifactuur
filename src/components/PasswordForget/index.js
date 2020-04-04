@@ -1,5 +1,5 @@
 import React from "react";
-import { withFirebase } from "../Firebase/index.js";
+import { withFirebase } from "../../Firebase/index.js";
 import { Link } from "react-router-dom";
 import * as ROUTES from "../../constants/routes.js";
 import "./index.scss";

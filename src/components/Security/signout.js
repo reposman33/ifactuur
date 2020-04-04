@@ -1,5 +1,5 @@
 import React from "react";
-import { withFirebase } from "../Firebase/index.js";
+import { withFirebase } from "../../Firebase/index.js";
 import * as styles from "./index.module.scss";
 
 const SignOut = ({ firebase }) => (

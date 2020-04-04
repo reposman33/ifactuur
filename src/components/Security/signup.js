@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import index from "./index.module.scss";
 import { Link, withRouter } from "react-router-dom";
 import * as ROUTES from "../../constants/routes.js";
-import { withFirebase } from "../Firebase/index.js";
+import { withFirebase } from "../../Firebase/index.js";
 import { compose } from "recompose";
 
 const INITIAL_STATE = {

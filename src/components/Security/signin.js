@@ -1,6 +1,6 @@
 import React from "react";
 import { compose } from "recompose";
-import { withFirebase } from "../Firebase/index.js";
+import { withFirebase } from "../../Firebase/index.js";
 import { Link } from "react-router-dom";
 import { withRouter } from "react-router-dom";
 import * as styles from "./index.module.scss";

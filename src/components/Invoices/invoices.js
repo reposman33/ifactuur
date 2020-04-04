@@ -3,16 +3,16 @@ import BootstrapTable from "react-bootstrap-table-next";
 import "react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css";
 import paginationFactory from "react-bootstrap-table2-paginator";
 import { I18n } from "../../services/I18n/I18n";
-import { state } from "../../constants/dummyState";
 import * as ROUTES from "../../constants/routes";
+import { withFirebase } from "../../Firebase/index.js";
 import "./index.scss";
-//import API from "../../services/API/API";
 
 class Invoices extends React.Component {
 	constructor(props) {
 		super(props);
 		this.i18N = new I18n();
 		this.PAGE = "INVOICES";
+		this.state = { rowData: [] };
 		this.emptyRowData = {
 			id: "",
 			date: "",
@@ -21,11 +21,10 @@ class Invoices extends React.Component {
 			status: ""
 		};
 		this.columns = [
-			{ dataField: "id", text: "" },
-			{ dataField: "date", text: this.i18N.get("INVOICES.TABLE.HEADER_DATE") },
-			{ dataField: "client", text: this.i18N.get("INVOICES.TABLE.HEADER_CLIENT") },
-			{ dataField: "sum", text: this.i18N.get("INVOICES.TABLE.HEADER_SUM") },
-			{ dataField: "status", text: this.i18N.get("INVOICES.TABLE.HEADER_STATUS") }
+			{ dataField: "invoiceID", text: "" },
+			{ dataField: "dateTimeCreated", text: this.i18N.get("INVOICES.TABLE.HEADER_DATE") },
+			{ dataField: "companyName", text: this.i18N.get("INVOICES.TABLE.HEADER_CLIENT") },
+			{ dataField: "statustitle", text: this.i18N.get("INVOICES.TABLE.HEADER_STATUS") }
 		];
 		this.handleNewInvoice = this.handleNewInvoice.bind(this);
 		//		const paginationReplacer = (_, p) => (p === "{from}" ? from : p === "{to}" ? to : p === "{size}" ? size : "");
@@ -52,37 +51,30 @@ class Invoices extends React.Component {
 		};
 	}
 
+	componentDidMount() {
+		this.props.firebase.getInvoices(this.columns).then(res => this.setState({ rowData: res }));
+	}
+
 	handleNewInvoice() {
 		this.props.history.push(ROUTES.INVOICE);
 	}
 
 	onRowClick = (e, row, rowIndex) => {
-		this.props.history.push({ pathname: ROUTES.INVOICE, state: { id: state.rowData[rowIndex].id } });
+		this.props.history.push({ pathname: ROUTES.INVOICE, state: { id: this.state.rowData[rowIndex].id } });
 	};
 
 	render() {
 		return (
 			<div>
 				<BootstrapTable
-					data={state.rowData}
+					data={this.state.rowData}
 					classes='table'
 					columns={this.columns}
-					keyField='id'
+					keyField='invoiceID'
 					bordered
 					hover
 					rowEvents={{ onClick: this.onRowClick }}
-					pagination={paginationFactory(this.paginationConfig)}>
-					{/* <thead>
-						<tr>
-							<th></th>
-							<th>{this.i18N.get("INVOICES.TABLE.HEADER_DATE")}</th>
-							<th>{this.i18N.get("INVOICES.TABLE.HEADER_CLIENT")}</th>
-							<th>{this.i18N.get("INVOICES.TABLE.HEADER_SUM")}</th>
-							<th>{this.i18N.get("INVOICES.TABLE.HEADER_STATUS")}</th>
-							<th></th>
-						</tr>
-					</thead> */}
-				</BootstrapTable>
+					pagination={paginationFactory(this.paginationConfig)}></BootstrapTable>
 				<button className='btn btn-primary float-right' onClick={this.handleNewInvoice}>
 					{this.i18N.get("INVOICES.BUTTONS.NEW_INVOICE")}
 				</button>
@@ -91,4 +83,4 @@ class Invoices extends React.Component {
 	}
 }
 
-export { Invoices };
+export default withFirebase(Invoices);

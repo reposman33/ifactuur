@@ -1,5 +1,5 @@
 import React from "react";
-import { withFirebase } from "../Firebase/index.js";
+import { withFirebase } from "../../Firebase/index.js";
 import "./index.scss";
 
 class PasswordChange extends React.Component {
@@ -43,9 +43,7 @@ class PasswordChange extends React.Component {
 							<tbody>
 								<tr>
 									<td>
-										<label
-											htmlFor='password1'
-											style={{ whiteSpace: "nowrap" }}>
+										<label htmlFor='password1' style={{ whiteSpace: "nowrap" }}>
 											Wachtwoord
 										</label>
 									</td>
@@ -62,9 +60,7 @@ class PasswordChange extends React.Component {
 								</tr>
 								<tr>
 									<td>
-										<label
-											htmlFor='password2'
-											style={{ whiteSpace: "nowrap" }}>
+										<label htmlFor='password2' style={{ whiteSpace: "nowrap" }}>
 											Herhaal
 										</label>
 									</td>
@@ -80,19 +76,9 @@ class PasswordChange extends React.Component {
 									</td>
 								</tr>
 								<tr>
-									<td
-										colSpan='2'
-										style={{ textAlign: "right" }}>
-										<input
-											type='submit'
-											disabled={isInvalid}
-											value='Ok!'
-										/>
-										{errorMessage && (
-											<p className='alert'>
-												{errorMessage}
-											</p>
-										)}
+									<td colSpan='2' style={{ textAlign: "right" }}>
+										<input type='submit' disabled={isInvalid} value='Ok!' />
+										{errorMessage && <p className='alert'>{errorMessage}</p>}
 									</td>
 								</tr>
 							</tbody>
