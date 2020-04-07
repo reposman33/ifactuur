@@ -5,7 +5,7 @@ import "react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.m
 import paginationFactory from "react-bootstrap-table2-paginator";
 import { I18n } from "../../services/I18n/I18n";
 import * as ROUTES from "../../constants/routes";
-import { withFirebase } from "../../Firebase/index.js";
+import { withFirebase } from "../../Firebase";
 import "./index.scss";
 
 class Invoices extends React.Component {
@@ -44,6 +44,8 @@ class Invoices extends React.Component {
 				headerStyle: { width: "10%" },
 			},
 		];
+		// make the async call to Firebase and pick it up in componentDidMount
+		this.invoicesPromise = this.props.firebase.getInvoices(this.columns, "dateTimeCreated");
 
 		this.table = {
 			defaultSorted: [
@@ -86,7 +88,7 @@ class Invoices extends React.Component {
 		// this.props.firebase.convertRows2JSON().then((res) => true);
 
 		// ==> retrieve the invoices to display in browser...
-		this.props.firebase.getInvoices(this.columns, "dateTimeCreated").then((res) => this.setState({ rowData: res }));
+		this.invoicesPromise.then((res) => this.setState({ rowData: res }));
 	}
 
 	handleNewInvoice() {
