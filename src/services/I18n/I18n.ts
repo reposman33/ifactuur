@@ -15,7 +15,7 @@ export class I18n {
 			MENU_TITLE_BILLS: { en: "Bills", nl: "Notas" },
 			MENU_TITLE_COMPANIES: { en: "Companies", nl: "Bedrijven" },
 			MENU_TITLE_SETTINGS: { en: "Settings", nl: "Instellingen" },
-			MENU_TITLE_STATS: { en: "Stats", nl: "Berekeningen" }
+			MENU_TITLE_STATS: { en: "Stats", nl: "Berekeningen" },
 		},
 		ADMIN: {
 			TITLE: { en: "Settings", nl: "Instellingen" },
@@ -24,25 +24,25 @@ export class I18n {
 				NAME_INITIALS: { en: "Initials", nl: "Initialen" },
 				NAME_INFIX: {
 					en: "Infix",
-					nl: "Tussenvoegsel"
+					nl: "Tussenvoegsel",
 				},
 				NAME_LASTNAME: { en: "Surname", nl: "Achternaam" },
 				ADDRESS: { en: "Address", nl: "Adres" },
 				ZIPCODE: { en: "Postalcode", nl: "Postcode" },
 				CITY: { en: "City", nl: "Stad" },
-				COUNTRY: { en: "Country", nl: "Land" }
+				COUNTRY: { en: "Country", nl: "Land" },
 			},
 			REGISTRATIONS: {
 				TITLE: { en: "Registrations", nl: "Registraties" },
 				COC_NUMBER: { en: "CoC nr", nl: "KvK nr" },
-				VAT_NUMBER: { en: "VAT nr", nl: "BTW nr" }
+				VAT_NUMBER: { en: "VAT nr", nl: "BTW nr" },
 			},
 			DELIVERYCONDITIONS: {
 				TITLE: {
 					en: "Deliveryconditions",
-					nl: "Leveringsvoorwaarden"
-				}
-			}
+					nl: "Leveringsvoorwaarden",
+				},
+			},
 		},
 		INVOICES: {
 			TITLE: { en: "Invoices", nl: "Facturen" },
@@ -50,12 +50,13 @@ export class I18n {
 				HEADER_DATE: { en: "Date", nl: "Datum" },
 				HEADER_CLIENT: { en: "Client", nl: "Klant" },
 				HEADER_SUM: { en: "Sum", nl: "Bedrag" },
-				HEADER_STATUS: { en: "Status", nl: "Status" }
+				HEADER_STATUS: { en: "Status", nl: "Status" },
+				HEADER_TYPE: { en: "Type", nl: "Type" },
 			},
 			BUTTONS: {
 				NEW_INVOICE: { en: "New", nl: "Nieuw" },
-				CLEAR: { en: "Clear", nl: "Formulier leegmaken" }
-			}
+				CLEAR: { en: "Clear", nl: "Formulier leegmaken" },
+			},
 		},
 		INVOICE: {
 			TITLE: { en: "Invoice", nl: "Factuur" },
@@ -72,8 +73,8 @@ export class I18n {
 			BUTTONS: {
 				NEW_COMPANY: { en: "New company", nl: "Nieuw bedrijf" },
 				DELETE: { en: "Delete", nl: "Verwijder" },
-				SAVE: { en: "Save", nl: "Bewaar" }
-			}
+				SAVE: { en: "Save", nl: "Bewaar" },
+			},
 		},
 		BUTTONS: { SAVE: { en: "Save", nl: "Bewaar" } },
 		PAGINATION: {
@@ -83,9 +84,9 @@ export class I18n {
 			LAST_PAGE: { en: "last page", nl: "laatste pagina" },
 			TOTAL: {
 				en: "Showing page {from} to {to} of {size}",
-				nl: "Toon pagina {from} tot {to} van {size}"
-			}
-		}
+				nl: "Toon pagina {from} tot {to} van {size}",
+			},
+		},
 	};
 
 	getLocale = () => (navigator.language.search("en") > -1 ? "en" : navigator.language.search("nl") > -1 ? "nl" : "");

@@ -33,6 +33,7 @@ class Invoices extends React.Component {
 				sortFunc: DateSortFunction,
 			},
 			{ dataField: "companyName", text: this.i18N.get("INVOICES.TABLE.HEADER_CLIENT"), sort: true },
+			{ dataField: "type", text: this.i18N.get("INVOICES.TABLE.HEADER_TYPE"), headerStyle: { width: "10%" } },
 			{
 				dataField: "statustitle",
 				text: this.i18N.get("INVOICES.TABLE.HEADER_STATUS"),
