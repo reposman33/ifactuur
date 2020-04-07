@@ -23,9 +23,9 @@ class Invoices extends React.Component {
 		};
 		const DateSortFunction = (a, b, order, dataField, rowA, rowB) =>
 			order === "asc" ? new Date(a) - new Date(b) : order === "desc" ? new Date(b) - new Date(a) : "";
+
 		this.columns = [
-			{ dataField: "specification", hidden: true },
-			{ dataField: "invoiceID", text: "#", headerStyle: { width: "8%" }, sort: true },
+			{ dataField: "invoiceNr", text: "#", headerStyle: { width: "8%" }, sort: true },
 			{
 				dataField: "dateTimeCreated",
 				text: this.i18N.get("INVOICES.TABLE.HEADER_DATE"),
@@ -33,14 +33,26 @@ class Invoices extends React.Component {
 				sortFunc: DateSortFunction,
 			},
 			{ dataField: "companyName", text: this.i18N.get("INVOICES.TABLE.HEADER_CLIENT"), sort: true },
-			{ dataField: "type", text: this.i18N.get("INVOICES.TABLE.HEADER_TYPE"), headerStyle: { width: "10%" } },
 			{
-				dataField: "statustitle",
+				dataField: "invoiceType",
+				text: this.i18N.get("INVOICES.TABLE.HEADER_TYPE"),
+				headerStyle: { width: "10%" },
+			},
+			{
+				dataField: "statusTitle",
 				text: this.i18N.get("INVOICES.TABLE.HEADER_STATUS"),
-				sort: true,
 				headerStyle: { width: "10%" },
 			},
 		];
+
+		this.table = {
+			defaultSorted: [
+				{
+					dataField: "dateTimeCreated",
+					order: "asc",
+				},
+			],
+		};
 		this.handleNewInvoice = this.handleNewInvoice.bind(this);
 
 		this.paginationConfig = {
@@ -67,12 +79,11 @@ class Invoices extends React.Component {
 	}
 
 	componentDidMount() {
-		// update invoice field 'type' to contain 'credit' or 'debet' instead of '1' or '2'
-		this.props.firebase.updateInvoicesField();
 		// ==> function that imports invoices as exported from MySQL db
 		// this.props.firebase.importInvoices();
 		// ==> function that converts specification field to an array with object, 1 per row
-		// this.props.firebase.convertSpecification2JSON().then((res) => true);
+		// this.props.firebase.convertRows2JSON().then((res) => true);
+
 		// ==> retrieve the invoices to display in browser...
 		this.props.firebase.getInvoices(this.columns, "dateTimeCreated").then((res) => this.setState({ rowData: res }));
 	}
@@ -93,7 +104,8 @@ class Invoices extends React.Component {
 					data={this.state.rowData}
 					classes='table'
 					columns={this.columns}
-					keyField='invoiceID'
+					table={this.table}
+					keyField='id'
 					bordered
 					hover
 					rowEvents={{ onClick: this.onRowClick }}

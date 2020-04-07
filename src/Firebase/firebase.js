@@ -40,6 +40,7 @@ class Firebase {
 									? this.dateFormat.format(new Date(data[col.dataField]))
 									: data[col.dataField];
 							acc[col.dataField] = val;
+							acc.id = doc.id;
 							return acc;
 						}, {})
 					);
@@ -63,7 +64,7 @@ class Firebase {
 	[{invoiceID: "214", uren: "144", bedrag: "10800.00", uurtarief: "75", omschrijving: "Vivat werkzaamheden in mei t.b.v. Zwitserleven bel…en / Mijn Zwitserleven dashboard / Reaal beleggen"},{invoiceID: "214", omschrijving: "overeenkomstnummer: 912-16-70198"}]
 	 * 
 	 */
-	convertSpecification2JSON() {
+	convertRows2JSON = () => {
 		return this.db
 			.collection("invoices")
 			.get()
@@ -71,18 +72,18 @@ class Firebase {
 				const specs = [];
 				querySnapshot.forEach((doc, i) => {
 					const rowData = doc.data();
-					const specification = JSON.parse(rowData.specification);
+					const rows = JSON.parse(rowData.rows);
 					const row = [];
 
-					Object.keys(specification).map((key) => {
-						if (specification[key] !== "") {
+					Object.keys(rows).map((key) => {
+						if (rows[key] !== "") {
 							// convert last char of key to number
 							const ind = parseInt(key.substr(key.length - 1, 1)) - 1; // js array is 0 based, the json string not!
 							const strippedKey = key.substr(0, key.length - 1);
 							if (row[ind]) {
-								row[ind][strippedKey] = specification[key];
+								row[ind][strippedKey] = rows[key];
 							} else {
-								row[ind] = { [strippedKey]: specification[key] };
+								row[ind] = { [strippedKey]: rows[key] };
 							}
 						}
 						return null;
@@ -93,13 +94,13 @@ class Firebase {
 					this.db
 						.collection("invoices")
 						.doc(doc.id)
-						.update({ specification: JSON.stringify(row) });
+						.update({ rows: JSON.stringify(row) });
 
 					specs.push(row);
 				});
 				console.log("Finished updating");
 			});
-	}
+	};
 
 	// IMPORT ../invoices.json INTO FIREBASE
 	importInvoices() {
