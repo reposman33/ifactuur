@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { InputGroup, FormControl } from "react-bootstrap";
 import { I18n } from "../../services/I18n/I18n";
-import API from "../../services/API/API";
 import "./../App/index.scss";
 import "./index.scss";
 
@@ -9,17 +8,15 @@ class Settings extends Component {
 	constructor(props) {
 		super(props);
 		this.PAGE = "ADMIN";
-		this.state = API.getPage(this.PAGE);
 	}
 
-	handleOnBlur = event => {
+	handleOnBlur = (event) => {
 		if (event.currentTarget.getAttribute("data-input")) {
 			this.setState({ [event.currentTarget.name]: event.currentTarget.value });
 		}
 	};
 
 	handleSubmit = () => {
-		API.savePage({ [this.PAGE]: this.state });
 		// clear the state
 		const newState = this.resetObjectValues(this.state, "");
 		this.setState({ ...newState });
@@ -31,7 +28,7 @@ class Settings extends Component {
 		this.setState({ ...newState });
 		// ...clear input fields
 		const dataInputFields = document.querySelectorAll("[data-input]");
-		Array.from(dataInputFields).map(field => (field.value = ""));
+		Array.from(dataInputFields).map((field) => (field.value = ""));
 	};
 
 	resetObjectValues(ob, resetValue) {
