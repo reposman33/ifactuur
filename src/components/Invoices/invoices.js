@@ -24,11 +24,16 @@ class Invoices extends React.Component {
 		const DateSortFunction = (a, b, order, dataField, rowA, rowB) =>
 			order === "asc" ? new Date(a) - new Date(b) : new Date(b) - new Date(a);
 		this.columns = [
-			{ dataField: "specification", hidden: true, headerStyle: { width: "10%" } },
-			{ dataField: "invoiceID", text: "#", sortFunc: DateSortFunction },
+			{ dataField: "specification", hidden: true },
+			{ dataField: "invoiceID", text: "#", sortFunc: DateSortFunction, headerStyle: { width: "8%" } },
 			{ dataField: "dateTimeCreated", text: this.i18N.get("INVOICES.TABLE.HEADER_DATE"), sort: true },
 			{ dataField: "companyName", text: this.i18N.get("INVOICES.TABLE.HEADER_CLIENT"), sort: true },
-			{ dataField: "statustitle", text: this.i18N.get("INVOICES.TABLE.HEADER_STATUS"), sort: true },
+			{
+				dataField: "statustitle",
+				text: this.i18N.get("INVOICES.TABLE.HEADER_STATUS"),
+				sort: true,
+				headerStyle: { width: "10%" },
+			},
 		];
 		this.handleNewInvoice = this.handleNewInvoice.bind(this);
 

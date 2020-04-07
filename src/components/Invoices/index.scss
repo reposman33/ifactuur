@@ -2,6 +2,7 @@
 
 .table {
 	background-color: $column-background-color;
+	table-layout: fixed;
 
 	tr {
 		height: 3rem;
