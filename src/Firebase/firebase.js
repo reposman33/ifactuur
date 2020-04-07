@@ -117,6 +117,24 @@ class Firebase {
 				.catch((err) => console.log("ERROR: ", err))
 		);
 	}
+
+	/**
+	 * update the invoices.type field. This field value is '1' for normal (debit) invoice, it is '2' for a 'credit' invoice
+	 *
+	 */
+	updateInvoicesField() {
+		this.db
+			.collection("invoices")
+			.get()
+			.then((querySnapshot) =>
+				querySnapshot.forEach((doc) => {
+					const invoice = doc.data();
+					const invoiceType = invoice.type === "1" ? "debet" : "credit";
+					this.db.collection("invoices").doc(doc.id).update({ type: invoiceType });
+					console.log(`updated factuur ${invoice.invoiceID} ==> ${invoiceType} factuur`);
+				})
+			);
+	}
 	// ===============================================================
 	// ===============================================================
 	// END UTILITY FUNCTIONS: IMPORTS - UPDATING INVOICES-SPECIFICATIONS
