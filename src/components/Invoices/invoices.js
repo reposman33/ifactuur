@@ -52,6 +52,7 @@ class Invoices extends React.Component {
 					order: "asc",
 				},
 			],
+			defaultSortDirection: "desc",
 		};
 		this.handleNewInvoice = this.handleNewInvoice.bind(this);
 
