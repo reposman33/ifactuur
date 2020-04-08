@@ -11,7 +11,7 @@ import "./index.scss";
 class Invoices extends React.Component {
 	constructor(props) {
 		super(props);
-		this.i18N = new I18n();
+		this.I18n = new I18n();
 		this.PAGE = "INVOICES";
 		this.state = { rowData: [] };
 		this.emptyRowData = {
@@ -28,19 +28,19 @@ class Invoices extends React.Component {
 			{ dataField: "invoiceNr", text: "#", headerStyle: { width: "8%" }, sort: true },
 			{
 				dataField: "dateTimeCreated",
-				text: this.i18N.get("INVOICES.TABLE.HEADER_DATE"),
+				text: this.I18n.get("INVOICES.TABLE.HEADER_DATE"),
 				sort: true,
 				sortFunc: DateSortFunction,
 			},
-			{ dataField: "companyName", text: this.i18N.get("INVOICES.TABLE.HEADER_CLIENT"), sort: true },
+			{ dataField: "companyName", text: this.I18n.get("INVOICES.TABLE.HEADER_CLIENT"), sort: true },
 			{
 				dataField: "invoiceType",
-				text: this.i18N.get("INVOICES.TABLE.HEADER_TYPE"),
+				text: this.I18n.get("INVOICES.TABLE.HEADER_TYPE"),
 				headerStyle: { width: "10%" },
 			},
 			{
 				dataField: "statusTitle",
-				text: this.i18N.get("INVOICES.TABLE.HEADER_STATUS"),
+				text: this.I18n.get("INVOICES.TABLE.HEADER_STATUS"),
 				headerStyle: { width: "10%" },
 			},
 		];
@@ -63,14 +63,13 @@ class Invoices extends React.Component {
 			hideSizePerPage: true,
 			hidePageListOnlyOnePage: true,
 			showTotal: true,
-			prePageTitle: this.i18N.get("PAGINATION.PREVIOUS_PAGE"),
-			nextPageTitle: this.i18N.get("PAGINATION.NEXT_PAGE"),
-			firstPageTitle: this.i18N.get("PAGINATION.FIRST_PAGE"),
-			lastPageTitle: this.i18N.get("PAGINATION.LAST_PAGE"),
+			prePageTitle: this.I18n.get("PAGINATION.PREVIOUS_PAGE"),
+			nextPageTitle: this.I18n.get("PAGINATION.NEXT_PAGE"),
+			firstPageTitle: this.I18n.get("PAGINATION.FIRST_PAGE"),
+			lastPageTitle: this.I18n.get("PAGINATION.LAST_PAGE"),
 			paginationTotalRenderer: (from, to, size) => (
 				<span className='react-bootstrap-table-pagination-total'>
-					{this.i18N
-						.get("PAGINATION.TOTAL")
+					{this.I18n.get("PAGINATION.TOTAL")
 						.split(" ")
 						.map((word) =>
 							word === "{from}" ? from : word === "{to}" ? to : word === "{size}" ? size : word
@@ -86,7 +85,6 @@ class Invoices extends React.Component {
 		// this.props.firebase.importInvoices();
 		// ==> function that converts specification field to an array with object, 1 per row
 		// this.props.firebase.convertRows2JSON().then((res) => true);
-
 		// ==> retrieve the invoices to display in browser...
 		this.invoicesPromise.then((res) => this.setState({ rowData: res }));
 	}
@@ -115,7 +113,7 @@ class Invoices extends React.Component {
 					pagination={paginationFactory(this.paginationConfig)}></BootstrapTable>
 
 				<button className='btn btn-primary float-right' onClick={this.handleNewInvoice}>
-					{this.i18N.get("INVOICES.BUTTONS.NEW_INVOICE")}
+					{this.I18n.get("INVOICES.BUTTONS.NEW_INVOICE")}
 				</button>
 			</div>
 		);
