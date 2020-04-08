@@ -66,7 +66,7 @@ export class I18n {
 			INPUT_PERIOD_FROM: { en: "From", nl: "Van" },
 			INPUT_PERIOD_TO: { en: "To", nl: "Tot" },
 			INPUT_SERVICES: { en: "Services delivered", nl: "Geleverde diensten" },
-			INPUT_RATE: { en: "Rate/hour", nl: "Tarief / uur" },
+			INPUT_RATE: { en: "Hourly rate", nl: "Uurtarief" },
 			INPUT_HOURS: { en: "Hours", nl: "Uren" },
 			INPUT_TAX: { en: "VAT", nl: "BTW" },
 			TOTAL: { en: "Total", nl: "Totaal" },
