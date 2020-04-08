@@ -6,7 +6,7 @@ import Settings from "../Settings";
 import { Bill, Bills } from "../Bills/";
 import { Company, Companies } from "../Companies/";
 import Invoices from "../Invoices/invoices";
-import { Invoice } from "../Invoices/invoice";
+import Invoice from "../Invoices/invoice";
 import Navigation from "../Navigation/";
 import PasswordChange from "../PasswordChange/";
 import PasswordForget from "../PasswordForget/";

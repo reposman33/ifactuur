@@ -49,6 +49,12 @@ class Firebase {
 			});
 	};
 
+	getInvoice = (id) =>
+		this.db
+			.collection("invoices")
+			.doc(id)
+			.get();
+
 	// ===============================================================
 	// ===============================================================
 	// START UTILITY FUNCTIONS: IMPORTS - UPDATING INVOICES-SPECIFICATIONS
@@ -131,7 +137,10 @@ class Firebase {
 				querySnapshot.forEach((doc) => {
 					const invoice = doc.data();
 					const invoiceType = invoice.type === "1" ? "debet" : "credit";
-					this.db.collection("invoices").doc(doc.id).update({ type: invoiceType });
+					this.db
+						.collection("invoices")
+						.doc(doc.id)
+						.update({ type: invoiceType });
 					console.log(`updated factuur ${invoice.invoiceID} ==> ${invoiceType} factuur`);
 				})
 			);

@@ -41,10 +41,6 @@ textarea {
 // ======================================================
 // ============= CLASS INVOICE ==========================
 // ======================================================
-.inputRow {
-	display: flex;
-	flex-direction: column;
-}
 
 .inputRow {
 	display: flex;
@@ -84,15 +80,56 @@ textarea {
 		}
 	}
 }
-.total {
-	display: flex;
-	justify-content: space-between;
-	font-size: 1.4rem;
-	font-weight: bold;
-	margin-top: 1.5rem;
-	width: 75%;
 
-	& span {
-		align-self: flex-end;
+.descriptionRowLabel {
+	display: inline-block;
+	&:first-of-type {
+		width: 73%;
+	}
+	&:nth-of-type(2) {
+		width: 10%;
+	}
+	&:nth-of-type(3) {
+		width: 10%;
+	}
+	&:last-of-type {
+		width: 5%;
+	}
+}
+.descriptionRow {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+
+	& input {
+		color: white;
+		background-color: #cccccc55;
+		border-bottom: none;
+		border-right: none;
+	}
+
+	& span.currency {
+		margin: 0 0.5rem;
+	}
+
+	& .description {
+		width: 80%;
+	}
+	& .hourlyrateInt {
+		width: 10%;
+		margin-right: 0.1rem;
+		text-align: center;
+	}
+
+	& .hours {
+		width: 5%;
+		margin-right: 0.1rem;
+	}
+
+	& .total {
+		background-color: #48474b;
+		margin-left: 1rem;
+		text-align: center;
+		width: 10%;
 	}
 }
