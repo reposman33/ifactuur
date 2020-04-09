@@ -6,23 +6,55 @@ import "./index.scss";
 class Invoice extends React.Component {
 	constructor(props) {
 		super(props);
-		// make the async call to Firebase and pick it up in componentDidMount
-		this.isExistingInvoice = !!this.props.location.state.id;
-		this.invoicePromise = this.props.firebase.getInvoice(this.props.location.state.id);
+
+		this.state = {
+			companies: [],
+			companyName: "",
+			dateTimeCreated: undefined,
+			dateTimePaid: undefined,
+			dateTimePrinted: undefined,
+			dateTimeSent: undefined,
+			id: undefined,
+			invoiceNr: undefined,
+			invoiceDescriptionRows: [],
+			notes: "",
+			periodFrom: "",
+			periodTo: "",
+			rows: [],
+			statusTitle: "",
+			type: "",
+			totals: [],
+			totalInvoiceAmount: {},
+			userId: "1",
+			VatRate: undefined,
+			VatRates: [],
+		};
+		this.newInvoicePromises = [];
+		this.isExistingInvoice = !!this.props.location.state && this.props.location.state.id;
+
+		// new invoice?
+		this.invoice$ = this.isExistingInvoice
+			? this.props.firebase.getInvoice(this.props.location.state.id)
+			: undefined;
+		// new invoice!
+		if (!this.isExistingInvoice) {
+			// retrieve companies
+			this.newInvoicePromises.push(this.props.firebase.getCompanies());
+			// retrieve VatRates
+			this.newInvoicePromises.push(this.props.firebase.getVatRates());
+		}
 		this.I18n = new I18n();
-		//		this.Utils = new Utils();
-		this.DECIMAL_SIGN = this.I18n.getLocale() === "en" ? "." : ",";
-		this.currencyFormat = new Intl.NumberFormat(this.I18n.getLocale(), { style: "currency", currency: "EUR" });
+		this.currencyFormat = new Intl.NumberFormat(this.I18n.getLocale(), {
+			style: "currency",
+			currency: "EUR",
+		});
 		this.dateTimeFormat = new Intl.DateTimeFormat(this.I18n.getLocale(), {
 			year: "numeric",
 			month: "long",
 			day: "numeric",
 		});
-
-		this.totalBeforeTax = undefined;
-		this.tax = undefined;
 		this.nrOfDescriptionRows = 10;
-		this.invoiceRows = undefined;
+
 		this.FIELDNAMES = {
 			DATE: "dateTimeCreated",
 			PERIOD_FROM: "invoice-period-from",
@@ -33,34 +65,65 @@ class Invoice extends React.Component {
 			HOURS: "uren",
 			TAX: "tax",
 		};
-		this.taxFormatted = undefined;
-		this.totalBeforeTaxFormatted = undefined;
-		this.totalFormatted = undefined;
-		this.state = {
-			id: this.props.location.state.id, // invoiceId
-			[this.FIELDNAMES.HOURLYRATE]: undefined,
-			[this.FIELDNAMES.HOURS]: undefined,
-			[this.FIELDNAMES.TAX]: undefined,
-			totalBeforeTax: null,
-			tax: undefined,
-		};
 	}
 
 	componentDidMount() {
-		this.invoicePromise.then((doc) => {
-			this.invoiceData = doc.data();
-
-			console.log(this.invoiceData);
-
-			this.invoiceDescription = JSON.parse(this.invoiceData.rows);
-			this.setState({
-				[this.FIELDNAMES.HOURLYRATE]: undefined,
-				[this.FIELDNAMES.HOURS]: undefined,
-				[this.FIELDNAMES.TAX]: undefined,
-				[this.FIELDNAMES.DATE]: undefined,
-				rows: [],
+		if (this.invoice$) {
+			this.invoice$.then((doc) => {
+				// update state with retrieved invoice
+				const invoiceData = doc.data();
+				this.setState({
+					companies: [],
+					companyName: invoiceData.VatRate,
+					dateTimeCreated: invoiceData.dateTimeCreated,
+					dateTimePaid: invoiceData.dateTimePaid,
+					dateTimePrinted: invoiceData.dateTimePrinted,
+					dateTimeSent: invoiceData.dateTimeSent,
+					id: invoiceData,
+					invoiceNr: invoiceData.invoiceNr,
+					invoiceDescriptionRows: JSON.parse(invoiceData.rows),
+					notes: invoiceData.notes,
+					periodFrom: invoiceData.periodFrom,
+					periodTo: invoiceData.periodTo,
+					rows: JSON.parse(invoiceData.rows),
+					statusTitle: invoiceData.statusTitle,
+					type: invoiceData.type,
+					totals: this.getTotalInvoiceAmount(JSON.parse(invoiceData.rows)),
+					totalInvoiceAmount: this.getTotalInvoiceAmount(JSON.parse(doc.data().rows)),
+					userId: "1",
+					VatRate: invoiceData.VatRate,
+					VatRates: [],
+				});
 			});
-		});
+		} else {
+			// initialize state to undefined
+			// retrieve companies, VatRates
+			// Promise.all() resolves the provided array of promises. Values are in array order: Companies and VatRates
+			Promise.all(this.newInvoicePromises).then((values) => {
+				// retrieve all companies and update state
+				values[0].forEach((doc) => this.setState({ companies: [...this.state.companies, doc.data()] }));
+				// retrieve all VatRates and update state=
+				values[1].forEach((doc) => this.setState({ VatRates: [...this.state.VatRates, doc.data()] }));
+			});
+		}
+	}
+
+	/**
+	 * calculate amounts for totalBeforeVat, totalVatAmount and totalWithVat from the description array
+	 * @param {string} invoiceData - stringified object array 1 object containing description, hourlyRate and hours for at least the first row
+	 * @returns object with amounts calculated
+	 */
+	getTotalInvoiceAmount(rows) {
+		const total = rows.reduce((total, row) => {
+			total = row.uren && row.uurtarief ? total + parseFloat(row.uren) * parseInt(row.uurtarief) : total;
+			return total;
+		}, 0);
+		const totalVatAmount = total * (parseFloat(rows.VatRate) / 100);
+		return {
+			totalBeforeVat: total,
+			totalVatAmount: totalVatAmount,
+			totalWithVat: total + totalVatAmount,
+		};
 	}
 
 	handleOnBlur = (event) => {
@@ -70,40 +133,30 @@ class Invoice extends React.Component {
 				? value.replace(".", ",")
 				: value;
 
+		// IF input is from one of the descriptionrows...
 		if (
 			name === this.FIELDNAMES.DESCRIPTION ||
 			name === this.FIELDNAMES.HOURLYRATE ||
 			name === this.FIELDNAMES.HOURS
 		) {
+			// ...get index nr...
 			const rowIndex = parseInt(name.substr(name.length - 1, 1));
+			// ...get property name...
 			const fieldName = name.substr(0, name.length - 1);
 			name = "rows";
+			// ... we're going to mutate
 			const rows = [...this.state.rows];
+			rows[rowIndex] = rows.length >= rowIndex + 1 ? rows[rowIndex] : {};
 			rows[rowIndex][fieldName] = value;
 			value = rows;
 		}
 		this.setState(
 			(state) => ({ [name]: value }),
 			() => {
-				this.calculateTotal();
+				this.getTotalInvoiceAmount();
 			}
 		);
 	};
-
-	// calculate total sum by multiplying hours with rate and tax
-	calculateTotal() {
-		// calculate number
-		const hourlyRate = this.state.hourlyRateInt ? parseInt(this.state.hourlyRate) : 0;
-		const hours = this.state.hours ? parseInt(this.state.hours) : 0;
-
-		this.setState({
-			totalBeforeTax: hourlyRate * hours,
-		});
-		const taxAmount = this.state.tax ? parseInt(this.state.tax) / 100 : 0;
-		this.setState({
-			tax: taxAmount * this.state.totalBeforeTax,
-		});
-	}
 
 	formatNumberAsCurrency(number) {
 		return new Intl.NumberFormat(this.I18n.getLocale(), {
@@ -114,59 +167,61 @@ class Invoice extends React.Component {
 
 	render() {
 		const descriptionRows = [];
-
-		if (this.invoiceDescription) {
-			for (let row = 0; row < this.nrOfDescriptionRows; row++) {
-				descriptionRows.push(
-					<div key={row} className='descriptionRow'>
-						<input
-							type='text'
-							name={`${this.FIELDNAMES.DESCRIPTION}_${row}`}
-							className='description'
-							onBlur={this.handleOnBlur}
-							disabled={this.isExistingInvoice}
-							value={
-								this.invoiceDescription[row]
-									? this.invoiceDescription[row][this.FIELDNAMES.DESCRIPTION]
-									: ""
-							}
-						/>
-						<span className='currency'>&euro;</span>
-						<input
-							type='number'
-							name={`${this.FIELDNAMES.HOURLYRATE}_${row}`}
-							className='hourlyrateInt'
-							disabled={this.isExistingInvoice}
-							onBlur={this.handleOnBlur}
-							value={
-								this.invoiceDescription[row]
-									? this.invoiceDescription[row][this.FIELDNAMES.HOURLYRATE]
-									: ""
-							}
-						/>
-						<input
-							type='number'
-							name={`${this.FIELDNAMES.HOURS}_${row}`}
-							className='hours'
-							disabled={this.isExistingInvoice}
-							onBlur={this.handleOnBlur}
-							value={
-								this.invoiceDescription[row] ? this.invoiceDescription[row][this.FIELDNAMES.HOURS] : ""
-							}
-						/>
-						<span className='total'>
-							{this.invoiceDescription[row]
-								? this.currencyFormat.format(
-										this.invoiceDescription[row].uurtarief * this.invoiceDescription[row].uren
-								  )
-								: ""}
-						</span>
-					</div>
-				);
-			}
+		for (let row = 0; row < this.nrOfDescriptionRows; row++) {
+			descriptionRows.push(
+				<div key={row} className='descriptionRow'>
+					<input
+						type='text'
+						name={`${this.FIELDNAMES.DESCRIPTION}_${row}`}
+						className='description'
+						onBlur={this.handleOnBlur}
+						disabled={this.isExistingInvoice}
+						value={
+							this.state.invoiceDescriptionRows[row]
+								? this.state.invoiceDescriptionRows[row][this.FIELDNAMES.DESCRIPTION]
+								: ""
+						}
+					/>
+					<span className='currency'>&euro;</span>
+					<input
+						type='number'
+						name={`${this.FIELDNAMES.HOURLYRATE}_${row}`}
+						className='hourlyrateInt'
+						disabled={this.isExistingInvoice}
+						onBlur={this.handleOnBlur}
+						value={
+							this.state.invoiceDescriptionRows[row]
+								? this.state.invoiceDescriptionRows[row][this.FIELDNAMES.HOURLYRATE]
+								: ""
+						}
+					/>
+					<input
+						type='number'
+						name={`${this.FIELDNAMES.HOURS}_${row}`}
+						className='hours'
+						disabled={this.isExistingInvoice}
+						onBlur={this.handleOnBlur}
+						value={
+							this.state.invoiceDescriptionRows[row]
+								? this.state.invoiceDescriptionRows[row][this.FIELDNAMES.HOURS]
+								: ""
+						}
+					/>
+					<span className='total'>
+						{this.state.invoiceDescriptionRows[row] &&
+						this.state.invoiceDescriptionRows[row].uurtarief &&
+						this.state.invoiceDescriptionRows[row] &&
+						this.state.invoiceDescriptionRows[row].uren
+							? this.currencyFormat.format(
+									this.state.invoiceDescriptionRows[row].uurtarief *
+										this.state.invoiceDescriptionRows[row].uren
+							  )
+							: ""}
+					</span>
+				</div>
+			);
 		}
-
-		return this.invoiceData ? (
+		return (
 			<React.Fragment>
 				<div className='row'>
 					<div className='col'>
@@ -174,8 +229,8 @@ class Invoice extends React.Component {
 							<label htmlFor='date' className='mb-2'>
 								{this.I18n.get("INVOICE.INPUT_INVOICE_DATE")}
 							</label>
-							{this.isExistingInvoice ? (
-								this.dateTimeFormat.format(new Date(this.invoiceData.dateTimeCreated))
+							{this.state.dateTimeCreated ? (
+								this.dateTimeFormat.format(new Date(this.state.dateTimeCreated))
 							) : (
 								<input type='date' className='inputDate' id={this.FIELDNAMES.DATE} />
 							)}
@@ -186,7 +241,7 @@ class Invoice extends React.Component {
 						<div>
 							<label htmlFor='companies'>{this.I18n.get("INVOICE.INPUT_COMPANY")}</label>
 							{this.isExistingInvoice ? (
-								this.invoiceData.companyName
+								this.state.companyName
 							) : (
 								<React.Fragment>
 									<select
@@ -216,8 +271,8 @@ class Invoice extends React.Component {
 									{this.I18n.get("INVOICE.INPUT_PERIOD_FROM")}
 								</label>
 								{this.isExistingInvoice ? (
-									this.invoiceData.periodFrom ? (
-										this.dateTimeFormat.format(new Date(this.invoiceData.periodFrom))
+									this.state.periodFrom ? (
+										this.dateTimeFormat.format(new Date(this.state.periodFrom))
 									) : (
 										"--"
 									)
@@ -233,8 +288,8 @@ class Invoice extends React.Component {
 									{this.I18n.get("INVOICE.INPUT_PERIOD_TO")}
 								</label>
 								{this.isExistingInvoice ? (
-									this.invoiceData.periodTo ? (
-										this.dateTimeFormat.format(new Date(this.invoiceData.periodTo))
+									this.state.periodTo ? (
+										this.dateTimeFormat.format(new Date(this.state.periodTo))
 									) : (
 										"--"
 									)
@@ -262,17 +317,18 @@ class Invoice extends React.Component {
 						<div className='inputRow'>
 							<div className='rateInputs'></div>
 							<div className='total'>
-								{this.I18n.get("INVOICE.TOTAL")}: <span>{this.totalBeforeTaxFormatted}</span>
-								{this.taxFormatted ? "+" : ""}
-								<span>{this.taxFormatted}</span>
-								{this.totalFormatted ? "=" : ""}
-								<span>{this.totalFormatted}</span>
+								{this.I18n.get("INVOICE.TOTAL")}:{" "}
+								<span>{this.state.totalInvoiceAmount.totalBeforeVat}</span>
+								{this.state.VatRate ? "+" : ""}
+								<span>{this.state.VatRate}</span>
+								{this.state.totalInvoiceAmount.totalVatAmount ? "=" : ""}
+								<span>{this.state.totalInvoiceAmount.totalWithVatAmount}</span>
 							</div>
 						</div>
 					</div>
 				</div>
 			</React.Fragment>
-		) : null;
+		);
 	}
 }
 

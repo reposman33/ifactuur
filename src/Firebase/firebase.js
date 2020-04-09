@@ -22,7 +22,51 @@ class Firebase {
 		this.db = app.firestore();
 	}
 
+	// ===============================================================
+	// ===============================================================
+	// AUTH API
+	// ===============================================================
+	// ===============================================================
+
+	createUserWithEmailAndPassword = (email, password) => this.auth.createUserWithEmailAndPassword(email, password);
+
+	passwordReset = (email) => this.auth.sendPasswordResetEmail(email);
+
+	passwordUpdate = (password) => this.auth.currentUser.updatePassword(password);
+
+	signInWithEmailAndPassword = (email, password) => this.auth.signInWithEmailAndPassword(email, password);
+
+	signOut = () => this.auth.signOut();
+
+	// ===============================================================
+	// ===============================================================
+	// COMPANIES
+	// ===============================================================
+	// ===============================================================
+	getCompany = (id) => this.db.collection("companies").get();
+
+	getCompanies = () =>
+		this.db
+			.collection("companies")
+			.orderBy("name", "desc")
+			.get();
+
+	// ===============================================================
+	// ===============================================================
+	// VATRATE
+	// ===============================================================
+	// ===============================================================
+	getVatRates = () =>
+		this.db
+			.collection("vatrates")
+			.orderBy("rate")
+			.get();
+
+	// ===============================================================
+	// ===============================================================
 	// INVOICES
+	// ===============================================================
+	// ===============================================================
 
 	getInvoices = (columns, orderBy = "invoiceID", dir = "desc") => {
 		const rowData = [];
@@ -57,7 +101,7 @@ class Firebase {
 
 	// ===============================================================
 	// ===============================================================
-	// START UTILITY FUNCTIONS: IMPORTS - UPDATING INVOICES-SPECIFICATIONS
+	// UTILITY FUNCTIONS: IMPORTS - UPDATING INVOICES-SPECIFICATIONS
 	// ===============================================================
 	// ===============================================================
 	/**
@@ -145,32 +189,6 @@ class Firebase {
 				})
 			);
 	}
-	// ===============================================================
-	// ===============================================================
-	// END UTILITY FUNCTIONS: IMPORTS - UPDATING INVOICES-SPECIFICATIONS
-	// ===============================================================
-	// ===============================================================
-
-	/**
-	 *  updates a field in all docs in a collection with data in data
-	 * @param {string} collection
-	 * @param {string} field
-	 * @param {array} data a 2 dimensional array of objects
-	 */
-	updateCollectionField(collection, field, data) {
-		return this.db.collection(collection).get;
-	}
-	// AUTH API
-
-	createUserWithEmailAndPassword = (email, password) => this.auth.createUserWithEmailAndPassword(email, password);
-
-	passwordReset = (email) => this.auth.sendPasswordResetEmail(email);
-
-	passwordUpdate = (password) => this.auth.currentUser.updatePassword(password);
-
-	signInWithEmailAndPassword = (email, password) => this.auth.signInWithEmailAndPassword(email, password);
-
-	signOut = () => this.auth.signOut();
 }
 
 export default Firebase;
