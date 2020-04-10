@@ -6,7 +6,7 @@ import paginationFactory from "react-bootstrap-table2-paginator";
 import { I18n } from "../../services/I18n/I18n";
 import * as ROUTES from "../../constants/routes";
 import { withFirebase } from "../../Firebase";
-import "./index.scss";
+import "./invoices.scss";
 
 class Invoices extends React.Component {
 	constructor(props) {
