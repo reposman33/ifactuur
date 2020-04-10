@@ -360,23 +360,20 @@ class Invoice extends React.Component {
 						</div>
 						<div className={styles.inputRow}>
 							<div className={styles.totals}>
-								{this.I18n.get("INVOICE.TOTAL")}
-								{this.state.totals.totalBeforeVat && (
-									<span className={styles.totalBeforeVat}>
-										{this.formatNumberAsCurrency(this.state.totals.totalBeforeVat)}
-									</span>
-								)}
-								{!!this.state.totals.totalVatAmount && (
-									<React.Fragment>
-										<span className={styles.VatRate}>
-											{this.formatNumberAsCurrency(this.state.totals.totalVatAmount)}
-										</span>
-										&#43;
-										<span className={styles.totalWithVat}>
-											{this.formatNumberAsCurrency(this.state.totals.totalWithVat)}
-										</span>{" "}
-									</React.Fragment>
-								)}
+								<span>{this.I18n.get("INVOICE.TOTAL")}</span>
+								<span className={styles.totalBeforeVat}>
+									{this.state.totals.totalBeforeVat &&
+										this.formatNumberAsCurrency(this.state.totals.totalBeforeVat)}
+								</span>
+								<span className={styles.VatRate}>
+									{!!this.state.totals.totalVatAmount &&
+										this.formatNumberAsCurrency(this.state.totals.totalVatAmount)}
+								</span>
+								{!!this.state.totals.totalVatAmount && "&#43;"}
+								<span className={styles.totalWithVat}>
+									{!!this.state.totals.totalVatAmount &&
+										this.formatNumberAsCurrency(this.state.totals.totalWithVat)}
+								</span>
 							</div>
 						</div>
 						<button className='btn btn-primary float-right' onClick={this.onSubmit}>
