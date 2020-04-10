@@ -30,7 +30,7 @@ class Invoice extends React.Component {
 		};
 		this.newInvoicePromises = [];
 		this.isExistingInvoice = !!this.props.location.state && this.props.location.state.id;
-
+		this.defaultSelectedVatRate = 3;
 		// new invoice?
 		this.invoice$ = this.isExistingInvoice
 			? this.props.firebase.getInvoice(this.props.location.state.id)
@@ -101,7 +101,7 @@ class Invoice extends React.Component {
 			Promise.all(this.newInvoicePromises).then((values) => {
 				// retrieve all companies and update state
 				values[0].forEach((doc) => this.setState({ companies: [...this.state.companies, doc.data()] }));
-				// retrieve all VatRates and update state=
+				// retrieve all VatRates and update state
 				values[1].forEach((doc) => this.setState({ VatRates: [...this.state.VatRates, doc.data()] }));
 			});
 		}
@@ -317,8 +317,10 @@ class Invoice extends React.Component {
 						<div className={styles.vatRatesRow}>
 							<label>{this.I18n.get("INVOICE.INPUT_VATRATE")}:</label>
 							{!this.isExistingInvoice ? (
-								<select className={styles.VatRates} name={this.FIELDNAMES.VATRATE}>
-									<option value=''>...</option>
+								<select
+									className={styles.VatRates}
+									name={this.FIELDNAMES.VATRATE}
+									value={this.defaultSelectedVatRate}>
 									{this.state.VatRates.map((rate) => (
 										<option value={rate.id}>{rate.rate}</option>
 									))}
