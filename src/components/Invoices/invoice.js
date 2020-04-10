@@ -175,7 +175,7 @@ class Invoice extends React.Component {
 		}
 		const _VatRate = parseInt(VatRate);
 		const total = rows.reduce((total, row) => {
-			total = row.uren && row.uurtarief ? total + parseFloat(row.uren) * parseInt(row.uurtarief) : total;
+			total = row.uren && row.uurtarief ? total + parseFloat(row.uren) * parseFloat(row.uurtarief) : total;
 			return total;
 		}, 0);
 		const totalVatAmount = total * (_VatRate / 100);
