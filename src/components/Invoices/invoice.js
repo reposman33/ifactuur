@@ -113,10 +113,6 @@ class Invoice extends React.Component {
 	 */
 	onChange = (event) => {
 		let { name, value } = event.target;
-		// value =
-		// 	name === this.FIELDNAMES.HOURS || name === this.FIELDNAMES.HOURLYRATE || name === this.FIELDNAMES.TAX
-		// 		? value.replace(".", ",")
-		// 		: value;
 		this.setState((state, props) => {
 			return { [name]: value };
 		});
@@ -158,7 +154,7 @@ class Invoice extends React.Component {
 			_rows[rowIndex] =
 				_rows.length >= rowIndex + 1
 					? Object.defineProperty(_rows[rowIndex], strippedFieldName, { value: value, writable: true })
-					: {};
+					: { [strippedFieldName]: value };
 		}
 		this.setState((state, props) => {
 			return { rows: _rows, totals: this.getTotalInvoiceAmount(_rows, this.state.VatRate) };
