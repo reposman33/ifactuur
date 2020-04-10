@@ -69,6 +69,7 @@ export class I18n {
 			INPUT_RATE: { en: "Hourly rate", nl: "Uurtarief" },
 			INPUT_HOURS: { en: "Hours", nl: "Uren" },
 			INPUT_TAX: { en: "VAT", nl: "BTW" },
+			INPUT_VATRATE: { en: "VatRate", nl: "BTW waarde" },
 			TOTAL: { en: "Total", nl: "Totaal" },
 			BUTTONS: {
 				NEW_COMPANY: { en: "New company", nl: "Nieuw bedrijf" },

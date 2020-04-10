@@ -1,7 +1,7 @@
 import React from "react";
 import { I18n } from "../../services/I18n/I18n";
 import { withFirebase } from "../../Firebase";
-import "./index.scss";
+import * as styles from "./invoice.module.scss";
 
 class Invoice extends React.Component {
 	constructor(props) {
@@ -23,8 +23,7 @@ class Invoice extends React.Component {
 			rows: [],
 			statusTitle: "",
 			type: "",
-			totals: [],
-			totalInvoiceAmount: {},
+			totals: {},
 			userId: "1",
 			VatRate: undefined,
 			VatRates: [],
@@ -64,6 +63,7 @@ class Invoice extends React.Component {
 			HOURLYRATE: "uurtarief",
 			HOURS: "uren",
 			TAX: "tax",
+			VATRATE: "VatRate",
 		};
 	}
 
@@ -74,13 +74,13 @@ class Invoice extends React.Component {
 				const invoiceData = doc.data();
 				this.setState({
 					companies: [],
-					companyName: invoiceData.VatRate,
+					companyName: invoiceData.companyName,
 					dateTimeCreated: invoiceData.dateTimeCreated,
 					dateTimePaid: invoiceData.dateTimePaid,
 					dateTimePrinted: invoiceData.dateTimePrinted,
 					dateTimeSent: invoiceData.dateTimeSent,
-					id: invoiceData,
-					invoiceNr: invoiceData.invoiceNr,
+					id: parseInt(invoiceData.id),
+					invoiceNr: parseInt(invoiceData.invoiceNr),
 					invoiceDescriptionRows: JSON.parse(invoiceData.rows),
 					notes: invoiceData.notes,
 					periodFrom: invoiceData.periodFrom,
@@ -88,10 +88,9 @@ class Invoice extends React.Component {
 					rows: JSON.parse(invoiceData.rows),
 					statusTitle: invoiceData.statusTitle,
 					type: invoiceData.type,
-					totals: this.getTotalInvoiceAmount(JSON.parse(invoiceData.rows)),
-					totalInvoiceAmount: this.getTotalInvoiceAmount(JSON.parse(doc.data().rows)),
+					totals: this.getTotalInvoiceAmount(invoiceData),
 					userId: "1",
-					VatRate: invoiceData.VatRate,
+					VatRate: parseInt(invoiceData.VatRate),
 					VatRates: [],
 				});
 			});
@@ -111,14 +110,15 @@ class Invoice extends React.Component {
 	/**
 	 * calculate amounts for totalBeforeVat, totalVatAmount and totalWithVat from the description array
 	 * @param {string} invoiceData - stringified object array 1 object containing description, hourlyRate and hours for at least the first row
-	 * @returns object with amounts calculated
+	 * @returns {object} with amounts calculated
 	 */
-	getTotalInvoiceAmount(rows) {
+	getTotalInvoiceAmount(invoice) {
+		const rows = JSON.parse(invoice.rows);
 		const total = rows.reduce((total, row) => {
 			total = row.uren && row.uurtarief ? total + parseFloat(row.uren) * parseInt(row.uurtarief) : total;
 			return total;
 		}, 0);
-		const totalVatAmount = total * (parseFloat(rows.VatRate) / 100);
+		const totalVatAmount = total * (parseFloat(invoice.VatRate) / 100);
 		return {
 			totalBeforeVat: total,
 			totalVatAmount: totalVatAmount,
@@ -169,11 +169,11 @@ class Invoice extends React.Component {
 		const descriptionRows = [];
 		for (let row = 0; row < this.nrOfDescriptionRows; row++) {
 			descriptionRows.push(
-				<div key={row} className='descriptionRow'>
+				<div key={row} className={styles.descriptionRow}>
 					<input
 						type='text'
 						name={`${this.FIELDNAMES.DESCRIPTION}_${row}`}
-						className='description'
+						className={styles.description}
 						onBlur={this.handleOnBlur}
 						disabled={this.isExistingInvoice}
 						value={
@@ -182,11 +182,11 @@ class Invoice extends React.Component {
 								: ""
 						}
 					/>
-					<span className='currency'>&euro;</span>
+					<span className={styles.currency}>&euro;</span>
 					<input
 						type='number'
 						name={`${this.FIELDNAMES.HOURLYRATE}_${row}`}
-						className='hourlyrateInt'
+						className={styles.hourlyrateInt}
 						disabled={this.isExistingInvoice}
 						onBlur={this.handleOnBlur}
 						value={
@@ -198,7 +198,7 @@ class Invoice extends React.Component {
 					<input
 						type='number'
 						name={`${this.FIELDNAMES.HOURS}_${row}`}
-						className='hours'
+						className={styles.hours}
 						disabled={this.isExistingInvoice}
 						onBlur={this.handleOnBlur}
 						value={
@@ -207,7 +207,7 @@ class Invoice extends React.Component {
 								: ""
 						}
 					/>
-					<span className='total'>
+					<span className={styles.total}>
 						{this.state.invoiceDescriptionRows[row] &&
 						this.state.invoiceDescriptionRows[row].uurtarief &&
 						this.state.invoiceDescriptionRows[row] &&
@@ -230,9 +230,9 @@ class Invoice extends React.Component {
 								{this.I18n.get("INVOICE.INPUT_INVOICE_DATE")}
 							</label>
 							{this.state.dateTimeCreated ? (
-								this.dateTimeFormat.format(new Date(this.state.dateTimeCreated))
+								<span>{this.dateTimeFormat.format(new Date(this.state.dateTimeCreated))}</span>
 							) : (
-								<input type='date' className='inputDate' id={this.FIELDNAMES.DATE} />
+								<input type='date' className={styles.inputDate} name={this.FIELDNAMES.DATE} />
 							)}
 						</div>
 					</div>
@@ -241,17 +241,17 @@ class Invoice extends React.Component {
 						<div>
 							<label htmlFor='companies'>{this.I18n.get("INVOICE.INPUT_COMPANY")}</label>
 							{this.isExistingInvoice ? (
-								this.state.companyName
+								<span> {this.state.companyName}</span>
 							) : (
 								<React.Fragment>
 									<select
-										id={this.FIELDNAMES.COMPANIES}
-										className='selectCompanies'
+										name={this.FIELDNAMES.COMPANIES}
+										className={styles.selectCompanies}
 										title={this.I18n.get("INVOICE.INPUT_COMPANY")}>
-										{/* {this.state.rowData.map((row, index) => (
-									<option key={index} value={row.company}>
-										{row.company}
-									</option> */}
+										{this.state.companies.map((company) => (
+											<option key={company.id} value={company.id}>
+												{company.name}
+											</option>
 										))}
 									</select>
 									<button className='btn btn-primary slateGrey mx-3'>
@@ -305,25 +305,49 @@ class Invoice extends React.Component {
 				</div>
 				<div className='row'>
 					<div className='col'>
-						<label className='descriptionRowLabel'>{this.I18n.get("INVOICE.INPUT_SERVICES")}</label>
-						<label className='descriptionRowLabel'>{this.I18n.get("INVOICE.INPUT_RATE")}</label>
-						<label className='descriptionRowLabel'>{this.I18n.get("INVOICE.INPUT_HOURS")}</label>
-						<label className='descriptionRowLabel'>{this.I18n.get("INVOICE.TOTAL")}</label>
+						<label className={styles.descriptionRowLabel}>{this.I18n.get("INVOICE.INPUT_SERVICES")}</label>
+						<label className={styles.descriptionRowLabel}>{this.I18n.get("INVOICE.INPUT_RATE")}</label>
+						<label className={styles.descriptionRowLabel}>{this.I18n.get("INVOICE.INPUT_HOURS")}</label>
+						<label className={styles.descriptionRowLabel}>{this.I18n.get("INVOICE.TOTAL")}</label>
 						{descriptionRows}
 					</div>
 				</div>
 				<div className='row'>
 					<div className='col'>
-						<div className='inputRow'>
-							<div className='rateInputs'></div>
-							<div className='total'>
-								{this.I18n.get("INVOICE.TOTAL")}:{" "}
-								<span>{this.state.totalInvoiceAmount.totalBeforeVat}</span>
-								{this.state.VatRate ? "+" : ""}
-								<span>{this.state.VatRate}</span>
-								{this.state.totalInvoiceAmount.totalVatAmount ? "=" : ""}
-								<span>{this.state.totalInvoiceAmount.totalWithVatAmount}</span>
-							</div>
+						<div className={styles.vatRatesRow}>
+							<label>{this.I18n.get("INVOICE.INPUT_VATRATE")}:</label>
+							{!this.isExistingInvoice ? (
+								<select className={styles.VatRates} name={this.FIELDNAMES.VATRATE}>
+									<option value=''>...</option>
+									{this.state.VatRates.map((rate) => (
+										<option value={rate.id}>{rate.rate}</option>
+									))}
+								</select>
+							) : (
+								<label>{this.state.VatRate} &nbsp;%</label>
+							)}
+						</div>
+					</div>
+				</div>
+				<div className='row'>
+					<div className='col'>
+						<div className={styles.inputRow}>
+							{this.isExistingInvoice && (
+								<div className={styles.totals}>
+									{this.I18n.get("INVOICE.TOTAL")}
+									<span className={styles.totalBeforeVat}>
+										{this.formatNumberAsCurrency(this.state.totals.totalBeforeVat)}
+									</span>
+									{this.state.VatRate ? "+" : ""}
+									<span className={styles.VatRate}>
+										{this.formatNumberAsCurrency(this.state.totals.totalVatAmount)}
+									</span>
+									{this.state.totals.totalVatAmount ? "=" : ""}
+									<span className={styles.totalWithVat}>
+										{this.formatNumberAsCurrency(this.state.totals.totalWithVat)}
+									</span>
+								</div>
+							)}
 						</div>
 					</div>
 				</div>
