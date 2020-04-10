@@ -60,22 +60,24 @@ label + * {
 	}
 
 	& .description {
-		width: 80%;
+		width: 70%;
 	}
 	& .hourlyrateInt {
 		width: 10%;
 		margin-right: 0.1rem;
-		text-align: center;
+		text-align: left;
 	}
 
 	& .hours {
-		width: 5%;
+		width: 10%;
 		margin-right: 0.1rem;
+		text-align: left;
 	}
 
 	& .total {
 		background-color: #48474b;
 		margin-left: 1rem;
+		font-weight: bold;
 		text-align: center;
 		width: 10%;
 	}
