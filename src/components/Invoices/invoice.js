@@ -16,7 +16,7 @@ class Invoice extends React.Component {
 			dateTimeSent: undefined,
 			id: undefined,
 			invoiceNr: undefined,
-			invoiceDescriptionRows: [],
+			rows: [],
 			notes: "",
 			periodFrom: undefined,
 			periodTo: undefined,
@@ -82,7 +82,7 @@ class Invoice extends React.Component {
 					dateTimeSent: invoiceData.dateTimeSent,
 					id: parseInt(invoiceData.id),
 					invoiceNr: parseInt(invoiceData.invoiceNr),
-					invoiceDescriptionRows: JSON.parse(invoiceData.rows),
+					rows: JSON.parse(invoiceData.rows),
 					notes: invoiceData.notes,
 					periodFrom: invoiceData.periodFrom,
 					periodTo: invoiceData.periodTo,
@@ -113,11 +113,13 @@ class Invoice extends React.Component {
 	 */
 	onChange = (event) => {
 		let { name, value } = event.target;
-		value =
-			name === this.FIELDNAMES.HOURS || name === this.FIELDNAMES.HOURLYRATE || name === this.FIELDNAMES.TAX
-				? value.replace(".", ",")
-				: value;
-		this.setState({ [name]: value });
+		// value =
+		// 	name === this.FIELDNAMES.HOURS || name === this.FIELDNAMES.HOURLYRATE || name === this.FIELDNAMES.TAX
+		// 		? value.replace(".", ",")
+		// 		: value;
+		this.setState((state, props) => {
+			return { [name]: value };
+		});
 	};
 
 	/**
@@ -126,7 +128,9 @@ class Invoice extends React.Component {
 	onVatRateChange = (event) => {
 		// update state.VatRate
 		this.onChange(event);
-		this.setState({ totals: this.getTotalInvoiceAmount(this.state.rows, event.target.value) });
+		this.setState((state, props) => {
+			return { totals: this.getTotalInvoiceAmount(this.state.rows, event.target.value) };
+		});
 	};
 
 	/**
@@ -134,7 +138,10 @@ class Invoice extends React.Component {
 	 */
 	handleDescriptionInput = (event) => {
 		let { name, value } = event.target;
-		let rows = this.state.rows;
+		if (!!!value) {
+			return;
+		}
+		let _rows = this.state.rows;
 		// IF input is from one of the descriptionrows...
 		if (
 			name.startsWith(this.FIELDNAMES.DESCRIPTION) ||
@@ -145,15 +152,16 @@ class Invoice extends React.Component {
 			const rowIndex = parseInt(name.substr(name.indexOf("_") + 1, 1));
 			// ...get property name...
 			const strippedFieldName = name.substr(0, name.indexOf("_"));
-			name = "rows";
 			// ... we're going to mutate
-			rows = [...this.state.rows];
-			rows[rowIndex] = rows.length >= rowIndex + 1 ? rows[rowIndex] : {};
-			rows[rowIndex][strippedFieldName] = value;
-			value = rows;
+			_rows = [...this.state.rows];
+			_rows[rowIndex] =
+				_rows.length >= rowIndex + 1
+					? Object.defineProperty(_rows[rowIndex], strippedFieldName, { value: value, writable: true })
+					: {};
 		}
-		this.getTotalInvoiceAmount(rows, this.state.VatRate);
-		this.setState({ [name]: value, totals: this.getTotalInvoiceAmount(rows, this.state.VatRate) });
+		this.setState((state, props) => {
+			return { rows: _rows, totals: this.getTotalInvoiceAmount(_rows, this.state.VatRate) };
+		});
 	};
 
 	/**
@@ -200,11 +208,7 @@ class Invoice extends React.Component {
 						className={styles.description}
 						onBlur={this.handleDescriptionInput}
 						disabled={this.isExistingInvoice}
-						defaultValue={
-							this.state.invoiceDescriptionRows[row]
-								? this.state.invoiceDescriptionRows[row][this.FIELDNAMES.DESCRIPTION]
-								: ""
-						}
+						defaultValue={this.state.rows[row] ? this.state.rows[row][this.FIELDNAMES.DESCRIPTION] : ""}
 					/>
 					<span className={styles.currency}>&euro;</span>
 					<input
@@ -213,11 +217,7 @@ class Invoice extends React.Component {
 						className={styles.hourlyrateInt}
 						disabled={this.isExistingInvoice}
 						onBlur={this.handleDescriptionInput}
-						defaultValue={
-							this.state.invoiceDescriptionRows[row]
-								? this.state.invoiceDescriptionRows[row][this.FIELDNAMES.HOURLYRATE]
-								: ""
-						}
+						defaultValue={this.state.rows[row] ? this.state.rows[row][this.FIELDNAMES.HOURLYRATE] : ""}
 					/>
 					<input
 						type='number'
@@ -225,21 +225,14 @@ class Invoice extends React.Component {
 						className={styles.hours}
 						disabled={this.isExistingInvoice}
 						onBlur={this.handleDescriptionInput}
-						defaultValue={
-							this.state.invoiceDescriptionRows[row]
-								? this.state.invoiceDescriptionRows[row][this.FIELDNAMES.HOURS]
-								: ""
-						}
+						defaultValue={this.state.rows[row] ? this.state.rows[row][this.FIELDNAMES.HOURS] : ""}
 					/>
 					<span className={styles.total}>
-						{this.state.invoiceDescriptionRows[row] &&
-						this.state.invoiceDescriptionRows[row].uurtarief &&
-						this.state.invoiceDescriptionRows[row] &&
-						this.state.invoiceDescriptionRows[row].uren
-							? this.currencyFormat.format(
-									this.state.invoiceDescriptionRows[row].uurtarief *
-										this.state.invoiceDescriptionRows[row].uren
-							  )
+						{this.state.rows[row] &&
+						this.state.rows[row].uurtarief &&
+						this.state.rows[row] &&
+						this.state.rows[row].uren
+							? this.currencyFormat.format(this.state.rows[row].uurtarief * this.state.rows[row].uren)
 							: ""}
 					</span>
 				</div>
