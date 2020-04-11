@@ -7,6 +7,23 @@ class Invoice extends React.Component {
 	constructor(props) {
 		super(props);
 
+		// these fields contain the data that is to be stored in database
+		this.invoiceCollectionFields = [
+			"VatRate",
+			"companyName",
+			"dateTimeCreated",
+			"dateTimePaid",
+			"dateTimePrinted",
+			"dateTimeSent",
+			"id",
+			"invoiceNr",
+			"notes",
+			"rows",
+			"statusTitle",
+			"type",
+			"userId",
+		];
+
 		this.state = {
 			companies: [],
 			companyName: "",
@@ -16,7 +33,6 @@ class Invoice extends React.Component {
 			dateTimeSent: undefined,
 			id: undefined,
 			invoiceNr: undefined,
-			rows: [],
 			notes: "",
 			periodFrom: undefined,
 			periodTo: undefined,
@@ -86,7 +102,6 @@ class Invoice extends React.Component {
 					notes: invoiceData.notes,
 					periodFrom: invoiceData.periodFrom,
 					periodTo: invoiceData.periodTo,
-					rows: JSON.parse(invoiceData.rows),
 					statusTitle: invoiceData.statusTitle,
 					type: invoiceData.type,
 					totals: this.getTotalInvoiceAmount(JSON.parse(invoiceData.rows)),
@@ -195,6 +210,10 @@ class Invoice extends React.Component {
 
 	onSubmit = () => {
 		console.log(this.state);
+		const storageData = {};
+		this.invoiceCollectionFields.map((key) => (storageData[key] = this.state[key]));
+		storageData["dateTimeCreated"] = new Date().toLocale;
+		console.log("storageData = ", storageData);
 	};
 
 	render() {
