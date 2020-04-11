@@ -151,6 +151,8 @@ class Invoice extends React.Component {
 			const strippedFieldName = name.substr(0, name.indexOf("_"));
 			// ... we're going to mutate
 			_rows = [...this.state.rows];
+			// catch usecase where user skips data in 1st line
+			_rows[rowIndex] = _rows[rowIndex] ? _rows[rowIndex] : {};
 			_rows[rowIndex] =
 				_rows.length >= rowIndex + 1
 					? Object.defineProperty(_rows[rowIndex], strippedFieldName, { value: value, writable: true })
@@ -172,7 +174,8 @@ class Invoice extends React.Component {
 		}
 		const _VatRate = parseInt(VatRate);
 		const total = rows.reduce((total, row) => {
-			total = row.uren && row.uurtarief ? total + parseFloat(row.uren) * parseFloat(row.uurtarief) : total;
+			// watch out - user can inintially skip 1st line and start typing in lower lines to later add data in 1st line
+			total = row && row.uren && row.uurtarief ? total + parseFloat(row.uren) * parseFloat(row.uurtarief) : total;
 			return total;
 		}, 0);
 		const totalVatAmount = total * (_VatRate / 100);
@@ -369,7 +372,7 @@ class Invoice extends React.Component {
 									{!!this.state.totals.totalVatAmount &&
 										this.formatNumberAsCurrency(this.state.totals.totalVatAmount)}
 								</span>
-								{!!this.state.totals.totalVatAmount && "&#43;"}
+								{!!this.state.totals.totalVatAmount && <span>&plus;</span>}
 								<span className={styles.totalWithVat}>
 									{!!this.state.totals.totalVatAmount &&
 										this.formatNumberAsCurrency(this.state.totals.totalWithVat)}
