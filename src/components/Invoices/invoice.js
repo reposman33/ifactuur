@@ -137,7 +137,7 @@ class Invoice extends React.Component {
 	 * when selecting a VatRate from the select
 	 */
 	onVatRateChange = (event) => {
-		const { _, value } = event.target;
+		const value = event.target.value;
 		// update state.VatRate
 		this.onChange(event);
 		this.setState((state, props) => {
