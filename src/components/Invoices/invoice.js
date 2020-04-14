@@ -96,17 +96,17 @@ class Invoice extends React.Component {
 					dateTimePaid: invoiceData.dateTimePaid,
 					dateTimePrinted: invoiceData.dateTimePrinted,
 					dateTimeSent: invoiceData.dateTimeSent,
-					id: parseInt(invoiceData.id),
-					invoiceNr: parseInt(invoiceData.invoiceNr),
-					rows: JSON.parse(invoiceData.rows),
+					id: invoiceData.id,
+					invoiceNr: invoiceData.invoiceNr,
+					rows: invoiceData.rows,
 					notes: invoiceData.notes,
 					periodFrom: invoiceData.periodFrom,
 					periodTo: invoiceData.periodTo,
 					statusTitle: invoiceData.statusTitle,
 					type: invoiceData.type,
-					totals: this.getTotalInvoiceAmount(JSON.parse(invoiceData.rows)),
+					totals: this.getTotalInvoiceAmount(invoiceData.rows),
 					userId: "1",
-					VatRate: parseInt(invoiceData.VatRate),
+					VatRate: invoiceData.VatRate,
 					VatRates: [],
 				});
 			});
@@ -257,6 +257,9 @@ class Invoice extends React.Component {
 				</div>
 			);
 		}
+		if (this.isExistingInvoice && !this.state.id) {
+			return null;
+		}
 		return (
 			<React.Fragment>
 				<div className='row'>
@@ -398,7 +401,10 @@ class Invoice extends React.Component {
 								</span>
 							</div>
 						</div>
-						<button className='btn btn-primary float-right' onClick={this.onSubmit}>
+						<button
+							className='btn btn-primary float-right'
+							disabled={this.isExistingInvoice}
+							onClick={this.onSubmit}>
 							Save
 						</button>
 					</div>
