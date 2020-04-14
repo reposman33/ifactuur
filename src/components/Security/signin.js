@@ -11,7 +11,7 @@ const INITIAL_STATE = {
 	email: "",
 	password: "",
 	lastSignInTime: "",
-	error: null
+	error: null,
 };
 
 class SignInForm extends React.Component {
@@ -20,22 +20,22 @@ class SignInForm extends React.Component {
 		this.state = { ...INITIAL_STATE };
 	}
 
-	onSubmit = event => {
+	onSubmit = (event) => {
 		const { email, password } = this.state;
 		this.props.firebase
 			.signInWithEmailAndPassword(email, password)
-			.then(() => {
+			.then((res) => {
 				this.setState({
-					...INITIAL_STATE
+					...INITIAL_STATE,
 				});
 				this.props.history.push(ROUTES.INVOICES);
 			})
-			.catch(error => this.setState({ error }));
+			.catch((error) => this.setState({ error }));
 
 		event.preventDefault();
 	};
 
-	onChange = event => {
+	onChange = (event) => {
 		this.setState({ [event.target.name]: event.target.value });
 	};
 
@@ -81,7 +81,7 @@ class SignInForm extends React.Component {
 									<td colSpan='2' style={{ textAlign: "right" }}>
 										<input
 											type='submit'
-											className={isInvalid && styles.invalid}
+											className={isInvalid ? styles.invalid : ""}
 											disabled={isInvalid}
 										/>
 										{error && <p className={styles.alert}>{error.message}</p>}
