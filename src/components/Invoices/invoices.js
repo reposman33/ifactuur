@@ -7,6 +7,7 @@ import { I18n } from "../../services/I18n/I18n";
 import * as ROUTES from "../../constants/routes";
 import { withFirebase } from "../../Firebase";
 import "./invoices.scss";
+//import invoice from "./invoice";
 
 class Invoices extends React.Component {
 	constructor(props) {
@@ -22,30 +23,34 @@ class Invoices extends React.Component {
 			status: "",
 		};
 		const DateSortFunction = (a, b, order, dataField, rowA, rowB) =>
-			order === "asc" ? new Date(a) - new Date(b) : order === "desc" ? new Date(b) - new Date(a) : "";
+			order === "asc" ? a - b : order === "desc" ? b - a : "";
 
 		this.columns = [
 			{ dataField: "invoiceNr", text: "#", headerStyle: { width: "8%" }, sort: true },
 			{
 				dataField: "dateTimeCreated",
+				formatter: (cell, row) => cell.toLocaleDateString(),
 				text: this.I18n.get("INVOICES.TABLE.HEADER_DATE"),
 				sort: true,
 				sortFunc: DateSortFunction,
 			},
 			{ dataField: "companyName", text: this.I18n.get("INVOICES.TABLE.HEADER_CLIENT"), sort: true },
 			{
-				dataField: "invoiceType",
+				dataField: "type",
 				text: this.I18n.get("INVOICES.TABLE.HEADER_TYPE"),
 				headerStyle: { width: "10%" },
 			},
 			{
-				dataField: "statusTitle",
+				dataField: "statustitle",
 				text: this.I18n.get("INVOICES.TABLE.HEADER_STATUS"),
 				headerStyle: { width: "10%" },
 			},
 		];
 		// make the async call to Firebase and pick it up in componentDidMount
-		this.invoicesPromise = this.props.firebase.getInvoices(this.columns, "dateTimeCreated");
+		this.invoicesPromise = this.props.firebase.getInvoices(
+			this.columns.map((ob) => ob.dataField),
+			"dateTimeCreated"
+		);
 
 		this.table = {
 			defaultSorted: [
@@ -108,7 +113,7 @@ class Invoices extends React.Component {
 					classes='table'
 					columns={this.columns}
 					table={this.table}
-					keyField='id'
+					keyField='ID'
 					bordered
 					hover
 					rowEvents={{ onClick: this.onRowClick }}
