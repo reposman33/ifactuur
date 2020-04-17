@@ -74,11 +74,10 @@ class Firebase {
 	// ===============================================================
 	// ===============================================================
 
-	getInvoices = (columns, orderBy = "invoiceID", dir = "desc") => {
+	getInvoices = (columns, orderBy = "userId", dir = "desc") => {
 		const rowData = [];
 		return this.db
 			.collection("invoices")
-			.where("userId", "==", this.userId)
 			.orderBy(orderBy, dir)
 			.get()
 			.then((querySnapshot) => {
@@ -86,8 +85,8 @@ class Firebase {
 					const invoice = doc.data();
 					rowData.push(
 						columns.reduce((acc, col) => {
-							acc[col.dataField] = invoice[col.dataField];
-							acc.id = doc.id;
+							acc[col] = col === "dateTimeCreated" ? invoice[col].toDate() : invoice[col];
+							acc.ID = doc.id;
 							return acc;
 						}, {})
 					);
