@@ -393,20 +393,23 @@ class Invoice extends React.Component {
 						<div className={styles.vatRatesRow}>
 							<label>
 								{" "}
-								<span>{this.I18n.get("INVOICE.INPUT_VATRATE")}:</span>
+								<span>{this.I18n.get("INVOICE.LABEL_VATRATE")}:</span>
 							</label>
 							{!this.isExistingInvoice ? (
-								<select
-									className={styles.VatRates}
-									name={this.FIELDNAMES.VATRATE}
-									onChange={this.onVatRateChange}>
-									<option value=''>...</option>
-									{this.state.VatRates.map((rate) => (
-										<option key={rate.id} value={rate.rate}>
-											{rate.rate}
-										</option>
-									))}
-								</select>
+								<React.Fragment>
+									<span>{this.I18n.get("INVOICE.INPUT_VATRATE")}:</span>
+									<select
+										className={styles.VatRates}
+										name={this.FIELDNAMES.VATRATE}
+										onChange={this.onVatRateChange}>
+										<option value=''>...</option>
+										{this.state.VatRates.map((rate) => (
+											<option key={rate.id} value={rate.rate}>
+												{rate.rate}
+											</option>
+										))}
+									</select>
+								</React.Fragment>
 							) : (
 								<label>{this.state.VatRate} &nbsp;%</label>
 							)}

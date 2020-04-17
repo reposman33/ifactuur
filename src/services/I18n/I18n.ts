@@ -68,7 +68,7 @@ export class I18n {
 			COLUMNHEADER_SERVICES: { en: "Services delivered", nl: "Geleverde diensten" },
 			COLUMNHEADER_RATE: { en: "Hourly rate", nl: "Uurtarief" },
 			COLUMNHEADER_HOURS: { en: "Hours", nl: "Uren" },
-			LABEL_TAX: { en: "VAT", nl: "BTW" },
+			LABEL_VATRATE: { en: "VAT", nl: "BTW" },
 			INPUT_VATRATE: { en: "Select rate", nl: "Selecteer BTW" },
 			INPUT_COMPANY: { en: "Select a company", nl: "Selecteer bedrijf" },
 			TOTAL: { en: "Total", nl: "Totaal" },
