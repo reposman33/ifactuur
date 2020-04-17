@@ -24,12 +24,17 @@ class Invoices extends React.Component {
 		};
 		const DateSortFunction = (a, b, order, dataField, rowA, rowB) =>
 			order === "asc" ? a - b : order === "desc" ? b - a : "";
+		this.dateTimeFormat = new Intl.DateTimeFormat(this.I18n.getLocale(), {
+			year: "numeric",
+			month: "long",
+			day: "numeric",
+		});
 
 		this.columns = [
 			{ dataField: "invoiceNr", text: "#", headerStyle: { width: "8%" }, sort: true },
 			{
 				dataField: "dateTimeCreated",
-				formatter: (cell, row) => cell.toLocaleDateString(),
+				formatter: (cell, row) => this.dateTimeFormat.format(cell),
 				text: this.I18n.get("INVOICES.TABLE.HEADER_DATE"),
 				sort: true,
 				sortFunc: DateSortFunction,
@@ -100,7 +105,7 @@ class Invoices extends React.Component {
 	onRowClick = (e, row, rowIndex) => {
 		this.props.history.push({
 			pathname: ROUTES.INVOICE,
-			state: { userId: this.state.userId, id: this.state.rowData[rowIndex].id },
+			state: { id: this.state.rowData[rowIndex].ID },
 		});
 	};
 

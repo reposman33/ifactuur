@@ -2,28 +2,27 @@ import React from "react";
 import { I18n } from "../../services/I18n/I18n";
 import { withFirebase } from "../../Firebase";
 import * as styles from "./invoice.module.scss";
+import { withAuthentication } from "../Session";
 
 class Invoice extends React.Component {
 	constructor(props) {
 		super(props);
+		// these fields contain the data and transform functions for data to be stored
+		this.persistFields = {
+			VatRate: parseInt,
+			companyName: null,
+			dateTimeCreated: (date) => new Date(date),
+			dateTimePaid: (date) => new Date(date),
+			dateTimePrinted: (date) => new Date(date),
+			dateTimeSent: (date) => new Date(date),
+			invoiceNr: parseInt, // <=== Genereren!
+			notes: null,
+			rows: null,
+			statusTitle: null, // <=== verstuurd betaald etc
+			type: parseInt, // <=== debet /credit nog niet geimp;ementeerd
+		};
 
-		// these fields contain the data that is to be stored in database
-		this.invoiceCollectionFields = [
-			"VatRate",
-			"companyName",
-			"dateTimeCreated",
-			"dateTimePaid",
-			"dateTimePrinted",
-			"dateTimeSent",
-			"id",
-			"invoiceNr",
-			"notes",
-			"rows",
-			"statusTitle",
-			"type",
-			"userId",
-		];
-
+		// initialize state
 		this.state = {
 			companies: [],
 			companyName: "",
@@ -40,14 +39,15 @@ class Invoice extends React.Component {
 			statusTitle: "",
 			type: "",
 			totals: {},
-			userId: "1",
 			VatRate: undefined,
 			VatRates: [],
 		};
+
 		this.newInvoicePromises = [];
 		this.isExistingInvoice = !!this.props.location.state && this.props.location.state.id;
+		// display VATRate with this id by default in select
 		this.defaultSelectedVatRate = 3;
-		// new invoice?
+		// retrieve invoice from db
 		this.invoice$ = this.isExistingInvoice
 			? this.props.firebase.getInvoice(this.props.location.state.id)
 			: undefined;
@@ -86,27 +86,35 @@ class Invoice extends React.Component {
 
 	componentDidMount() {
 		if (this.invoice$) {
-			this.invoice$.then((doc) => {
+			this.invoice$.then((invoice) => {
 				// update state with retrieved invoice
-				const invoiceData = doc.data();
 				this.setState({
 					companies: [],
-					companyName: invoiceData.companyName,
-					dateTimeCreated: invoiceData.dateTimeCreated,
-					dateTimePaid: invoiceData.dateTimePaid,
-					dateTimePrinted: invoiceData.dateTimePrinted,
-					dateTimeSent: invoiceData.dateTimeSent,
-					id: invoiceData.id,
-					invoiceNr: invoiceData.invoiceNr,
-					rows: invoiceData.rows,
-					notes: invoiceData.notes,
-					periodFrom: invoiceData.periodFrom,
-					periodTo: invoiceData.periodTo,
-					statusTitle: invoiceData.statusTitle,
-					type: invoiceData.type,
-					totals: this.getTotalInvoiceAmount(invoiceData.rows),
-					userId: "1",
-					VatRate: invoiceData.VatRate,
+					companyName: invoice.companyName,
+					dateTimeCreated: invoice.dateTimeCreated
+						? this.dateTimeFormat.format(invoice.dateTimeCreated)
+						: invoice.dateTimeCreated,
+					dateTimePaid: invoice.dateTimePaid
+						? this.dateTimeFormat.format(invoice.dateTimePaid)
+						: invoice.dateTimePaid,
+					dateTimePrinted: invoice.dateTimePrinted
+						? this.dateTimeFormat.format(invoice.dateTimePrinted)
+						: invoice.dateTimePrinted,
+					dateTimeSent: invoice.dateTimeSent
+						? this.dateTimeFormat.format(invoice.dateTimeSent)
+						: invoice.dateTimeSent,
+					id: invoice.id,
+					invoiceNr: invoice.invoiceNr,
+					rows: invoice.rows,
+					notes: invoice.notes,
+					periodFrom: invoice.periodFrom
+						? this.dateTimeFormat.format(invoice.periodFrom)
+						: invoice.periodFrom,
+					periodTo: invoice.periodTo ? this.dateTimeFormat.format(invoice.periodTo) : invoice.periodTo,
+					statusTitle: invoice.statusTitle,
+					type: invoice.type,
+					totals: this.getTotalInvoiceAmount(invoice.rows),
+					VatRate: invoice.VatRate,
 					VatRates: [],
 				});
 			});
@@ -209,11 +217,17 @@ class Invoice extends React.Component {
 	};
 
 	onSubmit = () => {
-		console.log(this.state);
 		const storageData = {};
-		this.invoiceCollectionFields.map((key) => (storageData[key] = this.state[key]));
-		storageData["dateTimeCreated"] = new Date().toLocale;
-		console.log("storageData = ", storageData);
+		Object.keys(this.persistFields).map(
+			// filter keys and optionally convert state prop values
+			(key) =>
+				(storageData[key] = this.persistFields[key]
+					? this.persistFields[key](this.state[key]) // convert...
+					: this.state[key]) // store as is (string)
+		);
+		this.props.firebase
+			.saveInvoice(storageData)
+			.then((docRef) => console.log("document with ref ", docRef, " added"));
 	};
 
 	render() {
@@ -269,7 +283,7 @@ class Invoice extends React.Component {
 								{this.I18n.get("INVOICE.LABEL_INVOICE_DATE")}
 							</label>
 							{this.isExistingInvoice ? (
-								<span>{this.dateTimeFormat.format(new Date(this.state.dateTimeCreated))}</span>
+								<span>{this.state.dateTimeCreated}</span>
 							) : (
 								<input
 									type='date'
@@ -316,7 +330,7 @@ class Invoice extends React.Component {
 								<label className='mb-1'>{this.I18n.get("INVOICE.LABEL_PERIOD_FROM")}</label>
 								{this.isExistingInvoice ? (
 									this.state.periodFrom ? (
-										this.dateTimeFormat.format(new Date(this.state.periodFrom))
+										this.state.periodFrom
 									) : (
 										"--"
 									)
@@ -331,7 +345,7 @@ class Invoice extends React.Component {
 								<label className='mb-1'>{this.I18n.get("INVOICE.LABEL_PERIOD_TO")}</label>
 								{this.isExistingInvoice ? (
 									this.state.periodTo ? (
-										this.dateTimeFormat.format(new Date(this.state.periodTo))
+										this.state.periodTo
 									) : (
 										"--"
 									)
@@ -372,7 +386,7 @@ class Invoice extends React.Component {
 									className={styles.VatRates}
 									name={this.FIELDNAMES.VATRATE}
 									onChange={this.onVatRateChange}>
-									<option value=''>{this.I18n.get("INVOICE.INPUT_VATRATE")}</option>
+									<option value=''>...</option>
 									{this.state.VatRates.map((rate) => (
 										<option key={rate.id} value={rate.rate}>
 											{rate.rate}
@@ -414,4 +428,4 @@ class Invoice extends React.Component {
 	}
 }
 
-export default withFirebase(Invoice);
+export default withAuthentication(withFirebase(Invoice));

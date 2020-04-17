@@ -99,7 +99,23 @@ class Firebase {
 		this.db
 			.collection("invoices")
 			.doc(id)
-			.get();
+			.get()
+			.then((doc) => {
+				const invoice = doc.data();
+				// convert fireStore Timestamp to JAvaScript Date object for a few fields
+				[
+					"dateTimeCreated",
+					"dateTimePaid",
+					"dateTimeSent",
+					"dateTimePrinted",
+					"periodFrom",
+					"periodTo",
+				].forEach(
+					(fieldName) =>
+						(invoice[fieldName] = invoice[fieldName] ? invoice[fieldName].toDate() : invoice[fieldName])
+				);
+				return invoice;
+			});
 
 	saveInvoice = (invoice) => {
 		// retrieve latest invoiceNr
