@@ -325,35 +325,49 @@ class Invoice extends React.Component {
 				<div className='row'>
 					<div className='col'>
 						<label htmlFor='invoice-period'>{this.I18n.get("INVOICE.LABEL_PERIOD")}</label>
-						<div className='displayFlex mt-2' id='invoice-period'>
-							<div className='mr-3'>
-								<label className='mb-1'>{this.I18n.get("INVOICE.LABEL_PERIOD_FROM")}</label>
-								{this.isExistingInvoice ? (
-									this.state.periodFrom ? (
-										this.state.periodFrom
+						<div className='d-flex justify-content-between mt-2' id='invoice-period'>
+							<div className={styles.periodBlock}>
+								<div className='mr-3'>
+									<label className='mb-1'>{this.I18n.get("INVOICE.LABEL_PERIOD_FROM")}</label>
+									{this.isExistingInvoice ? (
+										this.state.periodFrom ? (
+											this.state.periodFrom
+										) : (
+											"--"
+										)
 									) : (
-										"--"
-									)
-								) : (
-									<input
-										type='date'
-										name={this.FIELDNAMES.PERIOD_FROM}
-										onChange={this.onChange}></input>
-								)}
+										<input
+											type='date'
+											name={this.FIELDNAMES.PERIOD_FROM}
+											onChange={this.onChange}></input>
+									)}
+								</div>
+								<div className='ml-3'>
+									<label className='mb-1'>{this.I18n.get("INVOICE.LABEL_PERIOD_TO")}</label>
+									{this.isExistingInvoice ? (
+										this.state.periodTo ? (
+											this.state.periodTo
+										) : (
+											"--"
+										)
+									) : (
+										<input
+											type='date'
+											name={this.FIELDNAMES.PERIOD_TO}
+											onChange={this.onChange}></input>
+									)}
+								</div>
 							</div>
 							<div className='ml-3'>
-								<label className='mb-1'>{this.I18n.get("INVOICE.LABEL_PERIOD_TO")}</label>
-								{this.isExistingInvoice ? (
-									this.state.periodTo ? (
-										this.state.periodTo
-									) : (
-										"--"
-									)
+								<label className='mb-1'>Factuur type</label>
+								{this.state.type ? (
+									this.state.type
 								) : (
-									<input
-										type='date'
-										name={this.FIELDNAMES.PERIOD_TO}
-										onChange={this.onChange}></input>
+									<select name='type' onChange={this.onChange}>
+										<option value=''>...</option>
+										<option value='credit'>credit</option>
+										<option value='debet'>debet</option>
+									</select>
 								)}
 							</div>
 						</div>

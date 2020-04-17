@@ -90,3 +90,10 @@ label + * {
 	font-size: 1.1rem;
 	font-weight: bold;
 }
+.periodBlock {
+	width: 45%;
+	& div {
+		width: 35%;
+		display: inline-block;
+	}
+}
