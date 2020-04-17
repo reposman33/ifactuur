@@ -114,7 +114,7 @@ class Invoice extends React.Component {
 					statusTitle: invoice.statusTitle,
 					type: invoice.type,
 					totals: this.getTotalInvoiceAmount(invoice.rows),
-					VatRate: invoice.VatRate,
+					VatRate: invoice.VATRate,
 					VatRates: [],
 				});
 			});
