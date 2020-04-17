@@ -19,7 +19,7 @@ class Invoices extends React.Component {
 			date: "",
 			client: "",
 			sum: "",
-			status: ""
+			status: "",
 		};
 		const DateSortFunction = (a, b, order, dataField, rowA, rowB) =>
 			order === "asc" ? new Date(a) - new Date(b) : order === "desc" ? new Date(b) - new Date(a) : "";
@@ -30,19 +30,19 @@ class Invoices extends React.Component {
 				dataField: "dateTimeCreated",
 				text: this.I18n.get("INVOICES.TABLE.HEADER_DATE"),
 				sort: true,
-				sortFunc: DateSortFunction
+				sortFunc: DateSortFunction,
 			},
 			{ dataField: "companyName", text: this.I18n.get("INVOICES.TABLE.HEADER_CLIENT"), sort: true },
 			{
 				dataField: "invoiceType",
 				text: this.I18n.get("INVOICES.TABLE.HEADER_TYPE"),
-				headerStyle: { width: "10%" }
+				headerStyle: { width: "10%" },
 			},
 			{
 				dataField: "statusTitle",
 				text: this.I18n.get("INVOICES.TABLE.HEADER_STATUS"),
-				headerStyle: { width: "10%" }
-			}
+				headerStyle: { width: "10%" },
+			},
 		];
 		// make the async call to Firebase and pick it up in componentDidMount
 		this.invoicesPromise = this.props.firebase.getInvoices(this.columns, "dateTimeCreated");
@@ -51,10 +51,10 @@ class Invoices extends React.Component {
 			defaultSorted: [
 				{
 					dataField: "dateTimeCreated",
-					order: "asc"
-				}
+					order: "asc",
+				},
 			],
-			defaultSortDirection: "desc"
+			defaultSortDirection: "desc",
 		};
 		this.handleNewInvoice = this.handleNewInvoice.bind(this);
 
@@ -71,26 +71,21 @@ class Invoices extends React.Component {
 				<span className='react-bootstrap-table-pagination-total'>
 					{this.I18n.get("PAGINATION.TOTAL")
 						.split(" ")
-						.map(word =>
+						.map((word) =>
 							word === "{from}" ? from : word === "{to}" ? to : word === "{size}" ? size : word
 						)
 						.join(" ")}
 				</span>
-			)
+			),
 		};
 	}
 
 	componentDidMount() {
-		// ==> function that imports invoices as exported from MySQL db
-		// this.props.firebase.importInvoices();
-		// ==> function that converts specification field to an array with object, 1 per row
-		// this.props.firebase.convertRows2JSON();
-		// function that converts invoice.rows fiewld to type array
-		// this.props.firebase.convertInvoiceRowsToArray();
-		// convert specified field keys to datatypes
-		// this.props.firebase.typeInvoices();
-		// ==> retrieve the invoices to display in browser...
-		this.invoicesPromise.then(res => this.setState({ rowData: res }));
+		//this.props.firebase.importInvoices();
+		//this.props.firebase.convertRows2Array();
+		//this.props.firebase.typeInvoices();
+		//this.props.firebase.updateUserId("JN8UiHXwUINB8QloSBnUP2BH0a02");
+		this.invoicesPromise.then((res) => this.setState({ rowData: res }));
 	}
 
 	handleNewInvoice() {
@@ -98,7 +93,10 @@ class Invoices extends React.Component {
 	}
 
 	onRowClick = (e, row, rowIndex) => {
-		this.props.history.push({ pathname: ROUTES.INVOICE, state: { id: this.state.rowData[rowIndex].id } });
+		this.props.history.push({
+			pathname: ROUTES.INVOICE,
+			state: { userId: this.state.userId, id: this.state.rowData[rowIndex].id },
+		});
 	};
 
 	render() {
