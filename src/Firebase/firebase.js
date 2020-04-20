@@ -102,7 +102,7 @@ class Firebase {
 			.get()
 			.then((doc) => {
 				const invoice = doc.data();
-				// convert fireStore Timestamp to JAvaScript Date object for a few fields
+				// convert fireStore Timestamp to JavaScript Date object for a few fields
 				[
 					"dateTimeCreated",
 					"dateTimePaid",
@@ -117,20 +117,20 @@ class Firebase {
 				return invoice;
 			});
 
-	saveInvoice = (invoice) => {
-		// retrieve latest invoiceNr
+	/**
+	 * this function returns the last fieldvalue of the given field in the given collection
+	 * @param {string} collection
+	 * @param {string} fieldName
+	 * returns {any}  - the fieldvalue
+	 */
+	getLastInvoicenr = () =>
 		this.db
 			.collection("invoices")
-			.orderBy("invoiceNr", "desc")
+			.orderBy("id", "desc")
 			.limit(1)
-			.then((doc) => {
-				const _invoice = doc.data();
-				// add 1 to latest invoiceNr
-				invoice.invoiceNr = _invoice.invoiceNr + 1;
-				invoice.userId = this.userId;
-				return this.db.collection("invoices").add(invoice);
-			});
-	};
+			.get();
+
+	saveInvoice = (invoice) => this.db.collection("invoices").add(invoice);
 
 	// ===============================================================
 	// ===============================================================

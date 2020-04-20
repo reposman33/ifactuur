@@ -10,23 +10,21 @@ class Invoice extends React.Component {
 		// these fields contain the data and transform functions for data to be stored
 		this.persistFields = {
 			VatRate: parseInt,
-			companyName: null,
+			companyName: (fieldValue) => fieldValue, // return value as is
 			dateTimeCreated: (date) => new Date(date),
-			dateTimePaid: (date) => new Date(date),
-			dateTimePrinted: (date) => new Date(date),
-			dateTimeSent: (date) => new Date(date),
-			invoiceNr: parseInt, // <=== Genereren!
-			notes: null,
-			rows: null,
-			statusTitle: null, // <=== verstuurd betaald etc
-			type: parseInt, // <=== debet /credit nog niet geimp;ementeerd
+			periodFrom: (date) => (date ? new Date(date) : undefined),
+			periodTo: (date) => (date ? new Date(date) : undefined),
+			invoiceNr: parseInt,
+			rows: (fieldValue) => fieldValue,
+			statusTitle: () => "created",
+			type: (fieldValue) => fieldValue,
 		};
 
 		// initialize state
 		this.state = {
 			companies: [],
 			companyName: "",
-			dateTimeCreated: undefined,
+			dateTimeCreated: new Date().toISOString().split("T")[0],
 			dateTimePaid: undefined,
 			dateTimePrinted: undefined,
 			dateTimeSent: undefined,
@@ -37,7 +35,7 @@ class Invoice extends React.Component {
 			periodTo: undefined,
 			rows: [],
 			statusTitle: "",
-			type: "",
+			type: "debet",
 			totals: {},
 			VatRate: undefined,
 			VatRates: [],
@@ -45,14 +43,14 @@ class Invoice extends React.Component {
 
 		this.newInvoicePromises = [];
 		this.isExistingInvoice = !!this.props.location.state && this.props.location.state.id;
-		// display VATRate with this id by default in select
-		this.defaultSelectedVatRate = 3;
 		// retrieve invoice from db
 		this.invoice$ = this.isExistingInvoice
 			? this.props.firebase.getInvoice(this.props.location.state.id)
 			: undefined;
 		// new invoice!
 		if (!this.isExistingInvoice) {
+			// retrieve last invoiceNr
+			this.newInvoicePromises.push(this.props.firebase.getLastInvoicenr());
 			// retrieve companies
 			this.newInvoicePromises.push(this.props.firebase.getCompanies());
 			// retrieve VatRates
@@ -82,6 +80,8 @@ class Invoice extends React.Component {
 			TAX: "tax",
 			VATRATE: "VatRate",
 		};
+		// bind it or 'this' scope in function is undefined...
+		this.handleDescriptionInput = this.handleDescriptionInput.bind(this);
 	}
 
 	componentDidMount() {
@@ -91,6 +91,7 @@ class Invoice extends React.Component {
 				this.setState({
 					companies: [],
 					companyName: invoice.companyName,
+					// only format dates if not undefined
 					dateTimeCreated: invoice.dateTimeCreated
 						? this.dateTimeFormat.format(invoice.dateTimeCreated)
 						: invoice.dateTimeCreated,
@@ -119,20 +120,23 @@ class Invoice extends React.Component {
 				});
 			});
 		} else {
-			// initialize state to undefined
-			// retrieve companies, VatRates
-			// Promise.all() resolves the provided array of promises. Values are in array order: Companies and VatRates
+			// retrieve last invoiceNr,companies and VatRates
+			const companies = [];
+			const VatRates = [];
 			Promise.all(this.newInvoicePromises).then((values) => {
+				// retrieve last invoice number
+				values[0].forEach((doc) => this.setState({ invoiceNr: doc.data().invoiceNr + 1 }));
 				// retrieve all companies and update state
-				values[0].forEach((doc) => this.setState({ companies: [...this.state.companies, doc.data()] }));
+				values[1].forEach((doc) => companies.push(doc.data()));
 				// retrieve all VatRates and update state
-				values[1].forEach((doc) => this.setState({ VatRates: [...this.state.VatRates, doc.data()] }));
+				values[2].forEach((doc) => VatRates.push(doc.data()));
+				this.setState({ companies: companies, VatRates: VatRates });
 			});
 		}
 	}
 
 	/**
-	 * handle input in input fields
+	 * handle input of most input fields
 	 */
 	onChange = (event) => {
 		let { name, value } = event.target;
@@ -142,7 +146,7 @@ class Invoice extends React.Component {
 	};
 
 	/**
-	 * when selecting a VatRate from the select
+	 * when selecting a VatRate also calculate totals
 	 */
 	onVatRateChange = (event) => {
 		const value = event.target.value;
@@ -154,37 +158,34 @@ class Invoice extends React.Component {
 	};
 
 	/**
-	 * handle input in description, hourly rate or hours worked
+	 * handle input in fields 'description', 'hourlyRrate' or 'hours'
 	 */
-	handleDescriptionInput = (event) => {
+	handleDescriptionInput(event) {
+		// let { name, value } = { name: "description", value: "direct ly set value" };
 		let { name, value } = event.target;
 		if (!!!value) {
 			return;
 		}
-		let _rows = this.state.rows;
+
 		// IF input is from one of the descriptionrows...
-		if (
-			name.startsWith(this.FIELDNAMES.DESCRIPTION) ||
-			name.startsWith(this.FIELDNAMES.HOURLYRATE) ||
-			name.startsWith(this.FIELDNAMES.HOURS)
-		) {
-			// ...get index nr...
-			const rowIndex = parseInt(name.substr(name.indexOf("_") + 1, 1));
-			// ...get property name...
-			const strippedFieldName = name.substr(0, name.indexOf("_"));
-			// ... we're going to mutate
-			_rows = [...this.state.rows];
-			// catch usecase where user skips data in 1st line
-			_rows[rowIndex] = _rows[rowIndex] ? _rows[rowIndex] : {};
-			_rows[rowIndex] =
-				_rows.length >= rowIndex + 1
-					? Object.defineProperty(_rows[rowIndex], strippedFieldName, { value: value, writable: true })
-					: { [strippedFieldName]: value };
-		}
-		this.setState((state, props) => {
-			return { rows: _rows, totals: this.getTotalInvoiceAmount(_rows, this.state.VatRate) };
+		// ...get index nr...
+		const rowIndex = parseInt(name.substr(name.indexOf("_") + 1, 1));
+		// ...get property name...
+		const strippedFieldName = name.substr(0, name.indexOf("_"));
+		// ... we're going to mutate so clone...
+		const rows = [...this.state.rows];
+		// ...parse stringified nrs to numbers
+		const val = isNaN(parseInt(value)) ? value : parseInt(value);
+		// Check: object @ index exists? add key-value to existing object : add new object to array
+		rows[rowIndex] = rows[rowIndex]
+			? Object.assign(rows[rowIndex], { [strippedFieldName]: val })
+			: { [strippedFieldName]: val };
+		//store stuff
+		this.setState({
+			rows: rows,
+			totals: this.getTotalInvoiceAmount(rows, this.state.VatRate),
 		});
-	};
+	}
 
 	/**
 	 * calculate amounts for totalBeforeVat, totalVatAmount and totalWithVat from the description array
@@ -217,17 +218,19 @@ class Invoice extends React.Component {
 	};
 
 	onSubmit = () => {
-		const storageData = {};
+		const invoice = {};
+		// The keys to be stored and their conversion function are defined in persistFields. Apply here
 		Object.keys(this.persistFields).map(
 			// filter keys and optionally convert state prop values
-			(key) =>
-				(storageData[key] = this.persistFields[key]
-					? this.persistFields[key](this.state[key]) // convert...
-					: this.state[key]) // store as is (string)
+			(key) => {
+				if (this.state[key]) {
+					invoice[key] = this.persistFields[key](this.state[key]);
+				}
+				return null;
+			}
 		);
-		this.props.firebase
-			.saveInvoice(storageData)
-			.then((docRef) => console.log("document with ref ", docRef, " added"));
+
+		this.props.firebase.saveInvoice(invoice).then((docRef) => console.log("document added"));
 	};
 
 	render() {
@@ -241,7 +244,6 @@ class Invoice extends React.Component {
 						className={styles.description}
 						onBlur={this.handleDescriptionInput}
 						disabled={this.isExistingInvoice}
-						defaultValue={this.state.rows[row] ? this.state.rows[row][this.FIELDNAMES.DESCRIPTION] : ""}
 					/>
 					<span className={styles.currency}>&euro;</span>
 					<input
@@ -250,7 +252,6 @@ class Invoice extends React.Component {
 						className={styles.hourlyrateInt}
 						disabled={this.isExistingInvoice}
 						onBlur={this.handleDescriptionInput}
-						defaultValue={this.state.rows[row] ? this.state.rows[row][this.FIELDNAMES.HOURLYRATE] : ""}
 					/>
 					<input
 						type='number'
@@ -258,7 +259,6 @@ class Invoice extends React.Component {
 						className={styles.hours}
 						disabled={this.isExistingInvoice}
 						onBlur={this.handleDescriptionInput}
-						defaultValue={this.state.rows[row] ? this.state.rows[row][this.FIELDNAMES.HOURS] : ""}
 					/>
 					<span className={styles.total}>
 						{this.state.rows[row] &&
@@ -287,6 +287,7 @@ class Invoice extends React.Component {
 							) : (
 								<input
 									type='date'
+									value={this.state.dateTimeCreated} // default value is today
 									className={styles.inputDate}
 									name={this.FIELDNAMES.DATE}
 									onChange={this.onChange}
@@ -305,7 +306,6 @@ class Invoice extends React.Component {
 									<select
 										name={this.FIELDNAMES.COMPANYNAME}
 										className={styles.selectCompanies}
-										title={this.I18n.get("INVOICE.INPUT_COMPANY")}
 										onChange={this.onChange}>
 										<option value=''>{this.I18n.get("INVOICE.INPUT_COMPANY")}</option>
 										{this.state.companies.map((company) => (
@@ -360,13 +360,12 @@ class Invoice extends React.Component {
 							</div>
 							<div className='ml-3'>
 								<label className='mb-1'>Factuur type</label>
-								{this.state.type ? (
+								{this.isExistingInvoice ? (
 									this.state.type
 								) : (
-									<select name='type' onChange={this.onChange}>
-										<option value=''>...</option>
-										<option value='credit'>credit</option>
+									<select name='type' value={this.state.type} onChange={this.onChange}>
 										<option value='debet'>debet</option>
+										<option value='credit'>credit</option>
 									</select>
 								)}
 							</div>
@@ -402,7 +401,6 @@ class Invoice extends React.Component {
 										className={styles.VatRates}
 										name={this.FIELDNAMES.VATRATE}
 										onChange={this.onVatRateChange}>
-										<option value=''>...</option>
 										{this.state.VatRates.map((rate) => (
 											<option key={rate.id} value={rate.rate}>
 												{rate.rate}
