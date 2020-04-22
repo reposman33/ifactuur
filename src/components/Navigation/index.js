@@ -14,10 +14,10 @@ class NavigationForm extends React.Component {
 		this.state = {};
 		this.routes = {
 			INVOICES: ["/invoice", "/invoices"],
-			BILLS: ["/bill", "/bills"],
+			EXPENSES: ["/expense", "/expenses"],
 			COMPANIES: ["/company", "/companies"],
 			SETTINGS: ["/settings"],
-			STATS: ["/stats"]
+			STATS: ["/stats"],
 		};
 	}
 
@@ -44,11 +44,11 @@ class NavigationForm extends React.Component {
 						<li
 							id='nota'
 							className={
-								this.routes.BILLS.includes(this.props.location.pathname)
+								this.routes.EXPENSES.includes(this.props.location.pathname)
 									? styles.navMenuItemSelected
 									: ""
 							}>
-							<Link to={ROUTES.BILLS}>{this.I18n.get("NAVIGATION.MENU_TITLE_BILLS")}</Link>
+							<Link to={ROUTES.EXPENSES}>{this.I18n.get("NAVIGATION.MENU_TITLE_EXPENSES")}</Link>
 						</li>
 						<li
 							id='bedrijf'
@@ -94,11 +94,11 @@ class NavigationForm extends React.Component {
 	}
 }
 
-const AddAuthentication = Component => props => (
-	<AuthUserContext.Consumer>{authUser => <Component authUser={authUser} {...props} />}</AuthUserContext.Consumer>
+const AddAuthentication = (Component) => (props) => (
+	<AuthUserContext.Consumer>{(authUser) => <Component authUser={authUser} {...props} />}</AuthUserContext.Consumer>
 );
 
-const authCondition = authUser => authUser && authUser.authUser !== null;
+const authCondition = (authUser) => authUser && authUser.authUser !== null;
 
 const Navigation = compose(withAuthentication, AddAuthentication)(NavigationForm);
 

@@ -12,7 +12,7 @@ export class I18n {
 	private _LANGUAGES: object = {
 		NAVIGATION: {
 			MENU_TITLE_INVOICES: { en: "Invoices", nl: "Facturen" },
-			MENU_TITLE_BILLS: { en: "Bills", nl: "Notas" },
+			MENU_TITLE_EXPENSES: { en: "Expenses", nl: "Uitgaven" },
 			MENU_TITLE_COMPANIES: { en: "Companies", nl: "Bedrijven" },
 			MENU_TITLE_SETTINGS: { en: "Settings", nl: "Instellingen" },
 			MENU_TITLE_STATS: { en: "Stats", nl: "Berekeningen" },

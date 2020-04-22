@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import * as ROUTES from "../../constants/routes.js";
 import { withAuthentication } from "../Session/";
 import Settings from "../Settings";
-import { Bill, Bills } from "../Bills/";
+import { Expense, Expenses } from "../Expenses/";
 import { Company, Companies } from "../Companies/";
 import Invoices from "../Invoices/invoices";
 import Invoice from "../Invoices/invoice";
@@ -53,8 +53,8 @@ class App extends React.Component {
 						<Route exact path={ROUTES.COMPANIES} component={Companies} />
 						<Route exact path={ROUTES.COMPANY} component={Company} />
 						<Route exact path={ROUTES.SETTINGS} component={Settings} />
-						<Route exact path={ROUTES.BILLS} component={Bills} />
-						<Route exact path={ROUTES.BILL} component={Bill} />
+						<Route exact path={ROUTES.EXPENSES} component={Expenses} />
+						<Route exact path={ROUTES.EXPENSE} component={Expense} />
 						<Route exact path={ROUTES.INVOICES} component={Invoices} />
 						<Route exact path={ROUTES.INVOICE} component={Invoice} />
 						<Route exact path={ROUTES.PASSWORD_CHANGE} component={PasswordChange} />

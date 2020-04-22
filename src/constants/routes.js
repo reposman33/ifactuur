@@ -1,6 +1,6 @@
 export const SETTINGS = "/settings";
-export const BILLS = "/bills";
-export const BILL = "/bill";
+export const EXPENSES = "/Expenses";
+export const EXPENSE = "/Expense";
 export const COMPANIES = "/companies";
 export const COMPANY = "/company";
 export const INVOICES = "/invoices";
