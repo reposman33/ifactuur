@@ -6,8 +6,8 @@ import paginationFactory from "react-bootstrap-table2-paginator";
 import { I18n } from "../../services/I18n/I18n";
 import * as ROUTES from "../../constants/routes";
 import { withFirebase } from "../../Firebase";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./invoices.scss";
-//import invoice from "./invoice";
 
 class Invoices extends React.Component {
 	constructor(props) {
@@ -39,7 +39,11 @@ class Invoices extends React.Component {
 				sort: true,
 				sortFunc: DateSortFunction,
 			},
-			{ dataField: "companyName", text: this.I18n.get("INVOICES.TABLE.HEADER_CLIENT"), sort: true },
+			{
+				dataField: "companyName",
+				text: this.I18n.get("INVOICES.TABLE.HEADER_CLIENT"),
+				sort: true,
+			},
 			{
 				dataField: "type",
 				text: this.I18n.get("INVOICES.TABLE.HEADER_TYPE"),
@@ -48,6 +52,18 @@ class Invoices extends React.Component {
 			{
 				dataField: "statustitle",
 				text: this.I18n.get("INVOICES.TABLE.HEADER_STATUS"),
+				headerStyle: { width: "10%" },
+			},
+			{
+				dataField: "actions",
+				text: "Actions",
+				isDummyField: true,
+				formatter: () => (
+					<span className='actionIcons'>
+						<FontAwesomeIcon icon='print' />
+						<FontAwesomeIcon icon='edit' />
+					</span>
+				),
 				headerStyle: { width: "10%" },
 			},
 		];
