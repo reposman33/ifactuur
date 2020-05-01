@@ -1,15 +1,11 @@
 export class I18n {
-	private _availableLanguages: string[];
-	private _defaultLanguage: string;
-	private _language: string;
-
-	private constructor() {
+	constructor() {
 		this._availableLanguages = ["en", "nl"];
 		this._defaultLanguage = this._availableLanguages.includes(navigator.language) ? navigator.language : "nl";
 		this._language = this._defaultLanguage;
 	}
 
-	private _LANGUAGES: object = {
+	_LANGUAGES = {
 		NAVIGATION: {
 			MENU_TITLE_INVOICES: { en: "Invoices", nl: "Facturen" },
 			MENU_TITLE_EXPENSES: { en: "Expenses", nl: "Uitgaven" },
@@ -93,12 +89,12 @@ export class I18n {
 
 	getLocale = () => (navigator.language.search("en") > -1 ? "en" : navigator.language.search("nl") > -1 ? "nl" : "");
 
-	setLanguage = (lang?: string) => (this._language = lang || this._defaultLanguage);
+	setLanguage = (lang) => (this._language = lang || this._defaultLanguage);
 
 	getSelectedLanguage = () => this._language;
 
-	get = (key: string) => {
-		const langOb = key.split(".").reduce((ob: { [index: string]: any }, key) => ob[key] || "--", this._LANGUAGES);
+	get = (key) => {
+		const langOb = key.split(".").reduce((ob, key) => ob[key] || {}, this._LANGUAGES);
 		return langOb[this._language] || "--";
 	};
 }
