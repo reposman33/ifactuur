@@ -18,7 +18,7 @@ div.mainMenu {
 			border-right: 1px solid #fff;
 			color: #ccc;
 			float: left;
-			height: 31px;
+			height: 29px;
 			line-height: 25px;
 			position: relative;
 			text-align: center;
@@ -28,10 +28,14 @@ div.mainMenu {
 				border-right: none;
 			}
 
-			&.navMenuItemSelected a {
-				color: yellow;
+			&.navMenuItemSelected {
+				background-color: lighten($color: #000000, $amount: 50);
 				cursor: default;
-				text-decoration: none;
+				& a {
+					cursor: inherit;
+					color: yellow;
+					text-decoration: none;
+				}
 			}
 
 			&:not(.navMenuItemSelected) a {
