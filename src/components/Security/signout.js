@@ -1,10 +1,11 @@
 import React from "react";
 import { withFirebase } from "../../Firebase/index.js";
-import * as styles from "./index.module.scss";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import * as styles from "./signout.module.scss";
 
 const SignOut = ({ firebase }) => (
-	<div onClick={firebase.signOut} className={styles.signOutButton}>
-		&nbsp;
+	<div onClick={firebase.signOut}>
+		<FontAwesomeIcon icon='door-open' size='lg' />
 	</div>
 );
 

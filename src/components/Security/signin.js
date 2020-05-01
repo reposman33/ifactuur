@@ -3,15 +3,16 @@ import { compose } from "recompose";
 import { withFirebase } from "../../Firebase/index.js";
 import { Link } from "react-router-dom";
 import { withRouter } from "react-router-dom";
-import * as styles from "./index.module.scss";
 import { SignUpLink } from "./signup.js";
 import * as ROUTES from "../../constants/routes.js";
+import * as styles from "./signin.module.scss";
 
 const INITIAL_STATE = {
 	email: "",
 	password: "",
 	lastSignInTime: "",
 	error: null,
+	userId: null,
 };
 
 class SignInForm extends React.Component {
@@ -22,15 +23,14 @@ class SignInForm extends React.Component {
 
 	onSubmit = (event) => {
 		const { email, password } = this.state;
-		this.props.firebase
-			.signInWithEmailAndPassword(email, password)
-			.then((res) => {
-				this.setState({
-					...INITIAL_STATE,
-				});
-				this.props.history.push(ROUTES.INVOICES);
-			})
-			.catch((error) => this.setState({ error }));
+		this.props.firebase.signInWithEmailAndPassword(email, password).then((res) => {
+			this.setState({
+				...INITIAL_STATE,
+				userid: res.user.uid,
+			});
+
+			this.props.history.push({ pathname: ROUTES.INVOICES, state: { userId: res.user.uid } });
+		});
 
 		event.preventDefault();
 	};
