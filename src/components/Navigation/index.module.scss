@@ -45,10 +45,10 @@ div.mainMenu {
 
 				&:hover {
 					font-size: 1.1em;
-					color: $link-color-hover-yellow;
+					color: $link-color-hover-dark-background;
 				}
 				&:active {
-					color: $link-color-active-yellow;
+					color: $link-color-active-dark-background;
 					transition: color 0.1s linear;
 				}
 			}
@@ -67,7 +67,10 @@ div.languageButtons {
 		margin-bottom: 0.2rem;
 		padding: 0;
 		&:hover {
-			color: $link-color-hover-blue;
+			color: $link-color-hover-light-background;
+		}
+		&:disabled {
+			color: $link-color-disabled-light-background;
 		}
 	}
 }

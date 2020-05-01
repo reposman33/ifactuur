@@ -11,8 +11,11 @@ $row-height-slim: 10%;
 $row-height-fit-content: "fit-content";
 $h1-font-size: 14pt;
 $label-font-size: 11pt;
-$link-color-hover-yellow: yellow;
-$link-color-hover-blue: blue;
-$link-color-active-yellow: rgb(200, 200, 15);
-$link-color-active-blue: rgb(18, 18, 119);
+$link-color-hover-dark-background: yellow;
+$link-color-hover-light-background: blue;
+$link-color-active-dark-background: rgb(200, 200, 15);
+$link-color-active-light-background: rgb(18, 18, 119);
+
+$link-color-disabled-light-background: #e83030;
+$link-color-hover-light-background: #898790;
 $text-color: white;
