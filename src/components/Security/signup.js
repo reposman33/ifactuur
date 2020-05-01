@@ -1,16 +1,16 @@
 import React, { Component } from "react";
-import index from "./index.module.scss";
 import { Link, withRouter } from "react-router-dom";
 import * as ROUTES from "../../constants/routes.js";
 import { withFirebase } from "../../Firebase/index.js";
 import { compose } from "recompose";
+import index from "./signup.module.scss";
 
 const INITIAL_STATE = {
 	username: "",
 	email: "",
 	password: "",
 	passwordRepeat: "",
-	error: ""
+	error: "",
 };
 
 class SignUpForm extends Component {
@@ -20,21 +20,21 @@ class SignUpForm extends Component {
 		this.state = INITIAL_STATE;
 	}
 
-	onSubmit = event => {
+	onSubmit = (event) => {
 		const { email, password } = this.state;
 		this.props.firebase
 			.createUserWithEmailAndPassword(email, password)
-			.then(authUser => {
+			.then((authUser) => {
 				this.setState({ ...INITIAL_STATE });
 				this.props.history.push(ROUTES.SIGN_IN);
 			})
-			.catch(error => {
+			.catch((error) => {
 				this.setState({ error });
 			});
 		event.preventDefault();
 	};
 
-	onChange = event => {
+	onChange = (event) => {
 		this.setState({ [event.target.name]: event.target.value });
 	};
 
@@ -64,7 +64,7 @@ class SignUpForm extends Component {
 											backgroundAttachment: "scroll",
 											backgroundSize: "16px 18px",
 											backgroundPosition: "98% 50%",
-											cursor: "auto"
+											cursor: "auto",
 										}}
 										value={username}
 										onChange={this.onChange}
@@ -88,7 +88,7 @@ class SignUpForm extends Component {
 											backgroundAttachment: "scroll",
 											backgroundSize: "16px 18px",
 											backgroundPosition: "98% 50%",
-											cursor: "auto"
+											cursor: "auto",
 										}}
 										value={email}
 										onChange={this.onChange}
@@ -112,7 +112,7 @@ class SignUpForm extends Component {
 											backgroundAttachment: "scroll",
 											backgroundSize: "16px 18px",
 											backgroundPosition: "98% 50%",
-											cursor: "auto"
+											cursor: "auto",
 										}}
 										value={password}
 										onChange={this.onChange}
@@ -136,7 +136,7 @@ class SignUpForm extends Component {
 											backgroundAttachment: "scroll",
 											backgroundSize: "16px 18px",
 											backgroundPosition: "98% 50%",
-											cursor: "auto"
+											cursor: "auto",
 										}}
 										value={passwordRepeat}
 										onChange={this.onChange}
