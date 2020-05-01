@@ -19,7 +19,7 @@ div.mainMenu {
 			color: #ccc;
 			float: left;
 			height: 31px;
-			line-height: 22px;
+			line-height: 25px;
 			position: relative;
 			text-align: center;
 			width: 17%;
@@ -28,29 +28,25 @@ div.mainMenu {
 				border-right: none;
 			}
 
-			&:hover {
-				background: linear-gradient(#206e95, #07456c);
-				margin-top: -2px;
-			}
-
-			&.navMenuItemSelected {
-				background-color: #798cac;
-				border: none;
-				margin-top: -2px;
-			}
-
-			& a,
-			a:visited {
-				background-repeat: no-repeat;
-				background-position: left center;
-				background-repeat: no-repeat;
-				color: #fff;
-				display: block;
-				margin: 0 auto;
-				padding-top: 5px;
+			&.navMenuItemSelected a {
+				color: yellow;
+				cursor: default;
 				text-decoration: none;
-				text-align: center;
-				white-space: nowrap;
+			}
+
+			&:not(.navMenuItemSelected) a {
+				color: white;
+				text-decoration: none;
+				transition: color 0.25s ease-out, font-size, 0.2s ease-in;
+
+				&:hover {
+					font-size: 1.1em;
+					color: $link-color-hover-yellow;
+				}
+				&:active {
+					color: $link-color-active-yellow;
+					transition: color 0.1s linear;
+				}
 			}
 		}
 	}
