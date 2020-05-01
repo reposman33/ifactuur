@@ -3,7 +3,8 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import * as ROUTES from "../../constants/routes.js";
 import { withAuthentication } from "../Session/";
 import Settings from "../Settings";
-import { Expense, Expenses } from "../Expenses/";
+import { Expense } from "../Expenses/expense";
+import { Expenses } from "../Expenses/expenses";
 import { Company, Companies } from "../Companies/";
 import Invoices from "../Invoices/invoices";
 import Invoice from "../Invoices/invoice";
@@ -25,9 +26,9 @@ const config = process.env.NODE_ENV === "production" ? config_prod : config_dev;
 class App extends React.Component {
 	constructor(props) {
 		super(props);
-		this.I18n = new I18n();
+		this.i18n = new I18n();
 		this.state = {
-			language: this.I18n.getSelectedLanguage(),
+			language: this.i18n.getSelectedLanguage(),
 			errorMessage: null,
 		};
 		library.add(faPrint, faEdit, faDoorOpen, faSignOutAlt);
@@ -40,6 +41,13 @@ class App extends React.Component {
 	componentDidMount() {
 		document.title = `${config.projectId} - ${process.env.NODE_ENV}`;
 	}
+	test() {
+		const g = 8;
+	}
+	setLanguage = (lang) => {
+		this.I18n.setLanguage(lang);
+		this.setState({ language: lang });
+	};
 
 	render() {
 		if (this.state.errorMessage) {
@@ -49,7 +57,7 @@ class App extends React.Component {
 			<Router>
 				<React.Fragment>
 					<div className='navContainer'>
-						<Navigation />
+						<Navigation setLanguage={this.setLanguage} />
 					</div>
 					<div className='container'>
 						<Route exact path='/' component={Invoices} />
