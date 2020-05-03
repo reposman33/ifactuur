@@ -1,10 +1,14 @@
 export class I18n {
 	constructor() {
-		this._availableLanguages = ["en", "nl"];
-		this._defaultLanguage = this._availableLanguages.includes(navigator.language) ? navigator.language : "nl";
-		this._language = this._defaultLanguage;
+		if (!I18n.instance) {
+			I18n.instance = this;
+		}
+		return I18n.instance;
 	}
 
+	_availableLanguages = ["en", "nl"];
+	_defaultLanguage = this._availableLanguages.includes(navigator.language) ? navigator.language : "nl";
+	_language = this._defaultLanguage;
 	_LANGUAGES = {
 		NAVIGATION: {
 			MENU_TITLE_INVOICES: { en: "Invoices", nl: "Facturen" },
@@ -47,7 +51,8 @@ export class I18n {
 				HEADER_CLIENT: { en: "Client", nl: "Klant" },
 				HEADER_SUM: { en: "Sum", nl: "Bedrag" },
 				HEADER_STATUS: { en: "Status", nl: "Status" },
-				HEADER_TYPE: { en: "Type", nl: "Type" },
+				HEADER_TYPE: { en: "Type", nl: "Soort" },
+				HEADER_ACTIONS: { en: "Actions", nl: "Bewerken" },
 			},
 			BUTTONS: {
 				NEW_INVOICE: { en: "New", nl: "Nieuw" },
