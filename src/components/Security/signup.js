@@ -3,7 +3,7 @@ import { Link, withRouter } from "react-router-dom";
 import * as ROUTES from "../../constants/routes.js";
 import { withFirebase } from "../../Firebase/index.js";
 import { compose } from "recompose";
-import index from "./signup.module.scss";
+import * as styles from "./signup.module.scss";
 
 const INITIAL_STATE = {
 	username: "",
@@ -44,8 +44,8 @@ class SignUpForm extends Component {
 		const isInvalid = password !== passwordRepeat || password === "" || username === "" || email === "";
 
 		return (
-			<div className={index.signinContainer}>
-				<div className={index.header}>Registreer</div>
+			<div className={styles.signinContainer}>
+				<div className={styles.header}>Registreer</div>
 				<form onSubmit={this.onSubmit}>
 					<table>
 						<tbody>
@@ -151,7 +151,7 @@ class SignUpForm extends Component {
 										disabled={isInvalid}
 										onClick={this.onSubmit}
 									/>
-									{error && <p className={index.alert}>{error.message}</p>}
+									{error && <p className={styles.alert}>{error.message}</p>}
 								</td>
 							</tr>
 						</tbody>
