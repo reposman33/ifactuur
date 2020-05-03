@@ -26,9 +26,10 @@ const config = process.env.NODE_ENV === "production" ? config_prod : config_dev;
 class App extends React.Component {
 	constructor(props) {
 		super(props);
-		this.i18n = new I18n();
+		this.I18n = new I18n();
+		//		this.test = this.I18n._LANGUAGES.NAVIGATION["MENU_TITLE_INVOICES"].nl;
 		this.state = {
-			language: this.i18n.getSelectedLanguage(),
+			language: this.I18n.getSelectedLanguage(),
 			errorMessage: null,
 		};
 		library.add(faPrint, faEdit, faDoorOpen, faSignOutAlt);
@@ -41,9 +42,7 @@ class App extends React.Component {
 	componentDidMount() {
 		document.title = `${config.projectId} - ${process.env.NODE_ENV}`;
 	}
-	test() {
-		const g = 8;
-	}
+
 	setLanguage = (lang) => {
 		this.I18n.setLanguage(lang);
 		this.setState({ language: lang });

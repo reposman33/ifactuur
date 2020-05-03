@@ -12,105 +12,104 @@ import "./invoices.scss";
 class Invoices extends React.Component {
 	constructor(props) {
 		super(props);
-		this.I18n = new I18n();
-		this.PAGE = "INVOICES";
 		this.state = { rowData: [] };
-		this.emptyRowData = {
-			id: "",
-			date: "",
-			client: "",
-			sum: "",
-			status: "",
-		};
-		const DateSortFunction = (a, b, order, dataField, rowA, rowB) =>
-			order === "asc" ? a - b : order === "desc" ? b - a : "";
-		this.dateTimeFormat = new Intl.DateTimeFormat(this.I18n.getLocale(), {
-			year: "numeric",
-			month: "long",
-			day: "numeric",
-		});
-
-		this.columns = [
-			{ dataField: "invoiceNr", text: "#", headerStyle: { width: "8%" }, sort: true },
-			{
-				dataField: "dateTimeCreated",
-				formatter: (cell, row) => this.dateTimeFormat.format(cell),
-				text: this.I18n.get("INVOICES.TABLE.HEADER_DATE"),
-				sort: true,
-				sortFunc: DateSortFunction,
-			},
-			{
-				dataField: "companyName",
-				text: this.I18n.get("INVOICES.TABLE.HEADER_CLIENT"),
-				sort: true,
-			},
-			{
-				dataField: "type",
-				text: this.I18n.get("INVOICES.TABLE.HEADER_TYPE"),
-				headerStyle: { width: "10%" },
-			},
-			{
-				dataField: "statustitle",
-				text: this.I18n.get("INVOICES.TABLE.HEADER_STATUS"),
-				headerStyle: { width: "10%" },
-			},
-			{
-				dataField: "actions",
-				text: "Actions",
-				isDummyField: true,
-				formatter: () => (
-					<span className='actionIcons'>
-						<FontAwesomeIcon icon='print' />
-						<FontAwesomeIcon icon='edit' />
-					</span>
-				),
-				headerStyle: { width: "10%" },
-			},
-		];
-		// make the async call to Firebase and pick it up in componentDidMount
-		this.invoicesPromise = this.props.firebase.getInvoices(
-			this.columns.map((ob) => ob.dataField),
-			"dateTimeCreated"
-		);
-
-		this.table = {
-			defaultSorted: [
-				{
-					dataField: "dateTimeCreated",
-					order: "asc",
-				},
-			],
-			defaultSortDirection: "desc",
-		};
-		this.handleNewInvoice = this.handleNewInvoice.bind(this);
-
-		this.paginationConfig = {
-			sizePerPage: 10,
-			hideSizePerPage: true,
-			hidePageListOnlyOnePage: true,
-			showTotal: true,
-			prePageTitle: this.I18n.get("PAGINATION.PREVIOUS_PAGE"),
-			nextPageTitle: this.I18n.get("PAGINATION.NEXT_PAGE"),
-			firstPageTitle: this.I18n.get("PAGINATION.FIRST_PAGE"),
-			lastPageTitle: this.I18n.get("PAGINATION.LAST_PAGE"),
-			paginationTotalRenderer: (from, to, size) => (
-				<span className='react-bootstrap-table-pagination-total'>
-					{this.I18n.get("PAGINATION.TOTAL")
-						.split(" ")
-						.map((word) =>
-							word === "{from}" ? from : word === "{to}" ? to : word === "{size}" ? size : word
-						)
-						.join(" ")}
-				</span>
-			),
-		};
 	}
 
+	I18n = new I18n();
+
+	PAGE = "INVOICES";
+
+	emptyRowData = {
+		id: "",
+		date: "",
+		client: "",
+		sum: "",
+		status: "",
+	};
+
+	dateSortFunction = (a, b, order, dataField, rowA, rowB) =>
+		order === "asc" ? a - b : order === "desc" ? b - a : "";
+
+	dateTimeFormat = new Intl.DateTimeFormat(this.I18n.getLocale(), {
+		year: "numeric",
+		month: "long",
+		day: "numeric",
+	});
+
+	getColumns = () => [
+		{ dataField: "invoiceNr", text: "#", headerStyle: { width: "8%" }, sort: true },
+		{
+			dataField: "dateTimeCreated",
+			formatter: (cell, row) => this.dateTimeFormat.format(cell),
+			text: this.I18n.get("INVOICES.TABLE.HEADER_DATE"),
+			sort: true,
+			sortFunc: this.dateSortFunction,
+		},
+		{
+			dataField: "companyName",
+			text: this.I18n.get("INVOICES.TABLE.HEADER_CLIENT"),
+			sort: true,
+		},
+		{
+			dataField: "type",
+			text: this.I18n.get("INVOICES.TABLE.HEADER_TYPE"),
+			headerStyle: { width: "10%" },
+		},
+		{
+			dataField: "statustitle",
+			text: this.I18n.get("INVOICES.TABLE.HEADER_STATUS"),
+			headerStyle: { width: "10%" },
+		},
+		{
+			dataField: "actions",
+			text: this.I18n.get("INVOICES.TABLE.HEADER_ACTIONS"),
+			isDummyField: true,
+			formatter: () => (
+				<span className='actionIcons'>
+					<FontAwesomeIcon icon='print' />
+					<FontAwesomeIcon icon='edit' />
+				</span>
+			),
+			headerStyle: { width: "10%" },
+		},
+	];
+	// make the async call to Firebase and pick it up in componentDidMount
+	invoicesPromise = this.props.firebase.getInvoices(
+		this.getColumns().map((ob) => ob.dataField),
+		"dateTimeCreated"
+	);
+
+	table = {
+		defaultSorted: [
+			{
+				dataField: "dateTimeCreated",
+				order: "asc",
+			},
+		],
+		defaultSortDirection: "desc",
+	};
+	handleNewInvoice = this.handleNewInvoice.bind(this);
+
+	paginationConfig = {
+		sizePerPage: 10,
+		hideSizePerPage: true,
+		hidePageListOnlyOnePage: true,
+		showTotal: true,
+		prePageTitle: this.I18n.get("PAGINATION.PREVIOUS_PAGE"),
+		nextPageTitle: this.I18n.get("PAGINATION.NEXT_PAGE"),
+		firstPageTitle: this.I18n.get("PAGINATION.FIRST_PAGE"),
+		lastPageTitle: this.I18n.get("PAGINATION.LAST_PAGE"),
+		paginationTotalRenderer: (from, to, size) => (
+			<span className='react-bootstrap-table-pagination-total'>
+				{this.I18n.get("PAGINATION.TOTAL")
+					.split(" ")
+					.map((word) => (word === "{from}" ? from : word === "{to}" ? to : word === "{size}" ? size : word))
+					.join(" ")}
+			</span>
+		),
+	};
+
 	componentDidMount() {
-		//this.props.firebase.importInvoices();
-		//this.props.firebase.convertRows2Array();
-		//this.props.firebase.typeInvoices();
-		//this.props.firebase.updateUserId("JN8UiHXwUINB8QloSBnUP2BH0a02");
 		this.invoicesPromise.then((res) => this.setState({ rowData: res }));
 	}
 
@@ -132,7 +131,7 @@ class Invoices extends React.Component {
 					bootstrap4
 					data={this.state.rowData}
 					classes='table'
-					columns={this.columns}
+					columns={this.getColumns()}
 					table={this.table}
 					keyField='ID'
 					bordered
