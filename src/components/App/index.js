@@ -18,7 +18,7 @@ import { I18n } from "../../services/I18n/I18n";
 import "react-bootstrap";
 import { config_dev, config_prod } from "../../environments.js";
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faPrint, faEdit, faDoorOpen, faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
+import { faPrint, faEdit, faDoorOpen, faSignOutAlt, faEquals, faPlus } from "@fortawesome/free-solid-svg-icons";
 import "./index.scss";
 
 const config = process.env.NODE_ENV === "production" ? config_prod : config_dev;
@@ -32,7 +32,7 @@ class App extends React.Component {
 			language: this.I18n.getSelectedLanguage(),
 			errorMessage: null,
 		};
-		library.add(faPrint, faEdit, faDoorOpen, faSignOutAlt);
+		library.add(faPrint, faEdit, faDoorOpen, faSignOutAlt, faEquals, faPlus);
 	}
 
 	componentDidCatch(error, info) {

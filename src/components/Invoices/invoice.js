@@ -1,9 +1,12 @@
 import React from "react";
 import { I18n } from "../../services/I18n/I18n";
 import * as ROUTES from "../../constants/routes";
+
 import { withFirebase } from "../../Firebase";
-import * as styles from "./invoice.module.scss";
 import { withAuthentication } from "../Session";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import * as styles from "./invoice.module.scss";
 
 class Invoice extends React.Component {
 	constructor(props) {
@@ -115,7 +118,7 @@ class Invoice extends React.Component {
 					periodTo: invoice.periodTo ? this.dateTimeFormat.format(invoice.periodTo) : invoice.periodTo,
 					statusTitle: invoice.statusTitle,
 					type: invoice.type,
-					totals: this.getTotalInvoiceAmount(invoice.rows),
+					totals: this.getTotalInvoiceAmount(invoice.rows, invoice.VATRate),
 					VatRate: invoice.VATRate,
 					VatRates: [],
 				});
@@ -211,6 +214,7 @@ class Invoice extends React.Component {
 		};
 	}
 
+	// formatNumberAsCurrency
 	formatNumberAsCurrency = (number) => {
 		return new Intl.NumberFormat(this.I18n.getLocale(), {
 			style: "currency",
@@ -218,10 +222,13 @@ class Invoice extends React.Component {
 		}).format(number);
 	};
 
+	// onListview
 	onListview = () =>
 		this.props.history.push({
 			pathname: ROUTES.INVOICES,
 		});
+
+	// onSubmit
 	onSubmit = () => {
 		const invoice = {};
 		// The keys to be stored and their conversion function are defined in persistFields. Apply here
@@ -250,7 +257,7 @@ class Invoice extends React.Component {
 						type='text'
 						name={`${this.FIELDNAMES.DESCRIPTION}_${row}`}
 						className={styles.description}
-						onBlur={this.handleDescriptionInput}
+						onChange={this.handleDescriptionInput}
 						disabled={this.isExistingInvoice}
 						// only retrieve existing row values from the state
 						value={row <= this.state.rows.length - 1 ? this.state.rows[row]["omschrijving"] : ""}
@@ -261,7 +268,7 @@ class Invoice extends React.Component {
 						name={`${this.FIELDNAMES.HOURLYRATE}_${row}`}
 						className={styles.hourlyrateInt}
 						disabled={this.isExistingInvoice}
-						onBlur={this.handleDescriptionInput}
+						onChange={this.handleDescriptionInput}
 						value={row <= this.state.rows.length - 1 ? this.state.rows[row]["uurtarief"] : ""}
 					/>
 					<input
@@ -269,7 +276,7 @@ class Invoice extends React.Component {
 						name={`${this.FIELDNAMES.HOURS}_${row}`}
 						className={styles.hours}
 						disabled={this.isExistingInvoice}
-						onBlur={this.handleDescriptionInput}
+						onChange={this.handleDescriptionInput}
 						value={row <= this.state.rows.length - 1 ? this.state.rows[row]["uren"] : ""}
 					/>
 					<span className={styles.total}>
@@ -431,11 +438,20 @@ class Invoice extends React.Component {
 									{this.state.totals.totalBeforeVat &&
 										this.formatNumberAsCurrency(this.state.totals.totalBeforeVat)}
 								</span>
+								{!!this.state.totals.totalVatAmount && (
+									<span>
+										<FontAwesomeIcon icon='plus' />
+									</span>
+								)}
 								<span className={styles.VatRate}>
 									{!!this.state.totals.totalVatAmount &&
 										this.formatNumberAsCurrency(this.state.totals.totalVatAmount)}
 								</span>
-								{!!this.state.totals.totalVatAmount && <span>&plus;</span>}
+								{!!this.state.totals.totalVatAmount && (
+									<span>
+										<FontAwesomeIcon icon='equals' />
+									</span>
+								)}
 								<span className={styles.totalWithVat}>
 									{!!this.state.totals.totalVatAmount &&
 										this.formatNumberAsCurrency(this.state.totals.totalWithVat)}
