@@ -10,22 +10,22 @@ import * as styles from "./index.module.scss";
 class NavigationForm extends React.Component {
 	constructor(props) {
 		super(props);
-		this.I18n = new I18n();
 		this.state = {};
-		this.routes = {
-			INVOICES: ["/invoice", "/invoices"],
-			EXPENSES: ["/expense", "/expenses"],
-			COMPANIES: ["/company", "/companies"],
-			SETTINGS: ["/settings"],
-			STATS: ["/stats"],
-		};
 	}
 
-	setLanguage(lang) {
-		this.I18n.setLanguage(lang);
-		// force an idempotent setState to re-render...
-		this.setState(this.state);
-	}
+	I18n = new I18n();
+
+	routes = {
+		INVOICES: ["/invoice", "/invoices"],
+		EXPENSES: ["/expense", "/expenses"],
+		COMPANIES: ["/company", "/companies"],
+		SETTINGS: ["/settings"],
+		STATS: ["/stats"],
+	};
+
+	setLanguage = (e) => {
+		this.props.setLanguage(e.target.attributes["data-lang"].value);
+	};
 
 	render() {
 		return (
@@ -81,11 +81,17 @@ class NavigationForm extends React.Component {
 					</ul>
 				</div>
 				<div className={styles.languageButtons}>
-					<button onClick={() => this.setLanguage("en")} disabled={this.I18n.getSelectedLanguage() === "en"}>
+					<button
+						data-lang='en'
+						onClick={this.setLanguage}
+						disabled={this.I18n.getSelectedLanguage() === "en"}>
 						engels
 					</button>
 					&nbsp;/
-					<button onClick={() => this.setLanguage("nl")} disabled={this.I18n.getSelectedLanguage() === "nl"}>
+					<button
+						data-lang='nl'
+						onClick={this.setLanguage}
+						disabled={this.I18n.getSelectedLanguage() === "nl"}>
 						nederlands
 					</button>
 				</div>
