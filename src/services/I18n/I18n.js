@@ -79,7 +79,7 @@ export class I18n {
 				SAVE: { en: "Save", nl: "Bewaar" },
 			},
 		},
-		BUTTONS: { SAVE: { en: "Save", nl: "Bewaar" } },
+		BUTTONS: { SAVE: { en: "Save", nl: "Bewaar" }, OVERVIEW: { en: "Overview", nl: "Overzicht" } },
 		PAGINATION: {
 			NEXT_PAGE: { en: "next page", nl: "volgende pagina" },
 			PREVIOUS_PAGE: { en: "previous page", nl: "vorige pagina" },

@@ -1,5 +1,6 @@
 import React from "react";
 import { I18n } from "../../services/I18n/I18n";
+import * as ROUTES from "../../constants/routes";
 import { withFirebase } from "../../Firebase";
 import * as styles from "./invoice.module.scss";
 import { withAuthentication } from "../Session";
@@ -217,6 +218,10 @@ class Invoice extends React.Component {
 		}).format(number);
 	};
 
+	onListview = () =>
+		this.props.history.push({
+			pathname: ROUTES.INVOICES,
+		});
 	onSubmit = () => {
 		const invoice = {};
 		// The keys to be stored and their conversion function are defined in persistFields. Apply here
@@ -234,6 +239,9 @@ class Invoice extends React.Component {
 	};
 
 	render() {
+		if (!this.state.rows) {
+			return;
+		}
 		const descriptionRows = [];
 		for (let row = 0; row < this.nrOfDescriptionRows; row++) {
 			descriptionRows.push(
@@ -244,6 +252,8 @@ class Invoice extends React.Component {
 						className={styles.description}
 						onBlur={this.handleDescriptionInput}
 						disabled={this.isExistingInvoice}
+						// only retrieve existing row values from the state
+						value={row <= this.state.rows.length - 1 ? this.state.rows[row]["omschrijving"] : ""}
 					/>
 					<span className={styles.currency}>&euro;</span>
 					<input
@@ -252,6 +262,7 @@ class Invoice extends React.Component {
 						className={styles.hourlyrateInt}
 						disabled={this.isExistingInvoice}
 						onBlur={this.handleDescriptionInput}
+						value={row <= this.state.rows.length - 1 ? this.state.rows[row]["uurtarief"] : ""}
 					/>
 					<input
 						type='number'
@@ -259,6 +270,7 @@ class Invoice extends React.Component {
 						className={styles.hours}
 						disabled={this.isExistingInvoice}
 						onBlur={this.handleDescriptionInput}
+						value={row <= this.state.rows.length - 1 ? this.state.rows[row]["uren"] : ""}
 					/>
 					<span className={styles.total}>
 						{this.state.rows[row] &&
@@ -414,7 +426,7 @@ class Invoice extends React.Component {
 						</div>
 						<div className={styles.inputRow}>
 							<div className={styles.totals}>
-								<span>{this.I18n.get("INVOICE.TOTAL")}</span>
+								<label>{this.I18n.get("INVOICE.TOTAL")}</label>
 								<span className={styles.totalBeforeVat}>
 									{this.state.totals.totalBeforeVat &&
 										this.formatNumberAsCurrency(this.state.totals.totalBeforeVat)}
@@ -430,11 +442,14 @@ class Invoice extends React.Component {
 								</span>
 							</div>
 						</div>
+						<button className='btn btn-primary float-left' onClick={this.onListview}>
+							{this.I18n.get("BUTTONS.OVERVIEW")}
+						</button>
 						<button
 							className='btn btn-primary float-right'
 							disabled={this.isExistingInvoice}
 							onClick={this.onSubmit}>
-							Save
+							{this.I18n.get("BUTTONS.SAVE")}
 						</button>
 					</div>
 				</div>
