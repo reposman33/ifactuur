@@ -15,12 +15,8 @@
 	margin: 0 auto;
 	width: 1024px;
 
-	button {
-		background-color: $button-background-color;
-
-		&.btn-primary:disabled {
-			background-color: $button_disabled-background-color;
-		}
+	button.btn-primary:disabled {
+		background-color: $button_disabled-background-color;
 	}
 }
 
@@ -48,10 +44,6 @@
 	// hack to add margin between cols
 	background-clip: padding-box;
 	border: 10px solid transparent;
-
-	button {
-		background-color: #737f8c;
-	}
 
 	.displayFlex {
 		display: flex;
