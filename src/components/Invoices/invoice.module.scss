@@ -1,4 +1,4 @@
-label + * {
+label {
 	font-weight: bold;
 }
 .inputRow {
@@ -13,22 +13,23 @@ label + * {
 	width: 50%;
 }
 
-.VatRates {
-	width: 10%;
-	color: 444;
-	background-color: white;
-	border-bottom: none;
-	border-right: none;
-}
-.vatRatesRow {
-	display: flex;
+.VatRatesDropdown {
+	width: 30%;
 	flex-direction: row;
-	justify-content: flex-end;
-	label {
-		margin-right: 1rem;
+	display: flex;
+	justify-content: space-between;
+
+	& select {
+		display: inline-block;
+		width: 50%;
+		color: 444;
+		background-color: white;
+		border-bottom: none;
+		border-right: none;
 	}
 }
-.descriptionRowLabel {
+// the labels for the columns the
+label.descriptionRowLabel {
 	display: inline-block;
 	&:first-of-type {
 		width: 73%;
@@ -53,43 +54,49 @@ label + * {
 		background-color: #cccccc55;
 		border-bottom: none;
 		border-right: none;
-		padding: 0 1rem;
+		padding: 0 0.2rem;
 	}
 
 	& span.currency {
 		margin: 0 0.5rem;
 	}
 
-	& .description {
+	& input.description {
 		width: 70%;
 	}
-	& .hourlyrateInt {
+	& input.hourlyrateInt {
 		width: 10%;
 		margin-right: 0.1rem;
 		text-align: left;
 	}
 
-	& .hours {
+	& input.hours {
 		width: 10%;
 		margin-right: 0.1rem;
 		text-align: left;
 	}
 
-	& .total {
+	& span.total {
 		background-color: #48474b;
 		margin-left: 1rem;
+		padding-right: 0.3rem;
 		font-weight: bold;
-		text-align: center;
+		text-align: right;
 		width: 10%;
 	}
 }
 
+// Total amounts below description rows
 .totals {
 	display: flex;
 	flex-direction: row;
-	justify-content: space-around;
-	font-size: 1.1rem;
+	justify-content: space-between;
 	font-weight: bold;
+	text-align: center;
+	& span {
+		padding-right: 0.3rem;
+		text-align: right;
+	}
 }
 .periodBlock {
 	width: 45%;

@@ -5,7 +5,6 @@ import * as ROUTES from "../../constants/routes";
 import { withFirebase } from "../../Firebase";
 import { withAuthentication } from "../Session";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import * as styles from "./invoice.module.scss";
 
 class Invoice extends React.Component {
@@ -403,61 +402,57 @@ class Invoice extends React.Component {
 							{this.I18n.get("INVOICE.COLUMNHEADER_HOURS")}
 						</label>
 						<label className={styles.descriptionRowLabel}>{this.I18n.get("INVOICE.TOTAL")}</label>
+
 						{descriptionRows}
-					</div>
-				</div>
-				<div className='row'>
-					<div className='col'>
-						<div className={styles.vatRatesRow}>
-							<label>
-								{" "}
-								<span>{this.I18n.get("INVOICE.LABEL_VATRATE")}:</span>
-							</label>
-							{!this.isExistingInvoice ? (
-								<React.Fragment>
-									<span>{this.I18n.get("INVOICE.INPUT_VATRATE")}:</span>
-									<select
-										className={styles.VatRates}
-										name={this.FIELDNAMES.VATRATE}
-										onChange={this.onVatRateChange}>
+
+						<div className={styles.totals}>
+							<label>Sub totaal</label>
+							<span className={styles.totalBeforeVat}>
+								{this.state.totals.totalBeforeVat &&
+									this.formatNumberAsCurrency(this.state.totals.totalBeforeVat)}
+							</span>
+						</div>
+
+						{!this.isExistingInvoice ? (
+							<div className={styles.totals}>
+								<div className={styles.VatRatesDropdown}>
+									<label>{this.I18n.get("INVOICE.INPUT_VATRATE")}:</label>
+									<select name={this.FIELDNAMES.VATRATE} onChange={this.onVatRateChange}>
 										{this.state.VatRates.map((rate) => (
 											<option key={rate.id} value={rate.rate}>
 												{rate.rate}
 											</option>
 										))}
 									</select>
-								</React.Fragment>
-							) : (
-								<label>{this.state.VatRate} &nbsp;%</label>
-							)}
-						</div>
-						<div className={styles.inputRow}>
-							<div className={styles.totals}>
-								<label>{this.I18n.get("INVOICE.TOTAL")}</label>
-								<span className={styles.totalBeforeVat}>
-									{this.state.totals.totalBeforeVat &&
-										this.formatNumberAsCurrency(this.state.totals.totalBeforeVat)}
-								</span>
-								{!!this.state.totals.totalVatAmount && (
-									<span>
-										<FontAwesomeIcon icon='plus' />
-									</span>
-								)}
+								</div>
 								<span className={styles.VatRate}>
 									{!!this.state.totals.totalVatAmount &&
 										this.formatNumberAsCurrency(this.state.totals.totalVatAmount)}
 								</span>
-								{!!this.state.totals.totalVatAmount && (
-									<span>
-										<FontAwesomeIcon icon='equals' />
-									</span>
-								)}
-								<span className={styles.totalWithVat}>
+							</div>
+						) : (
+							<div className={styles.totals}>
+								<label>{this.I18n.get("INVOICE.LABEL_VATRATE")}:</label>
+								<span>{this.state.VatRate} % </span>
+								<span className={styles.VatRate}>
 									{!!this.state.totals.totalVatAmount &&
-										this.formatNumberAsCurrency(this.state.totals.totalWithVat)}
+										this.formatNumberAsCurrency(this.state.totals.totalVatAmount)}
 								</span>
 							</div>
+						)}
+						<div className={styles.totals}>
+							<label>{this.I18n.get("INVOICE.TOTAL")}</label>
+
+							<span className={styles.totalWithVat}>
+								{!!this.state.totals.totalVatAmount &&
+									this.formatNumberAsCurrency(this.state.totals.totalWithVat)}
+							</span>
 						</div>
+					</div>
+				</div>
+				<div className='row'>
+					<div className='col'>
+						<div className={styles.inputRow}></div>
 						<button className='btn btn-primary float-left' onClick={this.onListview}>
 							{this.I18n.get("BUTTONS.OVERVIEW")}
 						</button>
