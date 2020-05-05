@@ -110,6 +110,10 @@ class Invoices extends React.Component {
 	};
 
 	componentDidMount() {
+		// TEST - convert collection
+		// this.props.firebase.importBills("bills");
+		// this.props.firebase.typeCollectionKeys("bills");
+
 		this.invoicesPromise.then((res) => this.setState({ rowData: res }));
 	}
 

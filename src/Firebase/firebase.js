@@ -3,6 +3,7 @@ import { I18n } from "../services/I18n/I18n";
 import "firebase/auth";
 import "firebase/firestore";
 import * as invoices from "../invoices.json";
+import * as bills from "../bills.json";
 
 import { config_dev, config_prod } from "../environments";
 
@@ -22,6 +23,7 @@ class Firebase {
 		this.db = app.firestore();
 		this.userId = null;
 		this.invoices = invoices;
+		this.bills = bills;
 	}
 
 	// ===============================================================
@@ -230,22 +232,23 @@ class Firebase {
 	};
 
 	/**
-	 * convert strikngs to integers / floats etc
+	 * convert strings to integers / floats etc
 	 * id: "1",id:"2" => id:1, id:2 etc
-	 * @param {object} types - an object containing field-type-convertfunction mappings to convert string to datatypes:
-	 * @returns: void - SETs invoices collection instead
+	 * @param {string} collection - the name of the collection where you want to change key types.
+	 * @returns: void
 	 * */
 	//
-	typeInvoices() {
-		// import the stringified values in the row array as well
-		const convert = {
-			defaultValues: {
-				integer: null,
-				float: null,
-				array: [],
-				Date: null,
-			},
-			keys: {
+	typeCollectionKeys(collection) {
+		const defaultValues = {
+			integer: null,
+			float: null,
+			array: [],
+			Date: null,
+		};
+
+		// define for each collection the keys to convert, the key's type and the conversion function to apply to the keys string value
+		const documentKeys = {
+			invoices: {
 				id: { type: "integer", convert: parseInt },
 				userId: { type: "integer", convert: parseInt },
 				dateTimeCreated: { type: "Date", convert: (date) => new Date(date) },
@@ -254,50 +257,82 @@ class Firebase {
 				dateTimePaid: { type: "Date", convert: (date) => new Date(date) },
 				VATRate: { type: "integer", convert: parseInt },
 			},
-		};
+			bills: {
+				amount: { type: "integer", convert: parseInt },
+				date: { type: "Date", convert: (date) => new Date(date) },
+				id: { type: "integer", convert: parseInt },
+				vatrate: { type: "integer", convert: parseInt },
+			},
+		}[collection];
 
-		const convertInvoices = (querySnapshot, types) => {
+		const convertInvoices = (querySnapshot, documentKeys) => {
 			return querySnapshot.forEach((doc) => {
-				const invoice = doc.data();
+				const document = doc.data();
 
-				const convertedInvoice = Object.keys(invoice).reduce((convertedInvoice, key) => {
+				const convertedDocument = Object.keys(document).reduce((convertedDocument, key) => {
 					// if the field's key is listed to be converted _and_ the value exists,
-					if (types.keys[key] && !!invoice[key]) {
+					if (documentKeys[key] && !!document[key]) {
 						// apply conversion function to field's value
-						convertedInvoice[key] = types.keys[key].convert(invoice[key]);
-					} else if (types.keys[key]) {
+						convertedDocument[key] = documentKeys[key].convert(document[key]);
+					} else if (documentKeys[key]) {
 						// field's key should be converted but has no value - use defaultValue for type
-						convertedInvoice[key] = types.defaultValues[types.keys[key].type];
+						convertedDocument[key] = defaultValues[documentKeys[key].type];
 					} else {
 						// field's key should not be converted - transfer as is
-						convertedInvoice[key] = invoice[key];
+						convertedDocument[key] = document[key];
 					}
-					// convert the invoicenr if it is a striingified nr "122"
-					convertedInvoice.invoiceNr = isNaN(parseInt(invoice.invoiceNr))
-						? invoice.invoiceNr
-						: parseInt(invoice.invoiceNr);
 
-					return convertedInvoice;
+					return convertedDocument;
 				}, {});
-				console.log("SETting invoice id: ", invoice.id);
-				this.db
-					.collection("invoices")
-					.doc(doc.id)
-					.set(convertedInvoice);
+				if (document.id) {
+					console.log("SETting document id ", document.id, ": ", convertedDocument);
+					dbRef.doc(doc.id).set(convertedDocument);
+				}
 			});
 		};
 
-		this.db
-			.collection("invoices")
-			.get()
-			.then((querySnapshot) => convertInvoices(querySnapshot, convert));
+		const dbRef = this.db.collection(collection);
+
+		dbRef.get().then((querySnapshot) => convertInvoices(querySnapshot, documentKeys));
 	}
 
 	/**
-	 * upate the userId field of all documents to the given value
+	 *
+	 * @param {string} collection -  the name of the collection to export
+	 */
+	exportCollection(collection) {
+		this.db
+			.collection(collection)
+			.get()
+			.then((querySnapshot) => {
+				const importedData = [];
+				querySnapshot.forEach((doc) => {
+					console.log("importing ", doc.id);
+					importedData.push(doc.data());
+				});
+				console.log("Exported ", collection, " data:");
+				console.log(JSON.stringify(importedData));
+			});
+	}
+
+	/**
+	 * -- import documents into a collection. The <collection>.json file is in the /app/src folder and has to be imported with ES6 import statement in firebase.js.
+	 * @param {string} collectionName - the name of the collection where to add the document to
+	 */
+	importBills(collectionName) {
+		const dbRef = this.db.collection(collectionName);
+
+		this.bills.forEach((doc) => {
+			console.log("importing document ", doc.id, ": ", doc);
+			// dbRef.add(doc).then((docRef) => console.log("added document ", docRef.id, ": ", docRef.id));
+		});
+	}
+
+	/**
+	 * update the userId field of all documents to the given value
 	 * @param {string} userId - the new userId
 	 */
-	updateUserId(userId) {
+	updateUserId(collection, userId) {
 		this.db
 			.collection("invoices")
 			.get()
@@ -306,7 +341,7 @@ class Firebase {
 					const invoice = doc.data();
 					console.log("updating invoice id ", invoice.id);
 					this.db
-						.collection("invoices")
+						.collection(collection)
 						.doc(doc.id)
 						.update({ userId: userId });
 				})
