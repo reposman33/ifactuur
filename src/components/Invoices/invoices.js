@@ -13,6 +13,11 @@ class Invoices extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = { rowData: [] };
+		// make the async call to Firebase and pick it up in componentDidMount
+		this.invoicesPromise = this.props.firebase.getInvoices(
+			this.getColumns().map((ob) => ob.dataField),
+			"dateTimeCreated"
+		);
 	}
 
 	I18n = new I18n();
@@ -73,11 +78,6 @@ class Invoices extends React.Component {
 			headerStyle: { width: "10%" },
 		},
 	];
-	// make the async call to Firebase and pick it up in componentDidMount
-	invoicesPromise = this.props.firebase.getInvoices(
-		this.getColumns().map((ob) => ob.dataField),
-		"dateTimeCreated"
-	);
 
 	table = {
 		defaultSorted: [
