@@ -401,12 +401,14 @@ class Invoice extends React.Component {
 						<label className={styles.descriptionRowLabel}>
 							{this.I18n.get("INVOICE.COLUMNHEADER_HOURS")}
 						</label>
-						<label className={styles.descriptionRowLabel}>{this.I18n.get("INVOICE.TOTAL")}</label>
+						<label className={styles.descriptionRowLabel}>
+							{this.I18n.get("INVOICE.COLUMNHEADER_TOTAL")}
+						</label>
 
 						{descriptionRows}
 
 						<div className={styles.totals}>
-							<label>Sub totaal</label>
+							<label>{this.I18n.get("INVOICE.LABEL_SUBTOTAL")}</label>
 							<span className={styles.totalBeforeVat}>
 								{this.state.totals.totalBeforeVat &&
 									this.formatNumberAsCurrency(this.state.totals.totalBeforeVat)}
@@ -441,7 +443,7 @@ class Invoice extends React.Component {
 							</div>
 						)}
 						<div className={styles.totals}>
-							<label>{this.I18n.get("INVOICE.TOTAL")}</label>
+							<label>{this.I18n.get("INVOICE.LABEL_TOTAL")}</label>
 
 							<span className={styles.totalWithVat}>
 								{!!this.state.totals.totalVatAmount &&
