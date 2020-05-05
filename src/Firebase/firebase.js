@@ -51,13 +51,53 @@ class Firebase {
 	// COMPANIES
 	// ===============================================================
 	// ===============================================================
-	getCompany = (id) => this.db.collection("companies").get();
+	getCompany = (id) =>
+		this.db
+			.collection("companies")
+			.where("id", "==", id)
+			.get();
 
 	getCompanies = () =>
 		this.db
 			.collection("companies")
 			.orderBy("name", "desc")
 			.get();
+
+	// ===============================================================
+	// ===============================================================
+	// EXPENSES
+	// ===============================================================
+	// ===============================================================
+	getExpense = (id) =>
+		this.db
+			.collection("bills")
+			.where("id", "==", id)
+			.get();
+
+	/**
+	 * @param{array} columns - fieldnames to fetch
+	 * @param{string} orderBy - field to order resultset by
+	 * @param{array} dir - direction to sort
+	 */
+	getExpenses = (columns, orderBy = "date", dir = "desc") =>
+		this.db
+			.collection("bills")
+			.orderBy(orderBy, dir)
+			.get()
+			.then((querySnapshot) => {
+				const rowData = [];
+				querySnapshot.forEach((doc) => {
+					const document = doc.data();
+					rowData.push(
+						columns.reduce((acc, col) => {
+							acc[col] = col === "date" ? document[col].toDate() : document[col];
+							acc.ID = doc.id;
+							return acc;
+						}, {})
+					);
+				});
+				return rowData;
+			});
 
 	// ===============================================================
 	// ===============================================================
@@ -84,10 +124,10 @@ class Firebase {
 			.get()
 			.then((querySnapshot) => {
 				querySnapshot.forEach((doc) => {
-					const invoice = doc.data();
+					const document = doc.data();
 					rowData.push(
 						columns.reduce((acc, col) => {
-							acc[col] = col === "dateTimeCreated" ? invoice[col].toDate() : invoice[col];
+							acc[col] = col === "dateTimeCreated" ? document[col].toDate() : document[col];
 							acc.ID = doc.id;
 							return acc;
 						}, {})
@@ -324,7 +364,7 @@ class Firebase {
 
 		this.bills.forEach((doc) => {
 			console.log("importing document ", doc.id, ": ", doc);
-			// dbRef.add(doc).then((docRef) => console.log("added document ", docRef.id, ": ", docRef.id));
+			dnbRef.add(doc).then((docRef) => console.log("added document ", docRef.id, ": ", docRef.id));
 		});
 	}
 

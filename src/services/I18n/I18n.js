@@ -44,6 +44,17 @@ export class I18n {
 				},
 			},
 		},
+		EXPENSES: {
+			TABLE: {
+				HEADER_DATE: { en: "Date", nl: "Datum" },
+				HEADER_COMPANY: { en: "Company", nl: "Bedrijf" },
+				HEADER_AMOUNT: { en: "Amount", nl: "Bedrag" },
+			},
+			BUTTONS: {
+				NEW_EXPENSE: { en: "New", nl: "Nieuw" },
+			},
+		},
+
 		INVOICES: {
 			TITLE: { en: "Invoices", nl: "Facturen" },
 			TABLE: {
