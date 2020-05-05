@@ -364,7 +364,7 @@ class Firebase {
 
 		this.bills.forEach((doc) => {
 			console.log("importing document ", doc.id, ": ", doc);
-			dnbRef.add(doc).then((docRef) => console.log("added document ", docRef.id, ": ", docRef.id));
+			dbRef.add(doc).then((docRef) => console.log("added document ", docRef.id, ": ", docRef.id));
 		});
 	}
 
