@@ -59,7 +59,7 @@ class App extends React.Component {
 						<Navigation setLanguage={this.setLanguage} />
 					</div>
 					<div className='container'>
-						<Route exact path='/' component={Invoices} />
+						<Route exact path={["", "/"]} component={Invoices} />
 						<Route exact path={ROUTES.COMPANIES} component={Companies} />
 						<Route exact path={ROUTES.COMPANY} component={Company} />
 						<Route exact path={ROUTES.SETTINGS} component={Settings} />

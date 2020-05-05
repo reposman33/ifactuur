@@ -35,7 +35,9 @@ class NavigationForm extends React.Component {
 						<li
 							id='factuur'
 							className={
-								this.routes.INVOICES.includes(this.props.location.pathname)
+								this.routes.INVOICES.includes(this.props.location.pathname) ||
+								this.props.location.pathname === "" ||
+								this.props.location.pathname === "/"
 									? styles.navMenuItemSelected
 									: ""
 							}>
