@@ -134,7 +134,7 @@ class Invoices extends React.Component {
 					rowEvents={{ onClick: this.onRowClick }}
 					pagination={paginationFactory(this.paginationConfig)}></BootstrapTable>
 
-				<button className='btn btn-primary float-right' onClick={this.handleNewExpense}>
+				<button className='btn btn-primary float-right' onClick={this.handleNewInvoice}>
 					{this.I18n.get("EXPENSES.BUTTONS.NEW_EXPENSE")}
 				</button>
 			</div>
