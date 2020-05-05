@@ -179,6 +179,13 @@ class Invoice extends React.Component {
 		const rows = [...this.state.rows];
 		// ...parse stringified nrs to numbers
 		const val = isNaN(parseInt(value)) ? value : parseInt(value);
+
+		// prevent gaps in the rows array when user allows for empty lines
+		if (rowIndex > rows.length) {
+			for (let i = rowIndex; i > rows.length; i--) {
+				rows.push({ omschrijving: "", uurtaried: undefined, uren: undefined });
+			}
+		}
 		// Check: object @ index exists? add key-value to existing object : add new object to array
 		rows[rowIndex] = rows[rowIndex]
 			? Object.assign(rows[rowIndex], { [strippedFieldName]: val })
