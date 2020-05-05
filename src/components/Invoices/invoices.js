@@ -4,6 +4,7 @@ import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
 import "react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css";
 import paginationFactory from "react-bootstrap-table2-paginator";
 import { I18n } from "../../services/I18n/I18n";
+import { Utils } from "./../../services/Utils";
 import * as ROUTES from "../../constants/routes";
 import { withFirebase } from "../../Firebase";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -13,6 +14,7 @@ class Invoices extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = { rowData: [] };
+		this.Utils = new Utils();
 		// make the async call to Firebase and pick it up in componentDidMount
 		this.invoicesPromise = this.props.firebase.getInvoices(
 			this.getColumns().map((ob) => ob.dataField),
@@ -21,7 +23,6 @@ class Invoices extends React.Component {
 	}
 
 	I18n = new I18n();
-
 	PAGE = "INVOICES";
 
 	emptyRowData = {
@@ -32,23 +33,14 @@ class Invoices extends React.Component {
 		status: "",
 	};
 
-	dateSortFunction = (a, b, order, dataField, rowA, rowB) =>
-		order === "asc" ? a - b : order === "desc" ? b - a : "";
-
-	dateTimeFormat = new Intl.DateTimeFormat(this.I18n.getLocale(), {
-		year: "numeric",
-		month: "long",
-		day: "numeric",
-	});
-
 	getColumns = () => [
 		{ dataField: "invoiceNr", text: "#", headerStyle: { width: "8%" }, sort: true },
 		{
 			dataField: "dateTimeCreated",
-			formatter: (cell, row) => this.dateTimeFormat.format(cell),
+			formatter: (cell, row) => this.Utils.dateFormat.format(cell),
 			text: this.I18n.get("INVOICES.TABLE.HEADER_DATE"),
 			sort: true,
-			sortFunc: this.dateSortFunction,
+			sortFunc: this.Utils.dateSortFunction,
 		},
 		{
 			dataField: "companyName",
@@ -88,7 +80,6 @@ class Invoices extends React.Component {
 		],
 		defaultSortDirection: "desc",
 	};
-	handleNewInvoice = this.handleNewInvoice.bind(this);
 
 	paginationConfig = {
 		sizePerPage: 10,
@@ -117,9 +108,9 @@ class Invoices extends React.Component {
 		this.invoicesPromise.then((res) => this.setState({ rowData: res }));
 	}
 
-	handleNewInvoice() {
+	handleNewInvoice = () => {
 		this.props.history.push(ROUTES.INVOICE);
-	}
+	};
 
 	onRowClick = (e, row, rowIndex) => {
 		this.props.history.push({
@@ -143,8 +134,8 @@ class Invoices extends React.Component {
 					rowEvents={{ onClick: this.onRowClick }}
 					pagination={paginationFactory(this.paginationConfig)}></BootstrapTable>
 
-				<button className='btn btn-primary float-right' onClick={this.handleNewInvoice}>
-					{this.I18n.get("INVOICES.BUTTONS.NEW_INVOICE")}
+				<button className='btn btn-primary float-right' onClick={this.handleNewExpense}>
+					{this.I18n.get("EXPENSES.BUTTONS.NEW_EXPENSE")}
 				</button>
 			</div>
 		);
