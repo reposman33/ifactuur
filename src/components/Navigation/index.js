@@ -87,7 +87,7 @@ class NavigationForm extends React.Component {
 						data-lang='en'
 						onClick={this.setLanguage}
 						disabled={this.I18n.getSelectedLanguage() === "en"}>
-						engels
+						english
 					</button>
 					&nbsp;/
 					<button
