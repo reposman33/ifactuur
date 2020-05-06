@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
 import * as ROUTES from "../../constants/routes.js";
 import { withAuthentication } from "../Session/";
 import Settings from "../Settings";
@@ -59,19 +59,21 @@ class App extends React.Component {
 						<Navigation setLanguage={this.setLanguage} />
 					</div>
 					<div className='container'>
-						<Route exact path={["", "/"]} component={Invoices} />
-						<Route exact path={ROUTES.COMPANIES} component={Companies} />
-						<Route exact path={ROUTES.COMPANY} component={Company} />
-						<Route exact path={ROUTES.SETTINGS} component={Settings} />
-						<Route exact path={ROUTES.EXPENSES} component={Expenses} />
-						<Route exact path={ROUTES.EXPENSE} component={Expense} />
-						<Route exact path={ROUTES.INVOICES} component={Invoices} />
-						<Route exact path={ROUTES.INVOICE} component={Invoice} />
-						<Route exact path={ROUTES.PASSWORD_CHANGE} component={PasswordChange} />
-						<Route exact path={ROUTES.PASSWORD_FORGET} component={PasswordForget} />
-						<Route exact path={ROUTES.SIGN_IN} component={SignIn} />
-						<Route exact path={ROUTES.SIGN_UP} component={SignUp} />
-						<Route exact path={ROUTES.STATS} component={Stats} />
+						<Switch>
+							<Redirect exact from='' to={ROUTES.INVOICES} />
+							<Route exact path={ROUTES.COMPANIES} component={Companies} />
+							<Route exact path={ROUTES.COMPANY} component={Company} />
+							<Route exact path={ROUTES.SETTINGS} component={Settings} />
+							<Route exact path={ROUTES.EXPENSES} component={Expenses} />
+							<Route exact path={ROUTES.EXPENSE} component={Expense} />
+							<Route exact path={ROUTES.INVOICES} component={Invoices} />
+							<Route exact path={ROUTES.INVOICE} component={Invoice} />
+							<Route exact path={ROUTES.PASSWORD_CHANGE} component={PasswordChange} />
+							<Route exact path={ROUTES.PASSWORD_FORGET} component={PasswordForget} />
+							<Route exact path={ROUTES.SIGN_IN} component={SignIn} />
+							<Route exact path={ROUTES.SIGN_UP} component={SignUp} />
+							<Route exact path={ROUTES.STATS} component={Stats} />
+						</Switch>
 					</div>
 				</React.Fragment>
 			</Router>
