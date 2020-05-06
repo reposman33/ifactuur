@@ -4,7 +4,6 @@ import { Utils } from "../../services/Utils";
 import * as ROUTES from "../../constants/routes";
 
 import { withFirebase } from "../../Firebase";
-import { withAuthentication } from "../Session";
 
 import * as styles from "./invoice.module.scss";
 
@@ -475,4 +474,4 @@ class Invoice extends React.Component {
 	}
 }
 
-export default withAuthentication(withFirebase(Invoice));
+export default withFirebase(Invoice);
