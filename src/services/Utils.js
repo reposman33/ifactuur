@@ -1,10 +1,6 @@
 import { I18n } from "./I18n/I18n";
 
 class Utils {
-	constructor() {
-		console.log("this.I18n = ", this.I18n);
-	}
-
 	I18n = new I18n();
 
 	dateFormat = new Intl.DateTimeFormat(this.I18n.getLocale(), {

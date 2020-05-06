@@ -1,5 +1,6 @@
 import React from "react";
 import { I18n } from "../../services/I18n/I18n";
+import { Utils } from "../../services/Utils";
 import * as ROUTES from "../../constants/routes";
 
 import { withFirebase } from "../../Firebase";
@@ -10,7 +11,11 @@ import * as styles from "./invoice.module.scss";
 class Invoice extends React.Component {
 	constructor(props) {
 		super(props);
+
+		this.Utils = new Utils();
+		this.I18n = new I18n();
 		// these fields contain the data and transform functions for data to be stored
+
 		this.persistFields = {
 			VatRate: parseInt,
 			companyName: (fieldValue) => fieldValue, // return value as is
@@ -59,16 +64,6 @@ class Invoice extends React.Component {
 			// retrieve VatRates
 			this.newInvoicePromises.push(this.props.firebase.getVatRates());
 		}
-		this.I18n = new I18n();
-		this.currencyFormat = new Intl.NumberFormat(this.I18n.getLocale(), {
-			style: "currency",
-			currency: "EUR",
-		});
-		this.dateTimeFormat = new Intl.DateTimeFormat(this.I18n.getLocale(), {
-			year: "numeric",
-			month: "long",
-			day: "numeric",
-		});
 		this.nrOfDescriptionRows = 10;
 
 		this.FIELDNAMES = {
@@ -87,7 +82,7 @@ class Invoice extends React.Component {
 		this.handleDescriptionInput = this.handleDescriptionInput.bind(this);
 	}
 
-	componentDidMount() {
+	componentDidMount = () => {
 		if (this.invoice$) {
 			this.invoice$.then((invoice) => {
 				// update state with retrieved invoice
@@ -96,25 +91,25 @@ class Invoice extends React.Component {
 					companyName: invoice.companyName,
 					// only format dates if not undefined
 					dateTimeCreated: invoice.dateTimeCreated
-						? this.dateTimeFormat.format(invoice.dateTimeCreated)
+						? this.Utils.dateFormat.format(invoice.dateTimeCreated)
 						: invoice.dateTimeCreated,
 					dateTimePaid: invoice.dateTimePaid
-						? this.dateTimeFormat.format(invoice.dateTimePaid)
+						? this.Utils.dateFormat.format(invoice.dateTimePaid)
 						: invoice.dateTimePaid,
 					dateTimePrinted: invoice.dateTimePrinted
-						? this.dateTimeFormat.format(invoice.dateTimePrinted)
+						? this.Utils.dateFormat.format(invoice.dateTimePrinted)
 						: invoice.dateTimePrinted,
 					dateTimeSent: invoice.dateTimeSent
-						? this.dateTimeFormat.format(invoice.dateTimeSent)
+						? this.Utils.dateFormat.format(invoice.dateTimeSent)
 						: invoice.dateTimeSent,
 					id: invoice.id,
 					invoiceNr: invoice.invoiceNr,
 					rows: invoice.rows,
 					notes: invoice.notes,
 					periodFrom: invoice.periodFrom
-						? this.dateTimeFormat.format(invoice.periodFrom)
+						? this.Utils.dateFormat.format(invoice.periodFrom)
 						: invoice.periodFrom,
-					periodTo: invoice.periodTo ? this.dateTimeFormat.format(invoice.periodTo) : invoice.periodTo,
+					periodTo: invoice.periodTo ? this.Utils.dateFormat.format(invoice.periodTo) : invoice.periodTo,
 					statusTitle: invoice.statusTitle,
 					type: invoice.type,
 					totals: this.getTotalInvoiceAmount(invoice.rows, invoice.VATRate),
@@ -136,7 +131,7 @@ class Invoice extends React.Component {
 				this.setState({ companies: companies, VatRates: VatRates });
 			});
 		}
-	}
+	};
 
 	/**
 	 * handle input of most input fields
@@ -290,7 +285,9 @@ class Invoice extends React.Component {
 						this.state.rows[row].uurtarief &&
 						this.state.rows[row] &&
 						this.state.rows[row].uren
-							? this.currencyFormat.format(this.state.rows[row].uurtarief * this.state.rows[row].uren)
+							? this.Utils.currencyFormat.format(
+									this.state.rows[row].uurtarief * this.state.rows[row].uren
+							  )
 							: ""}
 					</span>
 				</div>
