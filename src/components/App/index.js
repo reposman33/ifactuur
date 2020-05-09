@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-d
 import * as ROUTES from "../../constants/routes.js";
 import { withAuthentication } from "../Session/";
 import Settings from "../Settings";
-import { Expense } from "../Expenses/expense";
+import Expense from "../Expenses/expense";
 import Expenses from "../Expenses/expenses";
 import { Company, Companies } from "../Companies/";
 import Invoices from "../Invoices/invoices";
