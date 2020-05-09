@@ -18,10 +18,13 @@ class Invoices extends React.Component {
 		this.state = { rowData: [] };
 		this.Utils = new Utils();
 		// make the async call to Firebase and pick it up in componentDidMount
-		this.invoicesPromise = this.props.firebase.getInvoices(
-			this.getColumns().map((ob) => ob.dataField),
-			"dateTimeCreated"
-		);
+		this.invoicesPromise$ = this.props.firebase.getCollection("invoices", "dateTimeCreated", [
+			"invoiceNr",
+			"dateTimeCreated",
+			"companyName",
+			"type",
+			"statustitle",
+		]);
 	}
 
 	I18n = new I18n();
@@ -103,11 +106,7 @@ class Invoices extends React.Component {
 	};
 
 	componentDidMount() {
-		// TEST - convert collection
-		// this.props.firebase.importBills("bills");
-		// this.props.firebase.typeCollectionKeys("bills");
-
-		this.invoicesPromise.then((res) => this.setState({ rowData: res }));
+		this.invoicesPromise$.then((res) => this.setState({ rowData: res }));
 	}
 
 	handleNewInvoice = () => {

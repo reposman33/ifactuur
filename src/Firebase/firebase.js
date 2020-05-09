@@ -72,10 +72,12 @@ class Firebase {
 			.then((querySnapshot) => {
 				querySnapshot.forEach((doc) => {
 					const data = doc.data();
+					console.log(data);
 					result.push(
 						columns.reduce(
 							(acc, col) => {
-								acc[col] = data[col];
+								// convert a timestamp to date using FS toDate()
+								acc[col] = col.indexOf("date") > -1 ? data[col].toDate() : data[col];
 								return acc;
 							}, // always include ID
 							{ ID: doc.id }
@@ -138,27 +140,6 @@ class Firebase {
 	// INVOICES
 	// ===============================================================
 	// ===============================================================
-
-	getInvoices = (columns, orderBy = "userId", dir = "desc") => {
-		const rowData = [];
-		return this.db
-			.collection("invoices")
-			.orderBy(orderBy, dir)
-			.get()
-			.then((querySnapshot) => {
-				querySnapshot.forEach((doc) => {
-					const document = doc.data();
-					rowData.push(
-						columns.reduce((acc, col) => {
-							acc[col] = col === "dateTimeCreated" ? document[col].toDate() : document[col];
-							acc.ID = doc.id;
-							return acc;
-						}, {})
-					);
-				});
-				return rowData;
-			});
-	};
 
 	getInvoice = (id) =>
 		this.db
