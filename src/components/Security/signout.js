@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const SignOut = ({ firebase }) => (
 	<div onClick={firebase.signOut}>
-		<FontAwesomeIcon icon='door-open' size='lg' />
+		<FontAwesomeIcon icon='sign-out-alt' size='lg' />
 	</div>
 );
 
