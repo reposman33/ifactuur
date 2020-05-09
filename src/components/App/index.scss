@@ -13,6 +13,7 @@
 	font-family: "Montserrat", sans-serif;
 	height: 800px;
 	margin: 0 auto;
+	padding: 1rem;
 	width: 1024px;
 
 	button.btn-primary:disabled {
@@ -24,6 +25,8 @@
 
 .row {
 	height: $row-height-fit-content;
+	margin-left: 0 !important;
+	margin-right: 0 !important;
 	justify-content: flex-end;
 
 	&.high {
@@ -49,32 +52,10 @@
 		display: flex;
 	}
 
-	label {
-		font-size: $label-font-size;
-		margin-bottom: 0;
-	}
-
 	& h1 {
 		font-size: $h1-font-size;
 		margin: 0 1rem;
 		margin-top: -1rem;
-	}
-
-	& fieldset {
-		border: 1px solid #aaa;
-		border-radius: 0.5rem;
-		padding: 1rem;
-		margin-bottom: 1rem;
-		height: 100%;
-
-		legend {
-			color: white;
-			font-weight: bold;
-		}
-
-		& legend {
-			width: max-content;
-		}
 	}
 
 	.inputSmall {
