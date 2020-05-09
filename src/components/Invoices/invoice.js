@@ -1,4 +1,7 @@
 import React from "react";
+import { DateComponent } from "../Shared/Date/date";
+import { Select } from "../Shared/Select/select";
+import { Button } from "../Shared/Button/button";
 import { I18n } from "../../services/I18n/I18n";
 import { Utils } from "../../services/Utils";
 import * as ROUTES from "../../constants/routes";
@@ -31,7 +34,7 @@ class Invoice extends React.Component {
 		this.state = {
 			companies: [],
 			companyName: "",
-			dateTimeCreated: new Date().toISOString().split("T")[0],
+			dateTimeCreated: undefined,
 			dateTimePaid: undefined,
 			dateTimePrinted: undefined,
 			dateTimeSent: undefined,
@@ -42,7 +45,10 @@ class Invoice extends React.Component {
 			periodTo: undefined,
 			rows: [],
 			statusTitle: "",
-			type: "debet",
+			invoiceTypes: [
+				{ id: 1, type: "credit" },
+				{ id: 1, type: "debet" },
+			],
 			totals: {},
 			VatRate: undefined,
 			VatRates: [],
@@ -57,11 +63,11 @@ class Invoice extends React.Component {
 		// new invoice!
 		if (!this.isExistingInvoice) {
 			// retrieve last invoiceNr
-			this.newInvoicePromises.push(this.props.firebase.getLastInvoicenr());
+			this.newInvoicePromises.push(this.props.firebase.getNewInvoicenr());
 			// retrieve companies
-			this.newInvoicePromises.push(this.props.firebase.getCompanies());
+			this.newInvoicePromises.push(this.props.firebase.getCollection("companies", "name", ["id", "name"]));
 			// retrieve VatRates
-			this.newInvoicePromises.push(this.props.firebase.getVatRates());
+			this.newInvoicePromises.push(this.props.firebase.getCollection("vatrates", "rate", ["id", "rate"]));
 		}
 		this.nrOfDescriptionRows = 10;
 
@@ -118,16 +124,8 @@ class Invoice extends React.Component {
 			});
 		} else {
 			// retrieve last invoiceNr,companies and VatRates
-			const companies = [];
-			const VatRates = [];
 			Promise.all(this.newInvoicePromises).then((values) => {
-				// retrieve last invoice number
-				values[0].forEach((doc) => this.setState({ invoiceNr: doc.data().invoiceNr + 1 }));
-				// retrieve all companies and update state
-				values[1].forEach((doc) => companies.push(doc.data()));
-				// retrieve all VatRates and update state
-				values[2].forEach((doc) => VatRates.push(doc.data()));
-				this.setState({ companies: companies, VatRates: VatRates });
+				this.setState({ invoiceNr: values[0], companies: values[1], VatRates: values[2] });
 			});
 		}
 	};
@@ -299,130 +297,80 @@ class Invoice extends React.Component {
 			<React.Fragment>
 				<div className='row'>
 					<div className='col'>
-						<div>
-							<label htmlFor='date' className='mb-2'>
-								{this.I18n.get("INVOICE.LABEL_INVOICE_DATE")}
-							</label>
-							{this.isExistingInvoice ? (
-								<span>{this.state.dateTimeCreated}</span>
-							) : (
-								<input
-									type='date'
-									value={this.state.dateTimeCreated} // default value is today
-									className={styles.inputDate}
-									name={this.FIELDNAMES.DATE}
-									onChange={this.onChange}
-								/>
-							)}
-						</div>
+						<DateComponent
+							labelText={this.I18n.get("INVOICE.LABEL.INVOICE_DATE")}
+							name={this.FIELDNAMES.DATE}
+							existingValue={this.state.dateTimeCreated}
+						/>
 					</div>
 
 					<div className='col'>
-						<div>
-							<label htmlFor='companies'>{this.I18n.get("INVOICE.LABEL_COMPANY")}</label>
-							{this.isExistingInvoice ? (
-								<span> {this.state.companyName}</span>
-							) : (
-								<React.Fragment>
-									<select
-										name={this.FIELDNAMES.COMPANYNAME}
-										className={styles.selectCompanies}
-										onChange={this.onChange}>
-										<option value=''>{this.I18n.get("INVOICE.INPUT_COMPANY")}</option>
-										{this.state.companies.map((company) => (
-											<option key={company.id} value={company.name}>
-												{company.name}
-											</option>
-										))}
-									</select>
-									<button className='btn btn-primary slateGrey mx-3'>
-										{this.I18n.get("INVOICE.BUTTONS.NEW_COMPANY")}
-									</button>
-								</React.Fragment>
-							)}
-						</div>
+						<Select
+							labelText={this.I18n.get("INVOICE.LABEL.COMPANY")}
+							name={this.FIELDNAMES.COMPANYNAME}
+							existingValue={this.state.companyName}
+							data={this.state.companies}
+							displayKey='name'
+							valueKey='id'
+						/>
 					</div>
 				</div>
 				<div className='row'>
 					<div className='col'>
-						<label htmlFor='invoice-period'>{this.I18n.get("INVOICE.LABEL_PERIOD")}</label>
-						<div className='d-flex justify-content-between mt-2' id='invoice-period'>
-							<div className={styles.periodBlock}>
-								<div className='mr-3'>
-									<label className='mb-1'>{this.I18n.get("INVOICE.LABEL_PERIOD_FROM")}</label>
-									{this.isExistingInvoice ? (
-										this.state.periodFrom ? (
-											this.state.periodFrom
-										) : (
-											"--"
-										)
-									) : (
-										<input
-											type='date'
-											name={this.FIELDNAMES.PERIOD_FROM}
-											onChange={this.onChange}></input>
-									)}
-								</div>
-								<div className='ml-3'>
-									<label className='mb-1'>{this.I18n.get("INVOICE.LABEL_PERIOD_TO")}</label>
-									{this.isExistingInvoice ? (
-										this.state.periodTo ? (
-											this.state.periodTo
-										) : (
-											"--"
-										)
-									) : (
-										<input
-											type='date'
-											name={this.FIELDNAMES.PERIOD_TO}
-											onChange={this.onChange}></input>
-									)}
-								</div>
-							</div>
-							<div className='ml-3'>
-								<label className='mb-1'>Factuur type</label>
-								{this.isExistingInvoice ? (
-									this.state.type
-								) : (
-									<select name='type' value={this.state.type} onChange={this.onChange}>
-										<option value='debet'>debet</option>
-										<option value='credit'>credit</option>
-									</select>
-								)}
-							</div>
+						<div className='d-flex justify-content-between mt-2'>
+							<Select
+								labelText={this.I18n.get("INVOICE.LABEL.INVOICETYPE")}
+								name='invoiceType'
+								data={this.state.invoiceTypes}
+								existingValue={this.state.type}
+								displayKey='type'
+								valuekey='id'
+							/>
 						</div>
 					</div>
 				</div>
 				<div className='row'>
 					<div className='col'>
 						<label className={styles.descriptionRowLabel}>
-							{this.I18n.get("INVOICE.COLUMNHEADER_SERVICES")}
+							{this.I18n.get("INVOICE.COLUMNHEADER.SERVICES")}
 						</label>
 						<label className={styles.descriptionRowLabel}>
-							{this.I18n.get("INVOICE.COLUMNHEADER_RATE")}
+							{this.I18n.get("INVOICE.COLUMNHEADER.RATE")}
 						</label>
 						<label className={styles.descriptionRowLabel}>
-							{this.I18n.get("INVOICE.COLUMNHEADER_HOURS")}
+							{this.I18n.get("INVOICE.COLUMNHEADER.HOURS")}
 						</label>
 						<label className={styles.descriptionRowLabel}>
-							{this.I18n.get("INVOICE.COLUMNHEADER_TOTAL")}
+							{this.I18n.get("INVOICE.COLUMNHEADER.TOTAL")}
 						</label>
 
 						{descriptionRows}
 
 						<div className={styles.totals}>
-							<label>{this.I18n.get("INVOICE.LABEL_SUBTOTAL")}</label>
+							<label>{this.I18n.get("INVOICE.LABEL.SUBTOTAL")}</label>
 							<span className={styles.totalBeforeVat}>
 								{this.state.totals.totalBeforeVat &&
 									this.formatNumberAsCurrency(this.state.totals.totalBeforeVat)}
 							</span>
 						</div>
 
-						{!this.isExistingInvoice ? (
+						{this.isExistingInvoice ? (
+							<div className={styles.totals}>
+								<label>{this.I18n.get("INVOICE.LABEL.VATRATE")}:</label>
+								<span>{this.state.VatRate} % </span>
+								<span className={styles.VatRate}>
+									{/* display the amount */}
+									{!!this.state.totals.totalVatAmount &&
+										this.formatNumberAsCurrency(this.state.totals.totalVatAmount)}
+								</span>
+							</div>
+						) : (
 							<div className={styles.totals}>
 								<div className={styles.VatRatesDropdown}>
-									<label>{this.I18n.get("INVOICE.INPUT_VATRATE")}:</label>
+									<label>{this.I18n.get("INVOICE.LABEL.VATRATE")}:</label>
+
 									<select name={this.FIELDNAMES.VATRATE} onChange={this.onVatRateChange}>
+										<option value=''>{this.I18n.get("INVOICE.INPUT.VATRATE.DEFAUTVALUE")}</option>
 										{this.state.VatRates.map((rate) => (
 											<option key={rate.id} value={rate.rate}>
 												{rate.rate}
@@ -435,18 +383,9 @@ class Invoice extends React.Component {
 										this.formatNumberAsCurrency(this.state.totals.totalVatAmount)}
 								</span>
 							</div>
-						) : (
-							<div className={styles.totals}>
-								<label>{this.I18n.get("INVOICE.LABEL_VATRATE")}:</label>
-								<span>{this.state.VatRate} % </span>
-								<span className={styles.VatRate}>
-									{!!this.state.totals.totalVatAmount &&
-										this.formatNumberAsCurrency(this.state.totals.totalVatAmount)}
-								</span>
-							</div>
 						)}
 						<div className={styles.totals}>
-							<label>{this.I18n.get("INVOICE.LABEL_TOTAL")}</label>
+							<label>{this.I18n.get("INVOICE.LABEL.TOTAL")}</label>
 
 							<span className={styles.totalWithVat}>
 								{!!this.state.totals.totalVatAmount &&
@@ -455,20 +394,20 @@ class Invoice extends React.Component {
 						</div>
 					</div>
 				</div>
-				<div className='row'>
-					<div className='col'>
-						<div className={styles.inputRow}></div>
-						<button className='btn btn-primary float-left' onClick={this.onListview}>
-							{this.I18n.get("BUTTONS.OVERVIEW")}
-						</button>
-						<button
-							className='btn btn-primary float-right'
-							disabled={this.isExistingInvoice}
-							onClick={this.onSubmit}>
-							{this.I18n.get("BUTTONS.SAVE")}
-						</button>
-					</div>
-				</div>
+				<Button
+					onClick={this.onListview}
+					text={this.I18n.get("BUTTON.OVERVIEW")}
+					styles={{ marginLeft: "0.8rem" }}
+					classes='btn-primary float-left'
+				/>
+
+				<Button
+					disabled={this.isExistingInvoice}
+					onClick={this.onSubmit}
+					text={this.I18n.get("BUTTON.SAVE")}
+					styles={{ marginRight: "0.8rem" }}
+					classes='btn-primary float-right'
+				/>
 			</React.Fragment>
 		);
 	}
