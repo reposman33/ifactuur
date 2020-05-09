@@ -14,18 +14,16 @@ label {
 }
 
 .VatRatesDropdown {
-	width: 30%;
 	flex-direction: row;
 	display: flex;
 	justify-content: space-between;
 
 	& select {
-		display: inline-block;
-		width: 50%;
-		color: 444;
 		background-color: white;
-		border-bottom: none;
-		border-right: none;
+		height: fit-content;
+		margin-left: 1rem;
+		padding-right: 1rem;
+		text-align: left;
 	}
 }
 // the labels for the columns the
@@ -99,9 +97,6 @@ label.descriptionRowLabel {
 	}
 }
 .periodBlock {
-	width: 45%;
-	& div {
-		width: 35%;
-		display: inline-block;
-	}
+	display: flex;
+	flex-direction: row;
 }
