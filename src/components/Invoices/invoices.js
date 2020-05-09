@@ -8,6 +8,8 @@ import { Utils } from "./../../services/Utils";
 import * as ROUTES from "../../constants/routes";
 import { withFirebase } from "../../Firebase";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Button } from "../Shared/Button/button";
+
 import "./invoices.scss";
 
 class Invoices extends React.Component {
@@ -134,9 +136,11 @@ class Invoices extends React.Component {
 					rowEvents={{ onClick: this.onRowClick }}
 					pagination={paginationFactory(this.paginationConfig)}></BootstrapTable>
 
-				<button className='btn btn-primary float-right' onClick={this.handleNewInvoice}>
-					{this.I18n.get("EXPENSES.BUTTONS.NEW_EXPENSE")}
-				</button>
+				<Button
+					onClick={this.handleNewInvoice}
+					text={this.I18n.get("EXPENSES.BUTTONS.NEW_EXPENSE")}
+					classes='btn btn-primary float-right'
+				/>
 			</div>
 		);
 	}
