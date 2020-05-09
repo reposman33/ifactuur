@@ -19,17 +19,14 @@ class Expenses extends React.Component {
 		super(props);
 		this.state = { rowData: [] };
 		this.Utils = new Utils();
-		// Retrieve the bills from fireStore
-		this.expensesPromise = this.props.firebase.getExpenses(
-			this.getColumns().map((ob) => ob.dataField),
-			"date"
-		);
+		// Retrieve the expenses from fireStore
+		this.expensesPromise$ = this.props.firebase.getCollection("bills", "date", ["date", "company", "amount"]);
 	}
 
 	I18n = new I18n();
 
 	componentDidMount() {
-		this.expensesPromise.then((data) => {
+		this.expensesPromise$.then((data) => {
 			this.setState({ rowData: data });
 		});
 	}

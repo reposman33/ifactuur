@@ -57,6 +57,11 @@ class Firebase {
 			.where("id", "==", id)
 			.get();
 
+	// ===============================================================
+	// ===============================================================
+	// GETCOLLECTION
+	// ===============================================================
+	// ===============================================================
 	/**
 	 * Get data from a collection
 	 * @param{string} collection - collection to return values from
@@ -94,30 +99,6 @@ class Firebase {
 	// EXPENSES
 	// ===============================================================
 	// ===============================================================
-	/**
-	 * @param{array} columns - fieldnames to fetch
-	 * @param{string} orderBy - field to order resultset by
-	 * @param{array} dir - direction to sort
-	 */
-	getExpenses = (columns, orderBy = "date", dir = "desc") =>
-		this.db
-			.collection("bills")
-			.orderBy(orderBy, dir)
-			.get()
-			.then((querySnapshot) => {
-				const rowData = [];
-				querySnapshot.forEach((doc) => {
-					const document = doc.data();
-					rowData.push(
-						columns.reduce((acc, col) => {
-							acc[col] = col === "date" ? document[col].toDate() : document[col];
-							acc.ID = doc.id;
-							return acc;
-						}, {})
-					);
-				});
-				return rowData;
-			});
 
 	/**
 	 * @param{string}id - the fireStore generated ID
