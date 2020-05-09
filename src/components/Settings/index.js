@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { InputGroup, FormControl } from "react-bootstrap";
 import { I18n } from "../../services/I18n/I18n";
-import "./../App/index.scss";
 import "./index.scss";
 
 class Settings extends Component {
