@@ -57,23 +57,41 @@ class Firebase {
 			.where("id", "==", id)
 			.get();
 
-	getCompanies = () =>
-		this.db
-			.collection("companies")
-			.orderBy("name", "desc")
-			.get();
+	/**
+	 * Get data from a collection
+	 * @param{string} collection - collection to return values from
+	 * @param{string} orderByField - field to order the result by
+	 * @param{array} columns - array of column values to return
+	 */
+	getCollection = (collection, orderByField, columns) => {
+		const result = [];
+		return this.db
+			.collection(collection)
+			.orderBy(orderByField, "desc")
+			.get()
+			.then((querySnapshot) => {
+				querySnapshot.forEach((doc) => {
+					const data = doc.data();
+					result.push(
+						columns.reduce(
+							(acc, col) => {
+								acc[col] = data[col];
+								return acc;
+							}, // always include ID
+							{ ID: doc.id }
+						)
+					);
+					return result;
+				});
+				return result;
+			});
+	};
 
 	// ===============================================================
 	// ===============================================================
 	// EXPENSES
 	// ===============================================================
 	// ===============================================================
-	getExpense = (id) =>
-		this.db
-			.collection("bills")
-			.where("id", "==", id)
-			.get();
-
 	/**
 	 * @param{array} columns - fieldnames to fetch
 	 * @param{string} orderBy - field to order resultset by
@@ -99,16 +117,21 @@ class Firebase {
 				return rowData;
 			});
 
-	// ===============================================================
-	// ===============================================================
-	// VATRATE
-	// ===============================================================
-	// ===============================================================
-	getVatRates = () =>
+	/**
+	 * @param{string}id - the fireStore generated ID
+	 */
+	getExpense = (id) =>
 		this.db
-			.collection("vatrates")
-			.orderBy("rate")
-			.get();
+			.collection("bills")
+			.doc(id)
+			.get()
+			.then((doc) => {
+				const expense = doc.data();
+				return Object.keys(expense).reduce((acc, key) => {
+					acc[key] = key === "date" ? expense["date"].toDate() : expense[key];
+					return acc;
+				}, {});
+			});
 
 	// ===============================================================
 	// ===============================================================
@@ -165,12 +188,13 @@ class Firebase {
 	 * @param {string} fieldName
 	 * returns {any}  - the fieldvalue
 	 */
-	getLastInvoicenr = () =>
+	getNewInvoicenr = () =>
 		this.db
 			.collection("invoices")
 			.orderBy("id", "desc")
 			.limit(1)
-			.get();
+			.get()
+			.then((querySnapshot) => querySnapshot.docs[0].data().invoiceNr + 1);
 
 	saveInvoice = (invoice) => this.db.collection("invoices").add(invoice);
 
