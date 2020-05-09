@@ -27,7 +27,6 @@ class App extends React.Component {
 	constructor(props) {
 		super(props);
 		this.I18n = new I18n();
-		//		this.test = this.I18n._LANGUAGES.NAVIGATION["MENU_TITLE_INVOICES"].nl;
 		this.state = {
 			language: this.I18n.getSelectedLanguage(),
 			errorMessage: null,
