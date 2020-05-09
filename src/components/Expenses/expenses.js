@@ -31,7 +31,6 @@ class Expenses extends React.Component {
 	componentDidMount() {
 		this.expensesPromise.then((data) => {
 			this.setState({ rowData: data });
-			console.log("expenses = ", data);
 		});
 	}
 
