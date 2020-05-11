@@ -56,6 +56,7 @@ export class I18n {
 				NEW_COMPANY: { en: "New company", nl: "Nieuw bedrijf" },
 				AMOUNT: { en: "Amount", nl: "Bedrag" },
 				ITEM: { en: "Items/Services", nl: "Goederen/Diensten" },
+				TAX: { en: "Tax", nl: "BTW" },
 			},
 			BUTTONS: {
 				NEW_EXPENSE: { en: "New", nl: "Nieuw" },
