@@ -8,7 +8,7 @@ import { Utils } from "./../../services/Utils";
 import * as ROUTES from "../../constants/routes";
 import { withFirebase } from "../../Firebase";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import "./expenses.scss";
+import styles from "./expenses.module.scss";
 
 /**
  * a document from Bills has the following fields
@@ -57,7 +57,7 @@ class Expenses extends React.Component {
 			text: this.I18n.get("INVOICES.TABLE.HEADER_ACTIONS"),
 			isDummyField: true,
 			formatter: () => (
-				<span className='actionIcons'>
+				<span className={styles.actionIcons}>
 					<FontAwesomeIcon icon='print' />
 					<FontAwesomeIcon icon='edit' />
 				</span>
@@ -110,7 +110,7 @@ class Expenses extends React.Component {
 				<BootstrapTable
 					bootstrap4
 					data={this.state.rowData}
-					classes='table'
+					classes={styles.table}
 					columns={this.getColumns()}
 					table={this.table}
 					keyField='ID'
