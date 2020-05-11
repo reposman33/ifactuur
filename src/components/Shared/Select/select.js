@@ -1,5 +1,5 @@
 import React from "react";
-import * as styles from "./select.module.scss";
+import styles from "./select.module.scss";
 /**
  *
  * @param {string} labelText - label text
@@ -14,9 +14,9 @@ const Select = ({ labelText, name, existingValue, data, displayKey, valueKey, ne
 		<div>
 			<label>{labelText}</label>
 			{existingValue ? (
-				<div>{existingValue}</div>
+				<span>{existingValue}</span>
 			) : data && data.length ? (
-				<div>
+				<span>
 					<select name={name}>
 						{data.map((ob) => (
 							<option key={ob[valueKey]} value={ob[valueKey]}>
@@ -29,7 +29,7 @@ const Select = ({ labelText, name, existingValue, data, displayKey, valueKey, ne
 							{newButtonText}
 						</button>
 					)}
-				</div>
+				</span>
 			) : (
 				""
 			)}
