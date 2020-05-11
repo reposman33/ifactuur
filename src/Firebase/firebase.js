@@ -77,7 +77,6 @@ class Firebase {
 			.then((querySnapshot) => {
 				querySnapshot.forEach((doc) => {
 					const data = doc.data();
-					console.log(data);
 					result.push(
 						columns.reduce(
 							(acc, col) => {
