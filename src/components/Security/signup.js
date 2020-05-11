@@ -45,7 +45,7 @@ class SignUpForm extends Component {
 
 		return (
 			<div className={styles.signinContainer}>
-				<div className={styles.header}>Registreer</div>
+				<div className={styles.header}>Registreer ifactuur</div>
 				<form onSubmit={this.onSubmit}>
 					<table>
 						<tbody>
@@ -163,8 +163,8 @@ class SignUpForm extends Component {
 }
 
 const SignUpLink = () => (
-	<div style={{ margin: 20 + "px auto", width: 300 + "px" }}>
-		Nog geen account? Klik <Link to={ROUTES.SIGN_UP}>hier</Link> om te registreren.
+	<div className='ml-2'>
+		Nog geen account? <Link to={ROUTES.SIGN_UP}>Registreer</Link>.
 	</div>
 );
 
