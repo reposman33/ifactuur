@@ -9,8 +9,7 @@ import * as ROUTES from "../../constants/routes";
 import { withFirebase } from "../../Firebase";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "../Shared/Button/button";
-
-import "./invoices.scss";
+import styles from "./invoices.module.scss";
 
 class Invoices extends React.Component {
 	constructor(props) {
@@ -67,7 +66,7 @@ class Invoices extends React.Component {
 			text: this.I18n.get("INVOICES.TABLE.HEADER_ACTIONS"),
 			isDummyField: true,
 			formatter: () => (
-				<span className='actionIcons'>
+				<span className={styles.actionIcons}>
 					<FontAwesomeIcon icon='print' />
 					<FontAwesomeIcon icon='edit' />
 				</span>
@@ -126,7 +125,7 @@ class Invoices extends React.Component {
 				<BootstrapTable
 					bootstrap4
 					data={this.state.rowData}
-					classes='table'
+					classes={styles.table}
 					columns={this.getColumns()}
 					table={this.table}
 					keyField='ID'
