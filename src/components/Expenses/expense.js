@@ -112,10 +112,12 @@ class Expense extends React.Component {
 					<div className='col'>
 						<Textarea
 							name='description'
-							textLabel={this.I18n.get("EXPENSES.LABELS.ITEM")}
+							labelText={this.I18n.get("EXPENSES.LABELS.ITEM")}
 							cols='30'
 							rows='10'
-							existingValue={this.state.description}
+							displayInput={!this.isExistingExpense}
+							displayValue={this.state.description}
+							handleOnChange={this.onChange}
 						/>
 					</div>
 				</div>
@@ -132,7 +134,7 @@ class Expense extends React.Component {
 						<Select
 							labelText={this.I18n.get("EXPENSES.LABELS.TAX")}
 							name='vatrate'
-							displayValue={this.state.vatrate}
+							displayValue={this.state.vatrate + " %"}
 							displayInput={!this.isExistingExpense}
 							handleOnChange={this.onChange}
 							data={this.state.vatrates}

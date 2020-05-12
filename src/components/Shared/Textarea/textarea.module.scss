@@ -1,0 +1,13 @@
+.description {
+	font-weight: bold;
+	width: 95%;
+	padding: 1rem;
+	border-radius: 0.5rem;
+	&:disabled {
+		color: #fff;
+		background-color: transparent;
+		border-color: #ddd;
+		border-width: 2px;
+		border-style: inset;
+	}
+}
