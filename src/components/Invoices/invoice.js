@@ -7,7 +7,6 @@ import { Utils } from "../../services/Utils";
 import * as ROUTES from "../../constants/routes";
 
 import { withFirebase } from "../../Firebase";
-
 import * as styles from "./invoice.module.scss";
 
 class Invoice extends React.Component {
@@ -16,10 +15,10 @@ class Invoice extends React.Component {
 
 		this.Utils = new Utils();
 		this.I18n = new I18n();
-		// these fields contain the data and transform functions for data to be stored
 
+		// these fields contain the data and transform functionsto apply
 		this.persistFields = {
-			VatRate: parseInt,
+			VATRate: parseInt,
 			companyName: (fieldValue) => fieldValue, // return value as is
 			dateTimeCreated: (date) => new Date(date),
 			periodFrom: (date) => (date ? new Date(date) : undefined),
@@ -50,13 +49,13 @@ class Invoice extends React.Component {
 				{ id: 1, type: "debet" },
 			],
 			totals: {},
-			VatRate: undefined,
+			VATRate: undefined,
 			VatRates: [],
 		};
 
 		this.newInvoicePromises = [];
 		this.isExistingInvoice = !!this.props.location.state && this.props.location.state.id;
-		// retrieve invoice from db
+		// retrieve existing invoice from db
 		this.invoice$ = this.isExistingInvoice
 			? this.props.firebase.getInvoice(this.props.location.state.id)
 			: undefined;
@@ -132,12 +131,11 @@ class Invoice extends React.Component {
 
 	/**
 	 * handle input of most input fields
+	 * @param{string} name - name of both the inputfield & stateKey
+	 * @param{string} value - value of user input
 	 */
-	onChange = (event) => {
-		let { name, value } = event.target;
-		this.setState((state, props) => {
-			return { [name]: value };
-		});
+	onChange = (name, value) => {
+		this.setState({ [name]: value });
 	};
 
 	/**
@@ -299,8 +297,10 @@ class Invoice extends React.Component {
 					<div className='col'>
 						<DateComponent
 							labelText={this.I18n.get("INVOICE.LABEL.INVOICE_DATE")}
-							name={this.FIELDNAMES.DATE}
-							existingValue={this.state.dateTimeCreated}
+							name='date'
+							displayInput={!this.isExistingInvoice}
+							displayValue={this.state.dateTimeCreated}
+							handleOnChange={this.onChange}
 						/>
 					</div>
 
