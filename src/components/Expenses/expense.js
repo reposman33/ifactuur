@@ -5,19 +5,23 @@ import { Utils } from "../../services/Utils";
 import { withFirebase } from "../../Firebase";
 import { Select } from "./../Shared/Select/select";
 import { DateComponent } from "./../Shared/Date/date";
-import "./expense.scss";
+import { TextInput } from "./../Shared/TextInput/textInput";
+import { Textarea } from "../Shared/Textarea/textarea";
+import { Button } from "./../Shared/Button/button";
+import styles from "./expense.module.scss";
 
 class Expense extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			amount: undefined,
-			companies: undefined,
+			companies: [],
 			company: undefined,
 			date: undefined,
 			description: undefined,
 			id: undefined,
 			vatrate: undefined,
+			vatrates: [],
 		};
 		this.Utils = new Utils();
 		this.I18n = new I18n();
@@ -39,13 +43,10 @@ class Expense extends React.Component {
 		if (!this.isExistingExpense) {
 			// new expense
 			Promise.all(this.newExpensePromises$).then((values) => {
-				this.setState(
-					{
-						companies: values[0],
-						vatrate: values[1],
-					},
-					() => this.setState({ companies: values[0] })
-				);
+				this.setState({
+					companies: values[0],
+					vatrates: values[1],
+				});
 			});
 		} else {
 			/// existing expense
@@ -62,35 +63,100 @@ class Expense extends React.Component {
 		}
 	}
 
+	onSubmit() {}
+
+	/**
+	 * handle input of most input fields
+	 * @param{string} name - name of both the inputfield & stateKey
+	 * @param{string} value - value of user input
+	 */
+
+	onChange = (name, value) => {
+		console.log(name, "=", value);
+		this.setState({ [name]: value });
+	};
+
+	// navigate to invoices listView
+	onListview = () =>
+		this.props.history.push({
+			pathname: ROUTES.EXPENSES,
+		});
+
 	render() {
 		return (
 			<div>
 				<div className='row'>
-					<div className='col'>
+					<div className='col d-flex flex-row justify-content-between '>
 						<DateComponent
 							labelText={this.I18n.get("EXPENSES.LABELS.DATE")}
 							name='date'
-							existingValue={this.state.date}
+							displayInput={!this.isExistingExpense}
+							displayValue={this.state.date}
+							handleOnChange={this.onChange}
 						/>
-					</div>
-					<div className='col'>
 						<Select
 							labelText={this.I18n.get("EXPENSES.LABELS.COMPANY")}
-							name='companies'
-							existingValue={this.state.company}
+							name='company'
+							displayValue={this.state.company}
+							displayInput={!this.isExistingExpense}
+							handleOnChange={this.onChange}
 							data={this.state.companies}
 							displayKey='name'
 							valueKey='ID'
-							newButtonText={this.I18n.get("EXPENSES.BUTTONS.NEW_EXPENSE")}
-							onNewItem={() => this.props.history.push(ROUTES.COMPANY)}
+							buttonText={this.I18n.get("EXPENSES.BUTTONS.NEW_EXPENSE")}
+							onButtonClick={() => this.props.history.push(ROUTES.COMPANY)}
 						/>
 					</div>
 				</div>
 				<div className='row'>
-					<div className='col'></div>
+					<div className='col'>
+						<Textarea
+							name='description'
+							textLabel={this.I18n.get("EXPENSES.LABELS.ITEM")}
+							cols='30'
+							rows='10'
+							existingValue={this.state.description}
+						/>
+					</div>
 				</div>
 				<div className='row'>
-					<div className='col'></div>
+					<div className='col d-flex flex-row justify-content-between'>
+						<TextInput
+							type='number'
+							displayInput={!this.isExistingExpense}
+							displayValue={this.state.amount && this.Utils.currencyFormat.format(this.state.amount)}
+							handleOnChange={this.onChange}
+							name='amount'
+							labelText={this.I18n.get("EXPENSES.LABELS.AMOUNT")}
+						/>
+						<Select
+							labelText={this.I18n.get("EXPENSES.LABELS.TAX")}
+							name='vatrate'
+							displayValue={this.state.vatrate}
+							displayInput={!this.isExistingExpense}
+							handleOnChange={this.onChange}
+							data={this.state.vatrates}
+							displayKey='rate'
+							valueKey='ID'
+						/>
+					</div>
+				</div>
+				<div className='row'>
+					<div className='col d-flex justify-content-between'>
+						<Button
+							onClick={this.onListview}
+							text={this.I18n.get("BUTTON.OVERVIEW")}
+							styles={{ marginLeft: "0.8rem" }}
+							classes='btn-primary'
+						/>
+						<Button
+							disabled={this.isExistingInvoice}
+							onClick={this.onSubmit}
+							text={this.I18n.get("BUTTON.SAVE")}
+							styles={{ marginRight: "0.8rem" }}
+							classes='btn-primary'
+						/>
+					</div>
 				</div>
 			</div>
 		);
