@@ -9,7 +9,7 @@ import styles from "./select.module.scss";
  * @param{string} displayKey - key holding the data to display in the select option
  * @param{string} valueKey - key holding the value datafor the select option
  */
-const Select = ({ labelText, name, existingValue, data, displayKey, valueKey, newButtonText, onNewItem }) => (
+const Select = ({ labelText, name, existingValue = false, data, displayKey, valueKey, newButtonText, onNewItem }) => (
 	<div className={styles.container}>
 		<div>
 			<label>{labelText}</label>
