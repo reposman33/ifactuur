@@ -308,10 +308,14 @@ class Invoice extends React.Component {
 						<Select
 							labelText={this.I18n.get("INVOICE.LABEL.COMPANY")}
 							name={this.FIELDNAMES.COMPANYNAME}
-							existingValue={this.state.companyName}
+							displayValue={this.state.companyName}
+							displayInput={!this.isExistingInvoice}
 							data={this.state.companies}
+							buttonText={this.I18n.get("INVOICE.BUTTON.NEW_COMPANY")}
 							displayKey='name'
-							valueKey='id'
+							valueKey='ID'
+							handleOnChange={this.onChange}
+							onButtonClick={() => this.props.history.push({ pathname: ROUTES.INVOICES })}
 						/>
 					</div>
 				</div>
@@ -321,10 +325,12 @@ class Invoice extends React.Component {
 							<Select
 								labelText={this.I18n.get("INVOICE.LABEL.INVOICETYPE")}
 								name='invoiceType'
+								displayValue={this.state.type}
+								displayInput={!this.isExistingInvoice}
 								data={this.state.invoiceTypes}
-								existingValue={this.state.type}
 								displayKey='type'
-								valuekey='id'
+								valueKey='id'
+								handleOnChange={this.onChange}
 							/>
 						</div>
 					</div>
@@ -368,7 +374,6 @@ class Invoice extends React.Component {
 							<div className={styles.totals}>
 								<div className={styles.VatRatesDropdown}>
 									<label>{this.I18n.get("INVOICE.LABEL.VATRATE")}:</label>
-
 									<select name={this.FIELDNAMES.VATRATE} onChange={this.onVatRateChange}>
 										<option value=''>{this.I18n.get("INVOICE.INPUT.VATRATE.DEFAUTVALUE")}</option>
 										{this.state.VatRates.map((rate) => (
