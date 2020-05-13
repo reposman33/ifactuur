@@ -36,7 +36,7 @@ const Select = ({
 		<div className={styles.container}>
 			<label>{labelText}</label>
 			{displayInput ? (
-				<span className='d-flex flex-row justify-content-between'>
+				<span className='d-flex flex-row justify-content-between align-items-center'>
 					<select name={name} onChange={onChange} value={value}>
 						<option value=''>--</option>
 						{data.map((ob) => (
