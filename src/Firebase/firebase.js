@@ -93,6 +93,20 @@ class Firebase {
 			});
 	};
 
+	/**
+	 * this function returns the next higher value of the given field of type number in a collection
+	 * @param {string} collection - the collection to get the value from
+	 * @param {string} fieldName - the name of the field to get the value from
+	 * @returns {number}  - the fieldvalue + 1
+	 */
+	getNewFieldValue = (collection, fieldName) =>
+		this.db
+			.collection(collection)
+			.orderBy("id", "desc")
+			.limit(1)
+			.get()
+			.then((querySnapshot) => querySnapshot.docs[0].data()[fieldName] + 1);
+
 	// ===============================================================
 	// ===============================================================
 	// EXPENSES
@@ -114,6 +128,11 @@ class Firebase {
 					return acc;
 				}, {});
 			});
+
+	/**
+	 * @param{object} expense - the expense to save
+	 */
+	saveExpense = (expense) => this.db.collection("bills").add(expense);
 
 	// ===============================================================
 	// ===============================================================
@@ -142,20 +161,6 @@ class Firebase {
 				);
 				return invoice;
 			});
-
-	/**
-	 * this function returns the last fieldvalue of the given field in the given collection
-	 * @param {string} collection
-	 * @param {string} fieldName
-	 * returns {any}  - the fieldvalue
-	 */
-	getNewInvoicenr = () =>
-		this.db
-			.collection("invoices")
-			.orderBy("id", "desc")
-			.limit(1)
-			.get()
-			.then((querySnapshot) => querySnapshot.docs[0].data().invoiceNr + 1);
 
 	saveInvoice = (invoice) => this.db.collection("invoices").add(invoice);
 

@@ -63,7 +63,7 @@ class Invoice extends React.Component {
 		// new invoice!
 		if (!this.isExistingInvoice) {
 			// retrieve last invoiceNr
-			this.newInvoicePromises.push(this.props.firebase.getNewInvoicenr());
+			this.newInvoicePromises.push(this.props.firebase.getNewFieldValue("invoices", "invoiceNr"));
 			// retrieve companies
 			this.newInvoicePromises.push(this.props.firebase.getCollection("companies", "name", ["id", "name"]));
 			// retrieve VatRates
@@ -242,7 +242,7 @@ class Invoice extends React.Component {
 		// add the current user id!
 		invoice.userId = this.props.firebase.auth.currentUser.uid;
 
-		this.props.firebase.saveInvoice(invoice).then((docRef) => console.log("document added"));
+		this.props.firebase.saveInvoice(invoice).then((docRef) => console.log("document ", docRef.id, " added"));
 	};
 
 	render() {
