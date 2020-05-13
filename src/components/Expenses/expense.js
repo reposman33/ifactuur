@@ -29,6 +29,8 @@ class Expense extends React.Component {
 		this.newExpensePromises$ = [];
 
 		if (!this.isExistingExpense) {
+			// retrieve the next id value
+			this.newExpensePromises$.push(this.props.firebase.getNewFieldValue("bills", "id"));
 			// retrieve companies
 			this.newExpensePromises$.push(this.props.firebase.getCollection("companies", "name", ["id", "name"]));
 			// retrieve VatRates
@@ -37,6 +39,16 @@ class Expense extends React.Component {
 			// retrieve the expense
 			this.newExpensePromises$.push(this.props.firebase.getExpense(this.props.location.state.id));
 		}
+
+		// conversion function per field to apply to state when persisting to fireStore
+		this.persistFields = {
+			amount: parseFloat,
+			company: (fieldValue) => fieldValue,
+			date: (date) => new Date(date),
+			description: (fieldValue) => fieldValue,
+			id: (fieldValue) => fieldValue,
+			vatrate: parseInt,
+		};
 	}
 
 	componentDidMount() {
@@ -44,8 +56,9 @@ class Expense extends React.Component {
 			// new expense
 			Promise.all(this.newExpensePromises$).then((values) => {
 				this.setState({
-					companies: values[0],
-					vatrates: values[1],
+					id: values[0],
+					companies: values[1],
+					vatrates: values[2],
 				});
 			});
 		} else {
@@ -63,7 +76,22 @@ class Expense extends React.Component {
 		}
 	}
 
-	onSubmit() {}
+	onSubmit = () => {
+		const expense = {};
+		Object.keys(this.persistFields).map(
+			// filter keys and optionally convert state prop values
+			(key) => {
+				if (this.state[key]) {
+					expense[key] = this.persistFields[key](this.state[key]);
+				}
+				return null;
+			}
+		);
+		// add the current user id!
+		expense.userId = this.props.firebase.auth.currentUser.uid;
+		// save to fireStore
+		this.props.firebase.saveExpense(expense).then((docRef) => console.log("document ", docRef.id, " added"));
+	};
 
 	/**
 	 * handle input of most input fields
@@ -73,7 +101,7 @@ class Expense extends React.Component {
 
 	onChange = (name, value) => {
 		console.log(name, "=", value);
-		this.setState({ [name]: value });
+		this.setState({ [name]: value }, () => console.log("state = ", this.state));
 	};
 
 	// navigate to invoices listView
