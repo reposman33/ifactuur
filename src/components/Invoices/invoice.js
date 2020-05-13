@@ -257,8 +257,6 @@ class Invoice extends React.Component {
 						className={styles.description}
 						onChange={this.handleDescriptionInput}
 						disabled={this.isExistingInvoice}
-						// only retrieve existing row values from the state
-						value={row <= this.state.rows.length - 1 ? this.state.rows[row]["omschrijving"] : ""}
 					/>
 					<span className={styles.currency}>&euro;</span>
 					<input
@@ -267,7 +265,6 @@ class Invoice extends React.Component {
 						className={styles.hourlyrateInt}
 						disabled={this.isExistingInvoice}
 						onChange={this.handleDescriptionInput}
-						value={row <= this.state.rows.length - 1 ? this.state.rows[row]["uurtarief"] : ""}
 					/>
 					<input
 						type='number'
@@ -275,7 +272,6 @@ class Invoice extends React.Component {
 						className={styles.hours}
 						disabled={this.isExistingInvoice}
 						onChange={this.handleDescriptionInput}
-						value={row <= this.state.rows.length - 1 ? this.state.rows[row]["uren"] : ""}
 					/>
 					<span className={styles.total}>
 						{this.state.rows[row] &&
@@ -299,7 +295,7 @@ class Invoice extends React.Component {
 					<div className='col'>
 						<DateComponent
 							labelText={this.I18n.get("INVOICE.LABEL.INVOICE_DATE")}
-							name='date'
+							name={this.FIELDNAMES.DATECREATED}
 							displayInput={!this.isExistingInvoice}
 							displayValue={this.state.dateTimeCreated}
 							handleOnChange={this.onChange}
