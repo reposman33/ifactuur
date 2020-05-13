@@ -16,7 +16,8 @@ class Invoice extends React.Component {
 		this.Utils = new Utils();
 		this.I18n = new I18n();
 
-		// these fields contain the data and transform functionsto apply
+		// When storing data all state values are strings. They have to be xformed to their respective types.
+		// Below the state keys and their transform functions to apply.
 		this.persistFields = {
 			VATRate: parseInt,
 			companyName: (fieldValue) => fieldValue, // return value as is
@@ -46,7 +47,7 @@ class Invoice extends React.Component {
 			statusTitle: "",
 			invoiceTypes: [
 				{ id: 1, type: "credit" },
-				{ id: 1, type: "debet" },
+				{ id: 2, type: "debet" },
 			],
 			totals: {},
 			VATRate: undefined,
@@ -71,7 +72,7 @@ class Invoice extends React.Component {
 		this.nrOfDescriptionRows = 10;
 
 		this.FIELDNAMES = {
-			DATE: "dateTimeCreated",
+			DATECREATED: "dateTimeCreated",
 			PERIOD_FROM: "periodFrom",
 			PERIOD_TO: "periodTo",
 			COMPANIES: "companies",
@@ -80,7 +81,9 @@ class Invoice extends React.Component {
 			HOURLYRATE: "uurtarief",
 			HOURS: "uren",
 			TAX: "tax",
-			VATRATE: "VatRate",
+			VATRATE: "VATRate",
+			TYPE: "type",
+			ROWS: "rows",
 		};
 		// bind it or 'this' scope in function is undefined...
 		this.handleDescriptionInput = this.handleDescriptionInput.bind(this);
@@ -144,7 +147,7 @@ class Invoice extends React.Component {
 	onVatRateChange = (event) => {
 		const value = event.target.value;
 		// update state.VatRate
-		this.onChange(event);
+		this.onChange(event.target.name, event.target.value);
 		this.setState((state, props) => {
 			return { totals: this.getTotalInvoiceAmount(this.state.rows, value) };
 		});
@@ -227,7 +230,6 @@ class Invoice extends React.Component {
 	// onSubmit
 	onSubmit = () => {
 		const invoice = {};
-		// The keys to be stored and their conversion function are defined in persistFields. Apply here
 		Object.keys(this.persistFields).map(
 			// filter keys and optionally convert state prop values
 			(key) => {
@@ -324,7 +326,7 @@ class Invoice extends React.Component {
 						<div className='d-flex justify-content-between mt-2'>
 							<Select
 								labelText={this.I18n.get("INVOICE.LABEL.INVOICETYPE")}
-								name='invoiceType'
+								name={this.FIELDNAMES.TYPE}
 								displayValue={this.state.type}
 								displayInput={!this.isExistingInvoice}
 								data={this.state.invoiceTypes}
