@@ -257,6 +257,11 @@ class Invoice extends React.Component {
 						className={styles.description}
 						onChange={this.handleDescriptionInput}
 						disabled={this.isExistingInvoice}
+						defaultValue={
+							row <= this.state.rows.length - 1
+								? this.state.rows[row] && this.state.rows[row]["omschrijving"]
+								: ""
+						}
 					/>
 					<span className={styles.currency}>&euro;</span>
 					<input
@@ -265,6 +270,11 @@ class Invoice extends React.Component {
 						className={styles.hourlyrateInt}
 						disabled={this.isExistingInvoice}
 						onChange={this.handleDescriptionInput}
+						defaultValue={
+							row <= this.state.rows.length - 1
+								? this.state.rows[row] && this.state.rows[row]["uurtarief"]
+								: undefined
+						}
 					/>
 					<input
 						type='number'
@@ -272,6 +282,11 @@ class Invoice extends React.Component {
 						className={styles.hours}
 						disabled={this.isExistingInvoice}
 						onChange={this.handleDescriptionInput}
+						defaultValue={
+							row <= this.state.rows.length - 1
+								? this.state.rows[row] && this.state.rows[row]["uren"]
+								: undefined
+						}
 					/>
 					<span className={styles.total}>
 						{this.state.rows[row] &&
