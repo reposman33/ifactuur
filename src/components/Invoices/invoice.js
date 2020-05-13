@@ -239,6 +239,8 @@ class Invoice extends React.Component {
 				return null;
 			}
 		);
+		// add the current user id!
+		invoice.userId = this.props.firebase.auth.currentUser.uid;
 
 		this.props.firebase.saveInvoice(invoice).then((docRef) => console.log("document added"));
 	};
