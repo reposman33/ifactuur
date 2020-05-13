@@ -33,7 +33,7 @@ const Select = ({
 	};
 
 	return (
-		<div className={styles.container}>
+		<div className={styles.container + " d-flex flex-column"}>
 			<label>{labelText}</label>
 			{displayInput ? (
 				<span className='d-flex flex-row justify-content-between align-items-center'>

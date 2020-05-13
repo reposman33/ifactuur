@@ -20,11 +20,13 @@ const DateComponent = ({ labelText, name, displayValue, displayInput, handleOnCh
 	return (
 		<div className={styles.container}>
 			<label>{labelText}</label>
-			{displayInput ? (
-				<input type='date' name={name} value={value} onChange={onLocalChange} />
-			) : (
-				<span>{displayValue}</span>
-			)}
+			<span className='d-flex flex-row justify-content-between align-items-center'>
+				{displayInput ? (
+					<input type='date' name={name} value={value} onChange={onLocalChange} />
+				) : (
+					<span>{displayValue}</span>
+				)}
+			</span>
 		</div>
 	);
 };
