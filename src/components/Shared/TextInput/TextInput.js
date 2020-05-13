@@ -13,10 +13,11 @@ const TextInput = ({ displayInput, displayValue, labelText, type, name, handleOn
 			<label>{labelText}</label>
 			{displayInput ? (
 				<input
-					type={type}
 					name={name}
-					placeholder={type === "number" && 423.55}
 					onChange={onChange}
+					placeholder={type === "number" && 423.55}
+					step='any'
+					type={type}
 					value={value}
 				/>
 			) : (
