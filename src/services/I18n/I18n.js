@@ -54,6 +54,27 @@ export class I18n {
 				},
 			},
 		},
+		COMPANY: {
+			LABEL: {
+				NAME: { en: "Company name", nl: "Bedrijfsnaam" },
+				ADDRESS: { en: "Address", nl: "Adres" },
+				ZIPCODE: { en: "Zipcode", nl: "Postcode" },
+				CITY: { en: "City", nl: "Stad" },
+				CONTACT: { en: "Contact", nl: "Contact persoon" },
+				CONTACT_TITLE: { en: "Title", nl: "Titel" },
+				CONTACT_TELEPHONE: { en: "Contact telephone", nl: "Contact telephone" },
+				COUNTRY: { en: "Country", nl: "Land" },
+				EMAIL: { en: "Email", nl: "E-Mail" },
+				FAX: { en: "Fax number", nl: "Fax nummer" },
+				BTWNR: { en: "VAT number", nl: "BTW nummer" },
+				KVKNR: { en: "COC registration number", nl: "KvK nummer" },
+				NOTES: { en: "Notes", nl: "Opmerkingen" },
+				URL: { en: "Website URL", nl: "Website URL" },
+				BANK: { en: "Bank", nl: "Bank" },
+				BANKACCOUNTNR: { en: "IBAN", nl: "IBAN" },
+				BANKACCOUNTNAMEHOLDER: { en: "IBAN name", nl: "IBAN tenaam stelling" },
+			},
+		},
 		EXPENSES: {
 			TABLE: {
 				HEADERS: {

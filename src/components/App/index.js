@@ -6,7 +6,7 @@ import Settings from "../Settings";
 import Expense from "../Expenses/expense";
 import Expenses from "../Expenses/expenses";
 import Companies from "../Companies/companies";
-// import Company from "../Companies/company";
+import Company from "../Companies/company";
 import Invoices from "../Invoices/invoices";
 import Invoice from "../Invoices/invoice";
 import Navigation from "../Navigation/";
@@ -27,6 +27,10 @@ import {
 	faEquals,
 	faPlus,
 	faTrashAlt,
+	faUserTie,
+	faLink,
+	faPhoneAlt,
+	faEnvelope,
 } from "@fortawesome/free-solid-svg-icons";
 import "./index.scss";
 
@@ -40,7 +44,19 @@ class App extends React.Component {
 			language: this.I18n.getSelectedLanguage(),
 			errorMessage: null,
 		};
-		library.add(faPrint, faEdit, faDoorOpen, faSignOutAlt, faEquals, faPlus, faTrashAlt);
+		library.add(
+			faPrint,
+			faEdit,
+			faDoorOpen,
+			faSignOutAlt,
+			faEquals,
+			faPlus,
+			faTrashAlt,
+			faUserTie,
+			faLink,
+			faPhoneAlt,
+			faEnvelope
+		);
 	}
 
 	componentDidCatch(error, info) {
@@ -70,7 +86,7 @@ class App extends React.Component {
 						<Switch>
 							<Redirect exact from='' to={ROUTES.INVOICES} />
 							<Route exact path={ROUTES.COMPANIES} component={Companies} />
-							{/* <Route exact path={ROUTES.COMPANY} component={Company} /> */}
+							<Route exact path={ROUTES.COMPANY} component={Company} />
 							<Route exact path={ROUTES.SETTINGS} component={Settings} />
 							<Route exact path={ROUTES.EXPENSES} component={Expenses} />
 							<Route exact path={ROUTES.EXPENSE} component={Expense} />
