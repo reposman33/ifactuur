@@ -55,7 +55,8 @@ class Invoice extends React.Component {
 		};
 
 		this.newInvoicePromises = [];
-		this.isExistingInvoice = !!this.props.location.state && this.props.location.state.id;
+		this.isExistingInvoice = !!(!!this.props.location.state && this.props.location.state.id);
+
 		// retrieve existing invoice from db
 		this.invoice$ = this.isExistingInvoice
 			? this.props.firebase.getInvoice(this.props.location.state.id)

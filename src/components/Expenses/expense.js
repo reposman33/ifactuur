@@ -25,7 +25,7 @@ class Expense extends React.Component {
 		};
 		this.Utils = new Utils();
 		this.I18n = new I18n();
-		this.isExistingExpense = !!this.props.location.state && !!this.props.location.state.id;
+		this.isExistingExpense = !!(!!this.props.location.state && !!this.props.location.state.id);
 		this.newExpensePromises$ = [];
 
 		if (!this.isExistingExpense) {
@@ -182,7 +182,7 @@ class Expense extends React.Component {
 							classes='btn-primary'
 						/>
 						<Button
-							disabled={this.isExistingInvoice}
+							disabled={this.isExistingExpense}
 							onClick={this.onSubmit}
 							text={this.I18n.get("BUTTON.SAVE")}
 							styles={{ marginRight: "0.8rem" }}
