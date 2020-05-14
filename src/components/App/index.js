@@ -5,7 +5,8 @@ import { withAuthentication } from "../Session/";
 import Settings from "../Settings";
 import Expense from "../Expenses/expense";
 import Expenses from "../Expenses/expenses";
-import { Company, Companies } from "../Companies/";
+import Companies from "../Companies/companies";
+// import Company from "../Companies/company";
 import Invoices from "../Invoices/invoices";
 import Invoice from "../Invoices/invoice";
 import Navigation from "../Navigation/";
@@ -18,7 +19,15 @@ import { I18n } from "../../services/I18n/I18n";
 import "react-bootstrap";
 import { config_dev, config_prod } from "../../environments.js";
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faPrint, faEdit, faDoorOpen, faSignOutAlt, faEquals, faPlus } from "@fortawesome/free-solid-svg-icons";
+import {
+	faPrint,
+	faEdit,
+	faDoorOpen,
+	faSignOutAlt,
+	faEquals,
+	faPlus,
+	faTrashAlt,
+} from "@fortawesome/free-solid-svg-icons";
 import "./index.scss";
 
 const config = process.env.NODE_ENV === "production" ? config_prod : config_dev;
@@ -31,7 +40,7 @@ class App extends React.Component {
 			language: this.I18n.getSelectedLanguage(),
 			errorMessage: null,
 		};
-		library.add(faPrint, faEdit, faDoorOpen, faSignOutAlt, faEquals, faPlus);
+		library.add(faPrint, faEdit, faDoorOpen, faSignOutAlt, faEquals, faPlus, faTrashAlt);
 	}
 
 	componentDidCatch(error, info) {
@@ -61,7 +70,7 @@ class App extends React.Component {
 						<Switch>
 							<Redirect exact from='' to={ROUTES.INVOICES} />
 							<Route exact path={ROUTES.COMPANIES} component={Companies} />
-							<Route exact path={ROUTES.COMPANY} component={Company} />
+							{/* <Route exact path={ROUTES.COMPANY} component={Company} /> */}
 							<Route exact path={ROUTES.SETTINGS} component={Settings} />
 							<Route exact path={ROUTES.EXPENSES} component={Expenses} />
 							<Route exact path={ROUTES.EXPENSE} component={Expense} />
