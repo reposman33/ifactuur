@@ -36,25 +36,25 @@ class Expenses extends React.Component {
 		{ dataField: "id", text: "#", headerStyle: { width: "8%" }, sort: true },
 		{
 			dataField: "date",
-			text: this.I18n.get("EXPENSES.TABLE.HEADER_DATE"),
+			text: this.I18n.get("EXPENSES.TABLE.HEADERS.DATE"),
 			formatter: (cell, row) => this.Utils.dateFormat.format(cell),
 			sort: true,
 			sortFunc: this.Utils.dateSortFunction,
 		},
 		{
 			dataField: "company",
-			text: this.I18n.get("EXPENSES.TABLE.HEADER_COMPANY"),
+			text: this.I18n.get("EXPENSES.TABLE.HEADERS.COMPANY"),
 			sort: true,
 		},
 		{
 			dataField: "amount",
-			text: this.I18n.get("EXPENSES.TABLE.HEADER_AMOUNT"),
+			text: this.I18n.get("EXPENSES.TABLE.HEADERS.AMOUNT"),
 			formatter: (cell, row) => this.Utils.currencyFormat.format(cell),
 			sort: true,
 		},
 		{
 			dataField: "actions",
-			text: this.I18n.get("INVOICES.TABLE.HEADER_ACTIONS"),
+			text: this.I18n.get("INVOICES.TABLE.HEADERS.ACTIONS"),
 			isDummyField: true,
 			formatter: () => (
 				<span className={styles.actionIcons}>

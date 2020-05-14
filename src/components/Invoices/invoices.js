@@ -33,28 +33,28 @@ class Invoices extends React.Component {
 		{
 			dataField: "dateTimeCreated",
 			formatter: (cell, row) => this.Utils.dateFormat.format(cell),
-			text: this.I18n.get("INVOICES.TABLE.HEADER_DATE"),
+			text: this.I18n.get("INVOICES.TABLE.HEADERS.DATE"),
 			sort: true,
 			sortFunc: this.Utils.dateSortFunction,
 		},
 		{
 			dataField: "companyName",
-			text: this.I18n.get("INVOICES.TABLE.HEADER_CLIENT"),
+			text: this.I18n.get("INVOICES.TABLE.HEADERS.CLIENT"),
 			sort: true,
 		},
 		{
 			dataField: "type",
-			text: this.I18n.get("INVOICES.TABLE.HEADER_TYPE"),
+			text: this.I18n.get("INVOICES.TABLE.HEADERS.TYPE"),
 			headerStyle: { width: "10%" },
 		},
 		{
 			dataField: "statustitle",
-			text: this.I18n.get("INVOICES.TABLE.HEADER_STATUS"),
+			text: this.I18n.get("INVOICES.TABLE.HEADERS.STATUS"),
 			headerStyle: { width: "10%" },
 		},
 		{
 			dataField: "actions",
-			text: this.I18n.get("INVOICES.TABLE.HEADER_ACTIONS"),
+			text: this.I18n.get("INVOICES.TABLE.HEADERS.ACTIONS"),
 			isDummyField: true,
 			formatter: () => (
 				<span className={styles.actionIcons}>

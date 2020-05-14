@@ -44,11 +44,23 @@ export class I18n {
 				},
 			},
 		},
+		COMPANIES: {
+			TABLE: {
+				HEADERS: {
+					NAME: { en: "Name", nl: "Naam" },
+					CONTACT: { en: "Contact", nl: "Contactpersoon" },
+					CITY: { en: "City", nl: "Stad" },
+				},
+			},
+		},
 		EXPENSES: {
 			TABLE: {
-				HEADER_DATE: { en: "Date", nl: "Datum" },
-				HEADER_COMPANY: { en: "Company", nl: "Bedrijf" },
-				HEADER_AMOUNT: { en: "Amount", nl: "Bedrag" },
+				HEADERS: {
+					DATE: { en: "Date", nl: "Datum" },
+					COMPANY: { en: "Company", nl: "Bedrijf" },
+					AMOUNT: { en: "Amount", nl: "Bedrag" },
+					ACTIONS: { en: "Actions", nl: "Bewerken" },
+				},
 			},
 			LABELS: {
 				DATE: { en: "Date", nl: "Datum" },
@@ -62,16 +74,15 @@ export class I18n {
 				NEW_EXPENSE: { en: "New", nl: "Nieuw" },
 			},
 		},
-
 		INVOICES: {
-			TITLE: { en: "Invoices", nl: "Facturen" },
 			TABLE: {
-				HEADER_DATE: { en: "Date", nl: "Datum" },
-				HEADER_CLIENT: { en: "Client", nl: "Klant" },
-				HEADER_SUM: { en: "Sum", nl: "Bedrag" },
-				HEADER_STATUS: { en: "Status", nl: "Status" },
-				HEADER_TYPE: { en: "Type", nl: "Soort" },
-				HEADER_ACTIONS: { en: "Actions", nl: "Bewerken" },
+				HEADERS: {
+					DATE: { en: "Date", nl: "Datum" },
+					CLIENT: { en: "Client", nl: "Klant" },
+					STATUS: { en: "Status", nl: "Status" },
+					TYPE: { en: "Type", nl: "Soort" },
+					ACTIONS: { en: "Actions", nl: "Bewerken" },
+				},
 			},
 			BUTTONS: {
 				NEW_INVOICE: { en: "New", nl: "Nieuw" },
