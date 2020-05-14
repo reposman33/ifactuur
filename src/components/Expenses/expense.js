@@ -118,14 +118,14 @@ class Expense extends React.Component {
 				<div className='row'>
 					<div className='col d-flex flex-row justify-content-between '>
 						<DateComponent
-							labelText={this.I18n.get("EXPENSES.LABELS.DATE")}
+							labelText={this.I18n.get("EXPENSE.LABEL.DATE")}
 							name='date'
 							displayInput={!this.isExistingExpense}
 							displayValue={this.state.date}
 							handleOnChange={this.onChange}
 						/>
 						<Select
-							labelText={this.I18n.get("EXPENSES.LABELS.COMPANY")}
+							labelText={this.I18n.get("EXPENSE.LABEL.COMPANY")}
 							name='company'
 							displayValue={this.state.company}
 							displayInput={!this.isExistingExpense}
@@ -133,7 +133,7 @@ class Expense extends React.Component {
 							data={this.state.companies}
 							displayKey='name'
 							valueKey='ID'
-							buttonText={this.I18n.get("EXPENSES.BUTTONS.NEW_EXPENSE")}
+							buttonText={this.I18n.get("EXPENSE.BUTTON.NEW_EXPENSE")}
 							onButtonClick={() => this.props.history.push(ROUTES.COMPANY)}
 						/>
 					</div>
@@ -142,7 +142,7 @@ class Expense extends React.Component {
 					<div className='col'>
 						<Textarea
 							name='description'
-							labelText={this.I18n.get("EXPENSES.LABELS.ITEM")}
+							labelText={this.I18n.get("EXPENSE.LABEL.ITEM")}
 							cols='30'
 							rows='10'
 							displayInput={!this.isExistingExpense}
@@ -159,10 +159,10 @@ class Expense extends React.Component {
 							displayValue={this.state.amount && this.Utils.currencyFormat.format(this.state.amount)}
 							handleOnChange={this.onChange}
 							name='amount'
-							labelText={this.I18n.get("EXPENSES.LABELS.AMOUNT")}
+							labelText={this.I18n.get("EXPENSE.LABEL.AMOUNT")}
 						/>
 						<Select
-							labelText={this.I18n.get("EXPENSES.LABELS.TAX")}
+							labelText={this.I18n.get("EXPENSE.LABEL.TAX")}
 							name='vatrate'
 							displayValue={this.state.vatrate + " %"}
 							displayInput={!this.isExistingExpense}

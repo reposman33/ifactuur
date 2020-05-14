@@ -63,7 +63,9 @@ export class I18n {
 					ACTIONS: { en: "Actions", nl: "Bewerken" },
 				},
 			},
-			LABELS: {
+		},
+		EXPENSE: {
+			LABEL: {
 				DATE: { en: "Date", nl: "Datum" },
 				COMPANY: { en: "Company", nl: "Bedrijf" },
 				NEW_COMPANY: { en: "New company", nl: "Nieuw bedrijf" },
@@ -72,6 +74,7 @@ export class I18n {
 				TAX: { en: "Tax", nl: "BTW" },
 			},
 		},
+
 		INVOICES: {
 			TABLE: {
 				HEADERS: {
