@@ -85,8 +85,6 @@ class Invoice extends React.Component {
 			TYPE: "type",
 			ROWS: "rows",
 		};
-		// bind it or 'this' scope in function is undefined...
-		this.handleDescriptionInput = this.handleDescriptionInput.bind(this);
 	}
 
 	componentDidMount = () => {
