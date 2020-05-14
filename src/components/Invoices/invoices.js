@@ -27,15 +27,6 @@ class Invoices extends React.Component {
 	}
 
 	I18n = new I18n();
-	PAGE = "INVOICES";
-
-	emptyRowData = {
-		id: "",
-		date: "",
-		client: "",
-		sum: "",
-		status: "",
-	};
 
 	getColumns = () => [
 		{ dataField: "invoiceNr", text: "#", headerStyle: { width: "8%" }, sort: true },
