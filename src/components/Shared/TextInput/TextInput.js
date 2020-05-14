@@ -25,7 +25,7 @@ const TextInput = ({
 				<input
 					name={name}
 					onChange={onChange}
-					placeholder={type === "number" && 423.55}
+					placeholder={type === "number" ? 423.55 : name}
 					step='any'
 					type={type}
 					value={value}
