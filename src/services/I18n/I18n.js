@@ -50,6 +50,7 @@ export class I18n {
 					NAME: { en: "Name", nl: "Naam" },
 					CONTACT: { en: "Contact", nl: "Contactpersoon" },
 					CITY: { en: "City", nl: "Stad" },
+					ACTIONS: { en: "Actions", nl: "Bewerken" },
 				},
 			},
 		},
@@ -70,9 +71,6 @@ export class I18n {
 				ITEM: { en: "Items/Services", nl: "Goederen/Diensten" },
 				TAX: { en: "Tax", nl: "BTW" },
 			},
-			BUTTONS: {
-				NEW_EXPENSE: { en: "New", nl: "Nieuw" },
-			},
 		},
 		INVOICES: {
 			TABLE: {
@@ -83,10 +81,6 @@ export class I18n {
 					TYPE: { en: "Type", nl: "Soort" },
 					ACTIONS: { en: "Actions", nl: "Bewerken" },
 				},
-			},
-			BUTTONS: {
-				NEW_INVOICE: { en: "New", nl: "Nieuw" },
-				CLEAR: { en: "Clear", nl: "Formulier leegmaken" },
 			},
 		},
 		INVOICE: {
@@ -115,7 +109,11 @@ export class I18n {
 				SAVE: { en: "Save", nl: "Bewaar" },
 			},
 		},
-		BUTTON: { SAVE: { en: "Save", nl: "Bewaar" }, OVERVIEW: { en: "Overview", nl: "Overzicht" } },
+		BUTTON: {
+			SAVE: { en: "Save", nl: "Bewaar" },
+			NEW: { en: "New", nl: "Nieuw" },
+			OVERVIEW: { en: "Overview", nl: "Overzicht" },
+		},
 		PAGINATION: {
 			NEXT_PAGE: { en: "next page", nl: "volgende pagina" },
 			PREVIOUS_PAGE: { en: "previous page", nl: "vorige pagina" },

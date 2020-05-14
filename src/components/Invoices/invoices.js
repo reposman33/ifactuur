@@ -127,7 +127,7 @@ class Invoices extends React.Component {
 
 				<Button
 					onClick={this.handleNewInvoice}
-					text={this.I18n.get("EXPENSES.BUTTONS.NEW_EXPENSE")}
+					text={this.I18n.get("BUTTON.NEW")}
 					classes='btn btn-primary float-right'
 				/>
 			</div>

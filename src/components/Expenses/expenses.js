@@ -120,7 +120,7 @@ class Expenses extends React.Component {
 					pagination={paginationFactory(this.paginationConfig)}></BootstrapTable>
 
 				<button className='btn btn-primary float-right' onClick={this.handleNewExpense}>
-					{this.I18n.get("EXPENSES.BUTTONS.NEW_EXPENSE")}
+					{this.I18n.get("BUTTON.NEW")}
 				</button>
 			</div>
 		);
