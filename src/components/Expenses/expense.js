@@ -90,7 +90,9 @@ class Expense extends React.Component {
 		// add the current user id!
 		expense.userId = this.props.firebase.auth.currentUser.uid;
 		// save to fireStore
-		this.props.firebase.saveExpense(expense).then((docRef) => console.log("document ", docRef.id, " added"));
+		this.props.firebase
+			.addDocumentToCollection("bills", expense)
+			.then((docRef) => console.log("document ", docRef.id, " added"));
 	};
 
 	/**

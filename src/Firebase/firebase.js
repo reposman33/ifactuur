@@ -59,7 +59,7 @@ class Firebase {
 
 	// ===============================================================
 	// ===============================================================
-	// GETCOLLECTION
+	// GENERIC FUNCTIONS
 	// ===============================================================
 	// ===============================================================
 	/**
@@ -107,6 +107,11 @@ class Firebase {
 			.get()
 			.then((querySnapshot) => querySnapshot.docs[0].data()[fieldName] + 1);
 
+	/**
+	 * @param{object} expense - the expense to save
+	 */
+	addDocumentToCollection = (collection, doc) => this.db.collection(collection).add(doc);
+
 	// ===============================================================
 	// ===============================================================
 	// EXPENSES
@@ -128,11 +133,6 @@ class Firebase {
 					return acc;
 				}, {});
 			});
-
-	/**
-	 * @param{object} expense - the expense to save
-	 */
-	saveExpense = (expense) => this.db.collection("bills").add(expense);
 
 	// ===============================================================
 	// ===============================================================
@@ -161,8 +161,6 @@ class Firebase {
 				);
 				return invoice;
 			});
-
-	saveInvoice = (invoice) => this.db.collection("invoices").add(invoice);
 
 	// ===============================================================
 	// ===============================================================
