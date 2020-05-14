@@ -156,7 +156,7 @@ class Invoice extends React.Component {
 	/**
 	 * handle input in fields 'description', 'hourlyRrate' or 'hours'
 	 */
-	handleDescriptionInput(event) {
+	handleDescriptionInput = (event) => {
 		// let { name, value } = { name: "description", value: "direct ly set value" };
 		let { name, value } = event.target;
 		if (!!!value) {
@@ -173,7 +173,7 @@ class Invoice extends React.Component {
 		// ...parse stringified nrs to numbers
 		const val = isNaN(parseInt(value)) ? value : parseInt(value);
 
-		// prevent gaps in the rows array when user allows for empty lines
+		// prevent gaps in the rows array when user leaves empty rows
 		if (rowIndex > rows.length) {
 			for (let i = rowIndex; i > rows.length; i--) {
 				rows.push({ omschrijving: "", uurtaried: undefined, uren: undefined });
@@ -186,26 +186,26 @@ class Invoice extends React.Component {
 		//store stuff
 		this.setState({
 			rows: rows,
-			totals: this.getTotalInvoiceAmount(rows, this.state.VatRate),
+			totals: this.getTotalInvoiceAmount(rows, this.state.VATRate),
 		});
-	}
+	};
 
 	/**
 	 * calculate amounts for totalBeforeVat, totalVatAmount and totalWithVat from the description array
 	 * @param {string} invoiceData - stringified object array 1 object containing description, hourlyRate and hours for at least the first row
 	 * @returns {object} with amounts calculated
 	 */
-	getTotalInvoiceAmount(rows, VatRate) {
-		if (!rows) {
-			return;
-		}
-		const _VatRate = parseInt(VatRate);
+	getTotalInvoiceAmount(rows, vatrate) {
+		const _vatrate = parseInt(vatrate);
+		// calculate
 		const total = rows.reduce((total, row) => {
-			// watch out - user can inintially skip 1st line and start typing in lower lines to later add data in 1st line
-			total = row && row.uren && row.uurtarief ? total + parseFloat(row.uren) * parseFloat(row.uurtarief) : total;
+			// calculate total amount by adding uren * uurtarief for rows
+			total = row.uren && row.uurtarief ? total + parseFloat(row.uren) * parseFloat(row.uurtarief) : total;
 			return total;
 		}, 0);
-		const totalVatAmount = total * (_VatRate / 100);
+
+		const totalVatAmount = _vatrate ? total * (_vatrate / 100) : 0;
+
 		return {
 			totalBeforeVat: !!total ? total : "",
 			totalVatAmount: !!totalVatAmount ? totalVatAmount : false,
