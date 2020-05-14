@@ -9,7 +9,7 @@ const TextInput = ({ displayInput, displayValue, labelText, type, name, handleOn
 	};
 
 	return (
-		<div className={styles.container}>
+		<div className={styles.container + " d-flex flex-column"}>
 			<label>{labelText}</label>
 			{displayInput ? (
 				<input
