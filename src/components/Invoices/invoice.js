@@ -330,7 +330,7 @@ class Invoice extends React.Component {
 							displayKey='name'
 							valueKey='ID'
 							handleOnChange={this.onChange}
-							onButtonClick={() => this.props.history.push({ pathname: ROUTES.INVOICES })}
+							onButtonClick={() => this.props.history.push({ pathname: ROUTES.COMPANIES })}
 						/>
 					</div>
 				</div>
