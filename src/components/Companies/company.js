@@ -123,7 +123,7 @@ class Company extends React.Component {
 		);
 		// add the current user id!
 		company.userId = this.props.firebase.auth.currentUser.uid;
-		console.log(company);
+
 		this.props.firebase.addDocumentToCollection("companies", company).then((docRef) => {
 			console.log("document ", docRef.id, " added");
 			this.onListview();
