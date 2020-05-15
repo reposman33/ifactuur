@@ -198,19 +198,20 @@ class Company extends React.Component {
 								<FontAwesomeIcon size='2x' icon='user-tie' />
 							</span>
 							{/* CONTACT TITEL */}
-							{/* only show title in new company */}
-							{!this.isExistingCompany && (
-								<Select
-									labelText={this.I18n.get("COMPANY.LABEL.CONTACT_TITLE")}
-									name='contactTitle'
-									displayValue={this.state.contactTitle}
-									displayInput={!this.isExistingCompany}
-									data={this.state.contactTitles}
-									displayKey='title'
-									valueKey='id'
-									handleOnChange={this.onChange}
-								/>
-							)}
+							{/* only show title in new company OR when available in state */}
+							{!this.isExistingCompany ||
+								(!!this.state.contactTitle && (
+									<Select
+										labelText={this.I18n.get("COMPANY.LABEL.CONTACT_TITLE")}
+										name='contactTitle'
+										displayValue={this.state.contactTitle}
+										displayInput={!this.isExistingCompany}
+										data={this.state.contactTitles}
+										displayKey='title'
+										valueKey='id'
+										handleOnChange={this.onChange}
+									/>
+								))}
 							{/* CONTACT */}
 							<TextInput
 								type='text'
