@@ -293,6 +293,9 @@ class Firebase {
 				id: { type: "integer", convert: parseInt },
 				vatrate: { type: "integer", convert: parseInt },
 			},
+			companies: {
+				id: { type: "integer", convert: parseInt },
+			},
 		}[collection];
 
 		const convertInvoices = (querySnapshot, documentKeys) => {
