@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import BootstrapTable from "react-bootstrap-table-next";
 import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
 import "react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css";
@@ -52,8 +52,14 @@ class Companies extends React.Component {
 			dataField: "actions",
 			text: this.I18n.get("COMPANIES.TABLE.HEADERS.ACTIONS"),
 			isDummyField: true,
-			formatter: () => (
-				<span className={styles.actionIcons}>
+			formatExtraData: this.deleteDocument,
+			formatter: (cell, rowData, rowIndex, deleteDocument) => (
+				<span
+					className={styles.actionIcons}
+					onClick={(e) => {
+						deleteDocument(rowData.ID);
+						e.stopPropagation();
+					}}>
 					<FontAwesomeIcon icon={["fa", "trash-alt"]} />
 				</span>
 			),
@@ -103,6 +109,15 @@ class Companies extends React.Component {
 			pathname: ROUTES.COMPANY,
 			state: { id: this.state.rowData[rowIndex].ID },
 		});
+	};
+
+	deleteDocument = (ID) => {
+		if (window.confirm(this.I18n.get("COMPANY.PROMPT.DELETE"))) {
+			// delete company from fireStore
+			this.props.firebase.deleteDocument("companies", ID);
+			//remove from listView
+			this.setState({ rowData: this.state.rowData.filter((row) => row.ID !== ID) });
+		}
 	};
 
 	render() {

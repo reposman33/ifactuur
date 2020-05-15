@@ -74,6 +74,12 @@ export class I18n {
 				BANKACCOUNTNR: { en: "IBAN", nl: "IBAN" },
 				BANKACCOUNTNAMEHOLDER: { en: "IBAN name", nl: "IBAN tenaam stelling" },
 			},
+			PROMPT: {
+				DELETE: {
+					en: "Are you sure you want to delete this company from iFactuur?",
+					nl: "Weet u zeker dat u dit bedrijf wil verwijderen uit iFactuur?",
+				},
+			},
 		},
 		EXPENSES: {
 			TABLE: {
