@@ -38,15 +38,14 @@
 }
 // style the columns
 *[class^="col"] {
-	font-family: "Montserrat", sans-serif;
-	background-color: $column-background-color;
-	border-radius: $column-border-radius;
-	border: $column-border;
-	color: $text-color;
-	padding: $column-padding;
 	// hack to add margin between cols
 	background-clip: padding-box;
-	border: 10px solid transparent;
+	background-color: $column-background-color;
+	border: $column-border;
+	border-radius: $column-border-radius;
+	color: $text-color;
+	font-family: "Montserrat", sans-serif;
+	padding: $column-padding;
 
 	.displayFlex {
 		display: flex;
