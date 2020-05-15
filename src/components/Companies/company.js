@@ -1,40 +1,39 @@
 import React from "react";
-import { DateComponent } from "../Shared/Date/date";
 import { Textarea } from "../Shared/Textarea/textarea";
 import { Select } from "../Shared/Select/select";
 import { Button } from "../Shared/Button/button";
 import { TextInput } from "../Shared/TextInput/textInput";
 import { I18n } from "../../services/I18n/I18n";
-import { Utils } from "../../services/Utils";
 import * as ROUTES from "../../constants/routes";
 import { withFirebase } from "../../Firebase";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import * as styles from "./company.module.scss";
+import styles from "./company.module.scss";
 
 class Company extends React.Component {
 	constructor(props) {
 		super(props);
+		this.I18n = new I18n();
 
-		// When storing data all state values are strings. They have to be xformed to their respective types.
-		// Below the state keys and their transform functions to apply.
+		// State keys and transform functions to apply.
 		this.persistFields = {
-			name: "",
-			address: "",
-			zipcode: "",
-			city: "",
-			contact: "",
-			contactTitle: "",
-			contactTelephone: "",
-			country: "",
-			email: "",
-			fax: "",
-			btwnr: "",
-			kvknr: "",
-			notes: "",
-			url: "",
-			bank: "",
-			bankAccountNr: "",
-			bankAccountNameHolder: "",
+			address: (fieldValue) => fieldValue,
+			bank: (fieldValue) => fieldValue,
+			bankAccountNr: (fieldValue) => fieldValue,
+			bankAccountNameHolder: (fieldValue) => fieldValue,
+			btwnr: (fieldValue) => fieldValue,
+			city: (fieldValue) => fieldValue,
+			contact: (fieldValue) => fieldValue,
+			contactTelephone: (fieldValue) => fieldValue,
+			contactTitle: (fieldValue) => fieldValue,
+			country: (fieldValue) => fieldValue,
+			email: (fieldValue) => fieldValue,
+			fax: (fieldValue) => fieldValue,
+			id: (fieldValue) => fieldValue,
+			kvknr: (fieldValue) => fieldValue,
+			name: (fieldValue) => fieldValue,
+			notes: (fieldValue) => fieldValue,
+			url: (fieldValue) => fieldValue,
+			zipcode: (fieldValue) => fieldValue,
 		};
 
 		// initialize state
@@ -46,6 +45,12 @@ class Company extends React.Component {
 			city: "",
 			contact: "",
 			contactTelephone: "",
+			contactTitles: [
+				{ title: this.I18n.get("TITLES.MR"), id: 1 },
+				{ title: this.I18n.get("TITLES.MRS"), id: 2 },
+				{ title: this.I18n.get("TITLES.THEY"), id: 3 },
+			],
+			contactTitle: "",
 			country: "",
 			email: "",
 			fax: "",
@@ -69,9 +74,8 @@ class Company extends React.Component {
 		if (!this.isExistingCompany) {
 			this.newCompanyPromises$ = [];
 			// retrieve last invoiceNr
-			this.newCompanyPromises$.push(this.props.firebase.getNewFieldValue("company", "id"));
+			this.newCompanyPromises$.push(this.props.firebase.getNewFieldValue("companies", "id"));
 		}
-		this.I18n = new I18n();
 	}
 
 	componentDidMount = () => {
@@ -82,31 +86,12 @@ class Company extends React.Component {
 					id: value[0],
 				})
 			);
+		} else {
+			// assign keys of retrieved document to state
+			this.company$.then((doc) => {
+				Object.keys(doc).map((documentKey) => this.setState({ [documentKey]: doc[documentKey] }));
+			});
 		}
-		this.company$.then((doc) => {
-			this.setState(
-				{
-					id: doc.id,
-					name: doc.name,
-					address: doc.address,
-					zipcode: doc.zipcode,
-					city: doc.city,
-					contact: doc.contact,
-					contactTelephone: doc.contactTelephone,
-					country: doc.country,
-					email: doc.email,
-					fax: doc.fax,
-					btwnr: doc.btwnr,
-					kvknr: doc.kvknr,
-					notes: doc.notes,
-					url: doc.url,
-					bank: doc.bank,
-					bankAccountNr: doc.bankAccountNr,
-					bankAccountNameHolder: doc.bankAccountNameHolder,
-				},
-				() => console.log(this.state)
-			);
-		});
 	};
 
 	// onListview
@@ -124,16 +109,37 @@ class Company extends React.Component {
 		this.setState({ [name]: value });
 	};
 
+	// onSubmit
+	onSubmit = () => {
+		const company = {};
+		Object.keys(this.persistFields).map(
+			// filter keys and optionally convert state prop values
+			(key) => {
+				if (this.state[key]) {
+					company[key] = this.persistFields[key](this.state[key]);
+				}
+				return null;
+			}
+		);
+		// add the current user id!
+		company.userId = this.props.firebase.auth.currentUser.uid;
+		console.log(company);
+		this.props.firebase.addDocumentToCollection("companies", company).then((docRef) => {
+			console.log("document ", docRef.id, " added");
+			this.onListview();
+		});
+	};
+
 	render() {
 		return (
 			<>
 				<div className='row'>
-					<div className='col d-flex flex-column'>
+					<div className={"col d-flex flex-column " + styles.noBorderBottom}>
 						<div className='d-flex flex-row w-100 mb-3'>
 							{/* COMPANY NAME */}
 							<TextInput
 								type='text'
-								extraClasses='w-25 mr-3'
+								extraClasses='w-50 mr-3'
 								displayInput={!this.isExistingCompany}
 								displayValue={this.state.name}
 								handleOnChange={this.onChange}
@@ -143,7 +149,7 @@ class Company extends React.Component {
 							{/* COMPANY ADDRESS */}
 							<TextInput
 								type='text'
-								extraClasses='w-75'
+								extraClasses='w-50'
 								displayInput={!this.isExistingCompany}
 								displayValue={this.state.address}
 								handleOnChange={this.onChange}
@@ -175,7 +181,7 @@ class Company extends React.Component {
 							{/* COUNTRY */}
 							<TextInput
 								type='text'
-								extraClasses='w-25 mr-3'
+								extraClasses='w-50'
 								displayInput={!this.isExistingCompany}
 								displayValue={this.state.country}
 								handleOnChange={this.onChange}
@@ -186,22 +192,25 @@ class Company extends React.Component {
 					</div>
 				</div>
 				<div className='row mb-3'>
-					<div className='col d-flex flex-column'>
-						<div className='d-flex my-3 justify-content-between'>
+					<div className={"col d-flex flex-column " + styles.noBorderTop}>
+						<div className='d-flex justify-content-between'>
 							<span className='d-flex align-items-center mr-3'>
 								<FontAwesomeIcon size='2x' icon='user-tie' />
 							</span>
 							{/* CONTACT TITEL */}
-							<Select
-								labelText={this.I18n.get("COMPANY.LABEL.CONTACT_TITLE")}
-								name='title'
-								displayValue={this.state.contactTitle}
-								displayInput={!this.isExistingCompany}
-								data={this.state.titles}
-								displayKey='title'
-								valueKey='id'
-								handleOnChange={this.onChange}
-							/>
+							{/* only show title in new company */}
+							{!this.isExistingCompany && (
+								<Select
+									labelText={this.I18n.get("COMPANY.LABEL.CONTACT_TITLE")}
+									name='contactTitle'
+									displayValue={this.state.contactTitle}
+									displayInput={!this.isExistingCompany}
+									data={this.state.contactTitles}
+									displayKey='title'
+									valueKey='id'
+									handleOnChange={this.onChange}
+								/>
+							)}
 							{/* CONTACT */}
 							<TextInput
 								type='text'
@@ -220,41 +229,62 @@ class Company extends React.Component {
 							</span>
 							<TextInput
 								type='text'
-								extraClasses='w-50 mb-3'
+								extraClasses='w-100 mb-3'
 								displayInput={!this.isExistingCompany}
 								displayValue={this.state.url}
 								handleOnChange={this.onChange}
 								name='url'
 								labelText={this.I18n.get("COMPANY.LABEL.URL")}
 							/>
-							{/* EMAIL */}
-							<span className='d-flex align-items-center mx-2'>
-								<FontAwesomeIcon size='2x' icon='envelope' />
-							</span>
-							<TextInput
-								type='text'
-								extraClasses='w-50 mb-3'
-								displayInput={!this.isExistingCompany}
-								displayValue={this.state.email}
-								handleOnChange={this.onChange}
-								name='email'
-								labelText={this.I18n.get("COMPANY.LABEL.EMAIL")}
-							/>
 						</div>
-						{/* TELEPHONE */}
-						<div className='d-flex'>
-							<span className='d-flex align-items-center mr-3'>
-								<FontAwesomeIcon size='2x' icon='phone-alt' />
-							</span>
-							<TextInput
-								type='text'
-								extraClasses='w-50 mb-3'
-								displayInput={!this.isExistingCompany}
-								displayValue={this.state.contactTelephone}
-								handleOnChange={this.onChange}
-								name='contactTelephone'
-								labelText={this.I18n.get("COMPANY.LABEL.CONTACT_TELEPHONE")}
-							/>
+						<div className='d-flex flex-row justify-content-between'>
+							<div className='d-flex flex-column w-50'>
+								<div className='d-flex flex-row w-100'>
+									{/* TELEPHONE */}
+									<span className='d-flex align-items-center mr-3 mt-3'>
+										<FontAwesomeIcon size='2x' icon='phone-alt' />
+									</span>
+									<TextInput
+										type='text'
+										extraClasses='w-100 mb-3'
+										displayInput={!this.isExistingCompany}
+										displayValue={this.state.contactTelephone}
+										handleOnChange={this.onChange}
+										name='contactTelephone'
+										labelText={this.I18n.get("COMPANY.LABEL.CONTACT_TELEPHONE")}
+									/>
+								</div>
+								<div className='d-flex flex-row'>
+									{/* EMAIL */}
+									<span className='d-flex align-items-center mx-2'>
+										<FontAwesomeIcon size='2x' icon='envelope' />
+									</span>
+									<TextInput
+										type='text'
+										extraClasses='w-100 mb-3'
+										displayInput={!this.isExistingCompany}
+										displayValue={this.state.email}
+										handleOnChange={this.onChange}
+										name='email'
+										labelText={this.I18n.get("COMPANY.LABEL.EMAIL")}
+									/>
+								</div>
+								<div className='d-flex justify-content-around'>
+									<Button
+										onClick={this.onListview}
+										text={this.I18n.get("BUTTON.OVERVIEW")}
+										styles={{ marginLeft: "0.8rem" }}
+										classes='btn-primary float-left'
+									/>
+									<Button
+										disabled={this.isExistingCompany}
+										onClick={this.onSubmit}
+										text={this.I18n.get("BUTTON.SAVE")}
+										styles={{ marginRight: "0.8rem" }}
+										classes='btn-primary float-right'
+									/>
+								</div>
+							</div>
 							{/* NOTES */}
 							<Textarea
 								cols='50'
@@ -264,25 +294,11 @@ class Company extends React.Component {
 								handleOnChange={this.onChange}
 								labelText={this.I18n.get("COMPANY.LABEL.NOTES")}
 								name='notes'
-								rows='4'
+								rows='8'
 							/>
 						</div>
 					</div>
 				</div>
-				<Button
-					onClick={this.onListview}
-					text={this.I18n.get("BUTTON.OVERVIEW")}
-					styles={{ marginLeft: "0.8rem" }}
-					classes='btn-primary float-left'
-				/>
-
-				<Button
-					disabled={this.isExistingCompany}
-					onClick={this.onSubmit}
-					text={this.I18n.get("BUTTON.SAVE")}
-					styles={{ marginRight: "0.8rem" }}
-					classes='btn-primary float-right'
-				/>
 			</>
 		);
 	}
