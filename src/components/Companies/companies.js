@@ -40,6 +40,7 @@ class Companies extends React.Component {
 			text: this.I18n.get("COMPANIES.TABLE.HEADERS.CITY"),
 			sort: true,
 			headerStyle: { width: "10%" },
+			formatter: (cell, rowData) => <span title={rowData.address}>{cell}</span>,
 		},
 		{
 			dataField: "contact",
