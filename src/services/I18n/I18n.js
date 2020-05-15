@@ -148,6 +148,7 @@ export class I18n {
 				nl: "Toon pagina {from} tot {to} van {size}",
 			},
 		},
+		TITLES: { MR: { en: "Mr", nl: "Dhr" }, MRS: { en: "Ms", nl: "Mw" }, THEY: { en: "They", nl: "Zij" } },
 	};
 
 	getLocale = () => (navigator.language.search("en") > -1 ? "en" : navigator.language.search("nl") > -1 ? "nl" : "");
