@@ -10,18 +10,16 @@ const Textarea = ({ labelText, name, displayValue, displayInput, handleOnChange,
 	};
 
 	return (
-		<div className={styles.container + " d-flex flex-column mx-3" + _extraClasses}>
+		<div className={styles.container + " d-flex flex-column mx-3 mb-3" + _extraClasses}>
 			<label>{labelText}</label>
-			<div>
-				<textarea
-					className={styles.description}
-					name={name}
-					cols={cols}
-					rows={rows}
-					disabled={!displayInput}
-					defaultValue={displayValue}
-					onChange={onChange}></textarea>
-			</div>
+			<textarea
+				className={styles.description}
+				name={name}
+				cols={cols}
+				rows={rows}
+				disabled={!displayInput}
+				defaultValue={displayValue}
+				onChange={onChange}></textarea>
 		</div>
 	);
 };

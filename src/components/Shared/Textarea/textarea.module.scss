@@ -1,13 +1,27 @@
-.description {
-	font-weight: bold;
-	width: 95%;
-	padding: 1rem;
+@import "../../../constants/variables.scss";
+
+.container {
+	width: fit-content;
+	border: 1px solid #aaa;
 	border-radius: 0.5rem;
-	&:disabled {
-		color: #fff;
-		background-color: transparent;
-		border-color: #ddd;
-		border-width: 2px;
-		border-style: inset;
+	padding: 1rem;
+
+	textarea.description {
+		font-weight: bold;
+		width: 100%;
+		padding: 1rem 1rem 0;
+		border-radius: 0.5rem;
+		&:disabled {
+			color: #fff;
+			background-color: transparent;
+			border-color: #ddd;
+			border-width: 2px;
+			border-style: inset;
+		}
+	}
+
+	label {
+		font-size: $label-font-size;
+		margin-right: 0.3rem;
 	}
 }
