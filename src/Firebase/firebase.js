@@ -114,6 +114,13 @@ class Firebase {
 	 */
 	addDocumentToCollection = (collection, doc) => this.db.collection(collection).add(doc);
 
+	deleteDocument = (collection, id) => {
+		console.log(`deleting document ${id} from ${collection}`);
+		this.db
+			.collection(collection)
+			.doc(id)
+			.delete();
+	};
 	// ===============================================================
 	// ===============================================================
 	// EXPENSES
