@@ -41,10 +41,15 @@ class Firebase {
 	signInWithEmailAndPassword = (email, password) =>
 		this.auth.signInWithEmailAndPassword(email, password).then((res) => {
 			this.userId = res.user.uid;
+			// store uid info in sessionStorage
+			sessionStorage.setItem("userId", res.user.uid);
 			return res;
 		});
 
-	signOut = () => this.auth.signOut();
+	signOut = () => {
+		this.auth.signOut();
+		sessionStorage.removeItem("userId");
+	};
 
 	// ===============================================================
 	// ===============================================================
@@ -74,6 +79,7 @@ class Firebase {
 		const result = [];
 		return this.db
 			.collection(collection)
+			.where("userId", "==", sessionStorage.getItem("userId"))
 			.orderBy(orderByField, "desc")
 			.get()
 			.then((querySnapshot) => {
@@ -104,6 +110,7 @@ class Firebase {
 	getNewFieldValue = (collection, fieldName) =>
 		this.db
 			.collection(collection)
+			.where("userId", "==", sessionStorage.getItem("userId"))
 			.orderBy("id", "desc")
 			.limit(1)
 			.get()
@@ -118,6 +125,7 @@ class Firebase {
 		console.log(`deleting document ${id} from ${collection}`);
 		this.db
 			.collection(collection)
+			.where("userId", "==", sessionStorage.getItem("userId"))
 			.doc(id)
 			.delete();
 	};
@@ -133,6 +141,7 @@ class Firebase {
 	getExpense = (id) =>
 		this.db
 			.collection("bills")
+			.where("userId", "==", sessionStorage.getItem("userId"))
 			.doc(id)
 			.get()
 			.then((doc) => {
