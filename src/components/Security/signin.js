@@ -86,7 +86,7 @@ class SignInForm extends React.Component {
 								<td colSpan='2' style={{ textAlign: "right" }}>
 									<input
 										type='submit'
-										className={isInvalid && styles.invalid + " mr-2"}
+										className={isInvalid ? styles.invalid + " mr-2" : ""}
 										disabled={isInvalid}
 									/>
 									{error && <p className={styles.alert}>{error.message}</p>}
