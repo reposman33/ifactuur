@@ -141,7 +141,6 @@ class Firebase {
 	getExpense = (id) =>
 		this.db
 			.collection("bills")
-			.where("userId", "==", sessionStorage.getItem("userId"))
 			.doc(id)
 			.get()
 			.then((doc) => {
@@ -378,21 +377,21 @@ class Firebase {
 	}
 
 	/**
-	 * update the userId field of all documents to the given value
+	 *  merge the userId field to all documents of a collection
 	 * @param {string} userId - the new userId
 	 */
-	updateUserId(collection, userId) {
+	addUserId(collection, userId) {
 		this.db
-			.collection("invoices")
+			.collection(collection)
 			.get()
 			.then((querySnapshot) =>
 				querySnapshot.forEach((doc) => {
-					const invoice = doc.data();
-					console.log("updating invoice id ", invoice.id);
+					const document = doc.data();
+					console.log("added userId to document id ", document.id);
 					this.db
 						.collection(collection)
 						.doc(doc.id)
-						.update({ userId: userId });
+						.set({ userId: userId }, { merge: true });
 				})
 			);
 	}
