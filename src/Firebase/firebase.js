@@ -1,9 +1,7 @@
-import app from "firebase/app";
+import firebase from "firebase/app";
 import { I18n } from "../services/I18n/I18n";
 import "firebase/auth";
 import "firebase/firestore";
-import * as invoices from "../invoices.json";
-import * as bills from "../bills.json";
 
 import { config_dev, config_prod } from "../environments";
 
@@ -18,12 +16,10 @@ class Firebase {
 			month: "long",
 			day: "numeric",
 		});
-		app.initializeApp(config);
-		this.auth = app.auth();
-		this.db = app.firestore();
+		firebase.initializeApp(config);
+		this.auth = firebase.auth();
+		this.db = firebase.firestore();
 		this.userId = null;
-		this.invoices = invoices;
-		this.bills = bills;
 	}
 
 	// ===============================================================
@@ -39,12 +35,20 @@ class Firebase {
 	passwordUpdate = (password) => this.auth.currentUser.updatePassword(password);
 
 	signInWithEmailAndPassword = (email, password) =>
-		this.auth.signInWithEmailAndPassword(email, password).then((res) => {
-			this.userId = res.user.uid;
-			// store uid info in sessionStorage
-			sessionStorage.setItem("userId", res.user.uid);
-			return res;
-		});
+		// make this login valid during the browser's session
+		this.auth
+			.setPersistence(firebase.auth.Auth.Persistence.SESSION)
+			.then(() => this.auth.signInWithEmailAndPassword(email, password))
+			.then((res) => {
+				this.userId = res.user.uid;
+				// store userId in sessionStorage
+				sessionStorage.setItem("userId", this.userId);
+				return res;
+			})
+			.catch((error) => {
+				// Handle Errors here.
+				console.log("ERROR signInWithEmailAndPassword: ", error);
+			});
 
 	signOut = () => {
 		this.auth.signOut();
@@ -186,11 +190,15 @@ class Firebase {
 	// ===============================================================
 
 	/**
-	 * ==> steps to import invooice table from MySQL to Firestore
+	 * ==> steps to import invoice table from MySQL to Firestore
 	 * 1 From phpmyadmin run query from "F:\www\ifactuur\MVC\ifactuur\application\model\GateWays\FactuurGateway.cfc"
 	 * 2 export as JSON and save as invoices.json;
 	 * 3 remove comments and replace '{\"1\": ' with '' and '\"}]}",' with '\"}]",'; !!!IMPORTANT!!!
 	 * 4 check invoice.rows for id 10  since it is not valid json anymore; !!!IMPORTANT!!!
+	 * 	 * don't forget to import the json in this component:
+	 * import * as invoices from "../invoices.json";
+	 * create fieldMember in constructor
+	 * this.invoices = invoices;
 	 * 5 from localhost:3000: run the following scripts from /components/invoices/componentDidMout()
 	 *   4.1 this.props.firebase.importInvoices(); // maybe need to create index - follow link in console
 	 *   4.2 this.props.firebase.convertRows2Array();
@@ -365,6 +373,11 @@ class Firebase {
 
 	/**
 	 * -- import documents into a collection. The <collection>.json file is in the /app/src folder and has to be imported with ES6 import statement in firebase.js.
+	 * don't forget to import
+	 * import json export from MySQL db
+	 * import * as bills from "../bills.json";
+	 * add to constructor
+	 * this.bills = bills;
 	 * @param {string} collectionName - the name of the collection where to add the document to
 	 */
 	importBills(collectionName) {
