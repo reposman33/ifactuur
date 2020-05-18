@@ -22,14 +22,13 @@ class SignInForm extends React.Component {
 	}
 
 	onSubmit = (event) => {
+		event.preventDefault();
 		const { email, password } = this.state;
 		this.props.firebase.signInWithEmailAndPassword(email, password).then((res) => {
 			this.setState({
 				...INITIAL_STATE,
-				userid: res.user.uid,
 			});
-
-			this.props.history.push({ pathname: ROUTES.INVOICES, state: { userId: res.user.uid } });
+			this.props.history.push({ pathname: ROUTES.INVOICES });
 		});
 
 		event.preventDefault();
