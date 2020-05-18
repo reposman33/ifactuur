@@ -87,7 +87,7 @@ class Company extends React.Component {
 				})
 			);
 		} else {
-			// assign keys of retrieved document to state
+			// assign all keys of retrieved document to state
 			this.company$.then((doc) => {
 				Object.keys(doc).map((documentKey) => this.setState({ [documentKey]: doc[documentKey] }));
 			});
@@ -270,7 +270,7 @@ class Company extends React.Component {
 										labelText={this.I18n.get("COMPANY.LABEL.EMAIL")}
 									/>
 								</div>
-								<div className='d-flex justify-content-around'>
+								<div className='d-flex justify-content-between'>
 									<Button
 										onClick={this.onListview}
 										text={this.I18n.get("BUTTON.OVERVIEW")}
@@ -286,17 +286,25 @@ class Company extends React.Component {
 									/>
 								</div>
 							</div>
-							{/* NOTES */}
-							<Textarea
-								cols='50'
-								displayInput={!this.isExistingExpense}
-								displayValue={this.state.notes}
-								extraClasses=''
-								handleOnChange={this.onChange}
-								labelText={this.I18n.get("COMPANY.LABEL.NOTES")}
-								name='notes'
-								rows='8'
-							/>
+							<div className='d-flex flex-column w-100 ml-3 align-content-center'>
+								{/* VAT number */}
+								<TextInput
+									displayInput={!this.isExistingCompany}
+									displayValue={this.state.btwnr}
+									extraClasses='mb-3 w-100'
+									handleOnChange={this.onChange}
+									labelText={this.I18n.get("COMPANY.LABEL.BTWNR")}
+									name='btwnr'
+								/>
+								<TextInput
+									displayInput={!this.isExistingCompany}
+									displayValue={this.state.kvknr}
+									extraClasses=' w-100'
+									handleOnChange={this.onChange}
+									labelText={this.I18n.get("COMPANY.LABEL.KVKNR")}
+									name='kvknr'
+								/>
+							</div>
 						</div>
 					</div>
 				</div>
