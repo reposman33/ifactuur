@@ -20,7 +20,8 @@ class Company extends React.Component {
 			bank: (fieldValue) => fieldValue,
 			bankAccountNr: (fieldValue) => fieldValue,
 			bankAccountNameHolder: (fieldValue) => fieldValue,
-			btwnr: (fieldValue) => fieldValue,
+			btwnr: (fieldValue) => fieldValue.toUpperCase(),
+			salesTaxNr: (fieldValue) => fieldValue.toUpperCase(),
 			city: (fieldValue) => fieldValue,
 			contact: (fieldValue) => fieldValue,
 			contactTelephone: (fieldValue) => fieldValue,
@@ -199,19 +200,16 @@ class Company extends React.Component {
 							</span>
 							{/* CONTACT TITEL */}
 							{/* only show title in new company OR when available in state */}
-							{!this.isExistingCompany ||
-								(!!this.state.contactTitle && (
-									<Select
-										labelText={this.I18n.get("COMPANY.LABEL.CONTACT_TITLE")}
-										name='contactTitle'
-										displayValue={this.state.contactTitle}
-										displayInput={!this.isExistingCompany}
-										data={this.state.contactTitles}
-										displayKey='title'
-										valueKey='id'
-										handleOnChange={this.onChange}
-									/>
-								))}
+							<Select
+								labelText={this.I18n.get("COMPANY.LABEL.CONTACT_TITLE")}
+								name='contactTitle'
+								displayValue={this.state.contactTitle}
+								displayInput={!this.isExistingCompany}
+								data={this.state.contactTitles}
+								displayKey='title'
+								valueKey='id'
+								handleOnChange={this.onChange}
+							/>
 							{/* CONTACT */}
 							<TextInput
 								type='text'
@@ -271,12 +269,14 @@ class Company extends React.Component {
 									/>
 								</div>
 								<div className='d-flex justify-content-between'>
+									{/* Button Overview */}
 									<Button
 										onClick={this.onListview}
 										text={this.I18n.get("BUTTON.OVERVIEW")}
 										styles={{ marginLeft: "0.8rem" }}
 										classes='btn-primary float-left'
 									/>
+									{/* Button Save */}
 									<Button
 										disabled={this.isExistingCompany}
 										onClick={this.onSubmit}
@@ -287,19 +287,33 @@ class Company extends React.Component {
 								</div>
 							</div>
 							<div className='d-flex flex-column w-100 ml-3 align-content-center'>
-								{/* VAT number */}
-								<TextInput
-									displayInput={!this.isExistingCompany}
-									displayValue={this.state.btwnr}
-									extraClasses='mb-3 w-100'
-									handleOnChange={this.onChange}
-									labelText={this.I18n.get("COMPANY.LABEL.BTWNR")}
-									name='btwnr'
-								/>
+								<div className='d-flex justify-content-between'>
+									{/* VAT number */}
+									<TextInput
+										displayInput={!this.isExistingCompany}
+										displayValue={this.state.btwnr}
+										extraClasses='ml-3'
+										extraStyles={{ textTransform: "uppercase" }}
+										handleOnChange={this.onChange}
+										labelText={this.I18n.get("COMPANY.LABEL.BTWNR")}
+										name='btwnr'
+									/>
+									{/* Sales tax number */}
+									<TextInput
+										displayInput={!this.isExistingCompany}
+										displayValue={this.state.salesTaxNr}
+										extraClasses='ml-3'
+										extraStyles={{ textTransform: "uppercase" }}
+										handleOnChange={this.onChange}
+										labelText={this.I18n.get("COMPANY.LABEL.SALESTAXNR")}
+										name='salesTaxNr'
+									/>
+								</div>
 								<TextInput
 									displayInput={!this.isExistingCompany}
 									displayValue={this.state.kvknr}
-									extraClasses=' w-100'
+									extraClasses='m-3'
+									extraStyles={{ textTransform: "uppercase" }}
 									handleOnChange={this.onChange}
 									labelText={this.I18n.get("COMPANY.LABEL.KVKNR")}
 									name='kvknr'

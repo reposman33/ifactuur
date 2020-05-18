@@ -68,6 +68,7 @@ export class I18n {
 				FAX: { en: "Fax number", nl: "Fax nummer" },
 				BTWNR: { en: "VAT number", nl: "BTW nummer" },
 				KVKNR: { en: "COC registration number", nl: "KvK nummer" },
+				SALESTAXNR: { en: "Sales tax number", nl: "Omzetbelasting nummer" },
 				NOTES: { en: "Notes", nl: "Opmerkingen" },
 				URL: { en: "Website URL", nl: "Website URL" },
 				BANK: { en: "Bank", nl: "Bank" },
