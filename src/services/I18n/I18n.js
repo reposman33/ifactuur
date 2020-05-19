@@ -17,20 +17,17 @@ export class I18n {
 			MENU_TITLE_SETTINGS: { en: "Settings", nl: "Instellingen" },
 			MENU_TITLE_STATS: { en: "Stats", nl: "Berekeningen" },
 		},
-		ADMIN: {
-			TITLE: { en: "Settings", nl: "Instellingen" },
-			ADDRESS: {
-				TITLE: { en: "Address", nl: "Adres" },
-				NAME_INITIALS: { en: "Initials", nl: "Initialen" },
-				NAME_INFIX: {
-					en: "Infix",
-					nl: "Tussenvoegsel",
-				},
-				NAME_LASTNAME: { en: "Surname", nl: "Achternaam" },
+		USERSETTINGS: {
+			LABEL: {
+				TITLE: { en: "Title", nl: "Titel" },
+				FIRSTNAME: { en: "FirstName", nl: "Voornaam" },
+				LASTNAME: { en: "Lastname", nl: "Achternaam" },
 				ADDRESS: { en: "Address", nl: "Adres" },
-				ZIPCODE: { en: "Postalcode", nl: "Postcode" },
+				ZIPCODE: { en: "Zipcode", nl: "Postcode" },
 				CITY: { en: "City", nl: "Stad" },
 				COUNTRY: { en: "Country", nl: "Land" },
+				DELIVERYCONDITIONS: { en: "Deliveryconditions", nl: "Leveringsvoorwaarden" },
+				COMPANY: { en: "Company", nl: "Bedrijf" },
 			},
 			REGISTRATIONS: {
 				TITLE: { en: "Registrations", nl: "Registraties" },
