@@ -311,12 +311,23 @@ class Invoice extends React.Component {
 		return (
 			<React.Fragment>
 				<div className='row'>
-					<div className='col'>
+					<div className='col w-50 justify-content-center'>
 						<DateComponent
 							labelText={this.I18n.get("INVOICE.LABEL.INVOICE_DATE")}
 							name={this.FIELDNAMES.DATECREATED}
 							displayInput={!this.isExistingInvoice}
 							displayValue={this.state.dateTimeCreated}
+							handleOnChange={this.onChange}
+						/>
+						<Select
+							labelText={this.I18n.get("INVOICE.LABEL.INVOICETYPE")}
+							name={this.FIELDNAMES.TYPE}
+							displayValue={this.state.type}
+							displayInput={!this.isExistingInvoice}
+							data={this.state.invoiceTypes}
+							displayKey='type'
+							extraClasses='mt-3'
+							valueKey='id'
 							handleOnChange={this.onChange}
 						/>
 					</div>
@@ -334,22 +345,6 @@ class Invoice extends React.Component {
 							handleOnChange={this.onChange}
 							onButtonClick={() => this.props.history.push({ pathname: ROUTES.COMPANIES })}
 						/>
-					</div>
-				</div>
-				<div className='row'>
-					<div className='col'>
-						<div className='d-flex justify-content-between mt-2'>
-							<Select
-								labelText={this.I18n.get("INVOICE.LABEL.INVOICETYPE")}
-								name={this.FIELDNAMES.TYPE}
-								displayValue={this.state.type}
-								displayInput={!this.isExistingInvoice}
-								data={this.state.invoiceTypes}
-								displayKey='type'
-								valueKey='id'
-								handleOnChange={this.onChange}
-							/>
-						</div>
 					</div>
 				</div>
 				<div className='row'>
