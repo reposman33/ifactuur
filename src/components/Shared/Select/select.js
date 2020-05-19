@@ -2,28 +2,31 @@ import React, { useState } from "react";
 import styles from "./select.module.scss";
 /**
  *
- * @param {string} labelText - text to display as label
- * @param {string} name - input type name
- * @param {string} displayValue - text to display instead of allowing userInput
- * @param {boolean} displayInput - true: display user input DOM element; false: display existing value instead
- * @param {array} data - array holding key-value data for all the select options
- * @param {string} displayKey - key holding the data to display in the select option
- * @param {string} valueKey - key holding the value datafor the select option
- * @param {string} buttonText - key holding the value data for the select option
- * @param {function} handleOnChange - update parent state with user input
- * @param {function} onButtonClick - execute when user clicks the button
+ * @param {string}		buttonText - key holding the value data for the select option
+ * @param {boolean}		container - true - display or don't display container class on top level element
+ * @param {array}		data - array holding key-value data for all the select options
+ * @param {string}		displayKey - key holding the data to display in the select option
+ * @param {boolean}		displayInput - true: display user input DOM element; false: display existing value instead
+ * @param {string}		displayValue - text to display instead of allowing userInput
+ * @param {string}		extraClasses - extra xlsses to apply to parent element
+ * @param {function} 	handleOnChange - update parent state with user input
+ * @param {string}		labelText - text to display as label
+ * @param {string}		name - input type name
+ * @param {function} 	onButtonClick - execute when user clicks the button
+ * @param {string}		valueKey - key holding the value datafor the select option
  */
 const Select = ({
 	buttonText,
-	container = false,
+	container = true,
 	data,
 	displayInput,
 	displayKey,
 	displayValue,
+	extraClasses,
 	handleOnChange,
 	labelText,
-	onButtonClick,
 	name,
+	onButtonClick,
 	valueKey,
 }) => {
 	const [value, setValue] = useState("");
@@ -34,27 +37,34 @@ const Select = ({
 	};
 
 	return (
-		<div className={(container ? styles.container : "") + "d-flex flex-column mb-3"}>
+		<div
+			className={
+				(container ? styles.container + " " : "") +
+				"d-flex flex-column" +
+				(extraClasses ? " " + extraClasses : "")
+			}>
 			<label>{labelText}</label>
-			{displayInput ? (
-				<span className='d-flex flex-row justify-content-between align-items-center'>
-					<select name={name} onChange={onChange} value={value}>
-						<option value=''>--</option>
-						{data.map((ob) => (
-							<option key={ob[valueKey]} value={ob[displayKey]}>
-								{ob[displayKey]}
-							</option>
-						))}
-					</select>
-					{buttonText && (
-						<button className='btn btn-primary ml-3' onClick={onButtonClick}>
-							{buttonText}
-						</button>
-					)}
-				</span>
-			) : (
-				<span>{displayValue}</span>
-			)}
+			<span className='d-flex flex-row justify-content-between align-items-center'>
+				{displayInput ? (
+					<>
+						<select name={name} onChange={onChange} value={value}>
+							<option value=''>--</option>
+							{data.map((ob) => (
+								<option key={ob[valueKey]} value={ob[displayKey]}>
+									{ob[displayKey]}
+								</option>
+							))}
+						</select>
+						{buttonText && (
+							<button className='btn btn-primary ml-3' onClick={onButtonClick}>
+								{buttonText}
+							</button>
+						)}
+					</>
+				) : (
+					<span>{displayValue}</span>
+				)}
+			</span>
 		</div>
 	);
 };
