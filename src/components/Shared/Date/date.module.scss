@@ -11,7 +11,7 @@ label {
 	margin-right: 0.3rem;
 }
 
-select {
+select[type="date"] {
 	max-width: 10rem;
 	overflow: hidden;
 	padding: 0 1rem;
