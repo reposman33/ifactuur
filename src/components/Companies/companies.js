@@ -135,11 +135,9 @@ class Companies extends React.Component {
 					rowEvents={{ onClick: this.onRowClick }}
 					pagination={paginationFactory(this.paginationConfig)}></BootstrapTable>
 
-				<Button
-					onClick={this.handleNewCompany}
-					text={this.I18n.get("BUTTON.NEW")}
-					classes='btn btn-primary float-right'
-				/>
+				<div className='d-flex justify-content-end'>
+					<Button onClick={this.handleNewCompany} text={this.I18n.get("BUTTON.NEW")} extraClasses='mr-3' />
+				</div>
 			</div>
 		);
 	}
