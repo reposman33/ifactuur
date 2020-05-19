@@ -117,38 +117,43 @@ class Expense extends React.Component {
 		return (
 			<div>
 				<div className='row'>
-					<div className='col d-flex flex-row justify-content-between '>
+					<div className='col justify-content-center w-50'>
 						<DateComponent
-							labelText={this.I18n.get("EXPENSE.LABEL.DATE")}
-							name='date'
 							displayInput={!this.isExistingExpense}
 							displayValue={this.state.date}
+							extraClasses='m-3'
 							handleOnChange={this.onChange}
+							labelText={this.I18n.get("EXPENSE.LABEL.DATE")}
+							name='date'
 						/>
+					</div>
+					<div className='col w-50'>
 						<Select
-							labelText={this.I18n.get("EXPENSE.LABEL.COMPANY")}
-							name='company'
-							displayValue={this.state.company}
-							displayInput={!this.isExistingExpense}
-							handleOnChange={this.onChange}
+							buttonText={this.I18n.get("INVOICE.BUTTON.NEW_COMPANY")}
 							data={this.state.companies}
 							displayKey='name'
+							displayInput={!this.isExistingExpense}
+							displayValue={this.state.company}
+							extraClasses='w-100 mr-3'
+							handleOnChange={this.onChange}
+							labelText={this.I18n.get("EXPENSE.LABEL.COMPANY")}
+							name='company'
+							onButtonClick={() => this.props.history.push({ pathname: ROUTES.COMPANIES })}
 							valueKey='ID'
-							buttonText={this.I18n.get("EXPENSE.BUTTON.NEW_EXPENSE")}
-							onButtonClick={() => this.props.history.push(ROUTES.COMPANY)}
 						/>
 					</div>
 				</div>
 				<div className='row'>
-					<div className='col'>
+					<div className='col d-flex justify-content-center p-3'>
 						<Textarea
-							name='description'
-							labelText={this.I18n.get("EXPENSE.LABEL.ITEM")}
-							cols='30'
-							rows='10'
+							cols='90'
 							displayInput={!this.isExistingExpense}
 							displayValue={this.state.description}
+							extraClasses='w-100 m-3'
 							handleOnChange={this.onChange}
+							labelText={this.I18n.get("EXPENSE.LABEL.ITEM")}
+							name='description'
+							rows='10'
 						/>
 					</div>
 				</div>
@@ -158,6 +163,7 @@ class Expense extends React.Component {
 							type='number'
 							displayInput={!this.isExistingExpense}
 							displayValue={this.state.amount && this.Utils.currencyFormat.format(this.state.amount)}
+							extraClasses='m-3'
 							handleOnChange={this.onChange}
 							name='amount'
 							labelText={this.I18n.get("EXPENSE.LABEL.AMOUNT")}
@@ -167,6 +173,7 @@ class Expense extends React.Component {
 							name='vatrate'
 							displayValue={this.state.vatrate + " %"}
 							displayInput={!this.isExistingExpense}
+							extraClasses='m-3'
 							handleOnChange={this.onChange}
 							data={this.state.vatrates}
 							displayKey='rate'
@@ -174,22 +181,20 @@ class Expense extends React.Component {
 						/>
 					</div>
 				</div>
-				<div className='row'>
-					<div className='col d-flex justify-content-between'>
-						<Button
-							onClick={this.onListview}
-							text={this.I18n.get("BUTTON.OVERVIEW")}
-							styles={{ marginLeft: "0.8rem" }}
-							classes='btn-primary'
-						/>
-						<Button
-							disabled={this.isExistingExpense}
-							onClick={this.onSubmit}
-							text={this.I18n.get("BUTTON.SAVE")}
-							styles={{ marginRight: "0.8rem" }}
-							classes='btn-primary'
-						/>
-					</div>
+				<div className='d-flex justify-content-between'>
+					<Button
+						extraStyles={{ marginLeft: "0.8rem" }}
+						extraClasses='m-3'
+						onClick={this.onListview}
+						text={this.I18n.get("BUTTON.OVERVIEW")}
+					/>
+					<Button
+						disabled={this.isExistingExpense}
+						extraStyles={{ marginRight: "0.8rem" }}
+						extraClasses='m-3'
+						onClick={this.onSubmit}
+						text={this.I18n.get("BUTTON.SAVE")}
+					/>
 				</div>
 			</div>
 		);
