@@ -71,7 +71,7 @@ class Settings extends React.Component {
 		settings.userId = this.props.firebase.auth.currentUser.uid;
 		console.log("submitting ", settings);
 		this.props.firebase.addDocumentToCollection("users", settings, this.state.ID).then((docRef) => {
-			console.log("document added");
+			console.log(`document ${this.state.ID ? "updated" : "added"}`);
 		});
 	};
 
@@ -219,7 +219,11 @@ class Settings extends React.Component {
 						<Button
 							extraStyles={{ marginRight: "0.8rem" }}
 							onClick={this.onSubmit}
-							text={this.I18n.get("BUTTON.SAVE")}
+							text={
+								this.isExistingUserSetting
+									? this.I18n.get("BUTTON.UPDATE")
+									: this.I18n.get("BUTTON.SAVE")
+							}
 						/>
 					</div>
 				</div>
