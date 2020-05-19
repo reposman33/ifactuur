@@ -123,7 +123,8 @@ class Firebase {
 	/**
 	 * @param{object} expense - the expense to save
 	 */
-	addDocumentToCollection = (collection, doc) => this.db.collection(collection).add(doc);
+	addDocumentToCollection = (collection, doc, merge) =>
+		merge ? this.db.collection(collection).set(doc, { merge: true }) : this.db.collection(collection).add(doc);
 
 	deleteDocument = (collection, id) => {
 		console.log(`deleting document ${id} from ${collection}`);
@@ -133,6 +134,7 @@ class Firebase {
 			.doc(id)
 			.delete();
 	};
+
 	// ===============================================================
 	// ===============================================================
 	// EXPENSES
@@ -182,6 +184,19 @@ class Firebase {
 				);
 				return invoice;
 			});
+
+	// ===============================================================
+	// ===============================================================
+	// SETTINGS
+	// ===============================================================
+	// ===============================================================
+
+	getUserSettings = () =>
+		this.db
+			.collection("users")
+			.where("userId", "==", sessionStorage.getItem("userId"))
+			.get()
+			.then((querySnapshot) => querySnapshot.docs[0].data());
 
 	// ===============================================================
 	// ===============================================================
