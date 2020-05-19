@@ -66,7 +66,7 @@ class Firebase {
 			.collection("companies")
 			.doc(id)
 			.get()
-			.then((doc) => doc.data());
+			.then((doc) => ({ ...doc.data(), ID: doc.id }));
 
 	// ===============================================================
 	// ===============================================================
@@ -123,14 +123,18 @@ class Firebase {
 	/**
 	 * @param{object} expense - the expense to save
 	 */
-	addDocumentToCollection = (collection, doc, merge) =>
-		merge ? this.db.collection(collection).set(doc, { merge: true }) : this.db.collection(collection).add(doc);
+	addDocumentToCollection = (collection, doc, docId) =>
+		!!docId
+			? this.db
+					.collection(collection)
+					.doc(docId)
+					.update(doc)
+			: this.db.collection(collection).add(doc);
 
 	deleteDocument = (collection, id) => {
 		console.log(`deleting document ${id} from ${collection}`);
 		this.db
 			.collection(collection)
-			.where("userId", "==", sessionStorage.getItem("userId"))
 			.doc(id)
 			.delete();
 	};
@@ -196,7 +200,10 @@ class Firebase {
 			.collection("users")
 			.where("userId", "==", sessionStorage.getItem("userId"))
 			.get()
-			.then((querySnapshot) => querySnapshot.docs[0].data());
+			.then((querySnapshot) => {
+				const document = querySnapshot.docs[0];
+				return { ...document.data(), ID: document.id };
+			});
 
 	// ===============================================================
 	// ===============================================================
