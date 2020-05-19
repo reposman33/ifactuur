@@ -14,16 +14,17 @@ import styles from "./select.module.scss";
  * @param {function} onButtonClick - execute when user clicks the button
  */
 const Select = ({
-	labelText,
-	name,
-	displayValue,
-	displayInput,
-	data,
-	displayKey,
-	valueKey,
 	buttonText,
+	container = false,
+	data,
+	displayInput,
+	displayKey,
+	displayValue,
 	handleOnChange,
+	labelText,
 	onButtonClick,
+	name,
+	valueKey,
 }) => {
 	const [value, setValue] = useState("");
 
@@ -33,7 +34,7 @@ const Select = ({
 	};
 
 	return (
-		<div className={styles.container + " d-flex flex-column mb-3"}>
+		<div className={(container ? styles.container : "") + "d-flex flex-column mb-3"}>
 			<label>{labelText}</label>
 			{displayInput ? (
 				<span className='d-flex flex-row justify-content-between align-items-center'>

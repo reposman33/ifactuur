@@ -5,16 +5,13 @@
 	border: 1px solid #aaa;
 	border-radius: 0.5rem;
 	padding: 1rem 4rem 1rem 1rem;
+}
 
-	label {
-		font-size: $label-font-size;
-		margin-right: 0.3rem;
-	}
-
-	select {
-		max-width: 10rem;
-		overflow: hidden;
-		padding: 0 1rem;
-		text-overflow: ellipsis;
-	}
+input {
+	width: 100%;
+}
+label {
+	display: block !important;
+	font-size: $label-font-size;
+	margin-right: 0.3rem;
 }

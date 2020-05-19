@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styles from "./textInput.module.scss";
 
 const TextInput = ({
+	container = true,
 	extraClasses,
 	extraStyles,
 	displayInput,
@@ -19,7 +20,7 @@ const TextInput = ({
 	};
 
 	return (
-		<div className={styles.container + " d-flex flex-column" + _extraClasses}>
+		<div className={(container ? styles.container : "") + "d-flex flex-column" + _extraClasses}>
 			<label>{labelText}</label>
 			{displayInput ? (
 				<input
@@ -32,7 +33,7 @@ const TextInput = ({
 					style={extraStyles}
 				/>
 			) : (
-				<span>{displayValue}</span>
+				<span>{!!displayValue ? displayValue : "--"}</span>
 			)}
 		</div>
 	);
