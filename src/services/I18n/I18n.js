@@ -139,6 +139,7 @@ export class I18n {
 		},
 		BUTTON: {
 			SAVE: { en: "Save", nl: "Bewaar" },
+			UPDATE: { en: "Update", nl: "Bijwerken" },
 			NEW: { en: "New", nl: "Nieuw" },
 			OVERVIEW: { en: "Overview", nl: "Overzicht" },
 		},
