@@ -43,7 +43,7 @@ const TextInput = ({
 				<input
 					name={name}
 					onChange={onChange}
-					placeholder={type === "number" ? 423.55 : name}
+					placeholder={displayValue}
 					step='any'
 					type={type}
 					value={value}
