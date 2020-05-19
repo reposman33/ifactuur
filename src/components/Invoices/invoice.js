@@ -353,19 +353,23 @@ class Invoice extends React.Component {
 					</div>
 				</div>
 				<div className='row'>
-					<div className='col'>
-						<label className={styles.descriptionRowLabel}>
+					<div className='col d-flex flex-column'>
+						<label className={styles.descriptionRowLabel + " w-100"}>
 							{this.I18n.get("INVOICE.COLUMNHEADER.SERVICES")}
 						</label>
-						<label className={styles.descriptionRowLabel}>
-							{this.I18n.get("INVOICE.COLUMNHEADER.RATE")}
-						</label>
-						<label className={styles.descriptionRowLabel}>
-							{this.I18n.get("INVOICE.COLUMNHEADER.HOURS")}
-						</label>
-						<label className={styles.descriptionRowLabel}>
-							{this.I18n.get("INVOICE.COLUMNHEADER.TOTAL")}
-						</label>
+						<div className='d-flex flex-row justify-content-start'>
+							{/* use a dummy label to line other labels out above their columns*/}
+							<label className={styles.descriptionRowLabel}></label>
+							<label className={styles.descriptionRowLabel}>
+								{this.I18n.get("INVOICE.COLUMNHEADER.RATE")}
+							</label>
+							<label className={styles.descriptionRowLabel}>
+								{this.I18n.get("INVOICE.COLUMNHEADER.HOURS")}
+							</label>
+							<label className={styles.descriptionRowLabel}>
+								{this.I18n.get("INVOICE.COLUMNHEADER.TOTAL")}
+							</label>
+						</div>
 
 						{descriptionRows}
 
@@ -416,20 +420,20 @@ class Invoice extends React.Component {
 						</div>
 					</div>
 				</div>
-				<Button
-					onClick={this.onListview}
-					text={this.I18n.get("BUTTON.OVERVIEW")}
-					styles={{ marginLeft: "0.8rem" }}
-					classes='btn-primary float-left'
-				/>
+				<div className='d-flex justify-content-between'>
+					<Button
+						onClick={this.onListview}
+						text={this.I18n.get("BUTTON.OVERVIEW")}
+						extraStyles={{ marginLeft: "0.8rem" }}
+					/>
 
-				<Button
-					disabled={this.isExistingInvoice}
-					onClick={this.onSubmit}
-					text={this.I18n.get("BUTTON.SAVE")}
-					styles={{ marginRight: "0.8rem" }}
-					classes='btn-primary float-right'
-				/>
+					<Button
+						disabled={this.isExistingInvoice}
+						onClick={this.onSubmit}
+						text={this.I18n.get("BUTTON.SAVE")}
+						extraStyles={{ marginRight: "0.8rem" }}
+					/>
+				</div>
 			</React.Fragment>
 		);
 	}
