@@ -1,5 +1,4 @@
 import React from "react";
-import { Textarea } from "../Shared/Textarea/textarea";
 import { Select } from "../Shared/Select/select";
 import { Button } from "../Shared/Button/button";
 import { TextInput } from "../Shared/TextInput/textInput";
@@ -91,6 +90,7 @@ class Company extends React.Component {
 			// assign all keys of retrieved document to state
 			this.company$.then((doc) => {
 				Object.keys(doc).map((documentKey) => this.setState({ [documentKey]: doc[documentKey] }));
+				this.setState({ ID: doc.ID });
 			});
 		}
 	};
@@ -125,8 +125,8 @@ class Company extends React.Component {
 		// add the current user id!
 		company.userId = this.props.firebase.auth.currentUser.uid;
 
-		this.props.firebase.addDocumentToCollection("companies", company).then((docRef) => {
-			console.log("document ", docRef.id, " added");
+		this.props.firebase.addDocumentToCollection("companies", company, this.state.ID).then((docRef) => {
+			console.log(`document ${this.state.ID ? "updated" : "added"}`);
 			this.onListview();
 		});
 	};
@@ -141,7 +141,7 @@ class Company extends React.Component {
 							<TextInput
 								type='text'
 								extraClasses='w-50 mr-3'
-								displayInput={!this.isExistingCompany}
+								displayInput={true}
 								displayValue={this.state.name}
 								handleOnChange={this.onChange}
 								name='name'
@@ -151,7 +151,7 @@ class Company extends React.Component {
 							<TextInput
 								type='text'
 								extraClasses='w-50'
-								displayInput={!this.isExistingCompany}
+								displayInput={true}
 								displayValue={this.state.address}
 								handleOnChange={this.onChange}
 								name='address'
@@ -163,7 +163,7 @@ class Company extends React.Component {
 							<TextInput
 								type='text'
 								extraClasses='w-50 mr-3'
-								displayInput={!this.isExistingCompany}
+								displayInput={true}
 								displayValue={this.state.city}
 								handleOnChange={this.onChange}
 								name='city'
@@ -173,7 +173,7 @@ class Company extends React.Component {
 							<TextInput
 								type='text'
 								extraClasses={"w-25 mr-3 "}
-								displayInput={!this.isExistingCompany}
+								displayInput={true}
 								displayValue={this.state.zipcode}
 								handleOnChange={this.onChange}
 								name='zipcode'
@@ -183,7 +183,7 @@ class Company extends React.Component {
 							<TextInput
 								type='text'
 								extraClasses='w-50'
-								displayInput={!this.isExistingCompany}
+								displayInput={true}
 								displayValue={this.state.country}
 								handleOnChange={this.onChange}
 								name='country'
@@ -204,7 +204,7 @@ class Company extends React.Component {
 								labelText={this.I18n.get("COMPANY.LABEL.CONTACT_TITLE")}
 								name='contactTitle'
 								displayValue={this.state.contactTitle}
-								displayInput={!this.isExistingCompany}
+								displayInput={true}
 								data={this.state.contactTitles}
 								displayKey='title'
 								valueKey='id'
@@ -214,7 +214,7 @@ class Company extends React.Component {
 							<TextInput
 								type='text'
 								extraClasses='w-100 mb-3 ml-3'
-								displayInput={!this.isExistingCompany}
+								displayInput={true}
 								displayValue={this.state.contact}
 								handleOnChange={this.onChange}
 								name='contact'
@@ -229,7 +229,7 @@ class Company extends React.Component {
 							<TextInput
 								type='text'
 								extraClasses='w-100 mb-3'
-								displayInput={!this.isExistingCompany}
+								displayInput={true}
 								displayValue={this.state.url}
 								handleOnChange={this.onChange}
 								name='url'
@@ -246,7 +246,7 @@ class Company extends React.Component {
 									<TextInput
 										type='text'
 										extraClasses='w-100 mb-3'
-										displayInput={!this.isExistingCompany}
+										displayInput={true}
 										displayValue={this.state.contactTelephone}
 										handleOnChange={this.onChange}
 										name='contactTelephone'
@@ -261,7 +261,7 @@ class Company extends React.Component {
 									<TextInput
 										type='text'
 										extraClasses='w-100 mb-3'
-										displayInput={!this.isExistingCompany}
+										displayInput={true}
 										displayValue={this.state.email}
 										handleOnChange={this.onChange}
 										name='email'
@@ -278,9 +278,13 @@ class Company extends React.Component {
 									/>
 									{/* Button Save */}
 									<Button
-										disabled={this.isExistingCompany}
+										disabled={false}
 										onClick={this.onSubmit}
-										text={this.I18n.get("BUTTON.SAVE")}
+										text={
+											this.isExistingCompany
+												? this.I18n.get("BUTTON.UPDATE")
+												: this.I18n.get("BUTTON.SAVE")
+										}
 										styles={{ marginRight: "0.8rem" }}
 										classes='btn-primary float-right'
 									/>
@@ -290,7 +294,7 @@ class Company extends React.Component {
 								<div className='d-flex justify-content-between'>
 									{/* VAT number */}
 									<TextInput
-										displayInput={!this.isExistingCompany}
+										displayInput={true}
 										displayValue={this.state.btwnr}
 										extraClasses='ml-3'
 										extraStyles={{ textTransform: "uppercase" }}
@@ -300,7 +304,7 @@ class Company extends React.Component {
 									/>
 									{/* Sales tax number */}
 									<TextInput
-										displayInput={!this.isExistingCompany}
+										displayInput={true}
 										displayValue={this.state.salesTaxNr}
 										extraClasses='ml-3'
 										extraStyles={{ textTransform: "uppercase" }}
@@ -310,7 +314,7 @@ class Company extends React.Component {
 									/>
 								</div>
 								<TextInput
-									displayInput={!this.isExistingCompany}
+									displayInput={true}
 									displayValue={this.state.kvknr}
 									extraClasses='m-3'
 									extraStyles={{ textTransform: "uppercase" }}
