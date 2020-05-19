@@ -9,11 +9,12 @@
 
 button {
 	line-height: 1;
+	width: max-content;
 }
 
 select {
 	height: fit-content;
-	width: fill-available;
+	max-width: 75%;
 	margin: 1rem 0;
 	overflow: hidden;
 	padding: 0;

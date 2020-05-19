@@ -8,7 +8,7 @@ import styles from "./select.module.scss";
  * @param {string}		displayKey - key holding the data to display in the select option
  * @param {boolean}		displayInput - true: display user input DOM element; false: display existing value instead
  * @param {string}		displayValue - text to display instead of allowing userInput
- * @param {string}		extraClasses - extra xlsses to apply to parent element
+ * @param {string}		extraClasses - extra classes to apply to parent element
  * @param {function} 	handleOnChange - update parent state with user input
  * @param {number} 		initialSelectedValue - The initially selected select value
  * @param {string}		labelText - text to display as label
@@ -45,7 +45,7 @@ const Select = ({
 				(extraClasses ? " " + extraClasses : "")
 			}>
 			<label>{labelText}</label>
-			<span className='d-flex flex-row'>
+			<span className='d-flex flex-row w-100'>
 				{displayInput ? (
 					<>
 						<select name={name} onChange={onChange} value={value}>
@@ -56,7 +56,7 @@ const Select = ({
 							))}
 						</select>
 						{buttonText && (
-							<button className='btn btn-primary ml-3' onClick={onButtonClick}>
+							<button className='btn btn-primary w-100' onClick={onButtonClick}>
 								{buttonText}
 							</button>
 						)}
