@@ -10,6 +10,7 @@ import styles from "./select.module.scss";
  * @param {string}		displayValue - text to display instead of allowing userInput
  * @param {string}		extraClasses - extra xlsses to apply to parent element
  * @param {function} 	handleOnChange - update parent state with user input
+ * @param {number} 		initialSelectedValue - The initially selected select value
  * @param {string}		labelText - text to display as label
  * @param {string}		name - input type name
  * @param {function} 	onButtonClick - execute when user clicks the button
@@ -27,15 +28,15 @@ const Select = ({
 	labelText,
 	name,
 	onButtonClick,
+	initialSelectedValue = 0,
 	valueKey,
 }) => {
-	const [value, setValue] = useState("");
+	const [value, setValue] = useState(initialSelectedValue);
 
 	const onChange = (event) => {
 		setValue(event.target.value);
 		handleOnChange(event.target.name, event.target.value);
 	};
-
 	return (
 		<div
 			className={
@@ -44,11 +45,10 @@ const Select = ({
 				(extraClasses ? " " + extraClasses : "")
 			}>
 			<label>{labelText}</label>
-			<span className='d-flex flex-row justify-content-between align-items-center'>
+			<span className='d-flex flex-row'>
 				{displayInput ? (
 					<>
 						<select name={name} onChange={onChange} value={value}>
-							<option value=''>--</option>
 							{data.map((ob) => (
 								<option key={ob[valueKey]} value={ob[displayKey]}>
 									{ob[displayKey]}
