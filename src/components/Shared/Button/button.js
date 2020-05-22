@@ -1,4 +1,5 @@
 import React from "react";
+import * as styles from "./button.module.scss";
 
 /**
  *
@@ -12,7 +13,7 @@ import React from "react";
 const Button = ({ disabled = false, extraClasses, extraStyles, onClick, text }) => {
 	return (
 		<button
-			className={(extraClasses ? extraClasses + " " : "") + "d-flex btn btn-primary"}
+			className={(extraClasses ? extraClasses + " " : "") + "d-flex btn btn-primary " + styles.button}
 			style={extraStyles}
 			onClick={onClick}
 			disabled={disabled}>
