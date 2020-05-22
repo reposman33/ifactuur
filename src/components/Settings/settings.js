@@ -89,7 +89,7 @@ class Settings extends React.Component {
 			<div>
 				<div className='row'>
 					<div className='col d-flex flex-column p-3 w-75'>
-						<div className='d-flex flex-row w-75'>
+						<div className='d-flex flex-row w-100'>
 							{/* TITLE */}
 							<Select
 								container={false}
@@ -135,16 +135,15 @@ class Settings extends React.Component {
 							data={this.state.companies}
 							displayInput={true}
 							displayKey='name'
-							valueKey='id'
+							handleOnChange={this.onChange}
 							initialSelectedValue={this.state.companies.reduce(
 								(acc, c) => (c.id === this.state.companyId ? c.name : acc),
 								0
 							)}
-							extraClasses='w-100'
-							handleOnChange={this.onChange}
 							labelText={this.I18n.get("USERSETTINGS.LABEL.COMPANY")}
 							name='companyId'
-							onButtonClick={() => this.props.history.push({ pathname: ROUTES.COMPANIES })}
+							onButtonClick={() => this.props.history.push({ pathname: ROUTES.COMPANY })}
+							valueKey='id'
 						/>
 					</div>
 				</div>
