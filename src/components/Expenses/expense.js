@@ -103,7 +103,6 @@ class Expense extends React.Component {
 	 */
 
 	onChange = (name, value) => {
-		console.log(name, "=", value);
 		this.setState({ [name]: value }, () => console.log("state = ", this.state));
 	};
 
