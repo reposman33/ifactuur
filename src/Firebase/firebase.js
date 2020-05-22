@@ -119,7 +119,7 @@ class Firebase {
 			.orderBy("id", "desc")
 			.limit(1)
 			.get()
-			.then((querySnapshot) => querySnapshot.docs[0].data()[fieldName] + 1);
+			.then((querySnapshot) => (querySnapshot.docs[0] ? querySnapshot.docs[0].data()[fieldName] + 1 : 1));
 
 	/**
 	 * @param{object} expense - the expense to save
@@ -196,15 +196,19 @@ class Firebase {
 	// ===============================================================
 	// ===============================================================
 
-	getUserSettings = () =>
+	getUserSettings = () => {
 		this.db
 			.collection("users")
 			.where("userId", "==", sessionStorage.getItem("userId"))
 			.get()
 			.then((querySnapshot) => {
-				const document = querySnapshot.docs[0];
-				return { ...document.data(), ID: document.id };
+				const documentsArray = querySnapshot.forEach((doc) => doc.data());
+				if (documentsArray && documentsArray.length === 1) {
+					return { ...document.data(), ID: document.id };
+				}
+				return {};
 			});
+	};
 
 	// ===============================================================
 	// ===============================================================
