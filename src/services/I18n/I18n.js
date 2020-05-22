@@ -153,6 +153,17 @@ export class I18n {
 				nl: "Toon pagina {from} tot {to} van {size}",
 			},
 		},
+		STATS: {
+			LABELS: {
+				DATE: {
+					FROM: { en: "Date from", nl: "vanaf" },
+					TO: { en: "Date to", nl: "tot" },
+				},
+			},
+			BUTTONS: {
+				CALCULATE: { en: "Go", nl: "Ga" },
+			},
+		},
 		TITLES: { MR: { en: "Mr", nl: "Dhr" }, MRS: { en: "Ms", nl: "Mw" }, THEY: { en: "They", nl: "Zij" } },
 	};
 

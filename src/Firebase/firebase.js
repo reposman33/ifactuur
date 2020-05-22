@@ -210,6 +210,36 @@ class Firebase {
 			});
 	};
 
+	getCollectionInPeriod = (collection, sortByField, columns, dateFrom, dateTo) =>
+		this.getCollection(collection, sortByField, columns).then((documents) => {
+			const _dateFrom = new Date(dateFrom);
+			const _dateTo = new Date(dateTo);
+			return documents.reduce((acc, doc) => {
+				if (doc[sortByField] >= _dateFrom && doc[sortByField] <= _dateTo) {
+					acc.push(doc);
+				}
+				return acc;
+			}, []);
+		});
+
+	getInvoicesInPeriod = (dateFrom, dateTo) =>
+		this.getCollectionInPeriod(
+			"invoices",
+			"dateTimeCreated",
+			["VATRate", "dateTimeCreated", "invoiceNr", "rows", "type"],
+			dateFrom,
+			dateTo
+		);
+
+	getExpensesInPeriod = (dateFrom, dateTo) =>
+		this.getCollectionInPeriod(
+			"bills",
+			"date",
+			["date", "company", "amount", "vatrate", "description"],
+			dateFrom,
+			dateTo
+		);
+
 	// ===============================================================
 	// ===============================================================
 	// UTILITY FUNCTIONS: IMPORTS - UPDATING INVOICES-SPECIFICATIONS

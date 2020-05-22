@@ -12,7 +12,7 @@ import PasswordChange from "../PasswordChange";
 import PasswordForget from "../PasswordForget";
 import SignIn from "../Security/signin";
 import SignUp from "../Security/signup";
-import Stats from "../Stats";
+import Stats from "../Stats/stats";
 
 const AppRouter = () => (
 	<Switch>
