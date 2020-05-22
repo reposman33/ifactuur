@@ -43,10 +43,9 @@ const TextInput = ({
 				<input
 					name={name}
 					onChange={onChange}
-					placeholder={displayValue}
 					step='any'
 					type={type}
-					value={value}
+					value={displayValue}
 					style={extraStyles}
 				/>
 			) : (
