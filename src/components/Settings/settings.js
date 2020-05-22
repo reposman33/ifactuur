@@ -133,6 +133,7 @@ class Settings extends React.Component {
 							buttonText={this.I18n.get("INVOICE.BUTTON.NEW_COMPANY")}
 							container={false}
 							data={this.state.companies}
+							extraClasses='w-100'
 							displayInput={true}
 							displayKey='name'
 							handleOnChange={this.onChange}
