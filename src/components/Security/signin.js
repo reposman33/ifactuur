@@ -24,14 +24,19 @@ class SignInForm extends React.Component {
 	onSubmit = (event) => {
 		event.preventDefault();
 		const { email, password } = this.state;
-		this.props.firebase.signInWithEmailAndPassword(email, password).then((res) => {
-			this.setState({
-				...INITIAL_STATE,
-			});
-			this.props.history.push({ pathname: ROUTES.INVOICES });
-		});
-
-		event.preventDefault();
+		this.props.firebase
+			.signInWithEmailAndPassword(email, password)
+			.then((res) => {
+				if (res.user) {
+					this.setState({
+						...INITIAL_STATE,
+					});
+					this.props.history.push({ pathname: ROUTES.INVOICES });
+				} else {
+					this.setState({ error: res.message });
+				}
+			})
+			.catch((e) => console.log("ERROR ", e));
 	};
 
 	onChange = (event) => {
@@ -88,7 +93,7 @@ class SignInForm extends React.Component {
 										className={isInvalid ? styles.invalid + " mr-2" : ""}
 										disabled={isInvalid}
 									/>
-									{error && <p className={styles.alert}>{error.message}</p>}
+									{!!error && <p className={styles.alert}>{error}</p>}
 								</td>
 							</tr>
 						</tbody>

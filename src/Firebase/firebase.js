@@ -41,13 +41,14 @@ class Firebase {
 			.then(() => this.auth.signInWithEmailAndPassword(email, password))
 			.then((res) => {
 				this.userId = res.user.uid;
-				// store userId in sessionStorage
-				sessionStorage.setItem("userId", this.userId);
+				if (res.user.uid) {
+					// store userId in sessionStorage
+					sessionStorage.setItem("userId", this.userId);
+				}
 				return res;
 			})
 			.catch((error) => {
-				// Handle Errors here.
-				console.log("ERROR signInWithEmailAndPassword: ", error);
+				return error;
 			});
 
 	signOut = () => {
