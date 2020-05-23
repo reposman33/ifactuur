@@ -8,7 +8,6 @@ import { DateComponent } from "./../Shared/Date/date";
 import { TextInput } from "./../Shared/TextInput/textInput";
 import { Textarea } from "../Shared/Textarea/textarea";
 import { Button } from "./../Shared/Button/button";
-import styles from "./expense.module.scss";
 
 class Expense extends React.Component {
 	constructor(props) {
@@ -67,7 +66,7 @@ class Expense extends React.Component {
 				this.setState({
 					amount: values[0].amount,
 					company: values[0].company,
-					date: this.Utils.dateFormat.format(values[0].date),
+					date: values[0].date,
 					description: values[0].description,
 					id: values[0].id,
 					vatrate: values[0].vatrate,

@@ -4,7 +4,6 @@ import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
 import "react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css";
 import paginationFactory from "react-bootstrap-table2-paginator";
 import { Button } from "../Shared/Button/button";
-import { Utils } from "../../services/Utils";
 import { I18n } from "../../services/I18n/I18n";
 import * as ROUTES from "../../constants/routes";
 import { withFirebase } from "../../Firebase";
@@ -15,7 +14,6 @@ class Companies extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = { rowData: [] };
-		this.Utils = new Utils();
 		// make the async call to Firebase and pick it up in componentDidMount
 		this.companiesPromise$ = this.props.firebase.getCollection("companies", "name", [
 			"name",

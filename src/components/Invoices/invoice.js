@@ -96,26 +96,16 @@ class Invoice extends React.Component {
 					companies: [],
 					companyName: invoice.companyName,
 					// only format dates if not undefined
-					dateTimeCreated: invoice.dateTimeCreated
-						? this.Utils.dateFormat.format(invoice.dateTimeCreated)
-						: invoice.dateTimeCreated,
-					dateTimePaid: invoice.dateTimePaid
-						? this.Utils.dateFormat.format(invoice.dateTimePaid)
-						: invoice.dateTimePaid,
-					dateTimePrinted: invoice.dateTimePrinted
-						? this.Utils.dateFormat.format(invoice.dateTimePrinted)
-						: invoice.dateTimePrinted,
-					dateTimeSent: invoice.dateTimeSent
-						? this.Utils.dateFormat.format(invoice.dateTimeSent)
-						: invoice.dateTimeSent,
+					dateTimeCreated: invoice.dateTimeCreated,
+					dateTimePaid: invoice.dateTimePaid,
+					dateTimePrinted: invoice.dateTimePrinted,
+					dateTimeSent: invoice.dateTimeSent,
 					id: invoice.id,
 					invoiceNr: invoice.invoiceNr,
 					rows: invoice.rows,
 					notes: invoice.notes,
-					periodFrom: invoice.periodFrom
-						? this.Utils.dateFormat.format(invoice.periodFrom)
-						: invoice.periodFrom,
-					periodTo: invoice.periodTo ? this.Utils.dateFormat.format(invoice.periodTo) : invoice.periodTo,
+					periodFrom: invoice.periodFrom,
+					periodTo: invoice.periodTo,
 					statusTitle: invoice.statusTitle,
 					type: invoice.type,
 					totals: this.getTotalInvoiceAmount(invoice.rows, invoice.VATRate),

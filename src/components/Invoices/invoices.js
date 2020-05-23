@@ -32,7 +32,6 @@ class Invoices extends React.Component {
 		{ dataField: "invoiceNr", text: "#", headerStyle: { width: "8%" }, sort: true },
 		{
 			dataField: "dateTimeCreated",
-			formatter: (cell, row) => this.Utils.dateFormat.format(cell),
 			text: this.I18n.get("INVOICES.TABLE.HEADERS.DATE"),
 			sort: true,
 			sortFunc: this.Utils.dateSortFunction,

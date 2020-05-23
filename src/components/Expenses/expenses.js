@@ -37,7 +37,6 @@ class Expenses extends React.Component {
 		{
 			dataField: "date",
 			text: this.I18n.get("EXPENSES.TABLE.HEADERS.DATE"),
-			formatter: (cell, row) => this.Utils.dateFormat.format(cell),
 			sort: true,
 			sortFunc: this.Utils.dateSortFunction,
 		},

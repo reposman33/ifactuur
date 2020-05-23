@@ -1,5 +1,6 @@
 import firebase from "firebase/app";
 import { I18n } from "../services/I18n/I18n";
+import { Utils } from "../services/Utils";
 import "firebase/auth";
 import "firebase/firestore";
 
@@ -10,12 +11,7 @@ const config = process.env.NODE_ENV === "production" ? config_prod : config_dev;
 class Firebase {
 	constructor(props) {
 		this.i18N = new I18n();
-		this.dateFormat = new Intl.DateTimeFormat(this.i18N.getLocale(), {
-			weekday: "long",
-			year: "numeric",
-			month: "long",
-			day: "numeric",
-		});
+		this.Utils = new Utils();
 		firebase.initializeApp(config);
 		this.auth = firebase.auth();
 		this.db = firebase.firestore();
@@ -94,7 +90,10 @@ class Firebase {
 						columns.reduce(
 							(acc, col) => {
 								// convert a timestamp to date using FS toDate()
-								acc[col] = col.indexOf("date") > -1 ? data[col].toDate() : data[col];
+								acc[col] =
+									col.indexOf("date") > -1
+										? this.Utils.dateFormat.format(data[col].toDate())
+										: data[col];
 								return acc;
 							}, // always include ID
 							{ ID: doc.id }
@@ -157,7 +156,7 @@ class Firebase {
 			.then((doc) => {
 				const expense = doc.data();
 				return Object.keys(expense).reduce((acc, key) => {
-					acc[key] = key === "date" ? expense["date"].toDate() : expense[key];
+					acc[key] = key === "date" ? this.Utils.dateFormat.format(expense["date"].toDate()) : expense[key];
 					return acc;
 				}, {});
 			});
@@ -185,7 +184,9 @@ class Firebase {
 					"periodTo",
 				].forEach(
 					(fieldName) =>
-						(invoice[fieldName] = invoice[fieldName] ? invoice[fieldName].toDate() : invoice[fieldName])
+						(invoice[fieldName] = invoice[fieldName]
+							? this.Utils.dateFormat.format(invoice[fieldName].toDate())
+							: invoice[fieldName])
 				);
 				return invoice;
 			});
