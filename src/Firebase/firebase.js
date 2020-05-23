@@ -75,8 +75,9 @@ class Firebase {
 	 * @param{string} collection - collection to return values from
 	 * @param{string} orderByField - field to order the result by
 	 * @param{array} columns - array of column values to return
+	 * @param{boolean} convertTimestamp - wheter to convert a Firestore timestamp value to a string value or apply the fs toDate function
 	 */
-	getCollection = (collection, orderByField, columns) => {
+	getCollection = (collection, orderByField, columns, convertTimestamp = true) => {
 		const result = [];
 		return this.db
 			.collection(collection)
@@ -92,7 +93,9 @@ class Firebase {
 								// convert a timestamp to date using FS toDate()
 								acc[col] =
 									col.indexOf("date") > -1
-										? this.Utils.dateFormat.format(data[col].toDate())
+										? convertTimestamp
+											? this.Utils.dateFormat.format(data[col].toDate())
+											: data[col].toDate()
 										: data[col];
 								return acc;
 							}, // always include ID
@@ -211,12 +214,14 @@ class Firebase {
 			});
 	};
 
-	getCollectionInPeriod = (collection, sortByField, columns, dateFrom, dateTo) =>
-		this.getCollection(collection, sortByField, columns).then((documents) => {
+	getCollectionInPeriod = (collection, compareField, columns, dateFrom, dateTo) =>
+		this.getCollection(collection, compareField, columns, false).then((documents) => {
 			const _dateFrom = new Date(dateFrom);
 			const _dateTo = new Date(dateTo);
 			return documents.reduce((acc, doc) => {
-				if (doc[sortByField] >= _dateFrom && doc[sortByField] <= _dateTo) {
+				if (doc[compareField] >= _dateFrom && doc[compareField] <= _dateTo) {
+					// convert value of compareField (a Date object) to a string
+					doc[compareField] = this.Utils.dateFormat.format(doc[compareField]);
 					acc.push(doc);
 				}
 				return acc;
