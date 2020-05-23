@@ -8,7 +8,7 @@ import { Utils } from "./../../services/Utils";
 import * as ROUTES from "../../constants/routes";
 import { withFirebase } from "../../Firebase";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import styles from "./expenses.module.scss";
+import styles from "./../Shared/styles/react-bootstrap-table.module.scss";
 
 /**
  * a document from Bills has the following fields

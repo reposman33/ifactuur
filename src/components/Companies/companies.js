@@ -8,7 +8,7 @@ import { I18n } from "../../services/I18n/I18n";
 import * as ROUTES from "../../constants/routes";
 import { withFirebase } from "../../Firebase";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import styles from "./companies.module.scss";
+import styles from "./../Shared/styles/react-bootstrap-table.module.scss";
 
 class Companies extends React.Component {
 	constructor(props) {

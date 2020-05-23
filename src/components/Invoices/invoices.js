@@ -9,7 +9,7 @@ import * as ROUTES from "../../constants/routes";
 import { withFirebase } from "../../Firebase";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "../Shared/Button/button";
-import styles from "./invoices.module.scss";
+import styles from "./../Shared/styles/react-bootstrap-table.module.scss";
 
 class Invoices extends React.Component {
 	constructor(props) {
