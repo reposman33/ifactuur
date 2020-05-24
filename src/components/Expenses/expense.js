@@ -5,7 +5,7 @@ import { Utils } from "../../services/Utils";
 import { withFirebase } from "../../Firebase";
 import { Select } from "./../Shared/Select/select";
 import { DateComponent } from "./../Shared/Date/date";
-import { TextInput } from "./../Shared/TextInput/textInput";
+import { Input } from "../Shared/Input/input";
 import { Textarea } from "../Shared/Textarea/textarea";
 import { Button } from "./../Shared/Button/button";
 
@@ -157,7 +157,7 @@ class Expense extends React.Component {
 				</div>
 				<div className='row'>
 					<div className='col d-flex flex-row justify-content-between'>
-						<TextInput
+						<Input
 							type='number'
 							displayInput={!this.isExistingExpense}
 							displayValue={this.state.amount && this.Utils.currencyFormat.format(this.state.amount)}

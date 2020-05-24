@@ -3,7 +3,7 @@ import { withFirebase } from "../../Firebase";
 import { I18n } from "../../services/I18n/I18n";
 import * as ROUTES from "../../constants/routes";
 import { Select } from "../Shared/Select/select";
-import { TextInput } from "../Shared/TextInput/textInput";
+import { Input } from "../Shared/Input/input";
 import { Textarea } from "../Shared/Textarea/textarea";
 import { Button } from "../Shared/Button/button";
 
@@ -104,7 +104,7 @@ class Settings extends React.Component {
 								valueKey='id'
 							/>
 							{/* FIRSTNAME */}
-							<TextInput
+							<Input
 								container={false}
 								type='text'
 								extraClasses='w-50 ml-3'
@@ -115,7 +115,7 @@ class Settings extends React.Component {
 								labelText={this.I18n.get("USERSETTINGS.LABEL.FIRSTNAME")}
 							/>
 							{/* LASTNAME */}
-							<TextInput
+							<Input
 								container={false}
 								type='text'
 								extraClasses='w-50 mx-3'
@@ -152,7 +152,7 @@ class Settings extends React.Component {
 					<div className='col d-flex flex-column w-100'>
 						<div className='d-flex flex-row justify-content-center'>
 							{/* ADDRESS */}
-							<TextInput
+							<Input
 								container={false}
 								type='text'
 								extraClasses='mx-3 w-100'
@@ -165,7 +165,7 @@ class Settings extends React.Component {
 						</div>
 						<div className='d-flex flex-row my-3'>
 							{/* ZIPCODE */}
-							<TextInput
+							<Input
 								container={false}
 								type='text'
 								extraClasses='mx-3'
@@ -176,7 +176,7 @@ class Settings extends React.Component {
 								labelText={this.I18n.get("USERSETTINGS.LABEL.ZIPCODE")}
 							/>
 							{/* CITY */}
-							<TextInput
+							<Input
 								container={false}
 								type='text'
 								extraClasses='mr-3'
@@ -187,7 +187,7 @@ class Settings extends React.Component {
 								labelText={this.I18n.get("USERSETTINGS.LABEL.CITY")}
 							/>
 							{/* COUNTRY */}
-							<TextInput
+							<Input
 								container={false}
 								type='text'
 								extraClasses='mr-3'

@@ -1,7 +1,7 @@
 import React from "react";
 import { Select } from "../Shared/Select/select";
 import { Button } from "../Shared/Button/button";
-import { TextInput } from "../Shared/TextInput/textInput";
+import { Input } from "../Shared/Input/input";
 import { I18n } from "../../services/I18n/I18n";
 import * as ROUTES from "../../constants/routes";
 import { withFirebase } from "../../Firebase";
@@ -138,7 +138,7 @@ class Company extends React.Component {
 					<div className={"col d-flex flex-column " + styles.noBorderBottom}>
 						<div className='d-flex flex-row w-100 mb-3'>
 							{/* COMPANY NAME */}
-							<TextInput
+							<Input
 								type='text'
 								extraClasses='w-50 mr-3'
 								displayInput={true}
@@ -148,7 +148,7 @@ class Company extends React.Component {
 								labelText={this.I18n.get("COMPANY.LABEL.NAME")}
 							/>
 							{/* COMPANY ADDRESS */}
-							<TextInput
+							<Input
 								type='text'
 								extraClasses='w-50'
 								displayInput={true}
@@ -160,7 +160,7 @@ class Company extends React.Component {
 						</div>
 						<div className='d-flex flex-row w-100'>
 							{/* CITY */}
-							<TextInput
+							<Input
 								type='text'
 								extraClasses='w-50 mr-3'
 								displayInput={true}
@@ -170,7 +170,7 @@ class Company extends React.Component {
 								labelText={this.I18n.get("COMPANY.LABEL.CITY")}
 							/>
 							{/* ZIPCODE */}
-							<TextInput
+							<Input
 								type='text'
 								extraClasses={"w-25 mr-3 "}
 								displayInput={true}
@@ -180,7 +180,7 @@ class Company extends React.Component {
 								labelText={this.I18n.get("COMPANY.LABEL.ZIPCODE")}
 							/>
 							{/* COUNTRY */}
-							<TextInput
+							<Input
 								type='text'
 								extraClasses='w-50'
 								displayInput={true}
@@ -211,7 +211,7 @@ class Company extends React.Component {
 								handleOnChange={this.onChange}
 							/>
 							{/* CONTACT */}
-							<TextInput
+							<Input
 								type='text'
 								extraClasses='w-100 mb-3 ml-3'
 								displayInput={true}
@@ -226,7 +226,7 @@ class Company extends React.Component {
 							<span className='d-flex align-items-center mr-3'>
 								<FontAwesomeIcon size='2x' icon='link' />
 							</span>
-							<TextInput
+							<Input
 								type='text'
 								extraClasses='w-100 mb-3'
 								displayInput={true}
@@ -243,7 +243,7 @@ class Company extends React.Component {
 									<span className='d-flex align-items-center mr-3 mt-3'>
 										<FontAwesomeIcon size='2x' icon='phone-alt' />
 									</span>
-									<TextInput
+									<Input
 										type='text'
 										extraClasses='w-100 mb-3'
 										displayInput={true}
@@ -258,7 +258,7 @@ class Company extends React.Component {
 									<span className='d-flex align-items-center mx-2'>
 										<FontAwesomeIcon size='2x' icon='envelope' />
 									</span>
-									<TextInput
+									<Input
 										type='text'
 										extraClasses='w-100 mb-3'
 										displayInput={true}
@@ -293,7 +293,7 @@ class Company extends React.Component {
 							<div className='d-flex flex-column w-100 ml-3 align-content-center'>
 								<div className='d-flex justify-content-between'>
 									{/* VAT number */}
-									<TextInput
+									<Input
 										displayInput={true}
 										displayValue={this.state.btwnr}
 										extraClasses='ml-3'
@@ -301,9 +301,10 @@ class Company extends React.Component {
 										handleOnChange={this.onChange}
 										labelText={this.I18n.get("COMPANY.LABEL.BTWNR")}
 										name='btwnr'
+										type='text'
 									/>
 									{/* Sales tax number */}
-									<TextInput
+									<Input
 										displayInput={true}
 										displayValue={this.state.salesTaxNr}
 										extraClasses='ml-3'
@@ -311,9 +312,10 @@ class Company extends React.Component {
 										handleOnChange={this.onChange}
 										labelText={this.I18n.get("COMPANY.LABEL.SALESTAXNR")}
 										name='salesTaxNr'
+										type='text'
 									/>
 								</div>
-								<TextInput
+								<Input
 									displayInput={true}
 									displayValue={this.state.kvknr}
 									extraClasses='m-3'
@@ -321,6 +323,7 @@ class Company extends React.Component {
 									handleOnChange={this.onChange}
 									labelText={this.I18n.get("COMPANY.LABEL.KVKNR")}
 									name='kvknr'
+									type='text'
 								/>
 							</div>
 						</div>

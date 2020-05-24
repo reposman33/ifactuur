@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "./textInput.module.scss";
+import styles from "./input.module.scss";
 
 /**
  *
@@ -14,7 +14,7 @@ import styles from "./textInput.module.scss";
  * @param {number}		type - type of input element
  */
 
-const TextInput = ({
+const Input = ({
 	container = true,
 	displayInput,
 	displayValue,
@@ -54,4 +54,4 @@ const TextInput = ({
 		</div>
 	);
 };
-export { TextInput };
+export { Input };
