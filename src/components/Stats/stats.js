@@ -44,7 +44,7 @@ class Stats extends React.Component {
 						dataField: "dateTimeCreated",
 						sort: true,
 						text: this.I18n.get("STATS.TABLE.HEADERS.DATETIMECREATED"),
-						headerStyle: { width: "10%", fontSize: "0.9rem" },
+						headerStyle: { width: "15%", fontSize: "0.9rem" },
 					},
 					{
 						dataField: "companyName",
@@ -56,13 +56,13 @@ class Stats extends React.Component {
 						dataField: "total",
 						sort: true,
 						text: this.I18n.get("STATS.TABLE.HEADERS.AMOUNT"),
-						headerStyle: { width: "10%", fontSize: "0.9rem" },
+						headerStyle: { width: "5%", fontSize: "0.9rem" },
 					},
 					{
 						dataField: "totalVatAmount",
 						sort: true,
 						text: this.I18n.get("STATS.TABLE.HEADERS.TOTALVATAMOUNT"),
-						headerStyle: { width: "10%", fontSize: "0.9rem" },
+						headerStyle: { width: "5%", fontSize: "0.9rem" },
 					},
 			  ]
 			: [
@@ -76,7 +76,7 @@ class Stats extends React.Component {
 						dataField: "date",
 						sort: true,
 						text: this.I18n.get("STATS.TABLE.HEADERS.DATETIMECREATED"),
-						headerStyle: { width: "10%", fontSize: "0.9rem" },
+						headerStyle: { width: "15%", fontSize: "0.9rem" },
 					},
 					{
 						dataField: "company",
@@ -88,13 +88,13 @@ class Stats extends React.Component {
 						dataField: "amount",
 						sort: true,
 						text: this.I18n.get("STATS.TABLE.HEADERS.AMOUNT"),
-						headerStyle: { width: "10%", fontSize: "0.9rem" },
+						headerStyle: { width: "5%", fontSize: "0.9rem" },
 					},
 					{
 						dataField: "expenseVatAmount",
 						sort: true,
 						text: this.I18n.get("STATS.TABLE.HEADERS.TOTALVATAMOUNT"),
-						headerStyle: { width: "10%", fontSize: "0.9rem" },
+						headerStyle: { width: "5%", fontSize: "0.9rem" },
 					},
 			  ];
 
