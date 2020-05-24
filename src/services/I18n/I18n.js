@@ -159,6 +159,8 @@ export class I18n {
 					FROM: { en: "Date from", nl: "vanaf" },
 					TO: { en: "Date to", nl: "tot" },
 				},
+				TURNOVER: { en: "Calculate sales", nl: "Bereken omzet" },
+				VAT: { en: "Calculate value added tax", nl: "Bereken BTW" },
 			},
 			TABLE: {
 				HEADERS: {
@@ -171,7 +173,10 @@ export class I18n {
 				},
 			},
 			BUTTONS: {
-				CALCULATE: { en: "Go", nl: "Ga" },
+				SHOWTURNOVER: { en: "Show sales", nl: "Toon omzet" },
+				TURNOVER: { en: "Sales in period", nl: "Omzet over periode" },
+				SHOWEXPENSES: { en: "Expenses in period", nl: "Kosten over periode" },
+				YEAR: { en: "Year", nl: "Jaar" },
 			},
 		},
 		TITLES: { MR: { en: "Mr", nl: "Dhr" }, MRS: { en: "Ms", nl: "Mw" }, THEY: { en: "They", nl: "Zij" } },

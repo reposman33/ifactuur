@@ -142,6 +142,32 @@ class Firebase {
 			.delete();
 	};
 
+	/**
+	 * returns a sorted list of unique years
+	 */
+	getUniqueYears = (collection) => {
+		const dateKey = collection === "expenses" ? "date" : collection === "invoices" ? "dateTimeCreated" : undefined;
+		return this.db
+			.collection(collection)
+			.get()
+			.then((collection) => {
+				const years = [];
+				collection.forEach((doc, i) => {
+					const document = doc.data();
+					if (
+						document[dateKey] &&
+						!years.some((el) => el.value === document[dateKey].toDate().getFullYear())
+					) {
+						years.push({
+							id: document[dateKey].toDate().getFullYear(),
+							value: document[dateKey].toDate().getFullYear(),
+						});
+					}
+				});
+				return years.sort((a, b) => a.value - b.value);
+			});
+	};
+
 	// ===============================================================
 	// ===============================================================
 	// EXPENSES

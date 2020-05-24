@@ -8,6 +8,8 @@ import * as ROUTES from "../../constants/routes";
 import { withFirebase } from "../../Firebase";
 import { DateComponent } from "../Shared/Date/date";
 import { Button } from "../Shared/Button/button";
+import { Select } from "../Shared/Select/select";
+import { Input } from "../Shared/Input/input";
 import styles from "./../Shared/styles/react-bootstrap-table.module.scss";
 import componentStyles from "./stats.module.scss";
 
@@ -15,10 +17,16 @@ class Stats extends React.Component {
 	constructor(props) {
 		super(props);
 		this.Utils = new Utils();
-		this.state = { dateFrom: undefined, dateTo: undefined };
+		this.state = { startDate: undefined, endDate: undefined, years: [] };
 		this.I18n = new I18n();
 	}
 
+	componentDidMount() {
+		// get a unique array of all years invoices exist
+		this.props.firebase
+			.getUniqueYears("invoices")
+			.then((years) => this.setState({ years: years, year: years[0].value }));
+	}
 	onChange = (name, value) => {
 		this.setState({ [name]: value });
 	};
@@ -109,10 +117,13 @@ class Stats extends React.Component {
 		),
 	});
 
-	onCalculateTurnover = () => {
+	onCalculateTurnover = (startDate, endDate) => {
 		// get total for invoices
 		// added fields 'total' and 'totalVatAmount'
-		this.props.firebase.getInvoicesInPeriod(this.state.dateFrom, this.state.dateTo).then((res) => {
+		startDate = this.state.startDate || startDate;
+		endDate = this.state.endDate || endDate;
+
+		this.props.firebase.getInvoicesInPeriod(startDate, endDate).then((res) => {
 			// get VATamount, total amount per invoice
 			const invoicesInPeriod = res.map((invoice) => {
 				const total = invoice.rows.reduce((acc, row) => {
@@ -130,7 +141,7 @@ class Stats extends React.Component {
 
 		// get total for expenses
 		// added field 'expenseVatAmount'
-		this.props.firebase.getExpensesInPeriod(this.state.dateFrom, this.state.dateTo).then((expenses) => {
+		this.props.firebase.getExpensesInPeriod(startDate, endDate).then((expenses) => {
 			const expensesInPeriod = expenses.map((expense) => {
 				const expenseVatAmount =
 					expense.amount &&
@@ -146,6 +157,34 @@ class Stats extends React.Component {
 			this.setState({ expenses: expensesInPeriod });
 		});
 	};
+
+	onCalculateTurnoverByquarter = () => {
+		let startDate;
+		let endDate;
+		switch (this.state.quarter) {
+			case "Q1":
+				startDate = "01-01";
+				endDate = "03-31";
+				break;
+			case "Q2":
+				startDate = "04-01";
+				endDate = "06-31";
+				break;
+			case "Q3":
+				startDate = "07-01";
+				endDate = "09-30";
+				break;
+			case "Q4":
+				startDate = "10-01";
+				endDate = "12-31";
+				break;
+			default:
+				startDate = "";
+				endDate = "";
+		}
+		this.onCalculateTurnover(`${this.state.year}-${startDate}`, `${this.state.year}-${endDate}`);
+	};
+
 	table = {
 		defaultSorted: [
 			{
@@ -160,28 +199,90 @@ class Stats extends React.Component {
 		return (
 			<>
 				<div className='row'>
-					<div className='col d-flex flex-row'>
-						<DateComponent
-							container={false}
-							displayInput={true}
-							extraClasses='mx-3'
-							handleOnChange={this.onChange}
-							labelText={this.I18n.get("STATS.LABELS.DATE.FROM")}
-							name='dateFrom'
-						/>
-						<DateComponent
-							container={false}
-							displayInput={true}
-							extraClasses='mx-3'
-							handleOnChange={this.onChange}
-							labelText={this.I18n.get("STATS.LABELS.DATE.TO")}
-							name='dateTo'
-						/>
-						<div className='d-flex justify-content-end align-items-end'>
+					<div className='col d-flex flex-row align-items-center'>
+						<div className='d-flex flex-column w-50'>
+							<div className='d-flex flex-row'>
+								<DateComponent
+									container={false}
+									displayInput={true}
+									extraClasses='mx-3'
+									handleOnChange={this.onChange}
+									labelText={this.I18n.get("STATS.LABELS.DATE.FROM")}
+									name='startDate'
+								/>
+								<DateComponent
+									container={false}
+									displayInput={true}
+									extraClasses='mx-3'
+									handleOnChange={this.onChange}
+									labelText={this.I18n.get("STATS.LABELS.DATE.TO")}
+									name='endDate'
+								/>
+							</div>
 							<Button
+								extraClasses='ml-3 mt-3'
 								onClick={this.onCalculateTurnover}
-								text={this.I18n.get("STATS.BUTTONS.CALCULATE")}
-								extraClasses='mr-3'
+								text={this.I18n.get("STATS.BUTTONS.SHOWTURNOVER")}
+							/>
+						</div>
+						<div className='d-flex flex-column w-50'>
+							<div className='d-flex flex-row'>
+								<Select
+									container={false}
+									extraClasses='w-25'
+									labelText={this.I18n.get("STATS.BUTTONS.YEAR")}
+									name='year'
+									displayInput={true}
+									data={this.state.years}
+									displayKey='value'
+									valueKey='id'
+									handleOnChange={this.onChange}
+								/>
+								<Input
+									container={false}
+									displayInput={true}
+									displayValue='Q1'
+									extraClasses='mx-3'
+									handleOnChange={this.onChange}
+									labelText='Q1'
+									name='quarter'
+									type='radio'
+								/>
+								<Input
+									container={false}
+									displayInput={true}
+									displayValue='Q2'
+									extraClasses='mx-3'
+									handleOnChange={this.onChange}
+									labelText='Q2'
+									name='quarter'
+									type='radio'
+								/>
+								<Input
+									container={false}
+									displayInput={true}
+									displayValue='Q3'
+									extraClasses='mx-3'
+									handleOnChange={this.onChange}
+									labelText='Q3'
+									name='quarter'
+									type='radio'
+								/>
+								<Input
+									container={false}
+									displayInput={true}
+									displayValue='Q4'
+									extraClasses='mx-3'
+									handleOnChange={this.onChange}
+									labelText='Q4'
+									name='quarter'
+									type='radio'
+								/>
+							</div>
+							<Button
+								extraClasses='mt-3 align-self-center'
+								onClick={this.onCalculateTurnoverByquarter}
+								text={this.I18n.get("STATS.BUTTONS.SHOWEXPENSES")}
 							/>
 						</div>
 					</div>
@@ -189,17 +290,22 @@ class Stats extends React.Component {
 				<div className={componentStyles["minwidth-33"] + " row"}>
 					<div className='col'>
 						{!!this.state.invoices ? (
-							<BootstrapTable
-								bootstrap4
-								data={this.state.invoices}
-								classes={styles.table}
-								columns={this.getColumns("invoices")}
-								table={this.table}
-								keyField='ID'
-								bordered
-								hover
-								rowEvents={{ onClick: this.onRowClick }}
-								pagination={paginationFactory(this.getPaginationConfig())}></BootstrapTable>
+							<>
+								<span className={componentStyles.tableTitle}>
+									{this.I18n.get("STATS.BUTTONS.TURNOVER")}
+								</span>
+								<BootstrapTable
+									bootstrap4
+									bordered={false}
+									data={this.state.invoices}
+									classes={styles.table}
+									columns={this.getColumns("invoices")}
+									table={this.table}
+									keyField='ID'
+									hover
+									rowEvents={{ onClick: this.onRowClick }}
+									pagination={paginationFactory(this.getPaginationConfig())}></BootstrapTable>
+							</>
 						) : (
 							""
 						)}
@@ -208,17 +314,22 @@ class Stats extends React.Component {
 				<div className={componentStyles["minwidth-33"] + " row"}>
 					<div className='col'>
 						{!!this.state.expenses ? (
-							<BootstrapTable
-								bootstrap4
-								data={this.state.expenses}
-								classes={styles.table}
-								columns={this.getColumns("expenses")}
-								table={this.table}
-								keyField='ID'
-								bordered
-								hover
-								rowEvents={{ onClick: this.onRowClick }}
-								pagination={paginationFactory(this.getPaginationConfig())}></BootstrapTable>
+							<>
+								<span className={componentStyles.tableTitle}>
+									{this.I18n.get("STATS.BUTTONS.SHOWEXPENSES")}
+								</span>
+								<BootstrapTable
+									bootstrap4
+									bordered={false}
+									data={this.state.expenses}
+									classes={styles.table}
+									columns={this.getColumns("expenses")}
+									table={this.table}
+									keyField='ID'
+									hover
+									rowEvents={{ onClick: this.onRowClick }}
+									pagination={paginationFactory(this.getPaginationConfig())}></BootstrapTable>
+							</>
 						) : (
 							""
 						)}
