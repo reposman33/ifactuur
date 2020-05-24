@@ -232,7 +232,7 @@ class Firebase {
 		this.getCollectionInPeriod(
 			"invoices",
 			"dateTimeCreated",
-			["VATRate", "dateTimeCreated", "invoiceNr", "rows", "type"],
+			["companyName", "dateTimeCreated", "invoiceNr", "rows", "VATRate"],
 			dateFrom,
 			dateTo
 		);
@@ -241,7 +241,7 @@ class Firebase {
 		this.getCollectionInPeriod(
 			"bills",
 			"date",
-			["date", "company", "amount", "vatrate", "description"],
+			["amount", "company", "date", "description", "id", "vatrate"],
 			dateFrom,
 			dateTo
 		);
