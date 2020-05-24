@@ -37,32 +37,32 @@ class Stats extends React.Component {
 					{
 						dataField: "invoiceNr",
 						sort: true,
-						text: this.I18n.get("STATS.TABLE.HEADERS.INVOICENR"),
-						headerStyle: { width: "3%" },
+						text: this.I18n.get("STATS.TABLE.HEADERS.ID"),
+						headerStyle: { width: "3%", fontSize: "0.9rem" },
 					},
 					{
 						dataField: "dateTimeCreated",
 						sort: true,
 						text: this.I18n.get("STATS.TABLE.HEADERS.DATETIMECREATED"),
-						headerStyle: { width: "10%" },
+						headerStyle: { width: "10%", fontSize: "0.9rem" },
 					},
 					{
 						dataField: "companyName",
 						sort: true,
 						text: this.I18n.get("STATS.TABLE.HEADERS.COMPANY"),
-						headerStyle: { width: "10%" },
+						headerStyle: { width: "10%", fontSize: "0.9rem" },
 					},
 					{
 						dataField: "total",
 						sort: true,
 						text: this.I18n.get("STATS.TABLE.HEADERS.AMOUNT"),
-						headerStyle: { width: "10%" },
+						headerStyle: { width: "10%", fontSize: "0.9rem" },
 					},
 					{
 						dataField: "totalVatAmount",
 						sort: true,
 						text: this.I18n.get("STATS.TABLE.HEADERS.TOTALVATAMOUNT"),
-						headerStyle: { width: "10%" },
+						headerStyle: { width: "10%", fontSize: "0.9rem" },
 					},
 			  ]
 			: [
@@ -70,31 +70,31 @@ class Stats extends React.Component {
 						dataField: "id",
 						sort: true,
 						text: this.I18n.get("STATS.TABLE.HEADERS.ID"),
-						headerStyle: { width: "3%" },
+						headerStyle: { width: "3%", fontSize: "0.9rem" },
 					},
 					{
 						dataField: "date",
 						sort: true,
 						text: this.I18n.get("STATS.TABLE.HEADERS.DATETIMECREATED"),
-						headerStyle: { width: "10%" },
+						headerStyle: { width: "10%", fontSize: "0.9rem" },
 					},
 					{
 						dataField: "company",
 						sort: true,
 						text: this.I18n.get("STATS.TABLE.HEADERS.COMPANY"),
-						headerStyle: { width: "10%" },
+						headerStyle: { width: "10%", fontSize: "0.9rem" },
 					},
 					{
 						dataField: "amount",
 						sort: true,
 						text: this.I18n.get("STATS.TABLE.HEADERS.AMOUNT"),
-						headerStyle: { width: "10%" },
+						headerStyle: { width: "10%", fontSize: "0.9rem" },
 					},
 					{
 						dataField: "expenseVatAmount",
 						sort: true,
 						text: this.I18n.get("STATS.TABLE.HEADERS.TOTALVATAMOUNT"),
-						headerStyle: { width: "10%" },
+						headerStyle: { width: "10%", fontSize: "0.9rem" },
 					},
 			  ];
 
@@ -287,7 +287,7 @@ class Stats extends React.Component {
 						</div>
 					</div>
 				</div>
-				<div className={componentStyles["minwidth-33"] + " row"}>
+				<div className='row'>
 					<div className='col'>
 						{!!this.state.invoices ? (
 							<>
@@ -310,7 +310,7 @@ class Stats extends React.Component {
 						)}
 					</div>
 				</div>
-				<div className={componentStyles["minwidth-33"] + " row"}>
+				<div className='row'>
 					<div className='col'>
 						{!!this.state.expenses ? (
 							<>

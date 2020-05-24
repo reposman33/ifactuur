@@ -6,11 +6,18 @@ table {
 
 	tr {
 		height: 3rem;
+
 		&:nth-child(even) {
-			background-color: slategray;
+			background-color: $row-even-background-color;
+			&:hover {
+				background-color: lighten($color: $row-even-background-color, $amount: 10);
+			}
 		}
 		&:nth-child(odd) {
-			background-color: darkgray;
+			background-color: $row-odd-background-color;
+			&:hover {
+				background-color: lighten($color: $row-odd-background-color, $amount: 10);
+			}
 		}
 		th {
 			background-color: #4c4c50;
@@ -21,6 +28,7 @@ table {
 		td {
 			color: white;
 			cursor: pointer;
+			font-size: 0.9rem;
 		}
 
 		& span.actionIcons svg {
