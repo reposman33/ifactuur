@@ -1,11 +1,17 @@
 @import "./../../../constants/variables.scss";
 
-.table {
+table {
 	background-color: $column-background-color;
 	table-layout: fixed;
 
 	tr {
 		height: 3rem;
+		&:nth-child(even) {
+			background-color: slategray;
+		}
+		&:nth-child(odd) {
+			background-color: darkgray;
+		}
 		th {
 			background-color: #4c4c50;
 			color: white;
@@ -30,5 +36,11 @@
 				margin-left: 0.5rem;
 			}
 		}
+	}
+}
+
+div.row.react-bootstrap-table-pagination-total {
+	& div {
+		padding-top: 0;
 	}
 }
