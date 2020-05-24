@@ -103,11 +103,11 @@ export class I18n {
 		INVOICES: {
 			TABLE: {
 				HEADERS: {
-					DATE: { en: "Date", nl: "Datum" },
+					ACTIONS: { en: "Actions", nl: "Bewerken" },
 					CLIENT: { en: "Client", nl: "Klant" },
+					DATE: { en: "Date", nl: "Datum" },
 					STATUS: { en: "Status", nl: "Status" },
 					TYPE: { en: "Type", nl: "Soort" },
-					ACTIONS: { en: "Actions", nl: "Bewerken" },
 				},
 			},
 		},
@@ -158,6 +158,16 @@ export class I18n {
 				DATE: {
 					FROM: { en: "Date from", nl: "vanaf" },
 					TO: { en: "Date to", nl: "tot" },
+				},
+			},
+			TABLE: {
+				HEADERS: {
+					AMOUNT: { en: "Amount", nl: "Bedrag" },
+					COMPANY: { en: "Charged to", nl: "Gefactureerd aan" },
+					DATETIMECREATED: { en: "Date", nl: "Datum" },
+					INVOICENR: { en: "Invoice", nl: "factuur" },
+					ID: { en: "#", nl: "#" },
+					TOTALVATAMOUNT: { en: "Vat", nl: "BTW" },
 				},
 			},
 			BUTTONS: {
