@@ -120,7 +120,6 @@ class Invoices extends React.Component {
 					table={this.table}
 					keyField='ID'
 					bordered
-					hover
 					rowEvents={{ onClick: this.onRowClick }}
 					pagination={paginationFactory(this.paginationConfig)}></BootstrapTable>
 

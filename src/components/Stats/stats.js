@@ -302,7 +302,6 @@ class Stats extends React.Component {
 									columns={this.getColumns("invoices")}
 									table={this.table}
 									keyField='ID'
-									hover
 									rowEvents={{ onClick: this.onRowClick }}
 									pagination={paginationFactory(this.getPaginationConfig())}></BootstrapTable>
 							</>
@@ -326,7 +325,6 @@ class Stats extends React.Component {
 									columns={this.getColumns("expenses")}
 									table={this.table}
 									keyField='ID'
-									hover
 									rowEvents={{ onClick: this.onRowClick }}
 									pagination={paginationFactory(this.getPaginationConfig())}></BootstrapTable>
 							</>
