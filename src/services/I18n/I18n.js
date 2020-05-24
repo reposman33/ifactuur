@@ -149,8 +149,8 @@ export class I18n {
 			FIRST_PAGE: { en: "first page", nl: "eerste pagina" },
 			LAST_PAGE: { en: "last page", nl: "laatste pagina" },
 			TOTAL: {
-				en: "Showing page {from} to {to} of {size}",
-				nl: "Toon pagina {from} tot {to} van {size}",
+				en: "Showing row {from} to {to} of {size}",
+				nl: "Toon rij {from} tot {to} van {size}",
 			},
 		},
 		STATS: {
