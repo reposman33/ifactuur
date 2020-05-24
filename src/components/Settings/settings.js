@@ -217,7 +217,7 @@ class Settings extends React.Component {
 				<div className='row pt-3'>
 					<div className='d-flex w-100 mt-3 justify-content-end'>
 						<Button
-							extraStyles={{ marginRight: "0.8rem" }}
+							extraStyles={{ marginRight: "0.8rem", marginTop: "-2rem" }}
 							onClick={this.onSubmit}
 							text={
 								this.isExistingUserSetting

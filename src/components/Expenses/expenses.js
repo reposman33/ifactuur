@@ -8,6 +8,7 @@ import { Utils } from "./../../services/Utils";
 import * as ROUTES from "../../constants/routes";
 import { withFirebase } from "../../Firebase";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Button } from "../Shared/Button/button";
 import styles from "./../Shared/styles/react-bootstrap-table.module.scss";
 
 /**
@@ -105,7 +106,7 @@ class Expenses extends React.Component {
 
 	render() {
 		return (
-			<div>
+			<>
 				<BootstrapTable
 					bootstrap4
 					data={this.state.rowData}
@@ -117,10 +118,13 @@ class Expenses extends React.Component {
 					rowEvents={{ onClick: this.onRowClick }}
 					pagination={paginationFactory(this.paginationConfig)}></BootstrapTable>
 
-				<button className='btn btn-primary float-right' onClick={this.handleNewExpense}>
-					{this.I18n.get("BUTTON.NEW")}
-				</button>
-			</div>
+				<Button
+					extraStyles={{ marginTop: "-2rem" }}
+					extraClasses='btn btn-primary float-right mr-3'
+					onClick={this.handleNewExpense}
+					text={this.I18n.get("BUTTON.NEW")}
+				/>
+			</>
 		);
 	}
 }

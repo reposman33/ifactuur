@@ -124,9 +124,10 @@ class Invoices extends React.Component {
 					pagination={paginationFactory(this.paginationConfig)}></BootstrapTable>
 
 				<Button
+					extraClasses='float-right mr-3'
+					extraStyles={{ marginTop: "-2rem" }}
 					onClick={this.handleNewInvoice}
 					text={this.I18n.get("BUTTON.NEW")}
-					extraClasses='float-right mr-3'
 				/>
 			</div>
 		);
