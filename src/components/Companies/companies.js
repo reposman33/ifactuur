@@ -128,7 +128,6 @@ class Companies extends React.Component {
 					columns={this.getColumns()}
 					table={this.table}
 					keyField='ID'
-					bordered
 					rowEvents={{ onClick: this.onRowClick }}
 					pagination={paginationFactory(this.paginationConfig)}></BootstrapTable>
 
