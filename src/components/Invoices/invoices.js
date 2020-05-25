@@ -115,7 +115,7 @@ class Invoices extends React.Component {
 				<BootstrapTable
 					bootstrap4
 					data={this.state.rowData}
-					classes={styles.table}
+					classes={styles.ReactBootstrapTable}
 					columns={this.getColumns()}
 					table={this.table}
 					keyField='ID'
