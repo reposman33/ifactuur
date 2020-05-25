@@ -100,7 +100,7 @@ class Expenses extends React.Component {
 	onRowClick = (e, row, rowIndex) => {
 		this.props.history.push({
 			pathname: ROUTES.EXPENSE,
-			state: { id: this.state.rowData[rowIndex].ID },
+			state: { id: row.ID },
 		});
 	};
 

@@ -105,7 +105,7 @@ class Invoices extends React.Component {
 	onRowClick = (e, row, rowIndex) => {
 		this.props.history.push({
 			pathname: ROUTES.INVOICE,
-			state: { id: this.state.rowData[rowIndex].ID },
+			state: { id: row.ID },
 		});
 	};
 
