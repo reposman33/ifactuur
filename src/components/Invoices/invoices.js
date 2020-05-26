@@ -124,7 +124,6 @@ class Invoices extends React.Component {
 
 				<Button
 					extraClasses='float-right mr-3'
-					extraStyles={{ marginTop: "-2rem" }}
 					onClick={this.handleNewInvoice}
 					text={this.I18n.get("BUTTON.NEW")}
 				/>

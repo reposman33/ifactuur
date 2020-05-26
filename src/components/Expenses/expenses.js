@@ -118,7 +118,6 @@ class Expenses extends React.Component {
 					pagination={paginationFactory(this.paginationConfig)}></BootstrapTable>
 
 				<Button
-					extraStyles={{ marginTop: "-2rem" }}
 					extraClasses='btn btn-primary float-right mr-3'
 					onClick={this.handleNewExpense}
 					text={this.I18n.get("BUTTON.NEW")}
