@@ -12,7 +12,7 @@ class Company extends React.Component {
 	constructor(props) {
 		super(props);
 		this.I18n = new I18n();
-
+		this.prevLocation = this.props.location.params && this.props.location.params.prevLocation;
 		// State keys and transform functions to apply.
 		this.persistFields = {
 			address: (fieldValue) => fieldValue,
@@ -95,10 +95,9 @@ class Company extends React.Component {
 		}
 	};
 
-	// onListview
-	onListview = () =>
+	onGoBack = () =>
 		this.props.history.push({
-			pathname: ROUTES.COMPANIES,
+			pathname: this.prevLocation || ROUTES.COMPANIES,
 		});
 
 	/**
@@ -127,7 +126,7 @@ class Company extends React.Component {
 
 		this.props.firebase.addDocumentToCollection("companies", company, this.state.ID).then((docRef) => {
 			console.log(`document ${this.state.ID ? "updated" : "added"}`);
-			this.onListview();
+			this.onGoBack();
 		});
 	};
 
@@ -271,8 +270,8 @@ class Company extends React.Component {
 								<div className='d-flex justify-content-between'>
 									{/* Button Overview */}
 									<Button
-										onClick={this.onListview}
-										text={this.I18n.get("BUTTON.OVERVIEW")}
+										onClick={this.onGoBack}
+										text={this.I18n.get("BUTTON.BACK")}
 										styles={{ marginLeft: "0.8rem" }}
 										classes='btn-primary float-left'
 									/>

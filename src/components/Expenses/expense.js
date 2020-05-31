@@ -136,7 +136,12 @@ class Expense extends React.Component {
 							handleOnChange={this.onChange}
 							labelText={this.I18n.get("EXPENSE.LABEL.COMPANY")}
 							name='company'
-							onButtonClick={() => this.props.history.push({ pathname: ROUTES.COMPANY })}
+							onButtonClick={() =>
+								this.props.history.push({
+									pathname: ROUTES.COMPANY,
+									params: { prevLocation: this.props.location.pathname },
+								})
+							}
 							valueKey='ID'
 						/>
 					</div>
@@ -184,7 +189,7 @@ class Expense extends React.Component {
 						extraStyles={{ marginLeft: "0.8rem" }}
 						extraClasses='m-3'
 						onClick={this.onListview}
-						text={this.I18n.get("BUTTON.OVERVIEW")}
+						text={this.I18n.get("BUTTON.BACK")}
 					/>
 					<Button
 						disabled={this.isExistingExpense}

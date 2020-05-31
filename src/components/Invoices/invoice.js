@@ -333,7 +333,12 @@ class Invoice extends React.Component {
 							displayKey='name'
 							valueKey='ID'
 							handleOnChange={this.onChange}
-							onButtonClick={() => this.props.history.push({ pathname: ROUTES.COMPANY })}
+							onButtonClick={() =>
+								this.props.history.push({
+									pathname: ROUTES.COMPANY,
+									params: { prevLocation: this.props.location.pathname },
+								})
+							}
 						/>
 					</div>
 				</div>
@@ -408,7 +413,7 @@ class Invoice extends React.Component {
 				<div className='d-flex justify-content-between'>
 					<Button
 						onClick={this.onListview}
-						text={this.I18n.get("BUTTON.OVERVIEW")}
+						text={this.I18n.get("BUTTON.BACK")}
 						extraStyles={{ marginLeft: "0.8rem" }}
 					/>
 

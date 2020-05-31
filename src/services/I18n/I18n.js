@@ -141,7 +141,7 @@ export class I18n {
 			SAVE: { en: "Save", nl: "Bewaar" },
 			UPDATE: { en: "Update", nl: "Bijwerken" },
 			NEW: { en: "New", nl: "Nieuw" },
-			OVERVIEW: { en: "Overview", nl: "Overzicht" },
+			BACK: { en: "Back", nl: "Terug" },
 		},
 		PAGINATION: {
 			NEXT_PAGE: { en: "next page", nl: "volgende pagina" },
@@ -161,6 +161,8 @@ export class I18n {
 				},
 				TURNOVER: { en: "Calculate sales", nl: "Bereken omzet" },
 				VAT: { en: "Calculate value added tax", nl: "Bereken BTW" },
+				TOTALTURNOVER: { en: "Total turnover", nl: "Totale omzet" },
+				TOTALEXPENSESVAT: { en: "Total VAT payed", nl: "Totale BTW betaald" },
 			},
 			TABLE: {
 				HEADERS: {
