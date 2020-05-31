@@ -227,16 +227,14 @@ class Firebase {
 	// ===============================================================
 
 	getUserSettings = () => {
-		this.db
+		return this.db
 			.collection("users")
 			.where("userId", "==", sessionStorage.getItem("userId"))
 			.get()
 			.then((querySnapshot) => {
-				const documentsArray = querySnapshot.forEach((doc) => doc.data());
-				if (documentsArray && documentsArray.length === 1) {
-					return { ...document.data(), ID: document.id };
-				}
-				return {};
+				let document;
+				querySnapshot.forEach((doc) => (document = doc.data()));
+				return document;
 			});
 	};
 
