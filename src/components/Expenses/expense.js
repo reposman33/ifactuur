@@ -136,7 +136,7 @@ class Expense extends React.Component {
 							handleOnChange={this.onChange}
 							labelText={this.I18n.get("EXPENSE.LABEL.COMPANY")}
 							name='company'
-							onButtonClick={() => this.props.history.push({ pathname: ROUTES.COMPANIES })}
+							onButtonClick={() => this.props.history.push({ pathname: ROUTES.COMPANY })}
 							valueKey='ID'
 						/>
 					</div>
