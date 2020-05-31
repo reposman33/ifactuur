@@ -14,14 +14,6 @@ class Companies extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = { rowData: [] };
-		// make the async call to Firebase and pick it up in componentDidMount
-		this.companiesPromise$ = this.props.firebase.getCollection("companies", "name", [
-			"name",
-			"city",
-			"contact",
-			"url",
-			"address",
-		]);
 	}
 
 	I18n = new I18n();
@@ -95,7 +87,10 @@ class Companies extends React.Component {
 	};
 
 	componentDidMount() {
-		this.companiesPromise$.then((res) => this.setState({ rowData: res }));
+		// make the async call to Firebase
+		this.props.firebase
+			.getCollection("companies", "name", ["name", "city", "contact", "url", "address"])
+			.then((res) => this.setState({ rowData: res }));
 	}
 
 	handleNewCompany = () => {

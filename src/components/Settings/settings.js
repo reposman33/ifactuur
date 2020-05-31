@@ -35,14 +35,13 @@ class Settings extends React.Component {
 			deliveryConditions: (fieldValue) => fieldValue,
 			password: (fieldValue) => fieldValue, // hash the password
 		};
-
-		this.settingsPromise$ = [];
-		this.settingsPromise$.push(this.props.firebase.getUserSettings());
-		this.settingsPromise$.push(this.props.firebase.getCollection("companies", "name", ["id", "name"]));
 	}
 
 	componentDidMount = () => {
-		Promise.all(this.settingsPromise$).then((values) => {
+		const settingsPromise$ = [];
+		settingsPromise$.push(this.props.firebase.getUserSettings());
+		settingsPromise$.push(this.props.firebase.getCollection("companies", "name", ["id", "name"]));
+		Promise.all(settingsPromise$).then((values) => {
 			if (values[0]) {
 				this.isExistingUserSetting = true;
 				Object.keys(this.persistFields).map((key) => this.setState({ [key]: values[0][key] }));

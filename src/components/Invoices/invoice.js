@@ -54,22 +54,7 @@ class Invoice extends React.Component {
 			VatRates: [],
 		};
 
-		this.newInvoicePromises = [];
 		this.isExistingInvoice = !!(!!this.props.location.state && this.props.location.state.id);
-
-		// retrieve existing invoice from db
-		this.invoice$ = this.isExistingInvoice
-			? this.props.firebase.getInvoice(this.props.location.state.id)
-			: undefined;
-		// new invoice!
-		if (!this.isExistingInvoice) {
-			// retrieve last invoiceNr
-			this.newInvoicePromises.push(this.props.firebase.getNewFieldValue("invoices", "invoiceNr"));
-			// retrieve companies
-			this.newInvoicePromises.push(this.props.firebase.getCollection("companies", "name", ["id", "name"]));
-			// retrieve VatRates
-			this.newInvoicePromises.push(this.props.firebase.getCollection("vatrates", "rate", ["id", "rate"]));
-		}
 		this.nrOfDescriptionRows = 10;
 
 		this.FIELDNAMES = {
@@ -89,8 +74,8 @@ class Invoice extends React.Component {
 	}
 
 	componentDidMount = () => {
-		if (this.invoice$) {
-			this.invoice$.then((invoice) => {
+		if (this.isExistingInvoice) {
+			this.props.firebase.getInvoice(this.props.location.state.id).then((invoice) => {
 				// update state with retrieved invoice
 				this.setState({
 					companies: [],
@@ -114,8 +99,16 @@ class Invoice extends React.Component {
 				});
 			});
 		} else {
+			const newInvoicePromises = [];
 			// retrieve last invoiceNr,companies and VatRates
-			Promise.all(this.newInvoicePromises).then((values) => {
+			// retrieve last invoiceNr
+			newInvoicePromises.push(this.props.firebase.getNewFieldValue("invoices", "invoiceNr"));
+			// retrieve companies
+			newInvoicePromises.push(this.props.firebase.getCollection("companies", "name", ["id", "name"]));
+			// retrieve VatRates
+			newInvoicePromises.push(this.props.firebase.getCollection("vatrates", "rate", ["id", "rate"]));
+
+			Promise.all(newInvoicePromises).then((values) => {
 				this.setState({ invoiceNr: values[0], companies: values[1], VatRates: values[2] });
 			});
 		}

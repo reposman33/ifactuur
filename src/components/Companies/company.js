@@ -62,33 +62,20 @@ class Company extends React.Component {
 			bankAccountNr: "",
 			bankAccountNameHolder: "",
 		};
-
-		this.newCompanyPromises$ = [];
 		this.isExistingCompany = !!(!!this.props.location.state && this.props.location.state.id);
-
-		// retrieve existing Company from db
-		this.company$ = this.isExistingCompany
-			? this.props.firebase.getCompany(this.props.location.state.id)
-			: undefined;
-		// new invoice!
-		if (!this.isExistingCompany) {
-			this.newCompanyPromises$ = [];
-			// retrieve last invoiceNr
-			this.newCompanyPromises$.push(this.props.firebase.getNewFieldValue("companies", "id"));
-		}
 	}
 
 	componentDidMount = () => {
 		if (!this.isExistingCompany) {
 			// new company, assign new id
-			Promise.all(this.newCompanyPromises$).then((value) =>
+			this.props.firebase.getNewFieldValue("companies", "id").then((value) =>
 				this.setState({
 					id: value[0],
 				})
 			);
 		} else {
 			// assign all keys of retrieved document to state
-			this.company$.then((doc) => {
+			this.props.firebase.getCompany(this.props.location.state.id).then((doc) => {
 				Object.keys(doc).map((documentKey) => this.setState({ [documentKey]: doc[documentKey] }));
 				this.setState({ ID: doc.ID });
 			});

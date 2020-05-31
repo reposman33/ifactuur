@@ -16,14 +16,6 @@ class Invoices extends React.Component {
 		super(props);
 		this.state = { rowData: [] };
 		this.Utils = new Utils();
-		// make the async call to Firebase and pick it up in componentDidMount
-		this.invoicesPromise$ = this.props.firebase.getCollection("invoices", "dateTimeCreated", [
-			"invoiceNr",
-			"dateTimeCreated",
-			"companyName",
-			"type",
-			"statustitle",
-		]);
 	}
 
 	I18n = new I18n();
@@ -58,7 +50,7 @@ class Invoices extends React.Component {
 			formatter: () => (
 				<span className={styles.actionIcons}>
 					<FontAwesomeIcon icon='print' />
-					<FontAwesomeIcon icon='edit' />
+					<FontAwesomeIcon icon='edit' onClick={this.onEdit} />
 				</span>
 			),
 			headerStyle: { width: "10%" },
@@ -95,7 +87,15 @@ class Invoices extends React.Component {
 	};
 
 	componentDidMount() {
-		this.invoicesPromise$.then((res) => this.setState({ rowData: res }));
+		this.props.firebase
+			.getCollection("invoices", "dateTimeCreated", [
+				"invoiceNr",
+				"dateTimeCreated",
+				"companyName",
+				"type",
+				"statustitle",
+			])
+			.then((res) => this.setState({ rowData: res }));
 	}
 
 	handleNewInvoice = () => {
@@ -107,6 +107,12 @@ class Invoices extends React.Component {
 			pathname: ROUTES.INVOICE,
 			state: { id: row.ID },
 		});
+	};
+
+	onEdit = (e) => {
+		// render an invoice
+		// convert it to pdf
+		// open it in the users browser / download
 	};
 
 	render() {

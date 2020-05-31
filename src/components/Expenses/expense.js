@@ -25,19 +25,6 @@ class Expense extends React.Component {
 		this.Utils = new Utils();
 		this.I18n = new I18n();
 		this.isExistingExpense = !!(!!this.props.location.state && !!this.props.location.state.id);
-		this.newExpensePromises$ = [];
-
-		if (!this.isExistingExpense) {
-			// retrieve the next id value
-			this.newExpensePromises$.push(this.props.firebase.getNewFieldValue("bills", "id"));
-			// retrieve companies
-			this.newExpensePromises$.push(this.props.firebase.getCollection("companies", "name", ["id", "name"]));
-			// retrieve VatRates
-			this.newExpensePromises$.push(this.props.firebase.getCollection("vatrates", "rate", ["id", "rate"]));
-		} else {
-			// retrieve the expense
-			this.newExpensePromises$.push(this.props.firebase.getExpense(this.props.location.state.id));
-		}
 
 		// conversion function per field to apply to state when persisting to fireStore
 		this.persistFields = {
@@ -52,7 +39,13 @@ class Expense extends React.Component {
 
 	componentDidMount() {
 		if (!this.isExistingExpense) {
-			// new expense
+			const newExpensePromises$ = [];
+			// retrieve the next id value
+			newExpensePromises$.push(this.props.firebase.getNewFieldValue("bills", "id"));
+			// retrieve companies
+			newExpensePromises$.push(this.props.firebase.getCollection("companies", "name", ["id", "name"]));
+			// retrieve VatRates
+			newExpensePromises$.push(this.props.firebase.getCollection("vatrates", "rate", ["id", "rate"]));
 			Promise.all(this.newExpensePromises$).then((values) => {
 				this.setState({
 					id: values[0],
@@ -61,8 +54,8 @@ class Expense extends React.Component {
 				});
 			});
 		} else {
-			/// existing expense
-			Promise.all(this.newExpensePromises$).then((values) => {
+			// retrieve the expense
+			this.props.firebase.getExpense(this.props.location.state.id).then((values) => {
 				this.setState({
 					amount: values[0].amount,
 					company: values[0].company,
