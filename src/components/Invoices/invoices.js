@@ -9,17 +9,22 @@ import * as ROUTES from "../../constants/routes";
 import { withFirebase } from "../../Firebase";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "../Shared/Button/button";
+import { InvoicePrint } from "../InvoicePrint/invoicePrint";
+import { ModalComponent } from "../Shared/Modal/Modal";
 import styles from "./../Shared/styles/react-bootstrap-table.module.scss";
 
 class Invoices extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = { rowData: [] };
+		this.state = { rowData: [], showModal: false };
 		this.Utils = new Utils();
 	}
 
 	I18n = new I18n();
 
+	/**
+	 *  ReactBootstrapTable2 Columns configuration
+	 */
 	getColumns = () => [
 		{ dataField: "invoiceNr", text: "#", headerStyle: { width: "8%" }, sort: true },
 		{
@@ -47,16 +52,19 @@ class Invoices extends React.Component {
 			dataField: "actions",
 			text: this.I18n.get("INVOICES.TABLE.HEADERS.ACTIONS"),
 			isDummyField: true,
-			formatter: () => (
+			formatter: (cell, row, rowIndex) => (
 				<span className={styles.actionIcons}>
-					<FontAwesomeIcon icon='print' />
-					<FontAwesomeIcon icon='edit' onClick={this.onEdit} />
+					<FontAwesomeIcon icon='print' onClick={(e) => this.handlePrint(e, cell, row, rowIndex)} />
+					<FontAwesomeIcon icon='edit' onClick={(e) => this.handleEdit(e, cell, row, rowIndex)} />
 				</span>
 			),
 			headerStyle: { width: "10%" },
 		},
 	];
 
+	/**
+	 * ReactBootstrapTable2 Table configuration
+	 */
 	table = {
 		defaultSorted: [
 			{
@@ -67,6 +75,9 @@ class Invoices extends React.Component {
 		defaultSortDirection: "desc",
 	};
 
+	/**
+	 * ReactBootstrapTable2 Pagination configuration
+	 */
 	paginationConfig = {
 		sizePerPage: 10,
 		hideSizePerPage: true,
@@ -98,10 +109,34 @@ class Invoices extends React.Component {
 			.then((res) => this.setState({ rowData: res }));
 	}
 
+	componentDidUpdate(prevProps) {
+		// retrieve data to display the invoice. Only when invoiceID available and this is 1st time
+		if (this.state.invoiceId && !this.state.invoice) {
+			this.props.firebase.getInvoice(this.state.invoiceId).then((invoice) =>
+				this.props.firebase.getCompanyByName(invoice.companyName).then((company) =>
+					this.props.firebase.getUserSettings().then((userSettings) =>
+						this.props.firebase.getCompanyById(userSettings.companyId).then((usersCompany) =>
+							this.setState({
+								invoice: invoice,
+								company: company,
+								userSettings: { ...userSettings, ...usersCompany },
+							})
+						)
+					)
+				)
+			);
+		}
+	}
+	/**
+	 * call when New button is clicked
+	 */
 	handleNewInvoice = () => {
 		this.props.history.push(ROUTES.INVOICE);
 	};
 
+	/**
+	 *  call when row is clicked
+	 */
 	onRowClick = (e, row, rowIndex) => {
 		this.props.history.push({
 			pathname: ROUTES.INVOICE,
@@ -109,15 +144,48 @@ class Invoices extends React.Component {
 		});
 	};
 
-	onEdit = (e) => {
-		// render an invoice
-		// convert it to pdf
-		// open it in the users browser / download
+	/**
+	 * call when editIcon is clicked
+	 */
+	handleEdit = (e, cell, row, rowIndex) => {
+		e.stopPropagation();
+		this.props.history.push({
+			pathname: ROUTES.INVOICE,
+			state: { id: row.ID },
+		});
 	};
+
+	/**
+	 * call when printIcon is clicked
+	 */
+	handlePrint = (e, cell, row, rowIndex) => {
+		e.stopPropagation();
+		this.setState({ modal: true, invoiceId: row.ID });
+	};
+
+	/**
+	 *  hide the modal
+	 */
+	hideModal = () => this.setState({ modal: false });
 
 	render() {
 		return (
-			<div>
+			<>
+				{this.state.invoice && (
+					<ModalComponent
+						closeModal={this.hideModal}
+						content={
+							<InvoicePrint
+								id={this.state.invoiceId}
+								invoice={this.state.invoice}
+								company={this.state.company}
+								userSettings={this.state.userSettings}
+							/>
+						}
+						printButton={<Button text='Print factuur' onClick={this.hideModal} />}
+						show={this.state.modal}
+					/>
+				)}
 				<BootstrapTable
 					bootstrap4
 					data={this.state.rowData}
@@ -127,13 +195,12 @@ class Invoices extends React.Component {
 					keyField='ID'
 					rowEvents={{ onClick: this.onRowClick }}
 					pagination={paginationFactory(this.paginationConfig)}></BootstrapTable>
-
 				<Button
 					extraClasses='float-right mr-3'
 					onClick={this.handleNewInvoice}
 					text={this.I18n.get("BUTTON.NEW")}
 				/>
-			</div>
+			</>
 		);
 	}
 }
