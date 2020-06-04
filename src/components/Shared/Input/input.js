@@ -34,7 +34,7 @@ const Input = ({
 	return (
 		<div
 			className={
-				(container ? styles.container + " " : "") +
+				(container ? styles.container + " " : "" + styles.inputComponent) +
 				"d-flex flex-column" +
 				(extraClasses ? " " + extraClasses : "")
 			}>

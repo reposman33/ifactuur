@@ -20,7 +20,7 @@ const Textarea = ({ cols, displayInput, displayValue, extraClasses, handleOnChan
 	};
 
 	return (
-		<div className={"d-flex flex-column" + (extraClasses ? " " + extraClasses : "")}>
+		<div className={"d-flex flex-column" + (extraClasses ? " " + extraClasses : "") + styles.textareaComponent}>
 			<label>{labelText}</label>
 			<textarea
 				className={styles.description}

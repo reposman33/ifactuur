@@ -293,7 +293,7 @@ class Invoice extends React.Component {
 		}
 		return (
 			<React.Fragment>
-				<div className='row'>
+				<div className='row invoiceComponent'>
 					<div className='col w-50 justify-content-center'>
 						<DateComponent
 							labelText={this.I18n.get("INVOICE.LABEL.INVOICE_DATE")}

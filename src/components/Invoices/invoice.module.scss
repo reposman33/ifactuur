@@ -1,105 +1,107 @@
-label {
-	font-weight: bold;
-}
-.inputRow {
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-start;
-	margin: 1rem 0;
-	width: 100%;
-}
-
-.selectCompanies {
-	width: 50%;
-}
-
-.VatRatesDropdown {
-	flex-direction: row;
-	display: flex;
-	justify-content: space-between;
-
-	& select {
-		background-color: white;
-		height: fit-content;
-		margin-left: 1rem;
-		padding-right: 1rem;
-		text-align: left;
-	}
-}
-// the labels for the columns the
-label.descriptionRowLabel {
-	display: inline-block;
-	&:first-of-type {
-		width: 70%;
-	}
-	&:nth-of-type(2) {
-		width: 10%;
-	}
-	&:nth-of-type(3) {
-		width: 10%;
-	}
-	&:last-of-type {
-		width: 5%;
-	}
-}
-.descriptionRow {
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-
-	& input {
-		color: white;
-		background-color: #cccccc55;
-		border-bottom: none;
-		border-right: none;
-		padding: 0 0.2rem;
-	}
-
-	& span.currency {
-		margin: 0 0.5rem;
-	}
-
-	& input.description {
-		width: 70%;
-	}
-	& input.hourlyrateInt {
-		width: 10%;
-		margin-right: 0.1rem;
-		text-align: left;
-	}
-
-	& input.hours {
-		width: 10%;
-		margin-right: 0.1rem;
-		text-align: left;
-	}
-
-	& span.total {
-		background-color: #48474b;
+.invoiceComponent {
+	& label {
 		font-weight: bold;
-		margin-left: 1rem;
-		max-width: 10%;
-		overflow: hidden;
-		padding-right: 0.3rem;
-		text-align: right;
-		text-overflow: ellipsis;
-		width: 10%;
 	}
-}
+	& .inputRow {
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-start;
+		margin: 1rem 0;
+		width: 100%;
+	}
 
-// Total amounts below description rows
-.totals {
-	display: flex;
-	flex-direction: row;
-	font-weight: bold;
-	justify-content: space-between;
-	text-align: center;
-	& span {
-		padding-right: 0.3rem;
-		text-align: right;
+	& .selectCompanies {
+		width: 50%;
 	}
-}
-.periodBlock {
-	display: flex;
-	flex-direction: row;
+
+	& .VatRatesDropdown {
+		flex-direction: row;
+		display: flex;
+		justify-content: space-between;
+
+		& select {
+			background-color: white;
+			height: fit-content;
+			margin-left: 1rem;
+			padding-right: 1rem;
+			text-align: left;
+		}
+	}
+	// the labels for the columns the
+	& label.descriptionRowLabel {
+		display: inline-block;
+		&:first-of-type {
+			width: 70%;
+		}
+		&:nth-of-type(2) {
+			width: 10%;
+		}
+		&:nth-of-type(3) {
+			width: 10%;
+		}
+		&:last-of-type {
+			width: 5%;
+		}
+	}
+	& .descriptionRow {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+
+		& input {
+			color: white;
+			background-color: #cccccc55;
+			border-bottom: none;
+			border-right: none;
+			padding: 0 0.2rem;
+		}
+
+		& span.currency {
+			margin: 0 0.5rem;
+		}
+
+		& input.description {
+			width: 70%;
+		}
+		& input.hourlyrateInt {
+			width: 10%;
+			margin-right: 0.1rem;
+			text-align: left;
+		}
+
+		& input.hours {
+			width: 10%;
+			margin-right: 0.1rem;
+			text-align: left;
+		}
+
+		& span.total {
+			background-color: #48474b;
+			font-weight: bold;
+			margin-left: 1rem;
+			max-width: 10%;
+			overflow: hidden;
+			padding-right: 0.3rem;
+			text-align: right;
+			text-overflow: ellipsis;
+			width: 10%;
+		}
+	}
+
+	// Total amounts below description rows
+	& .totals {
+		display: flex;
+		flex-direction: row;
+		font-weight: bold;
+		justify-content: space-between;
+		text-align: center;
+		& span {
+			padding-right: 0.3rem;
+			text-align: right;
+		}
+	}
+	& .periodBlock {
+		display: flex;
+		flex-direction: row;
+	}
 }

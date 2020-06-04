@@ -6,14 +6,16 @@
 	border-radius: 0.5rem;
 	padding: 1rem 4rem 1rem 1rem;
 }
-label {
-	font-size: $label-font-size;
-	margin-right: 0.3rem;
-}
+.dateComponent {
+	& label {
+		font-size: $label-font-size;
+		margin-right: 0.3rem;
+	}
 
-select[type="date"] {
-	max-width: 10rem;
-	overflow: hidden;
-	padding: 0 1rem;
-	text-overflow: ellipsis;
+	& select[type="date"] {
+		max-width: 10rem;
+		overflow: hidden;
+		padding: 0 1rem;
+		text-overflow: ellipsis;
+	}
 }

@@ -44,7 +44,7 @@ class SignUpForm extends Component {
 		const isInvalid = password !== passwordRepeat || password === "" || username === "" || email === "";
 
 		return (
-			<div className={styles.signinContainer}>
+			<div className={styles.signupContainer}>
 				<div className={styles.header}>Registreer ifactuur</div>
 				<form onSubmit={this.onSubmit}>
 					<table>

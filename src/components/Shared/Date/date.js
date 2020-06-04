@@ -33,7 +33,8 @@ const DateComponent = ({
 			className={
 				(container ? styles.container + " " : "") +
 				"d-flex flex-column" +
-				(extraClasses ? " " + extraClasses : "")
+				(extraClasses ? " " + extraClasses : "") +
+				styles.dateComponent
 			}>
 			<label>{labelText}</label>
 			<span className='d-flex flex-row justify-content-between align-items-center'>
