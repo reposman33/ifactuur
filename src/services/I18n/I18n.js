@@ -177,7 +177,7 @@ export class I18n {
 			BUTTONS: {
 				SHOWTURNOVER: { en: "Show sales", nl: "Toon omzet" },
 				TURNOVER: { en: "Sales in period", nl: "Omzet over periode" },
-				SHOWEXPENSES: { en: "Expenses in period", nl: "Kosten over periode" },
+				SHOWTURNOVERFORQUARTER: { en: "Turnover in quarter", nl: "Omzet in kwartaal" },
 				YEAR: { en: "Year", nl: "Jaar" },
 			},
 		},

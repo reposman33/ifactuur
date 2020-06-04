@@ -44,7 +44,7 @@ class Stats extends React.Component {
 						dataField: "dateTimeCreated",
 						sort: true,
 						text: this.I18n.get("STATS.TABLE.HEADERS.DATETIMECREATED"),
-						headerStyle: { width: "15%", fontSize: "0.9rem" },
+						headerStyle: { width: "10%", fontSize: "0.9rem" },
 					},
 					{
 						dataField: "companyName",
@@ -59,7 +59,7 @@ class Stats extends React.Component {
 						headerStyle: { width: "5%", fontSize: "0.9rem" },
 					},
 					{
-						dataField: "totalVatAmount",
+						dataField: "VAT",
 						sort: true,
 						text: this.I18n.get("STATS.TABLE.HEADERS.TOTALVATAMOUNT"),
 						headerStyle: { width: "5%", fontSize: "0.9rem" },
@@ -76,7 +76,7 @@ class Stats extends React.Component {
 						dataField: "date",
 						sort: true,
 						text: this.I18n.get("STATS.TABLE.HEADERS.DATETIMECREATED"),
-						headerStyle: { width: "15%", fontSize: "0.9rem" },
+						headerStyle: { width: "10%", fontSize: "0.9rem" },
 					},
 					{
 						dataField: "company",
@@ -118,43 +118,52 @@ class Stats extends React.Component {
 	});
 
 	onCalculateTurnover = (startDate, endDate) => {
-		// get total for invoices
-		// added fields 'total' and 'totalVatAmount'
+		// calculate total turnover over period
 		startDate = this.state.startDate || startDate;
 		endDate = this.state.endDate || endDate;
 
+		// Retrieve all invoices.
 		this.props.firebase.getInvoicesInPeriod(startDate, endDate).then((res) => {
-			// get VATamount, total amount per invoice
+			let totalTurnover = 0;
+			// For each invoice...
 			const invoicesInPeriod = res.map((invoice) => {
+				// ...calculate the turnover...
 				const total = invoice.rows.reduce((acc, row) => {
 					if (row.uren && row.uurtarief) {
 						acc += row.uren * row.uurtarief;
+						// ...calculate total turnover of all invoices...
+						totalTurnover += acc;
 					}
 					return acc;
 				}, 0);
-				invoice.totalVatAmount = this.Utils.currencyFormat.format((invoice.VATRate / 100) * total);
+				// ...enrich invoice with VAT payed over invoice amount and format as currency.
+				invoice.VAT = this.Utils.currencyFormat.format((invoice.VATRate / 100) * total);
+				// Format amount as currency.
 				invoice.total = this.Utils.currencyFormat.format(total);
 				return invoice;
 			});
-			this.setState({ invoices: invoicesInPeriod });
+			// Add invoices and total turnover over period to state
+			this.setState({
+				invoices: invoicesInPeriod,
+				totalTurnover: totalTurnover,
+			});
 		});
 
 		// get total for expenses
 		// added field 'expenseVatAmount'
 		this.props.firebase.getExpensesInPeriod(startDate, endDate).then((expenses) => {
+			let totalVAT = 0;
 			const expensesInPeriod = expenses.map((expense) => {
-				const expenseVatAmount =
-					expense.amount &&
-					Number.isInteger(expense.amount) &&
-					expense.vatrate &&
-					Number.isInteger(expense.vatrate)
-						? expense.amount * (expense.vatrate / 100)
-						: 0;
+				const expenseVatAmount = expense.amount * (expense.vatrate / 100);
+				totalVAT += expenseVatAmount;
 				expense.expenseVatAmount = this.Utils.currencyFormat.format(expenseVatAmount);
 				expense.amount = this.Utils.currencyFormat.format(expense.amount);
 				return expense;
 			});
-			this.setState({ expenses: expensesInPeriod });
+			this.setState({
+				expenses: expensesInPeriod,
+				totalVAT: this.Utils.currencyFormat.format(totalVAT),
+			});
 		});
 	};
 
@@ -220,6 +229,7 @@ class Stats extends React.Component {
 								/>
 							</div>
 							<Button
+								disabled={!(this.state.startDate && this.state.endDate)}
 								extraClasses='ml-3 mt-3'
 								onClick={this.onCalculateTurnover}
 								text={this.I18n.get("STATS.BUTTONS.SHOWTURNOVER")}
@@ -280,9 +290,10 @@ class Stats extends React.Component {
 								/>
 							</div>
 							<Button
+								disabled={!this.state.quarter}
 								extraClasses='mt-3 align-self-center'
 								onClick={this.onCalculateTurnoverByquarter}
-								text={this.I18n.get("STATS.BUTTONS.SHOWEXPENSES")}
+								text={this.I18n.get("STATS.BUTTONS.SHOWTURNOVERFORQUARTER")}
 							/>
 						</div>
 					</div>
@@ -291,19 +302,23 @@ class Stats extends React.Component {
 					<div className='col'>
 						{!!this.state.invoices ? (
 							<>
-								<span className={componentStyles.tableTitle}>
-									{this.I18n.get("STATS.BUTTONS.TURNOVER")}
-								</span>
+								<span className={componentStyles.title}>{this.I18n.get("STATS.BUTTONS.TURNOVER")}</span>
 								<BootstrapTable
 									bootstrap4
 									bordered={false}
 									data={this.state.invoices}
-									classes={styles.table}
+									classes={styles.ReactBootstrapTable}
 									columns={this.getColumns("invoices")}
 									table={this.table}
 									keyField='ID'
 									rowEvents={{ onClick: this.onRowClick }}
 									pagination={paginationFactory(this.getPaginationConfig())}></BootstrapTable>
+								<div className={componentStyles.totalRow + " d-flex flex-row"}>
+									<span>{this.I18n.get("STATS.LABELS.TOTALTURNOVER")}:</span>
+									<span className='ml-3'>
+										{this.Utils.currencyFormat.format(this.state.totalTurnover)}
+									</span>
+								</div>
 							</>
 						) : (
 							""
@@ -314,19 +329,23 @@ class Stats extends React.Component {
 					<div className='col'>
 						{!!this.state.expenses ? (
 							<>
-								<span className={componentStyles.tableTitle}>
+								<span className={componentStyles.title}>
 									{this.I18n.get("STATS.BUTTONS.SHOWEXPENSES")}
 								</span>
 								<BootstrapTable
 									bootstrap4
 									bordered={false}
 									data={this.state.expenses}
-									classes={styles.table}
+									classes={styles.ReactBootstrapTable}
 									columns={this.getColumns("expenses")}
 									table={this.table}
 									keyField='ID'
 									rowEvents={{ onClick: this.onRowClick }}
 									pagination={paginationFactory(this.getPaginationConfig())}></BootstrapTable>
+								<div className={componentStyles.totalRow + " d-flex flex-row"}>
+									<span>{this.I18n.get("STATS.LABELS.TOTALEXPENSESVAT")}:</span>
+									<span className='ml-3'>{this.state.totalVAT}</span>
+								</div>
 							</>
 						) : (
 							""
