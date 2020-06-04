@@ -65,6 +65,20 @@ class Firebase {
 			.get()
 			.then((doc) => ({ ...doc.data(), ID: doc.id }));
 
+	getCompanyByName = (name) =>
+		this.db
+			.collection("companies")
+			.where("name", "==", name)
+			.get()
+			.then((res) => ({ ...res.docs[0].data() }));
+
+	getCompanyById = (id) =>
+		this.db
+			.collection("companies")
+			.where("id", "==", id)
+			.get()
+			.then((res) => ({ ...res.docs[0].data() }));
+
 	// ===============================================================
 	// ===============================================================
 	// GENERIC FUNCTIONS
