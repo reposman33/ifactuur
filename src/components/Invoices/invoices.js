@@ -110,21 +110,30 @@ class Invoices extends React.Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		// retrieve data to display the invoice. Only when invoiceID available and this is 1st time
-		if (this.state.invoiceId && !this.state.invoice) {
-			this.props.firebase.getInvoice(this.state.invoiceId).then((invoice) =>
-				this.props.firebase.getCompanyByName(invoice.companyName).then((company) =>
-					this.props.firebase.getUserSettings().then((userSettings) =>
-						this.props.firebase.getCompanyById(userSettings.companyId).then((usersCompany) =>
-							this.setState({
-								invoice: invoice,
-								company: company,
-								userSettings: { ...userSettings, ...usersCompany },
-							})
+		// componentDidUpdate is triggred at every update. Only allow this to run when a new invoice print button is clicked by comparing the current invoiceNr with the last invoiceNr
+		if (this.state.invoiceNr !== this.state.prevInvoiceNr) {
+			this.props.firebase
+				.getDocumentFromCollectionByField("invoices", "invoiceNr", this.state.invoiceNr)
+				.then((invoice) =>
+					this.props.firebase
+						.getDocumentFromCollectionByField("companies", "name", invoice.companyName)
+						.then((company) =>
+							this.props.firebase.getUserSettings().then((userSettings) =>
+								this.props.firebase
+									.getDocumentFromCollectionByField("companies", "id", userSettings.companyId)
+									.then((usersCompany) =>
+										this.setState({
+											// prevent this to run for the same invoiceNr
+											prevInvoiceNr: this.state.invoiceNr,
+											invoice: invoice,
+											company: company,
+											userSettings: userSettings,
+											usersCompany: usersCompany,
+										})
+									)
+							)
 						)
-					)
-				)
-			);
+				);
 		}
 	}
 	/**
@@ -160,7 +169,7 @@ class Invoices extends React.Component {
 	 */
 	handlePrint = (e, cell, row, rowIndex) => {
 		e.stopPropagation();
-		this.setState({ modal: true, invoiceId: row.ID });
+		this.setState({ modal: true, invoiceNr: row.invoiceNr });
 	};
 
 	/**
@@ -176,10 +185,11 @@ class Invoices extends React.Component {
 						closeModal={this.hideModal}
 						content={
 							<InvoicePrint
-								id={this.state.invoiceId}
+								invoiceNr={this.state.invoiceNr}
 								invoice={this.state.invoice}
 								company={this.state.company}
 								userSettings={this.state.userSettings}
+								usersCompany={this.state.usersCompany}
 							/>
 						}
 						printButton={<Button text='Print factuur' onClick={this.hideModal} />}
