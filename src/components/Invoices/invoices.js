@@ -185,6 +185,7 @@ class Invoices extends React.Component {
 						closeModal={this.hideModal}
 						content={
 							<InvoicePrint
+								Utils={this.Utils}
 								invoiceNr={this.state.invoiceNr}
 								invoice={this.state.invoice}
 								company={this.state.company}

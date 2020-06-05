@@ -12,7 +12,7 @@ const InvoicePrint = (props) => {
 	return (
 		<div className={styles.invoicePrint}>
 			{/* FACTUUR */}
-			<div className={styles.factuurDatum}>
+			<div className={styles.factuurDatum + " mb-3"}>
 				<div className={styles.header + " mb-3"}>{props.invoice.type === "credit" && "Credit "} Factuur</div>
 
 				{props.invoice.statustitle === "vervallen" && (
@@ -55,96 +55,83 @@ const InvoicePrint = (props) => {
 				<div>BTW nr:&nbsp;{props.usersCompany.btwnr}</div>
 			</div>
 
-			<div className='factuurTable'>
-				{/* <table cellpadding="0" cellspacing="0">
-				<tr className="tableHeader"><td>GELEVERDE DIENSTEN</td><td>UREN</td><td>TARIEF</td><td>BEDRAG</td></tr>
-				<cfset totaalbedrag=0>
-				<cfset totaalOnkostbedrag=0>
-				<cfloop from="1" to="#invoiceRowCount#" index="i">
-					<cftry>
-						<cfinvoke component="#factuurbean#" method="getField" field="Omschrijving#i#" returnvariable="omschrijving">
-						<cfinvoke component="#factuurbean#" method="getField" field="Uren#i#" returnvariable="uren">
-						<cfinvoke component="#factuurbean#" method="getField" field="Uurtarief#i#" returnvariable="uurtarief">
-						<cfinvoke component="#factuurbean#" method="getField" field="Bedrag#i#" returnvariable="bedrag">
-					<cfcatch type="Any" >
-					</cfcatch>
-					</cftry>
-					<cfset totaalbedrag+=Iif(IsNumeric(bedrag),"bedrag","0")>
+			<div className={styles.factuurTable}>
+				<table cellPadding='0' cellSpacing='0'>
+					<tbody>
+						<tr className={styles.tableHeader}>
+							<td>GELEVERDE DIENSTEN</td>
+							<td>UREN</td>
+							<td>TARIEF</td>
+							<td>BEDRAG</td>
+						</tr>
+						{props.invoice.rows.map((row, i) => (
+							<tr key={i} className={i % 2 ? styles.rowDark : styles.rowLight}>
+								<td className={styles.column1}>{row.omschrijving || ""}</td>
+								<td className={styles.column2}>{row.uren || ""}</td>
+								<td className={styles.column3}>{row.uurtarief || ""}</td>
+								<td className={styles.column4}>
+									{row.uren && row.uurtarief ? row.uurtarief * row.uren : ""}
+								</td>
+							</tr>
+						))}
+						<tr>
+							<td colSpan='4'>&nbsp;</td>
+						</tr>
 
-					<tr className="#Iif(i mod 2,"'rowDark'","'rowLight'")#">
-						<td className="column1">
-							<cfif printView OR !ListFindNoCase("nieuw,aangemaakt",factuurstatusName)>
-								#Iif(Len(omschrijving),"omschrijving","'&nbsp;'")#
-							<cfelseif !printView>
-								<input	type="text"
-										id="omschrijving#i#"
-										name="omschrijving#i#"
-										value="#omschrijving#"
-										maxlength="255">
-							</cfif>
-						</td>
-						<td className="column2">
-							<cfif printView OR !ListFindNoCase("nieuw,aangemaakt",factuurstatusName)>
-								#Iif(Len(uren),"uren","'&nbsp;'")#
-						</td>
-						<td className="column3">
-							<cfif printView OR !ListFindNoCase("nieuw,aangemaakt",factuurstatusName)>
-								#Iif(Len(uurtarief),"uurtarief","'&nbsp;'")#
-						</td>
-						<td className="column4">
-							<cfif printView OR !ListFindNoCase("nieuw,aangemaakt",factuurstatusName)>
-								#Iif(Len(bedrag),"bedrag","'&nbsp;'")#
-							</cfif>
-						</td>
-					</tr>
-				</cfloop>
-				<tr><td colspan="4">&nbsp;</td></tr>
+						<tr>
+							<td align='right' className={styles.totalLabel}>
+								SUBTOTAAL
+							</td>
+							<td colSpan='2' align='right'></td>
+							<td className={styles.totalInput}>
+								{props.Utils.currencyFormat.format(
+									props.invoice.rows.reduce(
+										(sum, row) =>
+											row.uren && row.uurtarief ? sum + row.uurtarief * row.uren : sum,
+										0
+									)
+								)}
+							</td>
+						</tr>
 
-				<cfset subTotaal=NumberFormat(totaalbedrag,"-999999.99")>
-				<cfset totaalBedrag=Iif(IsNumeric(totaalBedrag),"totaalBedrag","'0'")>
-				<cfset BTWBedrag=NumberFormat(totaalBedrag*factuurBean.getVATRate()/100,"-999999.99")>
-				<cfset totaalBedragincBTW=NumberFormat(BTWBedrag+totaalBedrag+totaalOnkostbedrag,"-999999.99")>
-				<cfif totaalOnkostbedrag gt 0>
-					<cfset totaalOnkostbedrag=NumberFormat(totaalOnkostbedrag,"-999999.99")>
-				</cfif>
+						<tr>
+							<td align='right' className={styles.totalLabel}>
+								BTW-TARIEF
+							</td>
+							<td colSpan='2' style={{ textAlign: "right", whiteSpace: "nowrap" }}>
+								{props.invoice.VATRate} &#37;
+							</td>
+							<td className={styles.totalInput}>
+								{props.Utils.currencyFormat.format(
+									(props.invoice.VATRate / 100) *
+										props.invoice.rows.reduce((sum, row) => (sum += row.uurtarief * row.uren), 0)
+								)}
+							</td>
+						</tr>
 
-				<tr><td align="right" className="totalLabel">
-				SUBTOTAAL
-				</td><td colspan="2" align="right">
-					&euro;
-				</td><td className="totalInput">
-					<cfif printView OR !ListFindNoCase("nieuw,aangemaakt",factuurstatusName)>
-						#RTrim(subTotaal)#
-					<cfelseif !printView>
-						<input type="text" name="subTotaal" value="#Trim(subTotaal)#">
-					</cfif>
-				</td></tr>
+						<tr>
+							<td colSpan='4'>&nbsp;</td>
+						</tr>
 
-				<tr><td align="right" className="totalLabel">
-				BTW-TARIEF
-				</td><td colspan="2" style="text-align:right;white-space:nowrap;">
-					<cfif printView OR !ListFindNoCase("nieuw,aangemaakt",factuurstatusName)>
-						<span>#RTrim(factuurBean.getVATRate())#&nbsp;%</span>
-					&euro;
-				</td><td className="totalInput">
-		 	 			#RTrim(BTWBedrag)#
+						<tr>
+							<td align='right' className={styles.totalLabel}>
+								<b>TOTAAL</b>
+							</td>
+							<td colSpan='2' align='right'></td>
+							<td className={styles.totalInput + " " + styles.total}>
+								{props.Utils.currencyFormat.format(
+									(props.invoice.VATRate / 100) *
+										props.invoice.rows.reduce((sum, row) => (sum += row.uurtarief * row.uren), 0) +
+										props.invoice.rows.reduce((sum, row) => (sum += row.uurtarief * row.uren), 0)
+								)}
+							</td>
+						</tr>
 
-				</td></tr>
-
-				<tr><td colspan="4">&nbsp;</td></tr>
-
-				<tr><td align="right" className="totalLabel">
-				<b>TOTAAL</b>
-				</td><td colspan="2" align="right">
-					&euro;
-				</td><td className="totalInput total">
-					<cfif printView OR !ListFindNoCase("nieuw,aangemaakt",factuurstatusName)>
-						#RTrim(totaalBedragincBTW)#
-					</cfif>
-				</td></tr>
-
-				<tr><td colspan="4">&nbsp;</td></tr>
-			</table>*/}
+						<tr>
+							<td colSpan='4'>&nbsp;</td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
 
 			{/* FOOTER */}

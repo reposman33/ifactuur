@@ -5,7 +5,7 @@
 
 .invoicePrint {
 	background-color: #fff9d6;
-	font-size: 14px;
+	font-size: 1rem;
 	height: 297mm;
 	margin-left: 3rem;
 	width: 210mm;
@@ -16,7 +16,7 @@
 	}
 
 	& .header {
-		font-size: 14pt;
+		font-size: 1.2rem;
 		font-weight: bold;
 	}
 
@@ -27,15 +27,11 @@
 	& label {
 		font-weight: bold;
 		margin-right: 0.5rem;
-	}
-
-	& span {
-		margin: 0 0.2rem;
+		margin-bottom: 0;
 	}
 
 	& .klant {
 		position: absolute;
-		font-size: 1rem;
 		top: 155px;
 	}
 
@@ -44,152 +40,84 @@
 		left: 500px;
 		top: 155px;
 	}
-}
 
-.factuurAdres {
-	position: relative;
-	left: 66px;
-	top: 65px;
-	line-height: 120%;
-}
+	.factuurTable {
+		position: absolute;
+		border: 1px solid #000;
+		top: 380px;
+		margin: 0;
+		width: 700px;
+		border-collapse: collapse;
+		font-size: 8pt;
+		left: 45px;
+		/*	height: 505px;*/
 
-// FACTUUR TITEL
+		& .tableHeader {
+			background-color: #839daa;
+			font-weight: bold;
+			border-top: 1px solid #000;
+			font-size: 11pt;
+			color: #fff;
+			text-align: center;
+			& td {
+				padding: 3px;
+			}
+		}
 
-/*KLANT*/
+		& .column1 {
+			width: 520px;
+			padding: 3px;
+		}
+		& .column2,
+		& .column3,
+		& .column4 {
+			border: none;
+			border-left: 1px solid #444;
+			padding: 3px;
+		}
+		& .column2 {
+			width: 40px;
+		}
 
-/* TABLE */
+		& .column3 {
+			width: 50px;
+		}
 
-.factuurTable {
-	position: absolute;
-	border: 1px solid #000;
-	top: 380px;
-	margin: 0;
-	width: 700px;
-	border-collapse: collapse;
-	font-size: 8pt;
-	left: 45px;
-	/*	height: 505px;*/
-}
+		& .column4 {
+			width: 90px;
+			text-align: right;
+		}
 
-.tableHeader {
-	background-color: #839daa;
-	font-weight: bold;
-	border-top: 1px solid #000;
-	font-size: 11pt;
-	color: #fff;
-	text-align: center;
-}
+		& .totalInput {
+			text-align: right;
+			padding-right: 3px;
+		}
 
-.tableHeader td {
-	padding: 3px;
-}
+		& .total {
+			background-color: #ccc;
+			font-weight: bold;
+			text-align: right;
+		}
 
-.factuurTable .rowLight {
-	background-color: #fff;
-}
-
-.factuurTable .rowDark {
-	background-color: #ccc;
-}
-
-.factuurTable .column2,
-.factuurTable .column3,
-.factuurTable .column4 {
-	border: none;
-	border-left: 1px solid #444;
-	padding: 3px;
-}
-
-.factuurTable .column1 {
-	width: 520px;
-	padding: 3px;
-}
-
-.factuurTable .column2 {
-	width: 40px;
-}
-
-.factuurTable .column3 {
-	width: 50px;
-}
-
-.factuurTable .column4 {
-	width: 90px;
-	text-align: right;
-}
-
-.factuurTable .column1 input,
-.factuurTable .column2 input,
-.factuurTable .column3 input,
-.factuurTable .column4 input {
-	border: none;
-	background-color: transparent;
-	width: 100%;
-}
-
-.factuurTable .column2 input {
-	width: 40px;
-}
-
-.factuurTable .column3 input {
-	width: 73px;
-}
-
-.factuurTable .column4 input {
-	width: 100%;
-	text-align: right;
-
-	.factuurTable .onkostColumn2 {
+		& .totalLabel {
+			text-align: right;
+		}
+	}
+	& .onkostColumn2 {
 		border-left: 1px solid #444;
 		text-align: right;
 		padding: 3px;
 	}
 
-	.factuurTable .onkostColumn1 input,
-	.factuurTable .onkostColumn2 input {
-		border: none;
-		background-color: transparent;
-		width: 100%;
-	}
-
-	.factuurTable .onkostColumn1 input {
-		width: 100%;
-	}
-
-	.factuurTable .onkostColumn2 input {
-		width: 100%;
-		text-align: right;
-	}
-
-	.factuurTable .totalInput input {
-		text-align: right;
-		width: 90px;
-		font-size: 8pt;
-	}
-
-	.factuurTable .totalInput {
-		text-align: right;
-		padding-right: 3px;
-	}
-
-	.factuurTable .total {
-		background-color: #ccc;
-		font-weight: bold;
-	}
-
-	.totalLabel {
-		font-size: 11px;
-		text-align: right;
-	}
-
-	.factuurTable .rowDark {
+	& .rowDark {
 		background-color: #ccc;
 	}
 
-	.factuurTable .rowLight {
+	& .rowLight {
 		background-color: #fff;
 	}
 }
+
 .notitiesFrame,
 .footerFrame {
 	border: 1px solid #444;
