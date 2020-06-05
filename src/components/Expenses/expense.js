@@ -46,7 +46,7 @@ class Expense extends React.Component {
 			newExpensePromises$.push(this.props.firebase.getCollection("companies", "name", ["id", "name"]));
 			// retrieve VatRates
 			newExpensePromises$.push(this.props.firebase.getCollection("vatrates", "rate", ["id", "rate"]));
-			Promise.all(this.newExpensePromises$).then((values) => {
+			Promise.all(newExpensePromises$).then((values) => {
 				this.setState({
 					id: values[0],
 					companies: values[1],
@@ -55,14 +55,14 @@ class Expense extends React.Component {
 			});
 		} else {
 			// retrieve the expense
-			this.props.firebase.getExpense(this.props.location.state.id).then((values) => {
+			this.props.firebase.getExpense(this.props.location.state.id).then((expense) => {
 				this.setState({
-					amount: values[0].amount,
-					company: values[0].company,
-					date: values[0].date,
-					description: values[0].description,
-					id: values[0].id,
-					vatrate: values[0].vatrate,
+					amount: expense.amount,
+					company: expense.company,
+					date: expense.date,
+					description: expense.description,
+					id: expense.id,
+					vatrate: expense.vatrate,
 				});
 			});
 		}
