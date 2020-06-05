@@ -2,8 +2,10 @@
 
 .container {
 	width: fit-content;
-	border: 1px solid #aaa;
+	border-color: #ddd;
 	border-radius: 0.5rem;
+	border-width: 2px;
+	border-style: inset;
 	padding: 1rem 4rem 1rem 1rem;
 }
 
@@ -23,8 +25,9 @@
 	}
 
 	& label {
-		white-space: nowrap;
-		font-size: $label-font-size;
+		font-weight: bold;
 		margin-right: 0.5rem;
+		font-size: $label-font-size;
+		white-space: nowrap;
 	}
 }
