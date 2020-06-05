@@ -7,7 +7,7 @@ import { Utils } from "../../services/Utils";
 import * as ROUTES from "../../constants/routes";
 
 import { withFirebase } from "../../Firebase";
-import * as styles from "./invoice.module.scss";
+import styles from "./invoice.module.scss";
 
 class Invoice extends React.Component {
 	constructor(props) {
@@ -292,8 +292,8 @@ class Invoice extends React.Component {
 			return null;
 		}
 		return (
-			<React.Fragment>
-				<div className='row invoiceComponent'>
+			<div className={styles.invoiceComponent}>
+				<div className='row'>
 					<div className='col w-50 justify-content-center'>
 						<DateComponent
 							labelText={this.I18n.get("INVOICE.LABEL.INVOICE_DATE")}
@@ -309,7 +309,6 @@ class Invoice extends React.Component {
 							displayInput={!this.isExistingInvoice}
 							data={this.state.invoiceTypes}
 							displayKey='type'
-							extraClasses='mt-3'
 							valueKey='id'
 							handleOnChange={this.onChange}
 						/>
@@ -337,21 +336,14 @@ class Invoice extends React.Component {
 				</div>
 				<div className='row'>
 					<div className='col d-flex flex-column'>
-						<label className={styles.descriptionRowLabel + " w-100"}>
-							{this.I18n.get("INVOICE.COLUMNHEADER.SERVICES")}
-						</label>
 						<div className='d-flex flex-row justify-content-start'>
+							<label className={styles.columnHeader}>
+								{this.I18n.get("INVOICE.COLUMNHEADER.SERVICES")}
+							</label>
 							{/* use a dummy label to line other labels out above their columns*/}
-							<label className={styles.descriptionRowLabel}></label>
-							<label className={styles.descriptionRowLabel}>
-								{this.I18n.get("INVOICE.COLUMNHEADER.RATE")}
-							</label>
-							<label className={styles.descriptionRowLabel}>
-								{this.I18n.get("INVOICE.COLUMNHEADER.HOURS")}
-							</label>
-							<label className={styles.descriptionRowLabel}>
-								{this.I18n.get("INVOICE.COLUMNHEADER.TOTAL")}
-							</label>
+							<label className={styles.columnHeader}>{this.I18n.get("INVOICE.COLUMNHEADER.RATE")}</label>
+							<label className={styles.columnHeader}>{this.I18n.get("INVOICE.COLUMNHEADER.HOURS")}</label>
+							<label className={styles.columnHeader}>{this.I18n.get("INVOICE.COLUMNHEADER.TOTAL")}</label>
 						</div>
 
 						{descriptionRows}
@@ -417,7 +409,7 @@ class Invoice extends React.Component {
 						extraStyles={{ marginRight: "0.8rem" }}
 					/>
 				</div>
-			</React.Fragment>
+			</div>
 		);
 	}
 }

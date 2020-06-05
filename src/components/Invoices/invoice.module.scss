@@ -1,6 +1,7 @@
 .invoiceComponent {
 	& label {
 		font-weight: bold;
+		margin-right: 0.5rem;
 	}
 	& .inputRow {
 		display: flex;
@@ -28,13 +29,12 @@
 		}
 	}
 	// the labels for the columns the
-	& label.descriptionRowLabel {
-		display: inline-block;
+	& label.columnHeader {
 		&:first-of-type {
-			width: 70%;
+			width: 69%;
 		}
 		&:nth-of-type(2) {
-			width: 10%;
+			width: 9%;
 		}
 		&:nth-of-type(3) {
 			width: 10%;
@@ -95,11 +95,13 @@
 		font-weight: bold;
 		justify-content: space-between;
 		text-align: center;
+
 		& span {
 			padding-right: 0.3rem;
 			text-align: right;
 		}
 	}
+
 	& .periodBlock {
 		display: flex;
 		flex-direction: row;
