@@ -82,7 +82,7 @@ class Firebase {
 	 * @param{array} columns - array of column values to return
 	 * @param{boolean} convertTimestamp - wheter to convert a Firestore timestamp value to a string value or apply the fs toDate function
 	 */
-	getCollection = (collection, orderByField, columns, convertTimestamp = true) => {
+	getCollection = (collection, orderByField, columns, convertTimestamp = false) => {
 		const result = [];
 		return this.db
 			.collection(collection)
@@ -95,13 +95,12 @@ class Firebase {
 					result.push(
 						columns.reduce(
 							(acc, col) => {
-								// convert a timestamp to date using FS toDate()
-								acc[col] =
-									col.indexOf("date") > -1
-										? convertTimestamp
-											? this.Utils.dateFormat.format(data[col].toDate())
-											: data[col].toDate()
-										: data[col];
+								// convert a timestamp to date using fireStore toDate()
+								acc[col] = /date/gi.test(col)
+									? convertTimestamp
+										? this.Utils.dateFormat.format(data[col].toDate())
+										: data[col].toDate()
+									: data[col];
 								return acc;
 							}, // always include ID
 							{ ID: doc.id }
