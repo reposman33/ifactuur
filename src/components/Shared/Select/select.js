@@ -42,7 +42,7 @@ const Select = ({
 			className={
 				(container ? styles.container + " " : "") +
 				styles.selectComponent +
-				" d-flex flex-row" +
+				" d-flex flex-column" +
 				(extraClasses ? " " + extraClasses : "")
 			}>
 			<label>{labelText}</label>

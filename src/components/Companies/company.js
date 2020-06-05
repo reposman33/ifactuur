@@ -178,7 +178,7 @@ class Company extends React.Component {
 						</div>
 					</div>
 				</div>
-				<div className='row mb-3'>
+				<div className='mb-3'>
 					<div className={"col d-flex flex-column " + styles.noBorderTop}>
 						<div className='d-flex justify-content-between'>
 							<span className='d-flex align-items-center mr-3'>
@@ -304,7 +304,7 @@ class Company extends React.Component {
 								<Input
 									displayInput={true}
 									displayValue={this.state.kvknr}
-									extraClasses='m-3'
+									extraClasses='ml-3'
 									extraStyles={{ textTransform: "uppercase" }}
 									handleOnChange={this.onChange}
 									labelText={this.I18n.get("COMPANY.LABEL.KVKNR")}

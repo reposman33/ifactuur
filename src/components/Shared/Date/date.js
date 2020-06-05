@@ -33,7 +33,7 @@ const DateComponent = ({
 			className={
 				(container ? styles.container + " " : "") +
 				styles.dateComponent +
-				" d-flex flex-row" +
+				" d-flex flex-column" +
 				(extraClasses ? " " + extraClasses : "")
 			}>
 			<label>{labelText}</label>

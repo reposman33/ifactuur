@@ -1,12 +1,13 @@
 @import "../../../constants/variables.scss";
 
 .container {
-	width: fit-content;
 	border-color: #ddd;
 	border-radius: 0.5rem;
-	border-width: 2px;
 	border-style: inset;
+	border-width: 2px;
+	margin-bottom: 1rem;
 	padding: 1rem 4rem 1rem 1rem;
+	width: fit-content;
 }
 
 .selectComponent {

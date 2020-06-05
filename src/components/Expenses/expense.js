@@ -112,7 +112,6 @@ class Expense extends React.Component {
 						<DateComponent
 							displayInput={!this.isExistingExpense}
 							displayValue={this.state.date}
-							extraClasses='m-3'
 							handleOnChange={this.onChange}
 							labelText={this.I18n.get("EXPENSE.LABEL.DATE")}
 							name='date'
@@ -159,7 +158,6 @@ class Expense extends React.Component {
 							type='number'
 							displayInput={!this.isExistingExpense}
 							displayValue={this.state.amount && this.Utils.currencyFormat.format(this.state.amount)}
-							extraClasses='m-3'
 							handleOnChange={this.onChange}
 							name='amount'
 							labelText={this.I18n.get("EXPENSE.LABEL.AMOUNT")}
