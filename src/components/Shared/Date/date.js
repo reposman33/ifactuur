@@ -32,18 +32,18 @@ const DateComponent = ({
 		<div
 			className={
 				(container ? styles.container + " " : "") +
-				"d-flex flex-column" +
-				(extraClasses ? " " + extraClasses : "") +
-				styles.dateComponent
+				styles.dateComponent +
+				" d-flex flex-row" +
+				(extraClasses ? " " + extraClasses : "")
 			}>
 			<label>{labelText}</label>
-			<span className='d-flex flex-row justify-content-between align-items-center'>
-				{displayInput ? (
-					<input type='date' name={name} value={value} onChange={onLocalChange} />
-				) : (
-					<span>{displayValue}</span>
-				)}
-			</span>
+			{displayInput ? (
+				<span className='d-flex flex-row justify-content-between'>
+					<input type='date' name={name} value={value} onChange={onLocalChange} />{" "}
+				</span>
+			) : (
+				<span className='d-flex flex-row justify-content-between'>{displayValue} </span>
+			)}
 		</div>
 	);
 };

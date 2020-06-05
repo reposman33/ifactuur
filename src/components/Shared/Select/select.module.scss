@@ -23,8 +23,8 @@
 	}
 
 	& label {
-		display: block !important;
+		white-space: nowrap;
 		font-size: $label-font-size;
-		margin-right: 0.3rem;
+		margin-right: 0.5rem;
 	}
 }
