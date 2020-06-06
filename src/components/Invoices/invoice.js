@@ -294,7 +294,7 @@ class Invoice extends React.Component {
 		return (
 			<div className={styles.invoiceComponent}>
 				<div className='row'>
-					<div className='col w-50 justify-content-center'>
+					<div className='col d-flex flex-row'>
 						<DateComponent
 							labelText={this.I18n.get("INVOICE.LABEL.INVOICE_DATE")}
 							name={this.FIELDNAMES.DATECREATED}
