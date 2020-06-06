@@ -180,12 +180,11 @@ class Company extends React.Component {
 				</div>
 				<div className='mb-3'>
 					<div className={"col d-flex flex-column " + styles.noBorderTop}>
-						<div className='d-flex justify-content-between'>
-							<span className='d-flex align-items-center mr-3'>
+						<div className='d-flex justify-content-between pr-3 mr-3'>
+							<span className='d-flex align-items-center'>
 								<FontAwesomeIcon size='2x' icon='user-tie' />
 							</span>
 							{/* CONTACT TITEL */}
-							{/* only show title in new company OR when available in state */}
 							<Select
 								labelText={this.I18n.get("COMPANY.LABEL.CONTACT_TITLE")}
 								name='contactTitle'
@@ -199,46 +198,45 @@ class Company extends React.Component {
 							{/* CONTACT */}
 							<Input
 								type='text'
-								extraClasses='w-100 mb-3 ml-3'
+								extraClasses='w-50 mb-3'
 								displayInput={true}
 								displayValue={this.state.contact}
 								handleOnChange={this.onChange}
 								name='contact'
 								labelText={this.I18n.get("COMPANY.LABEL.CONTACT")}
 							/>
+
+							<div className='d-flex flex-row w-25'>
+								{/* TELEPHONE */}
+								<span className='d-flex align-items-center mt-3'>
+									<FontAwesomeIcon size='2x' icon='phone-alt' />
+								</span>
+								<Input
+									type='text'
+									extraClasses='w-100 mb-3'
+									displayInput={true}
+									displayValue={this.state.contactTelephone}
+									handleOnChange={this.onChange}
+									name='contactTelephone'
+									labelText={this.I18n.get("COMPANY.LABEL.CONTACT_TELEPHONE")}
+								/>
+							</div>
 						</div>
-						<div className='d-flex'>
+						<div className='d-flex flex-row'>
 							{/* URL */}
 							<span className='d-flex align-items-center mr-3'>
 								<FontAwesomeIcon size='2x' icon='link' />
 							</span>
 							<Input
 								type='text'
-								extraClasses='w-100 mb-3'
 								displayInput={true}
 								displayValue={this.state.url}
+								extraClasses='w-50 mr-3'
 								handleOnChange={this.onChange}
 								name='url'
 								labelText={this.I18n.get("COMPANY.LABEL.URL")}
 							/>
-						</div>
-						<div className='d-flex flex-row justify-content-between'>
-							<div className='d-flex flex-column w-50'>
-								<div className='d-flex flex-row w-100'>
-									{/* TELEPHONE */}
-									<span className='d-flex align-items-center mr-3 mt-3'>
-										<FontAwesomeIcon size='2x' icon='phone-alt' />
-									</span>
-									<Input
-										type='text'
-										extraClasses='w-100 mb-3'
-										displayInput={true}
-										displayValue={this.state.contactTelephone}
-										handleOnChange={this.onChange}
-										name='contactTelephone'
-										labelText={this.I18n.get("COMPANY.LABEL.CONTACT_TELEPHONE")}
-									/>
-								</div>
+							<div className='d-flex flex-column w-50 ml-3'>
 								<div className='d-flex flex-row'>
 									{/* EMAIL */}
 									<span className='d-flex align-items-center mx-2'>
@@ -246,7 +244,7 @@ class Company extends React.Component {
 									</span>
 									<Input
 										type='text'
-										extraClasses='w-100 mb-3'
+										extraClasses='w-75'
 										displayInput={true}
 										displayValue={this.state.email}
 										handleOnChange={this.onChange}
@@ -254,30 +252,22 @@ class Company extends React.Component {
 										labelText={this.I18n.get("COMPANY.LABEL.EMAIL")}
 									/>
 								</div>
-								<div className='d-flex justify-content-between'>
-									{/* Button Overview */}
-									<Button
-										onClick={this.onGoBack}
-										text={this.I18n.get("BUTTON.BACK")}
-										styles={{ marginLeft: "0.8rem" }}
-										classes='btn-primary float-left'
-									/>
-									{/* Button Save */}
-									<Button
-										disabled={false}
-										onClick={this.onSubmit}
-										text={
-											this.isExistingCompany
-												? this.I18n.get("BUTTON.UPDATE")
-												: this.I18n.get("BUTTON.SAVE")
-										}
-										styles={{ marginRight: "0.8rem" }}
-										classes='btn-primary float-right'
-									/>
-								</div>
 							</div>
+						</div>
+						<div className='d-flex flex-row justify-content-between'>
 							<div className='d-flex flex-column w-100 ml-3 align-content-center'>
 								<div className='d-flex justify-content-between'>
+									{/* KvK number */}
+									<Input
+										displayInput={true}
+										displayValue={this.state.kvknr}
+										extraClasses='ml-3'
+										extraStyles={{ textTransform: "uppercase" }}
+										handleOnChange={this.onChange}
+										labelText={this.I18n.get("COMPANY.LABEL.KVKNR")}
+										name='kvknr'
+										type='text'
+									/>
 									{/* VAT number */}
 									<Input
 										displayInput={true}
@@ -301,17 +291,33 @@ class Company extends React.Component {
 										type='text'
 									/>
 								</div>
-								<Input
-									displayInput={true}
-									displayValue={this.state.kvknr}
-									extraClasses='ml-3'
-									extraStyles={{ textTransform: "uppercase" }}
-									handleOnChange={this.onChange}
-									labelText={this.I18n.get("COMPANY.LABEL.KVKNR")}
-									name='kvknr'
-									type='text'
-								/>
 							</div>
+						</div>
+						<div className='d-flex justify-content-between'>
+							{/* Button Overview */}
+							<Button
+								onClick={this.onGoBack}
+								text={
+									!!this.prevLocation
+										? `Verdergaan met ${this.prevLocation.substr(1)}`
+										: this.I18n.get("BUTTON.BACK")
+								}
+								extraClasses='float-left'
+							/>
+							{/* Button Save */}
+							<Button
+								onClick={this.onSubmit}
+								text={
+									this.isExistingCompany
+										? this.I18n.get("BUTTON.UPDATE")
+										: !!this.prevLocation
+										? `${this.I18n.get("BUTTON.SAVE")} en verdergaan met ${this.prevLocation.substr(
+												1
+										  )}`
+										: this.I18n.get("BUTTON.SAVE")
+								}
+								extraClasses='float-right'
+							/>
 						</div>
 					</div>
 				</div>
