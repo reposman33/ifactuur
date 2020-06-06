@@ -106,7 +106,7 @@ class Invoice extends React.Component {
 			// retrieve companies
 			newInvoicePromises.push(this.props.firebase.getCollection("companies", "name", ["id", "name"]));
 			// retrieve VatRates
-			newInvoicePromises.push(this.props.firebase.getCollection("vatrates", "rate", ["id", "rate"]));
+			newInvoicePromises.push(this.props.firebase.getVatRates());
 
 			Promise.all(newInvoicePromises).then((values) => {
 				this.setState({ invoiceNr: values[0], companies: values[1], VatRates: values[2] });

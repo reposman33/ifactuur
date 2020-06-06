@@ -45,7 +45,7 @@ class Expense extends React.Component {
 			// retrieve companies
 			newExpensePromises$.push(this.props.firebase.getCollection("companies", "name", ["id", "name"]));
 			// retrieve VatRates
-			newExpensePromises$.push(this.props.firebase.getCollection("vatrates", "rate", ["id", "rate"]));
+			newExpensePromises$.push(this.props.firebase.getVatRates());
 			Promise.all(newExpensePromises$).then((values) => {
 				this.setState({
 					id: values[0],

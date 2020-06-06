@@ -324,6 +324,25 @@ class Firebase {
 				return document;
 			});
 	};
+
+	// ===============================================================
+	// ===============================================================
+	// VATRATES
+	// ===============================================================
+	// ===============================================================
+
+	/**
+	 * getVatRates - retrieve all vatrates. Vatrates are not tied to a specific user therefore getCollection not suitable.
+	 */
+	getVatRates = () =>
+		this.db
+			.collection("vatrates")
+			.get()
+			.then((querySnapshot) => {
+				const result = [];
+				querySnapshot.forEach((doc) => result.push(doc.data()));
+				return result;
+			});
 }
 
 export default Firebase;
