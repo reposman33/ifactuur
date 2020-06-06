@@ -43,6 +43,7 @@
 			width: 5%;
 		}
 	}
+
 	& .descriptionRow {
 		display: flex;
 		flex-direction: row;
@@ -51,9 +52,12 @@
 		& input {
 			color: white;
 			background-color: #cccccc55;
+			border-top: 1px solid #ccc;
 			border-bottom: none;
+			border-left: none;
 			border-right: none;
 			padding: 0 0.2rem;
+			color: red;
 		}
 
 		& span.currency {
