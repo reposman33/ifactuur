@@ -37,6 +37,8 @@ const Select = ({
 		setValue(event.target.value);
 		handleOnChange(event.target.name, event.target.value);
 	};
+	const selectStyle = buttonText ? { width: "50%" } : { margin: 0 };
+
 	return (
 		<div
 			className={
@@ -54,7 +56,7 @@ const Select = ({
 							onChange={onChange}
 							value={value}
 							// if there's a button make select 50%
-							style={{ width: buttonText ? "50%" : "100%" }}>
+							style={selectStyle}>
 							{data.map((ob) => (
 								<option key={ob[valueKey]} value={ob[displayKey]}>
 									{ob[displayKey]}
@@ -62,7 +64,7 @@ const Select = ({
 							))}
 						</select>
 						{buttonText && (
-							<button className='btn btn-primary w-75 ml-3 p-0' onClick={onButtonClick}>
+							<button className='btn btn-primary' onClick={onButtonClick}>
 								{buttonText}
 							</button>
 						)}
