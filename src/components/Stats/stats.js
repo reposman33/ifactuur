@@ -205,8 +205,8 @@ class Stats extends React.Component {
 
 	render() {
 		return (
-			<>
-				<div className='row'>
+			<div className={componentStyles.maxHeight + " d-flex flex-column"}>
+				<div className='row flex-grow-2'>
 					<div className='col d-flex flex-row align-items-center'>
 						<div className='d-flex flex-column w-50'>
 							<div className='d-flex flex-row'>
@@ -297,7 +297,7 @@ class Stats extends React.Component {
 						</div>
 					</div>
 				</div>
-				<div className='row'>
+				<div className='row flex-grow-1'>
 					<div className='col'>
 						{!!this.state.invoices ? (
 							<>
@@ -324,7 +324,7 @@ class Stats extends React.Component {
 						)}
 					</div>
 				</div>
-				<div className='row'>
+				<div className='row flex-grow-1'>
 					<div className='col'>
 						{!!this.state.expenses ? (
 							<>
@@ -351,7 +351,7 @@ class Stats extends React.Component {
 						)}
 					</div>
 				</div>
-			</>
+			</div>
 		);
 	}
 }
