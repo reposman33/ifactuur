@@ -328,7 +328,7 @@ class Invoice extends React.Component {
 							onButtonClick={() =>
 								this.props.history.push({
 									pathname: ROUTES.COMPANY,
-									params: { prevLocation: this.props.location.pathname },
+									params: { prevLocation: "LOCATION.INVOICE" },
 								})
 							}
 						/>

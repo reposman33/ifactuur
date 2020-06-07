@@ -199,6 +199,10 @@ export class I18n {
 				UPDATE: { en: "Update", nl: "Bijwerken" },
 			},
 		},
+		LOCATION: {
+			EXPENSE: { en: "expense", nl: "uitgave" },
+			INVOICE: { en: "invoice", nl: "factuur" },
+		},
 	};
 
 	getLocale = () => (navigator.language.search("en") > -1 ? "en" : navigator.language.search("nl") > -1 ? "nl" : "");

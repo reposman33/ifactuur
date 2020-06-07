@@ -301,13 +301,12 @@ class Company extends React.Component {
 									!!this.prevLocation
 										? this.I18n.get("COMPANY.BUTTON.BACKTOPREVIOUSLOCATION").replace(
 												"{1}",
-												this.prevLocation.substr(1)
+												this.I18n.get(this.prevLocation)
 										  )
 										: this.I18n.get("COMPANY.BUTTON.BACKTOLISTVIEW")
 								}
 							/>
 							{/* Button Save */}
-
 							<Button
 								onClick={this.onSubmit}
 								text={
@@ -316,7 +315,7 @@ class Company extends React.Component {
 										: !!this.prevLocation
 										? this.I18n.get("COMPANY.BUTTON.SAVEANDBACKTOPREVIOUSLOCATION").replace(
 												"{1}",
-												this.prevLocation.substr(1)
+												this.I18n.get(this.prevLocation)
 										  )
 										: this.I18n.get("COMPANY.BUTTON.SAVEANDBACKTOLISTVIEW")
 								}
