@@ -2,17 +2,20 @@ div.signinContainer {
 	background-color: #f9f9f9;
 	border: 1px solid #444;
 	margin: 50px auto 0;
+	padding: 1rem;
 	text-align: left;
 	width: fit-content;
 
 	& .header {
-		width: 100%;
+		width: 111%;
 		height: 25px;
 		background-image: url("/includes/img/top-bottom.gif");
 		color: #fff;
 		text-align: center;
 		padding-top: 5px;
 		margin-bottom: 10px;
+		margin-left: -1rem;
+		margin-top: -1rem;
 		font-variant: small-caps;
 		font-weight: bold;
 	}
