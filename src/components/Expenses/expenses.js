@@ -119,7 +119,7 @@ class Expenses extends React.Component {
 				<Button
 					extraClasses='btn btn-primary float-right mr-3'
 					onClick={this.handleNewExpense}
-					text={this.I18n.get("BUTTON.NEW")}
+					text={this.I18n.get("EXPENSES.BUTTON.NEW")}
 				/>
 			</>
 		);

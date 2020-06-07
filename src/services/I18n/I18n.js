@@ -17,30 +17,7 @@ export class I18n {
 			MENU_TITLE_SETTINGS: { en: "Settings", nl: "Instellingen" },
 			MENU_TITLE_STATS: { en: "Stats", nl: "Berekeningen" },
 		},
-		USERSETTINGS: {
-			LABEL: {
-				TITLE: { en: "Title", nl: "Titel" },
-				FIRSTNAME: { en: "FirstName", nl: "Voornaam" },
-				LASTNAME: { en: "Lastname", nl: "Achternaam" },
-				ADDRESS: { en: "Address", nl: "Adres" },
-				ZIPCODE: { en: "Zipcode", nl: "Postcode" },
-				CITY: { en: "City", nl: "Stad" },
-				COUNTRY: { en: "Country", nl: "Land" },
-				DELIVERYCONDITIONS: { en: "Deliveryconditions", nl: "Leveringsvoorwaarden" },
-				COMPANY: { en: "Company", nl: "Bedrijf" },
-			},
-			REGISTRATIONS: {
-				TITLE: { en: "Registrations", nl: "Registraties" },
-				COC_NUMBER: { en: "CoC nr", nl: "KvK nr" },
-				VAT_NUMBER: { en: "VAT nr", nl: "BTW nr" },
-			},
-			DELIVERYCONDITIONS: {
-				TITLE: {
-					en: "Deliveryconditions",
-					nl: "Leveringsvoorwaarden",
-				},
-			},
-		},
+
 		COMPANIES: {
 			TABLE: {
 				HEADERS: {
@@ -49,6 +26,9 @@ export class I18n {
 					CITY: { en: "City", nl: "Stad" },
 					ACTIONS: { en: "Actions", nl: "Bewerken" },
 				},
+			},
+			BUTTON: {
+				NEW: { en: "New company", nl: "Nieuw bedrijf" },
 			},
 		},
 		COMPANY: {
@@ -78,6 +58,14 @@ export class I18n {
 					nl: "Weet u zeker dat u dit bedrijf wil verwijderen uit iFactuur?",
 				},
 			},
+			BUTTON: {
+				SAVEANDBACKTOLISTVIEW: { en: "Save and show overview", nl: "Bewaar en toon overzicht" },
+				SAVEANDBACKTOPREVIOUSLOCATION: { en: "Save and show {1}", nl: "Bewaar en toon {1}" },
+				UPDATE: { en: "Update", nl: "Bijwerken" },
+				NEW: { en: "New", nl: "Nieuw" },
+				BACKTOLISTVIEW: { en: "Back to overview", nl: "Terug naar overzicht" },
+				BACKTOPREVIOUSLOCATION: { en: "Back to {1}", nl: "Terug naar {1}" },
+			},
 		},
 		EXPENSES: {
 			TABLE: {
@@ -88,6 +76,7 @@ export class I18n {
 					ACTIONS: { en: "Actions", nl: "Bewerken" },
 				},
 			},
+			BUTTON: { NEW: { en: "New expense", nl: "Nieuwe uitgave" } },
 		},
 		EXPENSE: {
 			LABEL: {
@@ -97,6 +86,10 @@ export class I18n {
 				AMOUNT: { en: "Amount", nl: "Bedrag" },
 				ITEM: { en: "Items/Services", nl: "Goederen/Diensten" },
 				TAX: { en: "Tax", nl: "BTW" },
+			},
+			BUTTON: {
+				BACK: { en: "Back to overview", nl: "Terug naar overzicht" },
+				SAVE: { en: "Save and show overview", nl: "Bewaar en naar overzicht" },
 			},
 		},
 
@@ -110,6 +103,7 @@ export class I18n {
 					TYPE: { en: "Type", nl: "Soort" },
 				},
 			},
+			BUTTON: { NEW: { en: "New invoice", nl: "Nieuwe factuur" } },
 		},
 		INVOICE: {
 			TITLE: { en: "Invoice", nl: "Factuur" },
@@ -132,16 +126,11 @@ export class I18n {
 				COMPANY: { en: "Select a company", nl: "Selecteer bedrijf" },
 			},
 			BUTTON: {
+				BACK: { en: "Back to overview", nl: "Terug naar overzicht" },
 				NEW_COMPANY: { en: "New company", nl: "Nieuw bedrijf" },
 				DELETE: { en: "Delete", nl: "Verwijder" },
-				SAVE: { en: "Save", nl: "Bewaar" },
+				SAVE: { en: "Save and show overview", nl: "Bewaar en naar overzicht" },
 			},
-		},
-		BUTTON: {
-			SAVE: { en: "Save", nl: "Bewaar" },
-			UPDATE: { en: "Update", nl: "Bijwerken" },
-			NEW: { en: "New", nl: "Nieuw" },
-			BACK: { en: "Back", nl: "Terug" },
 		},
 		PAGINATION: {
 			NEXT_PAGE: { en: "next page", nl: "volgende pagina" },
@@ -174,7 +163,7 @@ export class I18n {
 					TOTALVATAMOUNT: { en: "Vat", nl: "BTW" },
 				},
 			},
-			BUTTONS: {
+			BUTTON: {
 				SHOWTURNOVER: { en: "Show sales", nl: "Toon omzet" },
 				TURNOVER: { en: "Sales in period", nl: "Omzet over periode" },
 				SHOWTURNOVERFORQUARTER: { en: "Turnover in quarter", nl: "Omzet in kwartaal" },
@@ -182,6 +171,34 @@ export class I18n {
 			},
 		},
 		TITLES: { MR: { en: "Mr", nl: "Dhr" }, MRS: { en: "Ms", nl: "Mw" }, THEY: { en: "They", nl: "Zij" } },
+		USERSETTINGS: {
+			LABEL: {
+				TITLE: { en: "Title", nl: "Titel" },
+				FIRSTNAME: { en: "FirstName", nl: "Voornaam" },
+				LASTNAME: { en: "Lastname", nl: "Achternaam" },
+				ADDRESS: { en: "Address", nl: "Adres" },
+				ZIPCODE: { en: "Zipcode", nl: "Postcode" },
+				CITY: { en: "City", nl: "Stad" },
+				COUNTRY: { en: "Country", nl: "Land" },
+				DELIVERYCONDITIONS: { en: "Deliveryconditions", nl: "Leveringsvoorwaarden" },
+				COMPANY: { en: "Company", nl: "Bedrijf" },
+			},
+			REGISTRATIONS: {
+				TITLE: { en: "Registrations", nl: "Registraties" },
+				COC_NUMBER: { en: "CoC nr", nl: "KvK nr" },
+				VAT_NUMBER: { en: "VAT nr", nl: "BTW nr" },
+			},
+			DELIVERYCONDITIONS: {
+				TITLE: {
+					en: "Deliveryconditions",
+					nl: "Leveringsvoorwaarden",
+				},
+			},
+			BUTTON: {
+				SAVE: { en: "Save", nl: "Bewaar" },
+				UPDATE: { en: "Update", nl: "Bijwerken" },
+			},
+		},
 	};
 
 	getLocale = () => (navigator.language.search("en") > -1 ? "en" : navigator.language.search("nl") > -1 ? "nl" : "");

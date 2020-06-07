@@ -94,7 +94,9 @@ class Companies extends React.Component {
 	}
 
 	handleNewCompany = () => {
-		this.props.history.push(ROUTES.COMPANY);
+		this.props.history.push({
+			pathname: ROUTES.COMPANY,
+		});
 	};
 
 	onRowClick = (e, row, rowIndex) => {
@@ -127,7 +129,11 @@ class Companies extends React.Component {
 					pagination={paginationFactory(this.paginationConfig)}></BootstrapTable>
 
 				<div className='d-flex justify-content-end'>
-					<Button onClick={this.handleNewCompany} text={this.I18n.get("BUTTON.NEW")} extraClasses='mr-3' />
+					<Button
+						onClick={this.handleNewCompany}
+						text={this.I18n.get("COMPANIES.BUTTON.NEW")}
+						extraClasses='mr-3'
+					/>
 				</div>
 			</div>
 		);

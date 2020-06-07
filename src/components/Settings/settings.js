@@ -220,8 +220,8 @@ class Settings extends React.Component {
 							onClick={this.onSubmit}
 							text={
 								this.isExistingUserSetting
-									? this.I18n.get("BUTTON.UPDATE")
-									: this.I18n.get("BUTTON.SAVE")
+									? this.I18n.get("USERSETTINGS.BUTTON.UPDATE")
+									: this.I18n.get("USERSETTINGS.BUTTON.SAVE")
 							}
 						/>
 					</div>

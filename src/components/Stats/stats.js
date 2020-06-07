@@ -231,7 +231,7 @@ class Stats extends React.Component {
 								disabled={!(this.state.startDate && this.state.endDate)}
 								extraClasses='ml-3 mt-3'
 								onClick={this.onCalculateTurnover}
-								text={this.I18n.get("STATS.BUTTONS.SHOWTURNOVER")}
+								text={this.I18n.get("STATS.BUTTON.SHOWTURNOVER")}
 							/>
 						</div>
 						<div className='d-flex flex-column w-50'>
@@ -239,7 +239,7 @@ class Stats extends React.Component {
 								<Select
 									container={false}
 									extraClasses='w-25'
-									labelText={this.I18n.get("STATS.BUTTONS.YEAR")}
+									labelText={this.I18n.get("STATS.BUTTON.YEAR")}
 									name='year'
 									displayInput={true}
 									data={this.state.years}
@@ -292,7 +292,7 @@ class Stats extends React.Component {
 								disabled={!this.state.quarter}
 								extraClasses='mt-3 align-self-center'
 								onClick={this.onCalculateTurnoverByquarter}
-								text={this.I18n.get("STATS.BUTTONS.SHOWTURNOVERFORQUARTER")}
+								text={this.I18n.get("STATS.BUTTON.SHOWTURNOVERFORQUARTER")}
 							/>
 						</div>
 					</div>
@@ -301,7 +301,7 @@ class Stats extends React.Component {
 					<div className='col'>
 						{!!this.state.invoices ? (
 							<>
-								<span className={componentStyles.title}>{this.I18n.get("STATS.BUTTONS.TURNOVER")}</span>
+								<span className={componentStyles.title}>{this.I18n.get("STATS.BUTTON.TURNOVER")}</span>
 								<BootstrapTable
 									bootstrap4
 									bordered={false}
@@ -329,7 +329,7 @@ class Stats extends React.Component {
 						{!!this.state.expenses ? (
 							<>
 								<span className={componentStyles.title}>
-									{this.I18n.get("STATS.BUTTONS.SHOWEXPENSES")}
+									{this.I18n.get("STATS.BUTTON.SHOWEXPENSES")}
 								</span>
 								<BootstrapTable
 									bootstrap4

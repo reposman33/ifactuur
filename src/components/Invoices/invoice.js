@@ -398,14 +398,14 @@ class Invoice extends React.Component {
 				<div className='d-flex justify-content-between'>
 					<Button
 						onClick={this.onListview}
-						text={this.I18n.get("BUTTON.BACK")}
+						text={this.I18n.get("INVOICE.BUTTON.BACK")}
 						extraStyles={{ marginLeft: "0.8rem" }}
 					/>
 
 					<Button
 						disabled={this.isExistingInvoice}
 						onClick={this.onSubmit}
-						text={this.I18n.get("BUTTON.SAVE")}
+						text={this.I18n.get("INVOICE.BUTTON.SAVE")}
 						extraStyles={{ marginRight: "0.8rem" }}
 					/>
 				</div>

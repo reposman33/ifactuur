@@ -180,14 +180,14 @@ class Expense extends React.Component {
 						extraStyles={{ marginLeft: "0.8rem" }}
 						extraClasses='m-3'
 						onClick={this.onListview}
-						text={this.I18n.get("BUTTON.BACK")}
+						text={this.I18n.get("EXPENSE.BUTTON.BACK")}
 					/>
 					<Button
 						disabled={this.isExistingExpense}
 						extraStyles={{ marginRight: "0.8rem" }}
 						extraClasses='m-3'
 						onClick={this.onSubmit}
-						text={this.I18n.get("BUTTON.SAVE")}
+						text={this.I18n.get("EXPENSE.BUTTON.SAVE")}
 					/>
 				</div>
 			</div>

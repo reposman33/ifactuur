@@ -299,22 +299,26 @@ class Company extends React.Component {
 								onClick={this.onGoBack}
 								text={
 									!!this.prevLocation
-										? `Verdergaan met ${this.prevLocation.substr(1)}`
-										: this.I18n.get("BUTTON.BACK")
+										? this.I18n.get("COMPANY.BUTTON.BACKTOPREVIOUSLOCATION").replace(
+												"{1}",
+												this.prevLocation.substr(1)
+										  )
+										: this.I18n.get("COMPANY.BUTTON.BACKTOLISTVIEW")
 								}
-								extraClasses='float-left'
 							/>
 							{/* Button Save */}
+
 							<Button
 								onClick={this.onSubmit}
 								text={
 									this.isExistingCompany
-										? this.I18n.get("BUTTON.UPDATE")
+										? this.I18n.get("COMPANY.BUTTON.UPDATE")
 										: !!this.prevLocation
-										? `${this.I18n.get("BUTTON.SAVE")} en verdergaan met ${this.prevLocation.substr(
-												1
-										  )}`
-										: this.I18n.get("BUTTON.SAVE")
+										? this.I18n.get("COMPANY.BUTTON.SAVEANDBACKTOPREVIOUSLOCATION").replace(
+												"{1}",
+												this.prevLocation.substr(1)
+										  )
+										: this.I18n.get("COMPANY.BUTTON.SAVEANDBACKTOLISTVIEW")
 								}
 								extraClasses='float-right'
 							/>
