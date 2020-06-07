@@ -3,8 +3,6 @@
 div.signupContainer {
 	background-color: #f9f9f9;
 	border: 1px solid #444;
-	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
-	font-size: 14px;
 	margin: 50px auto 0;
 	text-align: left;
 	width: fit-content;
@@ -23,9 +21,7 @@ div.signupContainer {
 
 	& table {
 		font-size: 0.95em;
-		width: 100px;
-		margin-left: auto;
-		margin-right: auto;
+		margin: 0 auto;
 
 		label {
 			margin: 0 0.5rem;
@@ -33,7 +29,6 @@ div.signupContainer {
 		input[type="text"],
 		input[type="password"] {
 			border: 1px solid #000;
-			width: 50%;
 			margin: 0 0.5rem;
 		}
 

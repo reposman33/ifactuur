@@ -157,6 +157,9 @@ class SignUpForm extends Component {
 						</tbody>
 					</table>
 				</form>
+				<div className='ml-2 mb-2'>
+					<Link to={ROUTES.SIGN_IN}>Login</Link>
+				</div>
 			</div>
 		);
 	}
