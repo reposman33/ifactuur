@@ -244,7 +244,7 @@ class Company extends React.Component {
 									</span>
 									<Input
 										type='text'
-										extraClasses='w-75'
+										extraClasses='w-75 w-100'
 										displayInput={true}
 										displayValue={this.state.email}
 										handleOnChange={this.onChange}
