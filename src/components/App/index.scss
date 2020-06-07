@@ -2,6 +2,13 @@
 @import url("https://fonts.googleapis.com/css?family=Montserrat:400,500,700,900&display=swap");
 @import "./../../constants/variables.scss";
 
+.navContainer,
+.container {
+	border-radius: $container-border-radius;
+	font-family: "Montserrat", sans-serif;
+	font-size: 11pt;
+}
+
 .navContainer {
 	width: 1024px;
 	margin: auto;
@@ -9,8 +16,6 @@
 
 .container {
 	background-color: $container-background-color;
-	border-radius: $container-border-radius;
-	font-family: "Montserrat", sans-serif;
 	min-height: 660px;
 	margin: 0 auto;
 	padding: 1rem;
@@ -43,7 +48,7 @@
 	border: $column-border;
 	border-radius: $column-border-radius;
 	color: $text-color;
-	font-family: "Montserrat", sans-serif;
+	//	font-family: "Montserrat", sans-serif;
 	padding: $column-padding;
 
 	& h1 {
