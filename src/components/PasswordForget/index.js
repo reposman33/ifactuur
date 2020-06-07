@@ -14,25 +14,25 @@ class PasswordForget extends React.Component {
 		this.setState({ errorMessage: error.message });
 	}
 
-	onSubmit = ev => {
+	onSubmit = (ev) => {
 		this.props.firebase
 			.passwordReset(this.state.email)
-			.then(res => {
+			.then((res) => {
 				this.setState({
-					message: "Success! An email with instructions is sent to the address you provided"
+					message: "Success! An email with instructions is sent to the address you provided",
 				});
 			})
-			.catch(error => {
+			.catch((error) => {
 				this.setState({ errorMessage: error.message });
 			});
 		ev.preventDefault();
 	};
 
-	onChange = event => {
+	onChange = (event) => {
 		this.setState({ [event.target.name]: event.target.value });
 	};
 
-	validateEmail = email => {
+	validateEmail = (email) => {
 		var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 		return re.test(email);
 	};
@@ -42,10 +42,10 @@ class PasswordForget extends React.Component {
 
 		return (
 			<div>
-				<div className='signContainer'>
+				<div className='passwordResetContainer'>
 					<div className='header'>Wachtwoord vergeten</div>
 					<form name='login' onSubmit={this.onSubmit}>
-						<table id='loginTable'>
+						<table>
 							<tbody>
 								<tr>
 									<td>
@@ -78,6 +78,9 @@ class PasswordForget extends React.Component {
 							</tbody>
 						</table>
 					</form>
+					<div className='ml-2 mb-2'>
+						<Link to={ROUTES.SIGN_IN}>Login</Link>
+					</div>
 				</div>
 			</div>
 		);
