@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import * as styles from "./date.module.scss";
 
 /**
@@ -21,7 +21,9 @@ const DateComponent = ({
 	labelText,
 	name,
 }) => {
-	const [value, setValue] = useState("");
+	const [value, setValue] = useState();
+
+	useEffect(() => displayValue && setValue(displayValue));
 
 	const onLocalChange = (event) => {
 		setValue(event.target.value);

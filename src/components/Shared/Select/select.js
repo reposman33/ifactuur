@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./select.module.scss";
 /**
  *
@@ -20,10 +20,12 @@ const Select = ({
 	buttonText,
 	container = true,
 	data,
+	columnView = true,
 	displayInput,
 	displayKey,
 	displayValue,
 	extraClasses,
+	extraStyles = {},
 	handleOnChange,
 	labelText,
 	name,
@@ -32,6 +34,10 @@ const Select = ({
 	valueKey,
 }) => {
 	const [value, setValue] = useState(initialSelectedValue);
+
+	useEffect(() => {
+		displayValue && setValue(displayValue);
+	});
 
 	const onChange = (event) => {
 		setValue(event.target.value);
@@ -44,7 +50,7 @@ const Select = ({
 			className={
 				(container ? styles.container + " " : "") +
 				styles.selectComponent +
-				" d-flex flex-column" +
+				(columnView && " d-flex flex-column") +
 				(extraClasses ? " " + extraClasses : "")
 			}>
 			<label>{labelText}</label>
@@ -56,7 +62,7 @@ const Select = ({
 							onChange={onChange}
 							value={value}
 							// if there's a button make select 50%
-							style={selectStyle}>
+							style={Object.assign(selectStyle, extraStyles)}>
 							{data.map((ob) => (
 								<option key={ob[valueKey]} value={ob[displayKey]}>
 									{ob[displayKey]}
