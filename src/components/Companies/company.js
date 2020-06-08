@@ -13,6 +13,7 @@ class Company extends React.Component {
 		super(props);
 		this.I18n = new I18n();
 		this.prevLocation = this.props.location.params && this.props.location.params.prevLocation;
+		this.prevLocationName = this.props.location.params && this.props.location.params.prevLocationName;
 		// State keys and transform functions to apply.
 		this.persistFields = {
 			address: (fieldValue) => fieldValue,
@@ -301,7 +302,7 @@ class Company extends React.Component {
 									!!this.prevLocation
 										? this.I18n.get("COMPANY.BUTTON.BACKTOPREVIOUSLOCATION").replace(
 												"{1}",
-												this.I18n.get(this.prevLocation)
+												this.I18n.get(this.prevLocationName)
 										  )
 										: this.I18n.get("COMPANY.BUTTON.BACKTOLISTVIEW")
 								}
@@ -315,7 +316,7 @@ class Company extends React.Component {
 										: !!this.prevLocation
 										? this.I18n.get("COMPANY.BUTTON.SAVEANDBACKTOPREVIOUSLOCATION").replace(
 												"{1}",
-												this.I18n.get(this.prevLocation)
+												this.I18n.get(this.prevLocationName)
 										  )
 										: this.I18n.get("COMPANY.BUTTON.SAVEANDBACKTOLISTVIEW")
 								}

@@ -131,7 +131,10 @@ class Expense extends React.Component {
 							onButtonClick={() =>
 								this.props.history.push({
 									pathname: ROUTES.COMPANY,
-									params: { prevLocation: "LOCATION.EXPENSE" },
+									params: {
+										prevLocation: this.props.location.pathname,
+										prevLocationName: "LOCATION.EXPENSE",
+									},
 								})
 							}
 							valueKey='ID'
