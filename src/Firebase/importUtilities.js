@@ -1,26 +1,27 @@
-	// ===============================================================
-	// ===============================================================
-	// UTILITY FUNCTIONS: IMPORTS - UPDATING INVOICES-SPECIFICATIONS
-	// ===============================================================
-	// ===============================================================
+// ===============================================================
+// ===============================================================
+// UTILITY FUNCTIONS: IMPORTS - UPDATING INVOICES-SPECIFICATIONS
+// ===============================================================
+// ===============================================================
 
-	/**
-	 * ==> steps to import invoice table from MySQL to Firestore
-	 * 1 From phpmyadmin run query from "F:\www\ifactuur\MVC\ifactuur\application\model\GateWays\FactuurGateway.cfc"
-	 * 2 export as JSON and save as invoices.json;
-	 * 3 remove comments and replace '{\"1\": ' with '' and '\"}]}",' with '\"}]",'; !!!IMPORTANT!!!
-	 * 4 check invoice.rows for id 10  since it is not valid json anymore; !!!IMPORTANT!!!
-	 * 	 * don't forget to import the json in this component:
-	 * import * as invoices from "../invoices.json";
-	 * create fieldMember in constructor
-	 * this.invoices = invoices;
-	 * 5 from localhost:3000: run the following scripts from /components/invoices/componentDidMout()
-	 *   4.1 this.props.firebase.importInvoices(); // maybe need to create index - follow link in console
-	 *   4.2 this.props.firebase.convertRows2Array();
-	 *   4.3 this.props.firebase.typeInvoices();
-	 *   4.4 this.props.firebase.updateUserId("<userId>"); // since useriId is "1" now for all
-	 *
-	 */
+/**
+ * ==> steps to import invoice table from MySQL to Firestore
+ * 1 From phpmyadmin run query from "F:\www\ifactuur\MVC\ifactuur\application\model\GateWays\FactuurGateway.cfc"
+ * 2 export as JSON and save as invoices.json;
+ * 3 remove comments and replace '{\"1\": ' with '' and '\"}]}",' with '\"}]",'; !!!IMPORTANT!!!
+ * 4 check invoice.rows for id 10  since it is not valid json anymore; !!!IMPORTANT!!!
+ * 	 * don't forget to import the json in this component:
+ * import * as invoices from "../invoices.json";
+ * create fieldMember in constructor
+ * this.invoices = invoices;
+ * 5 from localhost:3000: run the following scripts from /components/invoices/componentDidMout()
+ *   4.1 this.props.firebase.importInvoices(); // maybe need to create index - follow link in console
+ *   4.2 this.props.firebase.convertRows2Array();
+ *   4.3 this.props.firebase.typeInvoices();
+ *   4.4 this.props.firebase.updateUserId("<userId>"); // since useriId is "1" now for all
+ *
+ */
+class importUtilities {
 	importInvoices() {
 		this.invoices.default.map((invoice, i) =>
 			this.db
@@ -223,3 +224,6 @@
 				})
 			);
 	}
+}
+
+export { importUtilities };
