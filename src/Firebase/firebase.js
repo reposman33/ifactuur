@@ -96,11 +96,12 @@ class Firebase {
 						columns.reduce(
 							(acc, col) => {
 								// convert a timestamp to date using fireStore toDate()
-								acc[col] = /date/gi.test(col)
-									? convertTimestamp
-										? this.Utils.dateFormat.format(data[col].toDate())
-										: data[col].toDate()
-									: data[col];
+								acc[col] =
+									data[col] && typeof data[col].toDate === "function" // /date/gi.test(col)
+										? convertTimestamp
+											? this.Utils.dateFormat.format(data[col].toDate())
+											: data[col].toDate()
+										: data[col];
 								return acc;
 							}, // always include ID
 							{ ID: doc.id }
