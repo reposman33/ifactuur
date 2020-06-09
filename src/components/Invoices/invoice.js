@@ -17,6 +17,7 @@ class Invoice extends React.Component {
 
 		this.Utils = new Utils();
 		this.I18n = new I18n();
+
 		this.storage = undefined; // to be set in componentDidMount
 		// When storing data all state values are strings. They have to be xformed to their respective types.
 		// Below the state keys and their transform functions to apply.
@@ -25,33 +26,29 @@ class Invoice extends React.Component {
 			companyName: (fieldValue) => fieldValue, // return value as is
 			dateTimeCreated: (date) => new Date(date),
 			invoiceNr: parseInt,
-			periodFrom: (date) => (date ? new Date(date) : undefined),
-			periodTo: (date) => (date ? new Date(date) : undefined),
 			rows: (fieldValue) => fieldValue,
-			statusTitle: () => "created",
 			totals: (fieldValue) => fieldValue,
 			type: (fieldValue) => fieldValue,
-			userId: (fieldValue) => fieldValue,
 		};
 
 		// initialize state
 		this.state = {
 			companies: [],
-			companyName: "",
+			companyName: undefined,
 			dateTimeCreated: undefined,
 			dateTimePaid: undefined,
 			dateTimePrinted: undefined,
 			dateTimeSent: undefined,
 			invoiceNr: undefined,
-			notes: "",
-			periodFrom: undefined,
-			periodTo: undefined,
 			rows: [],
-			statusTitle: "",
 			invoiceTypes: [
 				{ id: 1, type: "credit" },
 				{ id: 2, type: "debet" },
 			],
+			invoiceStatus: {
+				error: false,
+				message: "",
+			},
 			totals: {},
 			VATRate: undefined,
 			VatRates: [],
@@ -81,24 +78,8 @@ class Invoice extends React.Component {
 			this.props.firebase.getInvoice(this.props.location.state.id).then((invoice) => {
 				// update state with retrieved invoice
 				this.setState({
-					companies: [],
-					companyName: invoice.companyName,
-					// only format dates if not undefined
-					dateTimeCreated: invoice.dateTimeCreated,
-					dateTimePaid: invoice.dateTimePaid,
-					dateTimePrinted: invoice.dateTimePrinted,
-					dateTimeSent: invoice.dateTimeSent,
-					id: invoice.id,
-					invoiceNr: invoice.invoiceNr,
-					rows: invoice.rows,
-					notes: invoice.notes,
-					periodFrom: invoice.periodFrom,
-					periodTo: invoice.periodTo,
-					statusTitle: invoice.statusTitle,
-					type: invoice.type,
+					...invoice,
 					totals: this.getTotalInvoiceAmount(invoice.rows, invoice.VATRate),
-					VATRate: invoice.VATRate,
-					VatRates: [],
 				});
 			});
 		} else {
@@ -217,7 +198,6 @@ class Invoice extends React.Component {
 	onListview = () => {
 		// remove the temporary state
 		this.storage.remove("invoiceState");
-
 		this.props.history.push({
 			pathname: ROUTES.INVOICES,
 		});
@@ -240,26 +220,55 @@ class Invoice extends React.Component {
 	};
 
 	// onSubmit
-	onSubmit = () => {
-		const invoice = {};
-		Object.keys(this.persistFields).map(
-			// filter keys and optionally convert state prop values
-			(key) => {
-				if (this.state[key]) {
-					invoice[key] = this.persistFields[key](this.state[key]);
-				}
-				return null;
-			}
-		);
-		// add the current user id!
-		invoice.userId = this.props.firebase.auth.currentUser.uid;
-		this.props.firebase.addDocumentToCollection("invoices", invoice).then((docRef) => {
-			console.log("document ", docRef.id, " added");
-			this.onListview();
-		});
+	onSubmit = () => this.storeInvoice(this.checkInvoice(this.onCreateInvoice()));
 
-		// remove the temporary state
-		this.storage.remove("invoiceState");
+	onCreateInvoice = () => {
+		return Object.keys(this.persistFields).reduce(
+			// filter keys and optionally convert state prop values
+			(acc, key) => {
+				if (
+					// check the state value before adding to invoice object:
+					this.state[key] && // it should be defined...
+					((Array.isArray(this.state[key]) && this.state[key].length > 0) || // ...if Array it should be filled...
+					(this.state[key] === Object(this.state[key]) && Object.keys(this.state[key]).length > 0) || // ...if Object it should have keys...
+					(typeof this.state[key] === "string" && this.state[key]).length > 0 || // ...it should not be ""...
+					typeof this.state[key] === "number" || // ... it can be any Number...
+						Object.prototype.toString.call(this.state[key]) === "[object Date]") // ... it can be a Date
+				) {
+					acc[key] = this.persistFields[key](this.state[key]);
+				} else {
+					acc.error = true;
+				}
+				return acc;
+			},
+			{}
+		);
+	};
+	checkInvoice = (invoice) => {
+		if (invoice.error) {
+			this.setState({
+				invoiceStatus: {
+					error: true,
+					message: this.I18n.get("INVOICE.SUBMIT.ERROR.MISSINGFIELDVALUES"),
+				},
+			});
+			return false;
+		} else {
+			return invoice;
+		}
+	};
+
+	storeInvoice = (invoice) => {
+		if (invoice) {
+			// add the current user id!
+			invoice.userId = this.props.firebase.auth.currentUser.uid;
+			// add the default statustitle
+			invoice.statustitle = "created";
+			this.props.firebase.addDocumentToCollection("invoices", invoice).then((docRef) => {
+				console.log("document ", docRef.id, " added");
+				this.onListview();
+			});
+		}
 	};
 
 	render() {
@@ -345,16 +354,17 @@ class Invoice extends React.Component {
 
 					<div className='col'>
 						<Select
+							buttonText={this.I18n.get("INVOICE.BUTTON.NEW_COMPANY")}
+							data={this.state.companies}
+							displayInput={!this.isExistingInvoice}
+							displayKey='name'
+							displayValue={this.state.companyName}
+							handleOnChange={this.onChange}
 							labelText={this.I18n.get("INVOICE.LABEL.COMPANY")}
 							name={this.FIELDNAMES.COMPANYNAME}
-							displayValue={this.state.companyName}
-							displayInput={!this.isExistingInvoice}
-							data={this.state.companies}
-							buttonText={this.I18n.get("INVOICE.BUTTON.NEW_COMPANY")}
-							displayKey='name'
-							valueKey='ID'
-							handleOnChange={this.onChange}
 							onButtonClick={this.handleNewCompany}
+							required={true}
+							valueKey='ID'
 						/>
 					</div>
 				</div>
@@ -423,7 +433,7 @@ class Invoice extends React.Component {
 						</div>
 					</div>
 				</div>
-				<div className='d-flex justify-content-between'>
+				<div className='d-flex mb-2 justify-content-between'>
 					<Button
 						onClick={this.onListview}
 						text={this.I18n.get("INVOICE.BUTTON.BACK")}
@@ -437,6 +447,9 @@ class Invoice extends React.Component {
 						extraStyles={{ marginRight: "0.8rem" }}
 					/>
 				</div>
+				<span className='d-block margin-auto text-center text-danger'>
+					{this.state.invoiceStatus.error && this.state.invoiceStatus.message}
+				</span>
 			</div>
 		);
 	}

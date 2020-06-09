@@ -131,6 +131,14 @@ export class I18n {
 				DELETE: { en: "Delete", nl: "Verwijder" },
 				SAVE: { en: "Save and show overview", nl: "Bewaar en naar overzicht" },
 			},
+			SUBMIT: {
+				ERROR: {
+					MISSINGFIELDVALUES: {
+						en: "The invoice is not filled in completely. Please fill in missing values",
+						nl: "De factuur is niet volledig ingevuld. Vul a.u.b. de ontbrekende gegevens in.",
+					},
+				},
+			},
 		},
 		PAGINATION: {
 			NEXT_PAGE: { en: "next page", nl: "volgende pagina" },
