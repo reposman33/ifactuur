@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import * as styles from "./date.module.scss";
 
 /**
@@ -21,12 +21,8 @@ const DateComponent = ({
 	labelText,
 	name,
 }) => {
-	const [value, setValue] = useState();
-
-	useEffect(() => displayValue && setValue(displayValue));
-
-	const onLocalChange = (event) => {
-		setValue(event.target.value);
+	const onChange = (event) => {
+		//setDate(event.target.value);
 		handleOnChange(event.target.name, event.target.value);
 	};
 
@@ -41,7 +37,7 @@ const DateComponent = ({
 			<label>{labelText}</label>
 			{displayInput ? (
 				<span className='d-flex flex-row justify-content-between'>
-					<input type='date' name={name} value={value} onChange={onLocalChange} />{" "}
+					<input type='date' name={name} value={displayValue} onChange={onChange} />
 				</span>
 			) : (
 				<span className='d-flex flex-row justify-content-between'>{displayValue} </span>

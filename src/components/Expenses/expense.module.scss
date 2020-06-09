@@ -1,0 +1,7 @@
+.percentSignAfter span span::after {
+	content: "\20\25";
+}
+
+.euroSignBefore span::before {
+	content: "\20AC\20";
+}

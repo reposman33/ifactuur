@@ -5,29 +5,33 @@ import { Button } from "../Shared/Button/button";
 import { I18n } from "../../services/I18n/I18n";
 import { Utils } from "../../services/Utils";
 import * as ROUTES from "../../constants/routes";
-
 import { withFirebase } from "../../Firebase";
+import { PersistenceContext } from "../../constants/contexts";
 import styles from "./invoice.module.scss";
 
 class Invoice extends React.Component {
+	static contextType = PersistenceContext;
+
 	constructor(props) {
 		super(props);
 
 		this.Utils = new Utils();
 		this.I18n = new I18n();
-
+		this.storage = undefined; // to be set in componentDidMount
 		// When storing data all state values are strings. They have to be xformed to their respective types.
 		// Below the state keys and their transform functions to apply.
 		this.persistFields = {
 			VATRate: parseInt,
 			companyName: (fieldValue) => fieldValue, // return value as is
 			dateTimeCreated: (date) => new Date(date),
+			invoiceNr: parseInt,
 			periodFrom: (date) => (date ? new Date(date) : undefined),
 			periodTo: (date) => (date ? new Date(date) : undefined),
-			invoiceNr: parseInt,
 			rows: (fieldValue) => fieldValue,
 			statusTitle: () => "created",
+			totals: (fieldValue) => fieldValue,
 			type: (fieldValue) => fieldValue,
+			userId: (fieldValue) => fieldValue,
 		};
 
 		// initialize state
@@ -38,7 +42,6 @@ class Invoice extends React.Component {
 			dateTimePaid: undefined,
 			dateTimePrinted: undefined,
 			dateTimeSent: undefined,
-			id: undefined,
 			invoiceNr: undefined,
 			notes: "",
 			periodFrom: undefined,
@@ -94,7 +97,7 @@ class Invoice extends React.Component {
 					statusTitle: invoice.statusTitle,
 					type: invoice.type,
 					totals: this.getTotalInvoiceAmount(invoice.rows, invoice.VATRate),
-					VatRate: invoice.VATRate,
+					VATRate: invoice.VATRate,
 					VatRates: [],
 				});
 			});
@@ -112,6 +115,14 @@ class Invoice extends React.Component {
 				this.setState({ invoiceNr: values[0], companies: values[1], VatRates: values[2] });
 			});
 		}
+		// consume the persistence context
+		this.storage = this.context;
+
+		// overwrite the state when a previous state is stored
+		const storedState = this.storage.get("invoiceState");
+		if (storedState) {
+			this.setState(storedState);
+		}
 	};
 
 	/**
@@ -126,12 +137,11 @@ class Invoice extends React.Component {
 	/**
 	 * when selecting a VatRate also calculate totals
 	 */
-	onVatRateChange = (event) => {
-		const value = event.target.value;
+	onVatRateChange = (elementName, elementValue) => {
 		// update state.VatRate
-		this.onChange(event.target.name, event.target.value);
+		this.onChange(elementName, elementValue);
 		this.setState((state, props) => {
-			return { totals: this.getTotalInvoiceAmount(this.state.rows, value) };
+			return { totals: this.getTotalInvoiceAmount(this.state.rows, elementValue) };
 		});
 	};
 
@@ -204,10 +214,30 @@ class Invoice extends React.Component {
 	};
 
 	// onListview
-	onListview = () =>
+	onListview = () => {
+		// remove the temporary state
+		this.storage.remove("invoiceState");
+
 		this.props.history.push({
 			pathname: ROUTES.INVOICES,
 		});
+	};
+
+	handleNewCompany = () => {
+		// copy the state values that will be eventually stored to temporary storage. To be picked up when returning from creating a new company
+		const persistFields = Object.keys(this.persistFields);
+		this.storage.set(
+			"invoiceState",
+			persistFields.reduce((acc, persistField) => {
+				acc[persistField] = this.state[persistField];
+				return acc;
+			}, {})
+		);
+		this.props.history.push({
+			pathname: ROUTES.COMPANY,
+			params: { prevLocation: this.props.location.pathname, prevLocationName: "LOCATION.INVOICE" },
+		});
+	};
 
 	// onSubmit
 	onSubmit = () => {
@@ -223,11 +253,13 @@ class Invoice extends React.Component {
 		);
 		// add the current user id!
 		invoice.userId = this.props.firebase.auth.currentUser.uid;
-		console.log(invoice);
 		this.props.firebase.addDocumentToCollection("invoices", invoice).then((docRef) => {
 			console.log("document ", docRef.id, " added");
 			this.onListview();
 		});
+
+		// remove the temporary state
+		this.storage.remove("invoiceState");
 	};
 
 	render() {
@@ -288,9 +320,6 @@ class Invoice extends React.Component {
 				</div>
 			);
 		}
-		if (this.isExistingInvoice && !this.state.id) {
-			return null;
-		}
 		return (
 			<div className={styles.invoiceComponent}>
 				<div className='row'>
@@ -325,12 +354,7 @@ class Invoice extends React.Component {
 							displayKey='name'
 							valueKey='ID'
 							handleOnChange={this.onChange}
-							onButtonClick={() =>
-								this.props.history.push({
-									pathname: ROUTES.COMPANY,
-									params: { prevLocation: "LOCATION.INVOICE" },
-								})
-							}
+							onButtonClick={this.handleNewCompany}
 						/>
 					</div>
 				</div>
@@ -359,7 +383,7 @@ class Invoice extends React.Component {
 						{this.isExistingInvoice ? (
 							<div className={styles.totals}>
 								<label>{this.I18n.get("INVOICE.LABEL.VATRATE")}:</label>
-								<span>{this.state.VatRate} % </span>
+								<span>{this.state.VATRate} % </span>
 								<span className={styles.VatRate}>
 									{/* display the amount */}
 									{!!this.state.totals.totalVatAmount &&
@@ -368,17 +392,21 @@ class Invoice extends React.Component {
 							</div>
 						) : (
 							<div className={styles.totals}>
-								<div className={styles.VatRatesDropdown}>
-									<label>{this.I18n.get("INVOICE.LABEL.VATRATE")}:</label>
-									<select name={this.FIELDNAMES.VATRATE} onChange={this.onVatRateChange}>
-										<option value=''>{this.I18n.get("INVOICE.INPUT.VATRATE.DEFAUTVALUE")}</option>
-										{this.state.VatRates.map((rate) => (
-											<option key={rate.id} value={rate.rate}>
-												{rate.rate}
-											</option>
-										))}
-									</select>
-								</div>
+								<Select
+									container={false}
+									labelText={this.I18n.get("INVOICE.LABEL.VATRATE")}
+									name={this.FIELDNAMES.VATRATE}
+									displayValue={this.state.VATRate}
+									displayInput={!this.isExistingInvoice}
+									extraClasses='d-flex flex-row'
+									extraStyles={{ height: "fit-content" }}
+									data={this.state.VatRates}
+									displayKey='rate'
+									columnView={false}
+									valueKey='id'
+									handleOnChange={this.onVatRateChange}
+								/>
+
 								<span className={styles.VatRate}>
 									{!!this.state.totals.totalVatAmount &&
 										this.formatNumberAsCurrency(this.state.totals.totalVatAmount)}

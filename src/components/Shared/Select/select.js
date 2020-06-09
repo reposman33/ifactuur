@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+// TODO: the default selected value should be set in the parent state. Without changing a select the displayed value should be the state value.
+import React from "react";
 import styles from "./select.module.scss";
 /**
  *
@@ -30,17 +31,8 @@ const Select = ({
 	labelText,
 	name,
 	onButtonClick,
-	initialSelectedValue = 0,
-	valueKey,
 }) => {
-	const [value, setValue] = useState(initialSelectedValue);
-
-	useEffect(() => {
-		displayValue && setValue(displayValue);
-	});
-
 	const onChange = (event) => {
-		setValue(event.target.value);
 		handleOnChange(event.target.name, event.target.value);
 	};
 	const selectStyle = buttonText ? { width: "50%" } : { margin: 0 };
@@ -60,11 +52,10 @@ const Select = ({
 						<select
 							name={name}
 							onChange={onChange}
-							value={value}
-							// if there's a button make select 50%
+							value={displayValue}
 							style={Object.assign(selectStyle, extraStyles)}>
-							{data.map((ob) => (
-								<option key={ob[valueKey]} value={ob[displayKey]}>
+							{data.map((ob, i) => (
+								<option key={i} value={ob[displayKey]}>
 									{ob[displayKey]}
 								</option>
 							))}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "./input.module.scss";
 
 /**
@@ -25,9 +25,7 @@ const Input = ({
 	name,
 	type,
 }) => {
-	const [value, setValue] = useState("");
 	const onChange = (event) => {
-		setValue(event.target.value);
 		handleOnChange(event.target.name, event.target.value);
 	};
 

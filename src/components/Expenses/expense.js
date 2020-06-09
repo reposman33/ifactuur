@@ -7,24 +7,29 @@ import { Select } from "./../Shared/Select/select";
 import { DateComponent } from "./../Shared/Date/date";
 import { Input } from "../Shared/Input/input";
 import { Textarea } from "../Shared/Textarea/textarea";
+import { PersistenceContext } from "../../constants/contexts";
 import { Button } from "./../Shared/Button/button";
+import componentStyles from "./expense.module.scss";
 
 class Expense extends React.Component {
+	static contextType = PersistenceContext;
+
 	constructor(props) {
 		super(props);
+
 		this.state = {
 			amount: undefined,
 			companies: [],
 			company: undefined,
 			date: undefined,
 			description: undefined,
-			id: undefined,
 			vatrate: undefined,
 			vatrates: [],
 		};
+
 		this.Utils = new Utils();
 		this.I18n = new I18n();
-		this.isExistingExpense = !!(!!this.props.location.state && !!this.props.location.state.id);
+		this.storage = undefined; // to be set in componentDidMount
 
 		// conversion function per field to apply to state when persisting to fireStore
 		this.persistFields = {
@@ -32,23 +37,20 @@ class Expense extends React.Component {
 			company: (fieldValue) => fieldValue,
 			date: (date) => new Date(date),
 			description: (fieldValue) => fieldValue,
-			id: (fieldValue) => fieldValue,
 			vatrate: parseInt,
 		};
+		this.isExistingExpense = !!(!!this.props.location.state && !!this.props.location.state.id);
 	}
 
 	componentDidMount() {
 		if (!this.isExistingExpense) {
 			const newExpensePromises$ = [];
-			// retrieve the next id value
-			newExpensePromises$.push(this.props.firebase.getNewFieldValue("bills", "id"));
 			// retrieve companies
 			newExpensePromises$.push(this.props.firebase.getCollection("companies", "name", ["id", "name"]));
 			// retrieve VatRates
 			newExpensePromises$.push(this.props.firebase.getVatRates());
 			Promise.all(newExpensePromises$).then((values) => {
 				this.setState({
-					id: values[0],
 					companies: values[1],
 					vatrates: values[2],
 				});
@@ -61,12 +63,55 @@ class Expense extends React.Component {
 					company: expense.company,
 					date: expense.date,
 					description: expense.description,
-					id: expense.id,
 					vatrate: expense.vatrate,
 				});
 			});
 		}
+		// consume the persistence context
+		this.storage = this.context;
+
+		// overwrite the state when a previous state is stored
+		const storedState = this.storage.get("expenseState");
+		if (storedState) {
+			this.setState(storedState);
+		}
 	}
+
+	/**
+	 * handle input of most input fields
+	 * @param{string} name - name of both the inputfield & stateKey
+	 * @param{string} value - value of user input
+	 */
+
+	onChange = (name, value) => {
+		this.setState({ [name]: value });
+	};
+
+	// navigate to invoices listView
+	onListview = () => {
+		// remove the temporary state
+		this.storage.remove("expenseState");
+
+		this.props.history.push({
+			pathname: ROUTES.EXPENSES,
+		});
+	};
+
+	handleNewCompany = () => {
+		// copy the state values that will be eventually stored to temporary storage. To be picked up when returning from creating a new company
+		const persistFields = Object.keys(this.persistFields);
+		this.storage.set(
+			"expenseState",
+			persistFields.reduce((acc, persistField) => {
+				acc[persistField] = this.state[persistField];
+				return acc;
+			}, {})
+		);
+		this.props.history.push({
+			pathname: ROUTES.COMPANY,
+			params: { prevLocation: this.props.location.pathname, prevLocationName: "LOCATION.INVOICE" },
+		});
+	};
 
 	onSubmit = () => {
 		const expense = {};
@@ -86,23 +131,9 @@ class Expense extends React.Component {
 			console.log("document ", docRef.id, " added");
 			this.onListview();
 		});
+		// remove the temporary state
+		this.storage.remove("expenseState");
 	};
-
-	/**
-	 * handle input of most input fields
-	 * @param{string} name - name of both the inputfield & stateKey
-	 * @param{string} value - value of user input
-	 */
-
-	onChange = (name, value) => {
-		this.setState({ [name]: value }, () => console.log("state = ", this.state));
-	};
-
-	// navigate to invoices listView
-	onListview = () =>
-		this.props.history.push({
-			pathname: ROUTES.EXPENSES,
-		});
 
 	render() {
 		return (
@@ -128,15 +159,7 @@ class Expense extends React.Component {
 							handleOnChange={this.onChange}
 							labelText={this.I18n.get("EXPENSE.LABEL.COMPANY")}
 							name='company'
-							onButtonClick={() =>
-								this.props.history.push({
-									pathname: ROUTES.COMPANY,
-									params: {
-										prevLocation: this.props.location.pathname,
-										prevLocationName: "LOCATION.EXPENSE",
-									},
-								})
-							}
+							onButtonClick={this.handleNewCompany}
 							valueKey='ID'
 						/>
 					</div>
@@ -160,7 +183,8 @@ class Expense extends React.Component {
 						<Input
 							type='number'
 							displayInput={!this.isExistingExpense}
-							displayValue={this.state.amount && this.Utils.currencyFormat.format(this.state.amount)}
+							displayValue={this.state.amount}
+							extraClasses={componentStyles.euroSignBefore}
 							handleOnChange={this.onChange}
 							name='amount'
 							labelText={this.I18n.get("EXPENSE.LABEL.AMOUNT")}
@@ -168,9 +192,9 @@ class Expense extends React.Component {
 						<Select
 							labelText={this.I18n.get("EXPENSE.LABEL.TAX")}
 							name='vatrate'
-							displayValue={this.state.vatrate + " %"}
+							displayValue={this.state.vatrate}
 							displayInput={!this.isExistingExpense}
-							extraClasses='m-3'
+							extraClasses={componentStyles.percentSignAfter + " m-3"}
 							handleOnChange={this.onChange}
 							data={this.state.vatrates}
 							displayKey='rate'
