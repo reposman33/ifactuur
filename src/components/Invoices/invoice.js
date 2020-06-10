@@ -139,6 +139,7 @@ class Invoice extends React.Component {
 		});
 	};
 
+	// TODO: deleting a value in number field does not delete the value in data model - last displayhed value stays
 	/**
 	 * handle input in fields 'description', 'hourlyRrate' or 'hours'
 	 * @param{object} event - the event fired when changing one of the row imputs
@@ -194,12 +195,13 @@ class Invoice extends React.Component {
 			return total;
 		}, 0);
 
-		const totalVatAmount = _vatrate ? total * (_vatrate / 100) : 0;
+		// const totalVatAmount = typeof _vatrate != "undefined" ? total * (_vatrate / 100) : 0;
+		const totalVatAmount = total * (_vatrate / 100);
 
 		return {
-			totalBeforeVat: !!total ? total : "",
-			totalVatAmount: !!totalVatAmount ? totalVatAmount : false,
-			totalWithVat: !!totalVatAmount ? total + totalVatAmount : false,
+			totalBeforeVat: total,
+			totalVatAmount: totalVatAmount,
+			totalWithVat: total + totalVatAmount,
 		};
 	}
 
@@ -417,25 +419,33 @@ class Invoice extends React.Component {
 						{descriptionRows}
 
 						<div className={componentStyles.totals}>
+							{/* DISPLAY SUBTOTAL */}
 							<label>{this.I18n.get("INVOICE.LABEL.SUBTOTAL")}</label>
 							<span className={componentStyles.totalBeforeVat}>
-								{this.state.totals.totalBeforeVat &&
-									this.formatNumberAsCurrency(this.state.totals.totalBeforeVat)}
+								{this.state.totals.totalBeforeVat
+									? this.formatNumberAsCurrency(this.state.totals.totalBeforeVat)
+									: null}
 							</span>
 						</div>
 
 						{this.isExistingInvoice ? (
+							// EXISTING INVOICE
 							<div className={componentStyles.totals}>
 								<label>{this.I18n.get("INVOICE.LABEL.VATRATE")}:</label>
 								<span>{this.state.VATRate} % </span>
 								<span className={componentStyles.VatRate}>
-									{/* display the amount */}
-									{!!this.state.totals.totalVatAmount &&
-										this.formatNumberAsCurrency(this.state.totals.totalVatAmount)}
+									{/* DISPLAY TOTAL VAT AMOUNT */}
+
+									{/* display only when totalVatAmount is number  */}
+									{this.state.totals.totalVatAmount
+										? this.formatNumberAsCurrency(this.state.totals.totalVatAmount)
+										: null}
 								</span>
 							</div>
 						) : (
+							// NEW INVOICE
 							<div className={componentStyles.totals}>
+								{/* DISPLAY VAT SELECT */}
 								<Select
 									container={false}
 									labelText={this.I18n.get("INVOICE.LABEL.VATRATE")}
@@ -451,18 +461,25 @@ class Invoice extends React.Component {
 									handleOnChange={this.onVatRateChange}
 								/>
 
+								{/* DISPLAY TOTAL VAT AMOUNT */}
 								<span className={componentStyles.VatRate}>
-									{!!this.state.totals.totalVatAmount &&
-										this.formatNumberAsCurrency(this.state.totals.totalVatAmount)}
+									{/* display only when totalVatAmount is number  */}
+									{!isNaN(this.state.totals.totalVatAmount)
+										? this.formatNumberAsCurrency(this.state.totals.totalVatAmount)
+										: null}
 								</span>
 							</div>
 						)}
 						<div className={componentStyles.totals}>
 							<label>{this.I18n.get("INVOICE.LABEL.TOTAL")}</label>
 
+							{/* DISPLAY SUBTOTAL + VAT */}
 							<span className={componentStyles.totalWithVat}>
-								{!!this.state.totals.totalVatAmount &&
-									this.formatNumberAsCurrency(this.state.totals.totalWithVat)}
+								{!isNaN(this.state.totals.totalVatAmount) && // Display only when total vat amount is defined...
+								this.state.totals.totalBeforeVat !== 0 && // ...there is a subtotal amount...
+								!isNaN(this.state.totals.totalWithVat) // ... and total is defined.
+									? this.formatNumberAsCurrency(this.state.totals.totalWithVat)
+									: null}
 							</span>
 						</div>
 					</div>
