@@ -11,7 +11,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "../Shared/Button/button";
 import { InvoicePrint } from "../InvoicePrint/invoicePrint";
 import { ModalComponent } from "../Shared/Modal/Modal";
-import styles from "./../Shared/styles/react-bootstrap-table.module.scss";
+import ReactBootstrapTableStyles from "./../Shared/styles/react-bootstrap-table.module.scss";
+import componentStyles from "./invoices.module.scss";
 
 class Invoices extends React.Component {
 	constructor(props) {
@@ -30,35 +31,36 @@ class Invoices extends React.Component {
 		{
 			dataField: "dateTimeCreated",
 			formatter: (cell, row, rowIndex) => this.Utils.dateFormat.format(row.dateTimeCreated),
-			text: this.I18n.get("INVOICES.TABLE.HEADERS.DATE"),
 			sort: true,
+			text: this.I18n.get("INVOICES.TABLE.HEADERS.DATE"),
 		},
 		{
 			dataField: "companyName",
-			text: this.I18n.get("INVOICES.TABLE.HEADERS.CLIENT"),
+			formatter: (cell, row, rowIndex) => <span className={componentStyles.textOverflow}>{cell}</span>,
 			sort: true,
+			text: this.I18n.get("INVOICES.TABLE.HEADERS.CLIENT"),
 		},
 		{
 			dataField: "type",
-			text: this.I18n.get("INVOICES.TABLE.HEADERS.TYPE"),
 			headerStyle: { width: "10%" },
+			text: this.I18n.get("INVOICES.TABLE.HEADERS.TYPE"),
 		},
 		{
 			dataField: "statustitle",
-			text: this.I18n.get("INVOICES.TABLE.HEADERS.STATUS"),
 			headerStyle: { width: "10%" },
+			text: this.I18n.get("INVOICES.TABLE.HEADERS.STATUS"),
 		},
 		{
 			dataField: "actions",
-			text: this.I18n.get("INVOICES.TABLE.HEADERS.ACTIONS"),
-			isDummyField: true,
 			formatter: (cell, row, rowIndex) => (
-				<span className={styles.actionIcons}>
+				<span className={ReactBootstrapTableStyles.actionIcons}>
 					<FontAwesomeIcon icon='print' onClick={(e) => this.handlePrint(e, cell, row, rowIndex)} />
 					<FontAwesomeIcon icon='edit' onClick={(e) => this.handleEdit(e, cell, row, rowIndex)} />
 				</span>
 			),
 			headerStyle: { width: "10%" },
+			isDummyField: true,
+			text: this.I18n.get("INVOICES.TABLE.HEADERS.ACTIONS"),
 		},
 	];
 
@@ -200,7 +202,7 @@ class Invoices extends React.Component {
 				<BootstrapTable
 					bootstrap4
 					data={this.state.rowData}
-					classes={styles.ReactBootstrapTable}
+					classes={ReactBootstrapTableStyles.ReactBootstrapTable}
 					columns={this.getColumns()}
 					table={this.table}
 					keyField='ID'

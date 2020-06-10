@@ -1,0 +1,7 @@
+.textOverflow {
+	display: inline-block;
+	overflow: hidden;
+	white-space: nowrap;
+	width: 100%;
+	text-overflow: ellipsis;
+}

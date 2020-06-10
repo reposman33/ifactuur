@@ -9,7 +9,8 @@ import * as ROUTES from "../../constants/routes";
 import { withFirebase } from "../../Firebase";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "../Shared/Button/button";
-import styles from "./../Shared/styles/react-bootstrap-table.module.scss";
+import ReactBootstrapTableStyles from "./../Shared/styles/react-bootstrap-table.module.scss";
+import componentStyles from "./expenses.module.scss";
 
 /**
  * a document from Bills has the following fields
@@ -25,38 +26,42 @@ class Expenses extends React.Component {
 	I18n = new I18n();
 
 	componentDidMount() {
-		this.props.firebase.getCollection("bills", "date", ["date", "company", "amount"]).then((data) => {
+		this.props.firebase.getCollection("bills", "date", ["id", "date", "company", "amount"]).then((data) => {
 			this.setState({ rowData: data });
 		});
 	}
 
 	// define the columns for the table
 	getColumns = () => [
-		{ dataField: "id", text: "#", headerStyle: { width: "8%" }, sort: true },
+		{ dataField: "id", text: "#", headerStyle: { width: "4%" }, sort: true },
 		{
 			dataField: "date",
 			formatter: (cell, row, rowIndex) => this.Utils.dateFormat.format(cell),
-			text: this.I18n.get("EXPENSES.TABLE.HEADERS.DATE"),
+			headerStyle: { width: "15%" },
 			sort: true,
 			sortFunc: this.Utils.dateSortFunction,
+			text: this.I18n.get("EXPENSES.TABLE.HEADERS.DATE"),
 		},
 		{
 			dataField: "company",
+			formatter: (cell, row, rowIndex) => <span className={componentStyles.textOverflow}>{cell}</span>,
+			headerStyle: { width: "25%" },
 			text: this.I18n.get("EXPENSES.TABLE.HEADERS.COMPANY"),
 			sort: true,
 		},
 		{
 			dataField: "amount",
-			text: this.I18n.get("EXPENSES.TABLE.HEADERS.AMOUNT"),
+			headerStyle: { width: "10%" },
 			formatter: (cell, row) => this.Utils.currencyFormat.format(cell),
 			sort: true,
+			text: this.I18n.get("EXPENSES.TABLE.HEADERS.AMOUNT"),
 		},
 		{
 			dataField: "actions",
 			text: this.I18n.get("INVOICES.TABLE.HEADERS.ACTIONS"),
 			isDummyField: true,
 			formatter: () => (
-				<span className={styles.actionIcons}>
+				<span className={componentStyles.actionIcons}>
 					<FontAwesomeIcon icon='print' />
 					<FontAwesomeIcon icon='edit' />
 				</span>
@@ -109,7 +114,7 @@ class Expenses extends React.Component {
 				<BootstrapTable
 					bootstrap4
 					data={this.state.rowData}
-					classes={styles.ReactBootstrapTable}
+					classes={ReactBootstrapTableStyles.ReactBootstrapTable}
 					columns={this.getColumns()}
 					table={this.table}
 					keyField='ID'
