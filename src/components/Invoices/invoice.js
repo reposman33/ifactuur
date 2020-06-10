@@ -178,6 +178,7 @@ class Invoice extends React.Component {
 		});
 	};
 
+	// TODO: when vatrate ==== 0 also disklpoay toatalVatAmount & totalWithVat
 	/**
 	 * calculate amounts for totalBeforeVat, totalVatAmount and totalWithVat from the description array
 	 * @param {array} rows - object array with rows
@@ -246,7 +247,7 @@ class Invoice extends React.Component {
 	};
 
 	/**
-	 * submit te invoice
+	 * submit the invoice
 	 */
 	onSubmit = () => this.storeInvoice(this.checkInvoice(this.onCreateInvoice()));
 
@@ -265,7 +266,8 @@ class Invoice extends React.Component {
 
 	/**
 	 * @param{object} invoice - the invoice. Pass if no error, setState if error
-	 * @returns{boolean|object} - in case of error | no error
+	 * @returns{boolean|object} - false in case of error | invoice if no error
+	 * @sideEffect - sets this.state.invoiceStatus if invoice is not valid
 	 */
 	checkInvoice = (invoice) => {
 		if (invoice.error) {
@@ -282,7 +284,7 @@ class Invoice extends React.Component {
 	};
 
 	/**
-	 * @param{object} invoice - the invoice. Pass if no error, setState if error
+	 * @param{boolean|object} false|invoice - this param is false if invoice is invalid | param is the invoice if invoice is valid.
 	 * @returns void - calls fireStore as an sideEffect
 	 */
 	storeInvoice = (invoice) => {
@@ -390,7 +392,6 @@ class Invoice extends React.Component {
 							labelText={this.I18n.get("INVOICE.LABEL.COMPANY")}
 							name={this.FIELDNAMES.COMPANYNAME}
 							onButtonClick={this.handleNewCompany}
-							required={true}
 							valueKey='ID'
 						/>
 					</div>
@@ -472,7 +473,6 @@ class Invoice extends React.Component {
 						text={this.I18n.get("INVOICE.BUTTON.BACK")}
 						extraStyles={{ marginLeft: "0.8rem" }}
 					/>
-
 					<Button
 						disabled={this.isExistingInvoice}
 						onClick={this.onSubmit}
