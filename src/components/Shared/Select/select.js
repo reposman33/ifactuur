@@ -1,4 +1,3 @@
-// TODO: the default selected value should be set in the parent state. Without changing a select the displayed value should be the state value.
 import React from "react";
 import styles from "./select.module.scss";
 /**
