@@ -17,19 +17,9 @@ class Invoice extends React.Component {
 
 		this.Utils = new Utils();
 		this.I18n = new I18n();
-
 		this.storage = undefined; // to be set in componentDidMount
-		// When storing data all state values are strings. They have to be xformed to their respective types.
-		// Below the state keys and their transform functions to apply.
-		this.persistFields = {
-			VATRate: parseInt,
-			companyName: (fieldValue) => fieldValue, // return value as is
-			dateTimeCreated: (date) => new Date(date),
-			invoiceNr: parseInt,
-			rows: (fieldValue) => fieldValue,
-			totals: (fieldValue) => fieldValue,
-			type: (fieldValue) => fieldValue,
-		};
+		this.isExistingInvoice = !!(!!this.props.location.state && this.props.location.state.id);
+		this.nrOfDescriptionRows = 10;
 
 		// initialize state
 		this.state = {
@@ -54,9 +44,18 @@ class Invoice extends React.Component {
 			VatRates: [],
 		};
 
-		this.isExistingInvoice = !!(!!this.props.location.state && this.props.location.state.id);
-		this.nrOfDescriptionRows = 10;
+		// Transformation functions for fieldvalues before storing.
+		this.persistFields = {
+			companyName: (fieldValue) => fieldValue, // return value as is
+			dateTimeCreated: (date) => new Date(date),
+			invoiceNr: parseInt,
+			rows: (fieldValue) => fieldValue,
+			totals: (fieldValue) => fieldValue,
+			type: (fieldValue) => fieldValue,
+			VATRate: parseInt,
+		};
 
+		// Use constants for fieldnames instead of literals
 		this.FIELDNAMES = {
 			DATECREATED: "dateTimeCreated",
 			PERIOD_FROM: "periodFrom",
@@ -71,6 +70,18 @@ class Invoice extends React.Component {
 			TYPE: "type",
 			ROWS: "rows",
 		};
+
+		// To assert the validity of a value use this map with assertions for each invoiceField. Note: this is output from DOMelements. E.g. <input type="date"> returns a DOMString
+		this.assertFieldOfType = {
+			companyName: (value) => typeof value === "string",
+			dateTimeCreated: (value) => typeof value === "string",
+			// NOT a Date but nice to know how to check for it: Object.prototype.toString.call(value) === "[object String]",
+			invoiceNr: (value) => typeof value === "number",
+			rows: (value) => Array.isArray(value) && value.length > 0,
+			totals: (value) => value === Object(value) && Object.keys(value).length > 0 && value.totalWithVat, // check a numeric value has been submit
+			type: (value) => typeof value === "string",
+			VATRate: (value) => typeof value === "string",
+		};
 	}
 
 	componentDidMount = () => {
@@ -84,7 +95,6 @@ class Invoice extends React.Component {
 			});
 		} else {
 			const newInvoicePromises = [];
-			// retrieve last invoiceNr,companies and VatRates
 			// retrieve last invoiceNr
 			newInvoicePromises.push(this.props.firebase.getNewFieldValue("invoices", "invoiceNr"));
 			// retrieve companies
@@ -96,10 +106,10 @@ class Invoice extends React.Component {
 				this.setState({ invoiceNr: values[0], companies: values[1], VatRates: values[2] });
 			});
 		}
-		// consume the persistence context
+		// retrieve the (session)storage class
 		this.storage = this.context;
 
-		// overwrite the state when a previous state is stored
+		// store the state in (session)storage
 		const storedState = this.storage.get("invoiceState");
 		if (storedState) {
 			this.setState(storedState);
@@ -117,6 +127,9 @@ class Invoice extends React.Component {
 
 	/**
 	 * when selecting a VatRate also calculate totals
+	 * @param{string} elementName - name of the DOM element: VATRate
+	 * @param{string} elementValue - value of the DOM element: the chosen vat rate (0,9,21)
+	 * @ returns void. Sets state key 'totals'
 	 */
 	onVatRateChange = (elementName, elementValue) => {
 		// update state.VatRate
@@ -128,6 +141,8 @@ class Invoice extends React.Component {
 
 	/**
 	 * handle input in fields 'description', 'hourlyRrate' or 'hours'
+	 * @param{object} event - the event fired when changing one of the row imputs
+	 * @returns void - Sets state keys 'rows' and 'totals'
 	 */
 	handleDescriptionInput = (event) => {
 		// let { name, value } = { name: "description", value: "direct ly set value" };
@@ -165,8 +180,9 @@ class Invoice extends React.Component {
 
 	/**
 	 * calculate amounts for totalBeforeVat, totalVatAmount and totalWithVat from the description array
-	 * @param {string} invoiceData - stringified object array 1 object containing description, hourlyRate and hours for at least the first row
-	 * @returns {object} with amounts calculated
+	 * @param {array} rows - object array with rows
+	 * @param {string} vatrate - the chosemn vatrate (0,9,21)
+	 * @returns {object} with amounts / vatvalue calculated
 	 */
 	getTotalInvoiceAmount(rows, vatrate) {
 		const _vatrate = parseInt(vatrate);
@@ -186,7 +202,10 @@ class Invoice extends React.Component {
 		};
 	}
 
-	// formatNumberAsCurrency
+	/**
+	 * @param{number} number - the number to prefix with EUR
+	 * @returns {string} - the number with currenctsymbol
+	 * */
 	formatNumberAsCurrency = (number) => {
 		return new Intl.NumberFormat(this.I18n.getLocale(), {
 			style: "currency",
@@ -194,7 +213,9 @@ class Invoice extends React.Component {
 		}).format(number);
 	};
 
-	// onListview
+	/**
+	 * Return to the listview of invoices
+	 */
 	onListview = () => {
 		// remove the temporary state
 		this.storage.remove("invoiceState");
@@ -203,9 +224,13 @@ class Invoice extends React.Component {
 		});
 	};
 
+	/**
+	 * When user clicks 'New company' store current state and switch to Company component
+	 */
 	handleNewCompany = () => {
 		// copy the state values that will be eventually stored to temporary storage. To be picked up when returning from creating a new company
 		const persistFields = Object.keys(this.persistFields);
+		// store curernt state under key in (session)Storage
 		this.storage.set(
 			"invoiceState",
 			persistFields.reduce((acc, persistField) => {
@@ -213,37 +238,35 @@ class Invoice extends React.Component {
 				return acc;
 			}, {})
 		);
+		// render Company component
 		this.props.history.push({
 			pathname: ROUTES.COMPANY,
 			params: { prevLocation: this.props.location.pathname, prevLocationName: "LOCATION.INVOICE" },
 		});
 	};
 
-	// onSubmit
+	/**
+	 * submit te invoice
+	 */
 	onSubmit = () => this.storeInvoice(this.checkInvoice(this.onCreateInvoice()));
 
+	/**
+	 * Check is all fields are valid, convert to correct type
+	 * @returns{object} invoice - the invoice, optionally with an error key
+	 */
 	onCreateInvoice = () => {
-		return Object.keys(this.persistFields).reduce(
-			// filter keys and optionally convert state prop values
-			(acc, key) => {
-				if (
-					// check the state value before adding to invoice object:
-					this.state[key] && // it should be defined...
-					((Array.isArray(this.state[key]) && this.state[key].length > 0) || // ...if Array it should be filled...
-					(this.state[key] === Object(this.state[key]) && Object.keys(this.state[key]).length > 0) || // ...if Object it should have keys...
-					(typeof this.state[key] === "string" && this.state[key]).length > 0 || // ...it should not be ""...
-					typeof this.state[key] === "number" || // ... it can be any Number...
-						Object.prototype.toString.call(this.state[key]) === "[object Date]") // ... it can be a Date
-				) {
-					acc[key] = this.persistFields[key](this.state[key]);
-				} else {
-					acc.error = true;
-				}
-				return acc;
-			},
-			{}
-		);
+		return Object.keys(this.persistFields).reduce((acc, key) => {
+			acc = this.assertFieldOfType[key](this.state[key]) // check if field is valid...
+				? Object.assign(acc, { [key]: this.persistFields[key](this.state[key]) }) // if so, convert string to correct type
+				: Object.assign(acc, { error: true }); // else error
+			return acc;
+		}, {});
 	};
+
+	/**
+	 * @param{object} invoice - the invoice. Pass if no error, setState if error
+	 * @returns{boolean|object} - in case of error | no error
+	 */
 	checkInvoice = (invoice) => {
 		if (invoice.error) {
 			this.setState({
@@ -258,6 +281,10 @@ class Invoice extends React.Component {
 		}
 	};
 
+	/**
+	 * @param{object} invoice - the invoice. Pass if no error, setState if error
+	 * @returns void - calls fireStore as an sideEffect
+	 */
 	storeInvoice = (invoice) => {
 		if (invoice) {
 			// add the current user id!
