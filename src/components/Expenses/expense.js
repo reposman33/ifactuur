@@ -258,7 +258,7 @@ class Expense extends React.Component {
 							handleOnChange={this.onChange}
 							labelText={this.I18n.get("EXPENSE.LABEL.TAX")}
 							name={this.FIELDNAMES.VATRATE}
-							valueKey='ID'
+							valueKey='id'
 						/>
 					</div>
 				</div>
