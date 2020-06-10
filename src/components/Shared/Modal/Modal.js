@@ -7,7 +7,7 @@ const ModalComponent = (props) => {
 		<Modal centered show={props.show} backdrop={true} onHide={props.closeModal}>
 			<Modal.Header closeButton></Modal.Header>
 			<Modal.Body>{props.content}</Modal.Body>
-			<Modal.Footer>{props.printButton}</Modal.Footer>
+			<Modal.Footer></Modal.Footer>
 		</Modal>
 	);
 };

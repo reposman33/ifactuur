@@ -4,10 +4,9 @@
 }
 
 .invoicePrint {
-	background-color: #fff9d6;
 	font-size: 1rem;
 	height: 297mm;
-	margin-left: 3rem;
+	margin-left: 3.5rem;
 	width: 210mm;
 
 	& .factuurDatum {
@@ -49,8 +48,10 @@
 		width: 700px;
 		border-collapse: collapse;
 		font-size: 8pt;
-		left: 45px;
-		/*	height: 505px;*/
+
+		& tr td {
+			padding: 0 1rem;
+		}
 
 		& .tableHeader {
 			background-color: #839daa;
@@ -118,33 +119,12 @@
 	}
 }
 
-.notitiesFrame,
 .footerFrame {
 	border: 1px solid #444;
-	width: 699px;
-	height: 125px;
-}
-
-.notitiesFrame {
-	border: 1px dotted #000;
-	margin: 0 50px;
-	position: absolute;
-	top: 1150px;
-}
-
-.notitiesFrame textarea {
-	font-size: 10px;
-	color: #444;
-	border: none;
-	width: inherit;
-	height: 100px;
-}
-
-.footerFrame {
-	margin: 0 20px;
+	width: 700px;
 	position: absolute;
 	top: 1000px;
-	left: 25px;
+	padding: 1rem;
 }
 
 .footerFrame,

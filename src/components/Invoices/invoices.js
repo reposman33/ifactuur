@@ -195,7 +195,7 @@ class Invoices extends React.Component {
 								userCompany={this.state.userCompany}
 							/>
 						}
-						printButton={<Button text='Print factuur' onClick={this.hideModal} />}
+						footer={<Button text='Print factuur' onClick={this.hideModal} />}
 						show={this.state.modal}
 					/>
 				)}
