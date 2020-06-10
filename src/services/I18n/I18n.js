@@ -91,6 +91,14 @@ export class I18n {
 				BACK: { en: "Back to overview", nl: "Terug naar overzicht" },
 				SAVE: { en: "Save and show overview", nl: "Bewaar en naar overzicht" },
 			},
+			SUBMIT: {
+				ERROR: {
+					MISSINGFIELDVALUES: {
+						en: "The expense is not filled in completely. Please fill in missing values",
+						nl: "De nota is niet volledig ingevuld. Vul a.u.b. de ontbrekende gegevens in.",
+					},
+				},
+			},
 		},
 
 		INVOICES: {

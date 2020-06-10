@@ -27,6 +27,10 @@ class Expense extends React.Component {
 			company: undefined,
 			date: undefined,
 			description: undefined,
+			expenseStatus: {
+				error: false,
+				message: "",
+			},
 			vatrate: undefined,
 			vatrates: [],
 		};
@@ -40,6 +44,24 @@ class Expense extends React.Component {
 			vatrate: parseInt,
 		};
 		this.isExistingExpense = !!(!!this.props.location.state && !!this.props.location.state.id);
+
+		// Use constants for fieldnames instead of literals
+		this.FIELDNAMES = {
+			DATE: "date",
+			COMPANY: "company",
+			DESCRIPTION: "description",
+			AMOUNT: "amount",
+			VATRATE: "vatrate",
+		};
+
+		// To assert the validity of a value use this map with assertions for each invoiceField. Note: this is output from DOMelements. E.g. <input type="date"> returns a DOMString
+		this.assertFieldOfType = {
+			amount: (value) => typeof value === "string" && value.length > 0,
+			company: (value) => typeof value === "string" && value.length > 0,
+			date: (value) => typeof value === "string" && value.length > 0,
+			description: (value) => typeof value === "string" && value.length > 0,
+			vatrate: (value) => typeof value === "string" && value.length > 0,
+		};
 	}
 
 	componentDidMount() {
@@ -116,31 +138,61 @@ class Expense extends React.Component {
 			pathname: ROUTES.COMPANY,
 			params: {
 				prevLocation: this.props.location.pathname,
-				prevLocationName: "LOCATION.INVOICE",
+				prevLocationName: "LOCATION.EXPENSE",
 			},
 		});
 	};
 
-	onSubmit = () => {
-		const expense = {};
-		Object.keys(this.persistFields).map(
-			// filter keys and optionally convert state prop values
-			(key) => {
-				if (this.state[key]) {
-					expense[key] = this.persistFields[key](this.state[key]);
-				}
-				return null;
-			}
-		);
-		// add the current user id!
-		expense.userId = this.props.firebase.auth.currentUser.uid;
-		// save to fireStore
-		this.props.firebase.addDocumentToCollection("bills", expense).then((docRef) => {
-			console.log("document ", docRef.id, " added");
-			this.onListview();
-		});
-		// remove the temporary state
-		this.storage.remove("expenseState");
+	/**
+	 * submit the expense
+	 */
+	onSubmit = () => this.storeExpense(this.checkExpense(this.onCreateExpense()));
+
+	/**
+	 * Check is all fields are valid, convert to correct type
+	 * @returns{object} expense - the expense, optionally with an error key
+	 */
+	onCreateExpense = () => {
+		return Object.keys(this.persistFields).reduce((acc, key) => {
+			acc = this.assertFieldOfType[key](this.state[key]) // check if field is valid...
+				? Object.assign(acc, { [key]: this.persistFields[key](this.state[key]) }) // if so, convert string to correct type
+				: Object.assign(acc, { error: true }); // else error
+			return acc;
+		}, {});
+	};
+
+	/**
+	 * @param{object} expense - the expense.
+	 * @returns{boolean|object} - false in case of error | expense if no error
+	 * @sideEffect - sets this.state.expenseStatus if expense is not valid
+	 */
+	checkExpense = (expense) => {
+		if (expense.error) {
+			this.setState({
+				expenseStatus: {
+					error: true,
+					message: this.I18n.get("EXPENSE.SUBMIT.ERROR.MISSINGFIELDVALUES"),
+				},
+			});
+			return false;
+		} else {
+			return expense;
+		}
+	};
+
+	/**
+	 * @param{boolean|object} false|expense - this param is false if expense is invalid | param is the expense if expense is valid.
+	 * @returns void - calls fireStore as an sideEffect
+	 */
+	storeExpense = (expense) => {
+		if (expense) {
+			// add the current user id!
+			expense.userId = this.props.firebase.auth.currentUser.uid;
+			this.props.firebase.addDocumentToCollection("bills", expense).then((docRef) => {
+				console.log("document ", docRef.id, " added");
+				this.onListview();
+			});
+		}
 	};
 
 	render() {
@@ -153,7 +205,7 @@ class Expense extends React.Component {
 							displayValue={this.state.date}
 							handleOnChange={this.onChange}
 							labelText={this.I18n.get("EXPENSE.LABEL.DATE")}
-							name='date'
+							name={this.FIELDNAMES.DATE}
 						/>
 					</div>
 					<div className='col w-50'>
@@ -166,7 +218,7 @@ class Expense extends React.Component {
 							extraClasses='w-100 mr-3'
 							handleOnChange={this.onChange}
 							labelText={this.I18n.get("EXPENSE.LABEL.COMPANY")}
-							name='company'
+							name={this.FIELDNAMES.COMPANY}
 							onButtonClick={this.handleNewCompany}
 							valueKey='ID'
 						/>
@@ -181,7 +233,7 @@ class Expense extends React.Component {
 							extraClasses='w-100 m-3'
 							handleOnChange={this.onChange}
 							labelText={this.I18n.get("EXPENSE.LABEL.ITEM")}
-							name='description'
+							name={this.FIELDNAMES.DESCRIPTION}
 							rows='10'
 						/>
 					</div>
@@ -189,28 +241,28 @@ class Expense extends React.Component {
 				<div className='row'>
 					<div className='col d-flex flex-row justify-content-between'>
 						<Input
-							type='number'
 							displayInput={!this.isExistingExpense}
 							displayValue={this.state.amount}
 							extraClasses={componentStyles.euroSignBefore}
 							handleOnChange={this.onChange}
-							name='amount'
 							labelText={this.I18n.get("EXPENSE.LABEL.AMOUNT")}
+							name={this.FIELDNAMES.AMOUNT}
+							type='number'
 						/>
 						<Select
-							labelText={this.I18n.get("EXPENSE.LABEL.TAX")}
-							name='vatrate'
-							displayValue={this.state.vatrate}
+							data={this.state.vatrates}
 							displayInput={!this.isExistingExpense}
+							displayKey='rate'
+							displayValue={this.state.vatrate}
 							extraClasses={componentStyles.percentSignAfter + " m-3"}
 							handleOnChange={this.onChange}
-							data={this.state.vatrates}
-							displayKey='rate'
+							labelText={this.I18n.get("EXPENSE.LABEL.TAX")}
+							name={this.FIELDNAMES.VATRATE}
 							valueKey='ID'
 						/>
 					</div>
 				</div>
-				<div className='d-flex justify-content-between'>
+				<div className='d-flex mb-2 justify-content-between'>
 					<Button
 						extraStyles={{ marginLeft: "0.8rem" }}
 						extraClasses='m-3'
@@ -225,6 +277,9 @@ class Expense extends React.Component {
 						text={this.I18n.get("EXPENSE.BUTTON.SAVE")}
 					/>
 				</div>
+				<span className='d-block margin-auto text-center text-danger'>
+					{this.state.expenseStatus.error && this.state.expenseStatus.message}
+				</span>
 			</div>
 		);
 	}
