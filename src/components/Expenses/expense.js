@@ -51,8 +51,8 @@ class Expense extends React.Component {
 			newExpensePromises$.push(this.props.firebase.getVatRates());
 			Promise.all(newExpensePromises$).then((values) => {
 				this.setState({
-					companies: values[1],
-					vatrates: values[2],
+					companies: values[0],
+					vatrates: values[1],
 				});
 			});
 		} else {
