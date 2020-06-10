@@ -1,13 +1,13 @@
 import React from "react";
+import { Button } from "../Shared/Button/button";
 import { DateComponent } from "../Shared/Date/date";
 import { Select } from "../Shared/Select/select";
-import { Button } from "../Shared/Button/button";
 import { I18n } from "../../services/I18n/I18n";
 import { Utils } from "../../services/Utils";
+import { PersistenceContext } from "../../constants/contexts";
 import * as ROUTES from "../../constants/routes";
 import { withFirebase } from "../../Firebase";
-import { PersistenceContext } from "../../constants/contexts";
-import styles from "./invoice.module.scss";
+import componentStyles from "./invoice.module.scss";
 
 class Invoice extends React.Component {
 	static contextType = PersistenceContext;
@@ -305,11 +305,11 @@ class Invoice extends React.Component {
 		const descriptionRows = [];
 		for (let row = 0; row < this.nrOfDescriptionRows; row++) {
 			descriptionRows.push(
-				<div key={row} className={styles.descriptionRow}>
+				<div key={row} className={componentStyles.descriptionRow}>
 					<input
 						type='text'
 						name={`${this.FIELDNAMES.DESCRIPTION}_${row}`}
-						className={styles.description}
+						className={componentStyles.description}
 						onChange={this.handleDescriptionInput}
 						disabled={this.isExistingInvoice}
 						defaultValue={
@@ -318,11 +318,11 @@ class Invoice extends React.Component {
 								: ""
 						}
 					/>
-					<span className={styles.currency}>&euro;</span>
+					<span className={componentStyles.currency}>&euro;</span>
 					<input
 						type='number'
 						name={`${this.FIELDNAMES.HOURLYRATE}_${row}`}
-						className={styles.hourlyrateInt}
+						className={componentStyles.hourlyrateInt}
 						disabled={this.isExistingInvoice}
 						onChange={this.handleDescriptionInput}
 						defaultValue={
@@ -334,7 +334,7 @@ class Invoice extends React.Component {
 					<input
 						type='number'
 						name={`${this.FIELDNAMES.HOURS}_${row}`}
-						className={styles.hours}
+						className={componentStyles.hours}
 						disabled={this.isExistingInvoice}
 						onChange={this.handleDescriptionInput}
 						defaultValue={
@@ -343,7 +343,7 @@ class Invoice extends React.Component {
 								: undefined
 						}
 					/>
-					<span className={styles.total}>
+					<span className={componentStyles.total}>
 						{this.state.rows[row] &&
 						this.state.rows[row].uurtarief &&
 						this.state.rows[row] &&
@@ -357,7 +357,7 @@ class Invoice extends React.Component {
 			);
 		}
 		return (
-			<div className={styles.invoiceComponent}>
+			<div className={componentStyles.invoiceComponent}>
 				<div className='row'>
 					<div className='col d-flex flex-row'>
 						<DateComponent
@@ -398,37 +398,43 @@ class Invoice extends React.Component {
 				<div className='row'>
 					<div className='col d-flex flex-column'>
 						<div className='d-flex flex-row justify-content-start'>
-							<label className={styles.columnHeader}>
+							<label className={componentStyles.columnHeader}>
 								{this.I18n.get("INVOICE.COLUMNHEADER.SERVICES")}
 							</label>
 							{/* use a dummy label to line other labels out above their columns*/}
-							<label className={styles.columnHeader}>{this.I18n.get("INVOICE.COLUMNHEADER.RATE")}</label>
-							<label className={styles.columnHeader}>{this.I18n.get("INVOICE.COLUMNHEADER.HOURS")}</label>
-							<label className={styles.columnHeader}>{this.I18n.get("INVOICE.COLUMNHEADER.TOTAL")}</label>
+							<label className={componentStyles.columnHeader}>
+								{this.I18n.get("INVOICE.COLUMNHEADER.RATE")}
+							</label>
+							<label className={componentStyles.columnHeader}>
+								{this.I18n.get("INVOICE.COLUMNHEADER.HOURS")}
+							</label>
+							<label className={componentStyles.columnHeader}>
+								{this.I18n.get("INVOICE.COLUMNHEADER.TOTAL")}
+							</label>
 						</div>
 
 						{descriptionRows}
 
-						<div className={styles.totals}>
+						<div className={componentStyles.totals}>
 							<label>{this.I18n.get("INVOICE.LABEL.SUBTOTAL")}</label>
-							<span className={styles.totalBeforeVat}>
+							<span className={componentStyles.totalBeforeVat}>
 								{this.state.totals.totalBeforeVat &&
 									this.formatNumberAsCurrency(this.state.totals.totalBeforeVat)}
 							</span>
 						</div>
 
 						{this.isExistingInvoice ? (
-							<div className={styles.totals}>
+							<div className={componentStyles.totals}>
 								<label>{this.I18n.get("INVOICE.LABEL.VATRATE")}:</label>
 								<span>{this.state.VATRate} % </span>
-								<span className={styles.VatRate}>
+								<span className={componentStyles.VatRate}>
 									{/* display the amount */}
 									{!!this.state.totals.totalVatAmount &&
 										this.formatNumberAsCurrency(this.state.totals.totalVatAmount)}
 								</span>
 							</div>
 						) : (
-							<div className={styles.totals}>
+							<div className={componentStyles.totals}>
 								<Select
 									container={false}
 									labelText={this.I18n.get("INVOICE.LABEL.VATRATE")}
@@ -444,16 +450,16 @@ class Invoice extends React.Component {
 									handleOnChange={this.onVatRateChange}
 								/>
 
-								<span className={styles.VatRate}>
+								<span className={componentStyles.VatRate}>
 									{!!this.state.totals.totalVatAmount &&
 										this.formatNumberAsCurrency(this.state.totals.totalVatAmount)}
 								</span>
 							</div>
 						)}
-						<div className={styles.totals}>
+						<div className={componentStyles.totals}>
 							<label>{this.I18n.get("INVOICE.LABEL.TOTAL")}</label>
 
-							<span className={styles.totalWithVat}>
+							<span className={componentStyles.totalWithVat}>
 								{!!this.state.totals.totalVatAmount &&
 									this.formatNumberAsCurrency(this.state.totals.totalWithVat)}
 							</span>
