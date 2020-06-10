@@ -35,7 +35,7 @@ class Expenses extends React.Component {
 		{ dataField: "id", text: "#", headerStyle: { width: "8%" }, sort: true },
 		{
 			dataField: "date",
-			formatter: (cell, row, rowIndex) => this.Utils.dateFormat.format(cell.date),
+			formatter: (cell, row, rowIndex) => this.Utils.dateFormat.format(cell),
 			text: this.I18n.get("EXPENSES.TABLE.HEADERS.DATE"),
 			sort: true,
 			sortFunc: this.Utils.dateSortFunction,
@@ -115,7 +115,6 @@ class Expenses extends React.Component {
 					keyField='ID'
 					rowEvents={{ onClick: this.onRowClick }}
 					pagination={paginationFactory(this.paginationConfig)}></BootstrapTable>
-
 				<Button
 					extraClasses='btn btn-primary float-right mr-3'
 					onClick={this.handleNewExpense}
