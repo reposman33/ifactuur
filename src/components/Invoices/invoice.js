@@ -139,7 +139,6 @@ class Invoice extends React.Component {
 		});
 	};
 
-	// TODO: deleting a value in number field does not delete the value in data model - last displayhed value stays
 	/**
 	 * handle input in fields 'description', 'hourlyRrate' or 'hours'
 	 * @param{object} event - the event fired when changing one of the row imputs
