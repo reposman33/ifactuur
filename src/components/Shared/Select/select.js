@@ -19,9 +19,9 @@ import styles from "./select.module.scss";
  */
 const Select = ({
 	buttonText,
+	columnView = true,
 	container = true,
 	data,
-	columnView = true,
 	displayInput,
 	displayKey,
 	displayValue,
@@ -54,6 +54,9 @@ const Select = ({
 							onChange={onChange}
 							value={displayValue}
 							style={Object.assign(selectStyle, extraStyles)}>
+							<option key={""} value={null}>
+								---
+							</option>
 							{data.map((ob, i) => (
 								<option key={i} value={ob[displayKey]}>
 									{ob[displayKey]}
