@@ -118,8 +118,8 @@ class Invoice extends React.Component {
 
 	/**
 	 * handle input of most input fields
-	 * @param{string} name - name of both the inputfield & stateKey
-	 * @param{string} value - value of user input
+	 * @param{string} name - name of the inputfield
+	 * @param{string} value - value of the inputfield
 	 */
 	onChange = (name, value) => {
 		this.setState({ [name]: value });

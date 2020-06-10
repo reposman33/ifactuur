@@ -16,7 +16,11 @@ class Expense extends React.Component {
 
 	constructor(props) {
 		super(props);
+		this.Utils = new Utils();
+		this.I18n = new I18n();
+		this.storage = undefined; // to be set in componentDidMount
 
+		// initialize state
 		this.state = {
 			amount: undefined,
 			companies: [],
@@ -27,11 +31,7 @@ class Expense extends React.Component {
 			vatrates: [],
 		};
 
-		this.Utils = new Utils();
-		this.I18n = new I18n();
-		this.storage = undefined; // to be set in componentDidMount
-
-		// conversion function per field to apply to state when persisting to fireStore
+		// Transformation functions for fieldvalues before storing.
 		this.persistFields = {
 			amount: parseFloat,
 			company: (fieldValue) => fieldValue,
@@ -79,15 +79,16 @@ class Expense extends React.Component {
 
 	/**
 	 * handle input of most input fields
-	 * @param{string} name - name of both the inputfield & stateKey
-	 * @param{string} value - value of user input
+	 * @param{string} name - name of the inputfield
+	 * @param{string} value - value of the inputfield
 	 */
-
 	onChange = (name, value) => {
 		this.setState({ [name]: value });
 	};
 
-	// navigate to invoices listView
+	/**
+	 * Return to the listview of expenses
+	 */
 	onListview = () => {
 		// remove the temporary state
 		this.storage.remove("expenseState");
@@ -97,6 +98,9 @@ class Expense extends React.Component {
 		});
 	};
 
+	/**
+	 * When user clicks 'New company' store current state and switch to Company component
+	 */
 	handleNewCompany = () => {
 		// copy the state values that will be eventually stored to temporary storage. To be picked up when returning from creating a new company
 		const persistFields = Object.keys(this.persistFields);
@@ -107,9 +111,13 @@ class Expense extends React.Component {
 				return acc;
 			}, {})
 		);
+		// render Company component
 		this.props.history.push({
 			pathname: ROUTES.COMPANY,
-			params: { prevLocation: this.props.location.pathname, prevLocationName: "LOCATION.INVOICE" },
+			params: {
+				prevLocation: this.props.location.pathname,
+				prevLocationName: "LOCATION.INVOICE",
+			},
 		});
 	};
 
