@@ -123,14 +123,14 @@ class Invoices extends React.Component {
 							this.props.firebase.getUserSettings().then((userSettings) =>
 								this.props.firebase
 									.getDocumentFromCollectionByField("companies", "id", userSettings.companyId)
-									.then((usersCompany) =>
+									.then((userCompany) =>
 										this.setState({
 											// prevent this to run for the same invoiceNr
 											prevInvoiceNr: this.state.invoiceNr,
 											invoice: invoice,
 											company: company,
 											userSettings: userSettings,
-											usersCompany: usersCompany,
+											userCompany: userCompany,
 										})
 									)
 							)
@@ -192,7 +192,7 @@ class Invoices extends React.Component {
 								invoice={this.state.invoice}
 								company={this.state.company}
 								userSettings={this.state.userSettings}
-								usersCompany={this.state.usersCompany}
+								userCompany={this.state.userCompany}
 							/>
 						}
 						printButton={<Button text='Print factuur' onClick={this.hideModal} />}

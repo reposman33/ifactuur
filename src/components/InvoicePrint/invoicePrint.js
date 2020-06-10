@@ -5,12 +5,12 @@ import styles from "./invoicePrint.module.scss";
 
 /**
  * The printable invoice.
- * @param {Object} props
+ * @param {Object} props (Utils,invoiceNr,invoice,company, userSettings, userCompany])
  *
  */
 const InvoicePrint = (props) => {
 	return (
-		<div className={styles.invoicePrint}>
+		<div id={props.invoiceNr} className={styles.invoicePrint}>
 			{/* FACTUUR */}
 			<div className={styles.factuurDatum + " mb-3"}>
 				<div className={styles.header + " mb-3"}>{props.invoice.type === "credit" && "Credit "} Factuur</div>
@@ -45,14 +45,14 @@ const InvoicePrint = (props) => {
 
 			{/* USER */}
 			<div className={styles.creditor + " mt-3"}>
-				<span className={styles.header}>{props.usersCompany.name}</span>
+				<span className={styles.header}>{props.userCompany.name}</span>
 				<div>{props.userSettings.address}</div>
 				<div>
 					{props.userSettings.zipcode}&nbsp;&nbsp;
 					{props.userSettings.city}
 				</div>
-				<div>KvK Amsterdam:&nbsp;{props.usersCompany.kvknr}</div>
-				<div>BTW nr:&nbsp;{props.usersCompany.btwnr}</div>
+				<div>KvK Amsterdam:&nbsp;{props.userCompany.kvknr}</div>
+				<div>BTW nr:&nbsp;{props.userCompany.btwnr}</div>
 			</div>
 
 			<div className={styles.factuurTable}>
@@ -141,9 +141,9 @@ const InvoicePrint = (props) => {
 					{props.userSettings.paymentTerm}
 					dagen over te maken op het onderstaande rekeningnummer:
 					<div className={styles.userRekening}>
-						<span>{props.usersCompany.bankAccountNr}</span>{" "}
-						<span>T.n.v. {props.usersCompany.bankAccountName}</span>
-						<span>{props.usersCompany.bankAccountCity}</span>
+						<span>{props.userCompany.bankAccountNr}</span>{" "}
+						<span>T.n.v. {props.userCompany.bankAccountName}</span>
+						<span>{props.userCompany.bankAccountCity}</span>
 					</div>
 				</div>
 
