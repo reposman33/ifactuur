@@ -22,7 +22,6 @@ const DateComponent = ({
 	name,
 }) => {
 	const onChange = (event) => {
-		//setDate(event.target.value);
 		handleOnChange(event.target.name, event.target.value);
 	};
 
