@@ -52,7 +52,8 @@ class App extends React.Component {
 	}
 
 	componentDidMount() {
-		document.title = `${config.projectId} - ${process.env.NODE_ENV}`;
+		document.title = `${config.projectPublicName} - ${process.env.NODE_ENV === "development" &&
+			process.env.NODE_ENV}`;
 	}
 
 	setLanguage = (lang) => {

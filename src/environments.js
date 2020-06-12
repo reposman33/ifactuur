@@ -5,7 +5,8 @@ export const config_dev = {
 	projectId: "ifactuur-v2",
 	storageBucket: "ifactuur-v2.appspot.com",
 	messagingSenderId: "559304969817",
-	appId: "1:559304969817:web:a37b2f2540b097062e6b48"
+	appId: "1:559304969817:web:a37b2f2540b097062e6b48",
+	projectPublicName: "UurtjeFactuurtje",
 };
 
 export const config_prod = {
@@ -15,5 +16,6 @@ export const config_prod = {
 	projectId: "ifactuur-v2",
 	storageBucket: "ifactuur-v2.appspot.com",
 	messagingSenderId: "559304969817",
-	appId: "1:559304969817:web:a37b2f2540b097062e6b48"
+	appId: "1:559304969817:web:a37b2f2540b097062e6b48",
+	projectPublicName: "UurtjeFactuurtje",
 };
