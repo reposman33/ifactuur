@@ -45,7 +45,7 @@ class SignUpForm extends Component {
 
 		return (
 			<div className={styles.signupContainer}>
-				<div className={styles.header}>Registreer ifactuur</div>
+				<div className={styles.header}>Even registreren...</div>
 				<form onSubmit={this.onSubmit}>
 					<table>
 						<tbody>

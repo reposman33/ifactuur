@@ -48,7 +48,7 @@ class SignInForm extends React.Component {
 		const isInvalid = password === "" || email === "";
 		return (
 			<div className={styles.signinContainer}>
-				<div className={styles.header}>login ifactuur</div>
+				<div className={styles.header}>eerst even inloggen...</div>
 				<form name='login' onSubmit={this.onSubmit}>
 					<table>
 						<tbody>
