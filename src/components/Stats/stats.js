@@ -36,31 +36,31 @@ class Stats extends React.Component {
 					{
 						dataField: "invoiceNr",
 						sort: true,
-						text: this.I18n.get("STATS.TABLE.HEADERS.ID"),
+						text: this.I18n.get("STATS.TABLE.HEADER.ID"),
 						headerStyle: { width: "3%", fontSize: "0.9rem" },
 					},
 					{
 						dataField: "dateTimeCreated",
 						sort: true,
-						text: this.I18n.get("STATS.TABLE.HEADERS.DATETIMECREATED"),
+						text: this.I18n.get("STATS.TABLE.HEADER.DATE"),
 						headerStyle: { width: "10%", fontSize: "0.9rem" },
 					},
 					{
 						dataField: "companyName",
 						sort: true,
-						text: this.I18n.get("STATS.TABLE.HEADERS.COMPANY"),
+						text: this.I18n.get("STATS.TABLE.HEADER.CHARGEDTO"),
 						headerStyle: { width: "10%", fontSize: "0.9rem" },
 					},
 					{
 						dataField: "total",
 						sort: true,
-						text: this.I18n.get("STATS.TABLE.HEADERS.AMOUNT"),
+						text: this.I18n.get("STATS.TABLE.HEADER.AMOUNT"),
 						headerStyle: { width: "5%", fontSize: "0.9rem" },
 					},
 					{
 						dataField: "VAT",
 						sort: true,
-						text: this.I18n.get("STATS.TABLE.HEADERS.TOTALVATAMOUNT"),
+						text: this.I18n.get("STATS.TABLE.HEADER.VATAMOUNT"),
 						headerStyle: { width: "5%", fontSize: "0.9rem" },
 					},
 			  ]
@@ -68,31 +68,31 @@ class Stats extends React.Component {
 					{
 						dataField: "id",
 						sort: true,
-						text: this.I18n.get("STATS.TABLE.HEADERS.ID"),
+						text: this.I18n.get("STATS.TABLE.HEADER.ID"),
 						headerStyle: { width: "3%", fontSize: "0.9rem" },
 					},
 					{
 						dataField: "date",
 						sort: true,
-						text: this.I18n.get("STATS.TABLE.HEADERS.DATETIMECREATED"),
+						text: this.I18n.get("STATS.TABLE.HEADER.DATE"),
 						headerStyle: { width: "10%", fontSize: "0.9rem" },
 					},
 					{
 						dataField: "company",
 						sort: true,
-						text: this.I18n.get("STATS.TABLE.HEADERS.COMPANY"),
+						text: this.I18n.get("STATS.TABLE.HEADER.PAYEDTO"),
 						headerStyle: { width: "10%", fontSize: "0.9rem" },
 					},
 					{
 						dataField: "amount",
 						sort: true,
-						text: this.I18n.get("STATS.TABLE.HEADERS.AMOUNT"),
+						text: this.I18n.get("STATS.TABLE.HEADER.AMOUNT"),
 						headerStyle: { width: "5%", fontSize: "0.9rem" },
 					},
 					{
 						dataField: "expenseVatAmount",
 						sort: true,
-						text: this.I18n.get("STATS.TABLE.HEADERS.TOTALVATAMOUNT"),
+						text: this.I18n.get("STATS.TABLE.HEADER.VATAMOUNT"),
 						headerStyle: { width: "5%", fontSize: "0.9rem" },
 					},
 			  ];
@@ -117,10 +117,6 @@ class Stats extends React.Component {
 	});
 
 	onCalculateTurnover = (startDate, endDate) => {
-		// calculate total turnover over period
-		startDate = this.state.startDate || startDate;
-		endDate = this.state.endDate || endDate;
-
 		// Retrieve all invoices.
 		this.props.firebase.getInvoicesInPeriod(startDate, endDate).then((res) => {
 			let totalTurnover = 0;
@@ -203,6 +199,102 @@ class Stats extends React.Component {
 		defaultSortDirection: "desc",
 	};
 
+	onExportTurnoverInPeriod = () => {
+		const filename =
+			"Turnover_" +
+			(this.state.startDate && this.state.endDate
+				? `${this.state.startDate}-${this.state.endDate}.xls`
+				: `${this.state.quarter}-${this.state.year}.xls`);
+
+		this.save(
+			this.exportAsHTML(
+				this.state.invoices,
+				[
+					this.I18n.get("STATS.TABLE.HEADER.INVOICENR"),
+					this.I18n.get("STATS.TABLE.HEADER.DATE"),
+					this.I18n.get("STATS.TABLE.HEADER.CHARGEDTO"),
+					this.I18n.get("STATS.TABLE.HEADER.AMOUNT"),
+					this.I18n.get("STATS.TABLE.HEADER.VATAMOUNT"),
+				],
+				["invoiceNr", "dateTimeCreated", "companyName", "total", "VAT"]
+			),
+			filename
+		);
+	};
+
+	onExportExpensesInPeriod = () => {
+		const filename =
+			"Expenses_" +
+			(this.state.startDate && this.state.endDate
+				? `${this.state.startDate}-${this.state.endDate}.xls`
+				: `${this.state.quarter}-${this.state.year}.xls`);
+
+		this.save(
+			this.exportAsHTML(
+				this.state.expenses,
+				[
+					this.I18n.get("STATS.TABLE.HEADER.ID"),
+					this.I18n.get("STATS.TABLE.HEADER.DATE"),
+					this.I18n.get("STATS.TABLE.HEADER.PAYEDTO"),
+					this.I18n.get("STATS.TABLE.HEADER.AMOUNT"),
+					this.I18n.get("STATS.TABLE.HEADER.VATAMOUNT"),
+				],
+				["id", "date", "company", "amount", "expenseVatAmount"]
+			),
+			filename
+		);
+	};
+
+	// Microsoft Excel 2016 will give a warning when reading a html file saved with .xls extension and UTF-8 character- encoded but it will at least display the Euro sign correctly and show a nicer (default) format.
+	//https: //stackoverflow.com/questions/6002256/is-it-possible-to-force-excel-recognize-utf-8-csv-files-automatically
+	exportAsHTML = (data, firstRowValues, columnNames) => {
+		// create the table headers
+		const firstRow = firstRowValues.reduce((tr, columnHeader) => {
+			tr += `<th>${columnHeader}</th>`;
+			return tr;
+		}, "");
+
+		//  create an array with all the cells
+		const tableRows = data.map((ob) => {
+			const cells = columnNames.reduce((cells, columnName) => {
+				cells += `<td>${ob[columnName]}</td>`;
+				return cells;
+			}, "");
+			return `<tr>${cells}</tr>`;
+		});
+
+		// add everything together
+		return `<table><tr>${firstRow}</tr><tbody>${tableRows.join("")}</tbody></table>`;
+	};
+
+	// Microsoft Excel 2016 can not read UTF-8 csv files by default so the Euro sign is not displayed. correctly. Libre Office calc has no trouble reading csv in UTF-8 format by default...
+	exportAsCSV = (data, firstRowValues, columnNames) => {
+		// Create the first row of columnnames
+		const acc = firstRowValues.join(";") + "\n";
+		// return the CSV data to the caller
+		return data.reduce((acc, row) => {
+			// reduce the data by adding each row after the 1st row of columnanmes
+			acc += columnNames.reduce((_acc, columnName) => {
+				_acc += `${row[columnName]};`;
+				return _acc;
+			}, "");
+			// after each row remove the last ";" and add a newline/linebreak
+			return acc.substring(0, acc.length - 1) + "\n";
+		}, acc);
+	};
+
+	save = (data, fileName) => {
+		// simple trick to prompt te user to downlaod some data
+		// c/o https://ourcodeworld.com/articles/read/189/how-to-create-a-file-and-generate-a-download-with-javascript-in-the-browser-without-a-server
+		const element = document.createElement("a");
+		element.setAttribute("href", "data:text/plain;charset=utf-8," + encodeURIComponent(data));
+		element.setAttribute("download", fileName);
+		element.style.display = "none";
+		document.body.appendChild(element);
+		element.click();
+		document.body.removeChild(element);
+	};
+
 	render() {
 		return (
 			<div className={componentStyles.maxHeight + " d-flex flex-column"}>
@@ -230,7 +322,7 @@ class Stats extends React.Component {
 							<Button
 								disabled={!(this.state.startDate && this.state.endDate)}
 								extraClasses='ml-3 mt-3'
-								onClick={this.onCalculateTurnover}
+								onClick={() => this.onCalculateTurnover(this.state.startDate, this.state.endDate)}
 								text={this.I18n.get("STATS.BUTTON.SHOWTURNOVER")}
 							/>
 						</div>
@@ -301,7 +393,9 @@ class Stats extends React.Component {
 					<div className='col'>
 						{!!this.state.invoices ? (
 							<>
-								<span className={componentStyles.title}>{this.I18n.get("STATS.BUTTON.TURNOVER")}</span>
+								<span className={componentStyles.title}>
+									{this.I18n.get("STATS.TABLE.TITLE.TURNOVERINPERIOD")}
+								</span>
 								<BootstrapTable
 									bootstrap4
 									bordered={false}
@@ -312,11 +406,16 @@ class Stats extends React.Component {
 									keyField='ID'
 									rowEvents={{ onClick: this.onRowClick }}
 									pagination={paginationFactory(this.getPaginationConfig())}></BootstrapTable>
-								<div className={componentStyles.totalRow + " d-flex flex-row"}>
+								<div className={componentStyles.totalRow + " d-flex flex-row justify-content-between"}>
 									<span>{this.I18n.get("STATS.LABELS.TOTALTURNOVER")}:</span>
 									<span className='ml-3'>
 										{this.Utils.currencyFormat.format(this.state.totalTurnover)}
 									</span>
+									<Button
+										disabled={!this.state.invoices}
+										onClick={this.onExportTurnoverInPeriod}
+										text={this.I18n.get("STATS.BUTTON.EXPORTDATA")}
+									/>
 								</div>
 							</>
 						) : (
@@ -329,7 +428,7 @@ class Stats extends React.Component {
 						{!!this.state.expenses ? (
 							<>
 								<span className={componentStyles.title}>
-									{this.I18n.get("STATS.BUTTON.SHOWEXPENSES")}
+									{this.I18n.get("STATS.TABLE.TITLE.EXPENSESINPERIOD")}
 								</span>
 								<BootstrapTable
 									bootstrap4
@@ -341,9 +440,14 @@ class Stats extends React.Component {
 									keyField='ID'
 									rowEvents={{ onClick: this.onRowClick }}
 									pagination={paginationFactory(this.getPaginationConfig())}></BootstrapTable>
-								<div className={componentStyles.totalRow + " d-flex flex-row"}>
+								<div className={componentStyles.totalRow + " d-flex flex-row justify-content-between"}>
 									<span>{this.I18n.get("STATS.LABELS.TOTALEXPENSESVAT")}:</span>
 									<span className='ml-3'>{this.state.totalVAT}</span>
+									<Button
+										disabled={!this.state.invoices}
+										onClick={this.onExportExpensesInPeriod}
+										text={this.I18n.get("STATS.BUTTON.EXPORTDATA")}
+									/>
 								</div>
 							</>
 						) : (

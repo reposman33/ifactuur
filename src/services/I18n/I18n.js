@@ -196,20 +196,25 @@ export class I18n {
 				TOTALEXPENSESVAT: { en: "Total VAT payed", nl: "Totale BTW betaald" },
 			},
 			TABLE: {
-				HEADERS: {
+				HEADER: {
 					AMOUNT: { en: "Amount", nl: "Bedrag" },
-					COMPANY: { en: "Charged to", nl: "Gefactureerd aan" },
-					DATETIMECREATED: { en: "Date", nl: "Datum" },
-					INVOICENR: { en: "Invoice", nl: "factuur" },
+					CHARGEDTO: { en: "Charged to", nl: "Gefactureerd aan" },
+					PAYEDTO: { end: "Payed to", nl: "Betaald aan" },
+					DATE: { en: "Date", nl: "Datum" },
+					INVOICENR: { en: "Invoice", nl: "Factuur" },
 					ID: { en: "#", nl: "#" },
-					TOTALVATAMOUNT: { en: "Vat", nl: "BTW" },
+					VATAMOUNT: { en: "Vat", nl: "BTW" },
+				},
+				TITLE: {
+					TURNOVERINPERIOD: { en: "Turnover", nl: "Omzet" },
+					EXPENSESINPERIOD: { en: "Expenses", nl: "Uitgaven" },
 				},
 			},
 			BUTTON: {
 				SHOWTURNOVER: { en: "Show sales", nl: "Toon omzet" },
-				TURNOVER: { en: "Sales in period", nl: "Omzet over periode" },
 				SHOWTURNOVERFORQUARTER: { en: "Turnover in quarter", nl: "Omzet in kwartaal" },
 				YEAR: { en: "Year", nl: "Jaar" },
+				EXPORTDATA: { en: "Export", nl: "Export" },
 			},
 		},
 		TITLES: { MR: { en: "Mr", nl: "Dhr" }, MRS: { en: "Ms", nl: "Mw" }, THEY: { en: "They", nl: "Zij" } },
