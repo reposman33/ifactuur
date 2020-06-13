@@ -193,6 +193,7 @@ class Invoices extends React.Component {
 								company={this.state.company}
 								userSettings={this.state.userSettings}
 								userCompany={this.state.userCompany}
+								closeModal={this.hideModal}
 							/>
 						}
 						footer={<Button text='Print factuur' onClick={this.hideModal} />}

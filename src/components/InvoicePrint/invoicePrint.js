@@ -1,9 +1,7 @@
 import React, { useEffect } from "react";
-import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
+import { I18n } from "../../services/I18n/I18n";
 import { PDFExport } from "@progress/kendo-react-pdf";
 import styles from "./invoicePrint.module.scss";
-
 /**
  * The printable invoice.
  * @param {Object} props (Utils,invoiceNr,invoice,company, userSettings, userCompany])
@@ -11,26 +9,22 @@ import styles from "./invoicePrint.module.scss";
  */
 const InvoicePrint = (props) => {
 	let invoicePDF;
+	const getI18n = new I18n().get;
 	const fileName = `invoice_${props.invoiceNr}`;
-
-	const print = (selector) => {
-		html2canvas(document.querySelector(selector)).then((canvas) => {
-			const imgData = canvas.toDataURL("image/png");
-			const pdf = new jsPDF({
-				orientation: "p",
-				unit: "mm",
-				format: "a4",
-				putOnlyUsedFonts: true,
-				compress: true,
-			});
-			const fileName = `invoice_${props.invoiceNr}`;
-			pdf.addImage(imgData, "PNG", 10, -4, 210, 297);
-			pdf.save(fileName);
-		});
-	};
+	const subTotalAmount = props.invoice.rows
+		.reduce((sum, row) => (row.uren && row.uurtarief ? sum + row.uurtarief * row.uren : sum), 0)
+		.toFixed(2);
+	const vatAmount = (
+		(props.invoice.VATRate / 100) *
+		props.invoice.rows.reduce((sum, row) => (sum += row.uurtarief * row.uren), 0)
+	).toFixed(2);
+	const totalAmount = (
+		(props.invoice.VATRate / 100) * props.invoice.rows.reduce((sum, row) => (sum += row.uurtarief * row.uren), 0) +
+		props.invoice.rows.reduce((sum, row) => (sum += row.uurtarief * row.uren), 0)
+	).toFixed(2);
 
 	// useEffect(() => print(".modal-body"));
-	useEffect(() => invoicePDF.save());
+	useEffect(() => invoicePDF.save(), []);
 
 	return (
 		<PDFExport
@@ -38,43 +32,44 @@ const InvoicePrint = (props) => {
 			paperSize={["210mm", "297mm"]}
 			fileName={fileName}
 			scale={0.68}
-			//			margin={{ left: "15mm", top: "30mm" }}
-		>
+			author='Marc Bakker'
+			creator='Marc Bakker'
+			title='print from UurtjeFactuurtje'>
 			<div className={styles.invoicePrint}>
 				{/* FACTUUR */}
-				<div className={styles.factuurDatum + " mb-3"}>
+				<div className={styles.factuurDatum}>
 					<div className={styles.header + " mb-3"}>
-						{props.invoice.type === "credit" && "Credit "} Factuur
+						{props.invoice.type === "credit" && "Credit "} {getI18n("INVOICEPRINT.TITLE")}
 					</div>
 
 					{props.invoice.statustitle === "vervallen" && (
-						<span className={styles.alertText}>Deze factuur is vervallen</span>
+						<span className={styles.alertText}>{getI18n("INVOICEPRINT.STATUSMESSAGE")}</span>
 					)}
 
 					{/* datum: */}
 					<div>
-						<label htmlFor='displayDateTimeAangemaakt'>Datum:</label>
+						<label htmlFor='displayDateTimeAangemaakt'>{getI18n("INVOICEPRINT.LABELS.DATE")}:</label>
 						<div className={styles.d_inline}>{props.invoice.dateTimeCreated}</div>
 					</div>
 
 					{/* factuurnr:*/}
 					<div>
-						<label>Factuurnr:</label>
+						<label>{getI18n("INVOICEPRINT.LABELS.INVOICENR")}:</label>
 						<span>{props.invoice.invoiceNr}</span>
 					</div>
 				</div>
-
 				{/* BEDRIJF */}
 				<div className={styles.klant + " mt-3"}>
 					<span className={styles.header + " mb-2"}>{props.company.name}</span>
 
-					<div>T.a.v. {props.company.contact}</div>
+					<div>
+						{getI18n("INVOICEPRINT.LABELS.ATT")} {props.company.contact}
+					</div>
 					<div>{props.company.address}</div>
 					<div>
 						{props.company.zipcode} {props.company.city}
 					</div>
 				</div>
-
 				{/* USER */}
 				<div className={styles.creditor + " mt-3"}>
 					<span className={styles.header}>{props.userCompany.name}</span>
@@ -86,24 +81,21 @@ const InvoicePrint = (props) => {
 					<div>KvK Amsterdam:&nbsp;{props.userCompany.kvknr}</div>
 					<div>BTW nr:&nbsp;{props.userCompany.btwnr}</div>
 				</div>
-
 				<div className={styles.factuurTable}>
 					<table>
 						<tbody>
 							<tr className={styles.tableHeader}>
-								<td>GELEVERDE DIENSTEN</td>
-								<td>UREN</td>
-								<td>TARIEF</td>
-								<td>BEDRAG</td>
+								<td>{getI18n("INVOICEPRINT.TABLE_HEADER.SERVICES")}</td>
+								<td>{getI18n("INVOICEPRINT.TABLE_HEADER.HOURS")}</td>
+								<td>{getI18n("INVOICEPRINT.TABLE_HEADER.RATE")}</td>
+								<td>{getI18n("INVOICEPRINT.TABLE_HEADER.AMOUNT")}</td>
 							</tr>
 							{props.invoice.rows.map((row, i) => (
 								<tr key={i} className={i % 2 ? styles.rowDark : styles.rowLight}>
 									<td className={styles.column1}>{row.omschrijving || ""}</td>
 									<td className={styles.column2}>{row.uren || ""}</td>
 									<td className={styles.column3}>{row.uurtarief || ""}</td>
-									<td className={styles.column4}>
-										{row.uren && row.uurtarief ? row.uurtarief * row.uren : ""}
-									</td>
+									<td className={styles.column4}>{(row.uurtarief * row.uren).toFixed(2)}</td>
 								</tr>
 							))}
 							<tr>
@@ -112,36 +104,21 @@ const InvoicePrint = (props) => {
 
 							<tr>
 								<td align='right' className={styles.totalLabel}>
-									SUBTOTAAL
+									{getI18n("INVOICEPRINT.TABLE_HEADER.SUBTOTAL")}
 								</td>
 								<td colSpan='2' align='right'></td>
-								<td className={styles.totalInput}>
-									{props.Utils.currencyFormat.format(
-										props.invoice.rows.reduce(
-											(sum, row) =>
-												row.uren && row.uurtarief ? sum + row.uurtarief * row.uren : sum,
-											0
-										)
-									)}
+								<td className={styles.total}>
+									{/* <span>&#8364;</span> {subTotalAmount} */}
+									{subTotalAmount}
 								</td>
 							</tr>
 
 							<tr>
 								<td align='right' className={styles.totalLabel}>
-									BTW-TARIEF
+									{getI18n("INVOICEPRINT.TABLE_HEADER.VAT_RATE")}
 								</td>
-								<td colSpan='2' style={{ textAlign: "right", whiteSpace: "nowrap" }}>
-									{props.invoice.VATRate} &#37;
-								</td>
-								<td className={styles.totalInput}>
-									{props.Utils.currencyFormat.format(
-										(props.invoice.VATRate / 100) *
-											props.invoice.rows.reduce(
-												(sum, row) => (sum += row.uurtarief * row.uren),
-												0
-											)
-									)}
-								</td>
+								<td colSpan='2'>{props.invoice.VATRate} &#37;</td>
+								<td className={styles.total}>{vatAmount}</td>
 							</tr>
 
 							<tr>
@@ -149,27 +126,12 @@ const InvoicePrint = (props) => {
 							</tr>
 
 							<tr>
-								<td align='right' className={styles.totalLabel}>
-									<b>TOTAAL</b>
+								<td className={styles.totalLabel}>{getI18n("INVOICEPRINT.TABLE_HEADER.TOTAL")}</td>
+								<td colSpan='2'></td>
+								<td className={styles.total + " " + styles.totalBackground}>
+									<span>EUR</span>&nbsp;
+									{totalAmount}
 								</td>
-								<td colSpan='2' align='right'></td>
-								<td className={styles.totalInput + " " + styles.total}>
-									{props.Utils.currencyFormat.format(
-										(props.invoice.VATRate / 100) *
-											props.invoice.rows.reduce(
-												(sum, row) => (sum += row.uurtarief * row.uren),
-												0
-											) +
-											props.invoice.rows.reduce(
-												(sum, row) => (sum += row.uurtarief * row.uren),
-												0
-											)
-									)}
-								</td>
-							</tr>
-
-							<tr>
-								<td colSpan='4'>&nbsp;</td>
 							</tr>
 						</tbody>
 					</table>
@@ -177,14 +139,29 @@ const InvoicePrint = (props) => {
 
 				{/* FOOTER */}
 				<div className={styles.footerFrame}>
-					<div className={styles.betaaltermijn}>
-						U wordt verzocht het bedrag binnen&nbsp;
-						{props.userSettings.paymentTerm}&nbsp; dagen over te maken op het onderstaande rekeningnummer:
-						<div className={styles.userRekening}>
-							<span>{props.userCompany.bankAccountNr}</span>{" "}
-							<span>T.n.v. {props.userCompany.bankAccountName}</span>
-							<span>{props.userCompany.bankAccountCity}</span>
-						</div>
+					<div>
+						{getI18n("INVOICEPRINT.FOOTER.PAYMENTTERMS")
+							.split(" ")
+							.reduce((acc, word) => {
+								switch (word) {
+									case "{1}":
+										acc.push(props.userSettings.paymentTerm);
+										return acc;
+									case "{2}":
+										acc.push(props.userCompany.bankAccountNr);
+										return acc;
+									case "{3}":
+										acc.push(props.userCompany.bankAccountName);
+										return acc;
+									case "{4}":
+										acc.push(props.userCompany.bankAccountCity);
+										return acc;
+									default:
+										acc.push(word);
+										return acc;
+								}
+							}, [])
+							.join(" ")}
 					</div>
 
 					<div className={styles.leveringsvoorwaarden}>{props.userSettings.deliveryConditions}</div>

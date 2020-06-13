@@ -148,6 +148,32 @@ export class I18n {
 				},
 			},
 		},
+		INVOICEPRINT: {
+			FOOTER: {
+				PAYMENTTERMS: {
+					en:
+						"You are kindly requested to transmit the amount due within {1} days to bankaccount number {2} from {3} at {4} ",
+					nl:
+						"U wordt verzocht het bedrag binnen {1} dagen over te maken op rekeningnummer {2} van {3} te {4} ",
+				},
+			},
+			LABELS: {
+				DATE: { en: "Date", nl: "Datum" },
+				INVOICENR: { en: "Invoice nr", nl: "Factuurnr" },
+				ATT: { en: "C.o.", nl: "T.a.v." },
+			},
+			STATUSMESSAGE: { en: "This invoice is cancelled", nl: "Deze factuur is vervallen" },
+			TITLE: { en: "Invoice", nl: "Factuur" },
+			TABLE_HEADER: {
+				SERVICES: { en: "Services", nl: "Geleverde diensten" },
+				HOURS: { en: "Hours", nl: "Uren" },
+				RATE: { en: "Rate", nl: "Tarief" },
+				AMOUNT: { en: "Amount", nl: "Bedrag" },
+				SUBTOTAL: { en: "Subtotal", nl: "Subtotaal" },
+				VAT_RATE: { en: "Vatrate", nl: "BTW-tarief" },
+				TOTAL: { en: "Total", nl: "Totaal" },
+			},
+		},
 		PAGINATION: {
 			NEXT_PAGE: { en: "next page", nl: "volgende pagina" },
 			PREVIOUS_PAGE: { en: "previous page", nl: "vorige pagina" },
