@@ -5,7 +5,6 @@ import { withAuthentication } from "../Session";
 import Navigation from "../Navigation/";
 import { I18n } from "../../services/I18n/I18n";
 import "react-bootstrap";
-import { config_dev, config_prod } from "../../environments.js";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
 	faPrint,
@@ -22,7 +21,9 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import "./index.scss";
 
-const config = process.env.NODE_ENV === "production" ? config_prod : config_dev;
+const config = {
+	projectPublicName: process.env.REACT_APP_PROJECTPUBLICNAME,
+};
 
 class App extends React.Component {
 	constructor(props) {

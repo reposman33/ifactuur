@@ -4,9 +4,13 @@ import { Utils } from "../services/Utils";
 import "firebase/auth";
 import "firebase/firestore";
 
-import { config_dev, config_prod } from "../environments";
-
-const config = process.env.NODE_ENV === "production" ? config_prod : config_dev;
+const config = {
+	apiKey: process.env.REACT_APP_FIREBASE_APIKEY,
+	authDomain: process.env.REACT_APP_FIREBASE_AUTHDOMAIN,
+	databaseURL: process.env.REACT_APP_FIREBASE_DATABASEURL,
+	projectId: process.env.REACT_APP_FIREBASE_PROJECTID,
+	projectPublicName: process.env.REACT_APP_PROJECTPUBLICNAME,
+};
 
 class Firebase {
 	constructor(props) {

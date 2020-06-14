@@ -18,4 +18,4 @@ yarn-debug.log*
 yarn-error.log*
 .history/
 src/invoices.json
-src/environments.js
+.env.development
