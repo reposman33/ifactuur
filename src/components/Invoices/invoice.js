@@ -323,7 +323,7 @@ class Invoice extends React.Component {
 					/>
 					<span className={componentStyles.currency}>&euro;</span>
 					<input
-						type='number'
+						type='text'
 						name={`${this.FIELDNAMES.HOURLYRATE}_${row}`}
 						className={componentStyles.hourlyrateInt}
 						disabled={this.isExistingInvoice}
@@ -335,7 +335,7 @@ class Invoice extends React.Component {
 						}
 					/>
 					<input
-						type='number'
+						type='text'
 						name={`${this.FIELDNAMES.HOURS}_${row}`}
 						className={componentStyles.hours}
 						disabled={this.isExistingInvoice}
