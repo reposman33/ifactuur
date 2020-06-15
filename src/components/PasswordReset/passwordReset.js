@@ -2,7 +2,7 @@ import React from "react";
 import { withFirebase } from "../../Firebase/index.js";
 import { Link } from "react-router-dom";
 import * as ROUTES from "../../constants/routes.js";
-import "./index.scss";
+import styles from "./passwordReset.module.scss";
 
 class PasswordForget extends React.Component {
 	constructor(props) {
@@ -14,7 +14,15 @@ class PasswordForget extends React.Component {
 		this.setState({ errorMessage: error.message });
 	}
 
-	onSubmit = (ev) => {
+	// check and see an error text...
+	// componentDidMount() {
+	// 	this.setState({
+	// 		error:
+	// 			"Die kentering gaat niet zonder slag of stoot. Institutioneel racisme zit ook in onze taal gebakken, maar wie dat benoemt kan rekenen op een aantal voorspelbare reacties: ‘",
+	// 	});
+	// }
+
+	onReset = (ev) => {
 		this.props.firebase
 			.passwordReset(this.state.email)
 			.then((res) => {
@@ -39,47 +47,20 @@ class PasswordForget extends React.Component {
 
 	render() {
 		const isInvalid = this.state.email === null || !this.validateEmail(this.state.email);
-
 		return (
-			<div>
-				<div className='passwordResetContainer'>
-					<div className='header'>Wachtwoord vergeten</div>
-					<form name='login' onSubmit={this.onSubmit}>
-						<table>
-							<tbody>
-								<tr>
-									<td>
-										<label htmlFor='useremail' style={{ whiteSpace: "nowrap" }}>
-											E-mail
-										</label>
-									</td>
-									<td>
-										<input
-											type='text'
-											name='email'
-											maxLength='55'
-											size='30'
-											placeholder='E-mail address'
-											onChange={this.onChange}
-										/>
-									</td>
-								</tr>
-								<tr>
-									<td colSpan='2' style={{ textAlign: "right" }}>
-										<input type='submit' disabled={isInvalid} value='Go!' />
-										{this.state.message && (
-											<React.Fragment>
-												<p className='alert'>{this.state.message}</p>
-												<Link to={ROUTES.SIGN_IN}>Login</Link>{" "}
-											</React.Fragment>
-										)}
-									</td>
-								</tr>
-							</tbody>
-						</table>
-					</form>
-					<div className='ml-2 mb-2'>
-						<Link to={ROUTES.SIGN_IN}>Login</Link>
+			<div className={styles.passwordResetContainer}>
+				<div className={styles.header + " py-1 mb-3"}>Wachtwoord vergeten</div>
+				<div className={styles.table + " d-flex flex-column justify-content-between py-2"}>
+					<div className={styles.firstRow + " d-flex flex-row"}>
+						<label>E-mail</label>
+						<input type='text' name='email' onChange={this.onChange} />
+					</div>
+					<div className='d-flex flex-column justify-content-between'>
+						{this.state.error && <div className={styles.alert + " mb-2"}>{this.state.error}</div>}
+						<div className={styles.links + " d-flex flex-row justify-content-between"}>
+							<Link to={ROUTES.SIGN_IN}>Login</Link>
+							<input type='submit' disabled={isInvalid} onClick={this.onReset} />
+						</div>
 					</div>
 				</div>
 			</div>

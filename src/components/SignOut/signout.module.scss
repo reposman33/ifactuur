@@ -2,6 +2,6 @@ svg {
 	transition: color 0.5s ease-out, transform 0.25s ease-out;
 	&:hover {
 		color: #e26d6d;
-		transform: scale(1.3);
+		transition: color 0.5s ease-in-out;
 	}
 }

@@ -1,7 +1,6 @@
 @import "./../../../constants/variables.scss";
 
 .ReactBootstrapTable {
-	background-color: $column-background-color;
 	table-layout: fixed;
 
 	tr {
@@ -20,7 +19,7 @@
 			}
 		}
 		th {
-			background-color: #4c4c50;
+			background-color: black;
 			color: white;
 			font-weight: bold;
 		}
@@ -33,10 +32,9 @@
 		}
 
 		& span.actionIcons svg {
-			transition: all 0.5s ease-in-out;
+			transition: color 0.5s ease-in-out;
 			&:hover {
 				color: darken($color: #e26d6d, $amount: 0);
-				transform: rotate(90deg) scale(1.5);
 			}
 			&:first-child {
 				margin-right: 0.5rem;

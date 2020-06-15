@@ -3,7 +3,7 @@ import { compose } from "recompose";
 import { withFirebase } from "../../Firebase/index.js";
 import { Link } from "react-router-dom";
 import { withRouter } from "react-router-dom";
-import { SignUpLink } from "./signup.js";
+import { SignUpLink } from "../SignUp/signup.js";
 import * as ROUTES from "../../constants/routes.js";
 import * as styles from "./signin.module.scss";
 
@@ -21,7 +21,7 @@ class SignInForm extends React.Component {
 		this.state = { ...INITIAL_STATE };
 	}
 
-	onSubmit = (event) => {
+	onLogin = (event) => {
 		event.preventDefault();
 		const { email, password } = this.state;
 		this.props.firebase
@@ -48,59 +48,44 @@ class SignInForm extends React.Component {
 		const isInvalid = password === "" || email === "";
 		return (
 			<div className={styles.signinContainer}>
-				<div className={styles.header}>eerst even inloggen...</div>
-				<form name='login' onSubmit={this.onSubmit}>
+				<div className={styles.header + " py-1 mb-3"}>Eerst even inloggen...</div>
+				<div className='my-3'>
 					<table>
 						<tbody>
 							<tr>
 								<td>
-									<label className='mx-2' htmlFor='useremail'>
-										E-mail
-									</label>
+									<label>E-mail</label>
 								</td>
 								<td>
-									<input
-										type='text'
-										className='mr-2'
-										name='email'
-										maxLength='55'
-										size='30'
-										onChange={this.onChange}
-									/>
+									<input type='text' name='email' onChange={this.onChange} />
 								</td>
 							</tr>
 							<tr>
 								<td>
-									<label className='mx-2' htmlFor='password'>
-										Wachtwoord
-									</label>
+									<label>Wachtwoord</label>
 								</td>
 								<td>
-									<input
-										type='password'
-										className='mr-2'
-										name='password'
-										maxLength='55'
-										size='30'
-										onChange={this.onChange}
-									/>
+									<input type='password' name='password' onChange={this.onChange} />
 								</td>
 							</tr>
 							<tr>
-								<td colSpan='2' style={{ textAlign: "right" }}>
+								<td colSpan='2'> {!!error && <p className={styles.alert}>{error}</p>}</td>
+							</tr>
+							<tr>
+								<td colSpan='2'>
 									<input
 										type='submit'
 										className={isInvalid ? styles.invalid + " mr-2" : ""}
 										disabled={isInvalid}
+										onClick={this.onLogin}
 									/>
-									{!!error && <p className={styles.alert}>{error}</p>}
 								</td>
 							</tr>
 						</tbody>
 					</table>
-				</form>
-				<SignUpLink />
-				<div className='ml-2 mb-2'>
+				</div>
+				<div className='links d-flex flex-row justify-content-between m-3 pb-3'>
+					<SignUpLink />
 					<Link to={ROUTES.PASSWORD_FORGET}>wachtwoord vergeten?</Link>
 				</div>
 			</div>

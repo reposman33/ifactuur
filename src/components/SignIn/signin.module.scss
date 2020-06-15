@@ -1,0 +1,56 @@
+@import "../../constants/variables.scss";
+
+.signinContainer {
+	background-color: #f9f9f9;
+	margin: 10% auto;
+	width: 45%;
+
+	& .header {
+		background: linear-gradient(to bottom, #444444, #4b586a 10%);
+		background-color: $container-background-color;
+		color: #fff;
+		text-align: center;
+		font-weight: bold;
+	}
+
+	& table {
+		table-layout: fixed;
+		width: 100%;
+
+		& tr td:first-child {
+			padding-right: 1rem;
+			text-align: end;
+			width: 25%;
+		}
+		& tr td:last-child {
+			padding-right: 1rem;
+			width: 66%;
+			& input[type="text"],
+			input[type="password"],
+			:focus {
+				border: 1px solid #ddd;
+				font-size: 0.8rem;
+				font-weight: bold;
+				width: 100%;
+			}
+		}
+
+		input[type="submit"] {
+			margin-top: 5px;
+			&.invalid {
+				color: #ccc;
+			}
+		}
+		.alert {
+			color: red;
+			margin: 0 1rem;
+			text-align: left;
+		}
+	}
+	.links a,
+	a:visited,
+	a:hover {
+		text-decoration: none;
+		font-weight: bold;
+	}
+}

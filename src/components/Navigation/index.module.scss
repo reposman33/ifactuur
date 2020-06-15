@@ -1,8 +1,7 @@
 @import "../../constants/variables.scss";
 
 div.mainMenu {
-	background-color: $column-background-color;
-	background: linear-gradient(#07456c, $column-background-color);
+	background-color: #144573;
 	border-top: 1px solid #444;
 	border-bottom: 1px solid #444;
 	border-radius: 5px;
@@ -23,34 +22,34 @@ div.mainMenu {
 			position: relative;
 			text-align: center;
 			width: 17%;
+			transition: color 0.25s ease-out;
+
 			&:last-child {
 				width: 10%;
 				border-right: none;
 			}
 
 			&.navMenuItemSelected {
-				background-color: lighten($color: #000000, $amount: 50);
-				cursor: default;
-				& a {
-					cursor: inherit;
-					color: yellow;
-					text-decoration: none;
+				background-color: white;
+
+				a {
+					color: blue;
 				}
 			}
 
-			&:not(.navMenuItemSelected) a {
+			& a {
 				color: white;
+				font-weight: bold;
 				text-decoration: none;
-				transition: color 0.25s ease-out, font-size, 0.2s ease-in;
+			}
 
-				&:hover {
-					font-size: 1.1em;
-					color: $link-color-hover-dark-background;
-				}
-				&:active {
-					color: $link-color-active-dark-background;
-					transition: color 0.1s linear;
-				}
+			&:hover {
+				font-size: 1.1em;
+				color: $link-color-hover-dark-background;
+			}
+			&:active {
+				color: $link-color-active-dark-background;
+				transition: color 0.1s linear;
 			}
 		}
 	}

@@ -9,9 +9,9 @@ import Company from "../Companies/company";
 import Invoices from "../Invoices/invoices";
 import Invoice from "../Invoices/invoice";
 import PasswordChange from "../PasswordChange";
-import PasswordForget from "../PasswordForget";
-import SignIn from "../Security/signin";
-import SignUp from "../Security/signup";
+import PasswordForget from "../PasswordReset/passwordReset";
+import SignIn from "../SignIn/signin";
+import SignUp from "../SignUp/signup";
 import { PersistenceContextProvider } from "../../constants/contexts";
 import { Storage } from "../../services/API/storage";
 

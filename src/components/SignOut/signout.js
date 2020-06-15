@@ -5,7 +5,7 @@ import styles from "./signout.module.scss";
 
 const SignOut = ({ firebase }) => (
 	<div className={styles.actionIcons} onClick={firebase.signOut}>
-		<FontAwesomeIcon icon='sign-out-alt' size='lg' />
+		<FontAwesomeIcon icon='times-circle' size='lg' />
 	</div>
 );
 

@@ -4,7 +4,7 @@ import { compose } from "recompose";
 import * as ROUTES from "../../constants/routes.js";
 import { Link } from "react-router-dom";
 import { I18n } from "../../services/I18n/I18n";
-import SignOut from "../Security/signout.js";
+import SignOut from "../SignOut/signout.js";
 import * as styles from "./index.module.scss";
 
 class NavigationForm extends React.Component {
