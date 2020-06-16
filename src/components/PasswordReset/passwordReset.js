@@ -14,20 +14,12 @@ class PasswordForget extends React.Component {
 		this.setState({ errorMessage: error.message });
 	}
 
-	// check and see an error text...
-	// componentDidMount() {
-	// 	this.setState({
-	// 		error:
-	// 			"Die kentering gaat niet zonder slag of stoot. Institutioneel racisme zit ook in onze taal gebakken, maar wie dat benoemt kan rekenen op een aantal voorspelbare reacties: ‘",
-	// 	});
-	// }
-
 	onReset = (ev) => {
 		this.props.firebase
 			.passwordReset(this.state.email)
 			.then((res) => {
 				this.setState({
-					message: "Success! An email with instructions is sent to the address you provided",
+					message: "Success! Er is een e-mail met instructies verstuurd naar het opgegeven adres",
 				});
 			})
 			.catch((error) => {
@@ -46,6 +38,7 @@ class PasswordForget extends React.Component {
 	};
 
 	render() {
+		const { error } = this.state;
 		const isInvalid = this.state.email === null || !this.validateEmail(this.state.email);
 		return (
 			<div className={styles.passwordResetContainer}>
@@ -56,13 +49,13 @@ class PasswordForget extends React.Component {
 						<input type='text' name='email' onChange={this.onChange} />
 					</div>
 					<div className='d-flex flex-column justify-content-between'>
-						{this.state.error && <div className={styles.alert + " mb-2"}>{this.state.error}</div>}
 						<div className={styles.links + " d-flex flex-row justify-content-between"}>
 							<Link to={ROUTES.SIGN_IN}>Login</Link>
 							<input type='submit' disabled={isInvalid} onClick={this.onReset} />
 						</div>
 					</div>
 				</div>
+				{error && <div className={styles.alert}>{error}</div>}
 			</div>
 		);
 	}

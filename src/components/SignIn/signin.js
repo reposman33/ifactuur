@@ -68,16 +68,15 @@ class SignInForm extends React.Component {
 									<input type='password' name='password' onChange={this.onChange} />
 								</td>
 							</tr>
-							<tr>
-								<td colSpan='2'> {!!error && <p className={styles.alert}>{error}</p>}</td>
-							</tr>
+
 							<tr>
 								<td colSpan='2'>
 									<input
-										type='submit'
-										className={isInvalid ? styles.invalid + " mr-2" : ""}
+										type='button'
+										className={styles.button + isInvalid ? styles.invalid : ""}
 										disabled={isInvalid}
 										onClick={this.onLogin}
+										value='Login'
 									/>
 								</td>
 							</tr>
@@ -88,6 +87,7 @@ class SignInForm extends React.Component {
 					<SignUpLink />
 					<Link to={ROUTES.PASSWORD_FORGET}>wachtwoord vergeten?</Link>
 				</div>
+				{!!error && <div className={styles.alert}>{error}</div>}
 			</div>
 		);
 	}

@@ -87,9 +87,7 @@ class SignUpForm extends Component {
 									/>
 								</td>
 							</tr>
-							<tr>
-								<td colspan='2'>{error && <p className={styles.alert}>{error}</p>}</td>
-							</tr>
+
 							<tr>
 								<td>
 									<Link to={ROUTES.SIGN_IN}>Login</Link>
@@ -106,6 +104,7 @@ class SignUpForm extends Component {
 						</tbody>
 					</table>
 				</div>
+				{error && <div className={styles.alert}>{error}</div>}
 			</div>
 		);
 	}

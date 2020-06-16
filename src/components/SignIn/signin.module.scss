@@ -26,8 +26,7 @@
 			padding-right: 1rem;
 			width: 66%;
 			& input[type="text"],
-			input[type="password"],
-			:focus {
+			input[type="password"] {
 				border: 1px solid #ddd;
 				font-size: 0.8rem;
 				font-weight: bold;
@@ -35,16 +34,11 @@
 			}
 		}
 
-		input[type="submit"] {
+		input[type="button"] {
 			margin-top: 5px;
 			&.invalid {
 				color: #ccc;
 			}
-		}
-		.alert {
-			color: red;
-			margin: 0 1rem;
-			text-align: left;
 		}
 	}
 	.links a,
@@ -52,5 +46,12 @@
 	a:hover {
 		text-decoration: none;
 		font-weight: bold;
+	}
+	.alert {
+		color: red;
+		display: inline-block;
+		font-style: italic;
+		margin: 0 1rem 1rem 1rem;
+		text-align: left;
 	}
 }
