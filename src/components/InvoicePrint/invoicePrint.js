@@ -32,8 +32,8 @@ const InvoicePrint = (props) => {
 			paperSize={["210mm", "297mm"]}
 			fileName={fileName}
 			scale={0.68}
-			author='Marc Bakker'
-			creator='Marc Bakker'
+			author='UurtjeFactuurtje'
+			creator='UurtjeFactuurtje'
 			title='print from UurtjeFactuurtje'>
 			<div className={styles.invoicePrint}>
 				{/* FACTUUR */}
@@ -107,10 +107,7 @@ const InvoicePrint = (props) => {
 									{getI18n("INVOICEPRINT.TABLE_HEADER.SUBTOTAL")}
 								</td>
 								<td colSpan='2' align='right'></td>
-								<td className={styles.total}>
-									{/* <span>&#8364;</span> {subTotalAmount} */}
-									{subTotalAmount}
-								</td>
+								<td className={styles.total}>{subTotalAmount}</td>
 							</tr>
 
 							<tr>
