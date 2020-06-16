@@ -138,7 +138,7 @@ class Expense extends React.Component {
 			pathname: ROUTES.COMPANY,
 			params: {
 				prevLocation: this.props.location.pathname,
-				prevLocationName: "LOCATION.EXPENSE",
+				prevLocationName: "ROUTENAME.EXPENSE",
 			},
 		});
 	};

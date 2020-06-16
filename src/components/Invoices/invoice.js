@@ -243,7 +243,7 @@ class Invoice extends React.Component {
 		// render Company component
 		this.props.history.push({
 			pathname: ROUTES.COMPANY,
-			params: { prevLocation: this.props.location.pathname, prevLocationName: "LOCATION.INVOICE" },
+			params: { prevLocation: this.props.location.pathname, prevLocationName: "ROUTENAME.INVOICE" },
 		});
 	};
 

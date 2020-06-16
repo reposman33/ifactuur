@@ -246,7 +246,7 @@ export class I18n {
 				UPDATE: { en: "Update", nl: "Bijwerken" },
 			},
 		},
-		LOCATION: {
+		ROUTENAME: {
 			EXPENSE: { en: "expense", nl: "uitgave" },
 			INVOICE: { en: "invoice", nl: "factuur" },
 		},
