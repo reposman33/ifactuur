@@ -185,7 +185,7 @@ class Invoices extends React.Component {
 				{this.state.invoice && (
 					<ModalComponent
 						closeModal={this.hideModal}
-						content={
+						body={
 							<InvoicePrint
 								Utils={this.Utils}
 								invoiceNr={this.state.invoiceNr}
@@ -196,7 +196,6 @@ class Invoices extends React.Component {
 								closeModal={this.hideModal}
 							/>
 						}
-						footer={<Button text='Print factuur' onClick={this.hideModal} />}
 						show={this.state.modal}
 					/>
 				)}
