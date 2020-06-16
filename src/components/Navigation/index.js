@@ -5,6 +5,7 @@ import * as ROUTES from "../../constants/routes.js";
 import { Link } from "react-router-dom";
 import { I18n } from "../../services/I18n/I18n";
 import SignOut from "../SignOut/signout.js";
+import { LanguagePicker } from "../LanguagePicker/languagePicker";
 import * as styles from "./index.module.scss";
 
 class NavigationForm extends React.Component {
@@ -82,21 +83,7 @@ class NavigationForm extends React.Component {
 						<li> {this.props.authUser && this.props.authUser.authUser && <SignOut />}</li>
 					</ul>
 				</div>
-				<div className={styles.languageButtons}>
-					<button
-						data-lang='en'
-						onClick={this.setLanguage}
-						disabled={this.I18n.getSelectedLanguage() === "en"}>
-						english
-					</button>
-					&nbsp;/
-					<button
-						data-lang='nl'
-						onClick={this.setLanguage}
-						disabled={this.I18n.getSelectedLanguage() === "nl"}>
-						nederlands
-					</button>
-				</div>
+				<LanguagePicker setLanguage={this.props.setLanguage}></LanguagePicker>
 			</div>
 		);
 	}

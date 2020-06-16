@@ -1,0 +1,20 @@
+@import "../../constants/variables.scss";
+
+div.languageButtons {
+	display: flex;
+	justify-content: flex-end;
+
+	button {
+		color: black;
+		background-color: transparent;
+		border: none;
+		margin-bottom: 0.2rem;
+		padding: 0;
+		&:hover {
+			color: $link-color-hover-light-background;
+		}
+		&:disabled {
+			color: $link-color-disabled-light-background;
+		}
+	}
+}
