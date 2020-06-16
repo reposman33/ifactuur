@@ -230,6 +230,15 @@ export class I18n {
 				DELIVERYCONDITIONS: { en: "Deliveryconditions", nl: "Leveringsvoorwaarden" },
 				COMPANY: { en: "Company", nl: "Bedrijf" },
 			},
+			MODAL: {
+				TEXT: {
+					en:
+						"No usersettings are filled in. These are needed in order to create invoices. Also please enter your company (choose menuoption 'Companies').",
+					nl:
+						"Er zijn nog geen gegevens van je ingevuld. Om facturen te kunnen maken zijn deze nodig. Voeg ook uw bedrijf toe (kies menuoptie 'Bedrijven').",
+				},
+				BUTTON: { TEXT: { en: "Add", nl: "Toevoegen" } },
+			},
 			REGISTRATIONS: {
 				TITLE: { en: "Registrations", nl: "Registraties" },
 				COC_NUMBER: { en: "CoC nr", nl: "KvK nr" },

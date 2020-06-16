@@ -1,12 +1,13 @@
 import React from "react";
 import { withFirebase } from "../../Firebase";
+import { ModalComponent } from "../Shared/Modal/Modal";
 import { I18n } from "../../services/I18n/I18n";
 import * as ROUTES from "../../constants/routes";
 import { Select } from "../Shared/Select/select";
 import { Input } from "../Shared/Input/input";
 import { Textarea } from "../Shared/Textarea/textarea";
 import { Button } from "../Shared/Button/button";
-
+import { LanguagePicker } from "../LanguagePicker/languagePicker";
 import "./settings.module.scss";
 
 class Settings extends React.Component {
@@ -20,6 +21,7 @@ class Settings extends React.Component {
 				{ title: this.I18n.get("TITLES.THEY"), id: 3 },
 			],
 			companies: [],
+			showModal: false,
 		};
 		// State keys and transform functions to apply when persisting to fireStore .
 		this.persistFields = {
@@ -35,6 +37,7 @@ class Settings extends React.Component {
 			deliveryConditions: (fieldValue) => fieldValue,
 			password: (fieldValue) => fieldValue, // hash the password
 		};
+		this.isExistingUserSetting = false;
 	}
 
 	componentDidMount = () => {
@@ -44,13 +47,15 @@ class Settings extends React.Component {
 		Promise.all(settingsPromise$).then((values) => {
 			if (values[0]) {
 				this.isExistingUserSetting = true;
+				// populate statekeys (as defined in this.persistFields) with usersettings
 				Object.keys(this.persistFields).map((key) => this.setState({ [key]: values[0][key] }));
 				this.setState({ ID: values[0].ID });
 			} else {
 				this.isExistingUserSetting = false;
+				// set state keys (as defined in this.persistFields) to undefined
 				Object.keys(this.persistFields).map((key) => this.setState({ [key]: undefined }));
 			}
-			this.setState({ companies: values[1] });
+			this.setState({ companies: values[1], showModal: !this.isExistingUserSetting });
 		});
 	};
 
@@ -83,8 +88,31 @@ class Settings extends React.Component {
 		this.setState({ [name]: value });
 	};
 
+	/**
+	 *  hide the modal
+	 */
+	hideModal = () => this.setState({ showModal: false });
+
+	setLanguage = (lang) => {
+		this.I18n.setLanguage(lang);
+		this.setState({ language: lang });
+	};
 	render() {
-		return (
+		return this.state.showModal ? (
+			<ModalComponent
+				header={<LanguagePicker setLanguage={this.setLanguage} />}
+				body={<div className='text-info'>{this.I18n.get("USERSETTINGS.MODAL.TEXT")}</div>}
+				footer={
+					<Button
+						className='btn btn-info'
+						text={this.I18n.get("USERSETTINGS.MODAL.BUTTON.TEXT")}
+						onClick={this.hideModal}
+					/>
+				}
+				show={this.state.showModal}
+				closeModal={this.hideModal}
+			/>
+		) : (
 			<div>
 				<div className='row'>
 					<div className='col d-flex flex-column p-3 w-75'>
