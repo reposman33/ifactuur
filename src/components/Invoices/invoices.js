@@ -193,9 +193,9 @@ class Invoices extends React.Component {
 								company={this.state.company}
 								userSettings={this.state.userSettings}
 								userCompany={this.state.userCompany}
-								closeModal={this.hideModal}
 							/>
 						}
+						closeModal={this.hideModal}
 						show={this.state.modal}
 					/>
 				)}
