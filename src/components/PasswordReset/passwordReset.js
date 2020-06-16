@@ -7,11 +7,11 @@ import styles from "./passwordReset.module.scss";
 class PasswordForget extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = { email: null, errorMessage: null };
+		this.state = { email: undefined, error: undefined, message: undefined };
 	}
 
 	componentDidCatch(error, info) {
-		this.setState({ errorMessage: error.message });
+		this.setState({ error: error });
 	}
 
 	onReset = (ev) => {
@@ -23,7 +23,7 @@ class PasswordForget extends React.Component {
 				});
 			})
 			.catch((error) => {
-				this.setState({ errorMessage: error.message });
+				this.setState({ error: error });
 			});
 		ev.preventDefault();
 	};
@@ -38,7 +38,7 @@ class PasswordForget extends React.Component {
 	};
 
 	render() {
-		const { error } = this.state;
+		const { error, message } = this.state;
 		const isInvalid = this.state.email === null || !this.validateEmail(this.state.email);
 		return (
 			<div className={styles.passwordResetContainer}>
@@ -55,6 +55,7 @@ class PasswordForget extends React.Component {
 						</div>
 					</div>
 				</div>
+				{message && <div className='text-success mx-1'>{message}</div>}
 				{error && <div className={styles.alert}>{error}</div>}
 			</div>
 		);
