@@ -18,18 +18,20 @@ class Settings extends React.Component {
 		super(props);
 
 		this.I18n = new I18n();
-		this.storage = undefined; // to be set in componentDidMount
+		// to temporarily save the state when switching between pages we use services/API/storage.js via contextAPI
+		this.storage = undefined; // this.storage to be set in componentDidMount
 
 		this.state = {
-			address: undefined,
-			title: undefined,
-			firstName: undefined,
-			lastName: undefined,
-			city: undefined,
-			zipcode: undefined,
-			country: undefined,
-			companyId: undefined,
-			deliveryConditions: undefined,
+			address: "",
+			title: "",
+			firstName: "",
+			lastName: "",
+			city: "",
+			zipcode: "",
+			country: "",
+			companyName: "",
+			deliveryConditions: "",
+			// quick hack to set the (I18n) titles here, not in fireStore
 			titles: [
 				{ title: this.I18n.get("TITLES.MR"), id: 1 },
 				{ title: this.I18n.get("TITLES.MRS"), id: 2 },
@@ -37,14 +39,14 @@ class Settings extends React.Component {
 			],
 			companies: [],
 			showModal: false,
+			// to display messages to user we use this construct. type equals any Bootstrap 4.4.1 color class for text: https://getbootstrap.com/docs/4.4/utilities/colors/
 			settingsStatus: {
-				error: false,
+				type: undefined,
 				message: "",
 			},
-			userId: undefined, // the user Id (as defined in user document
-			ID: undefined, // the document id (as defined by fireStore)
+			ID: undefined, // Document id (20 character fireStore generated Id)
 		};
-		// State keys and transform functions to apply when persisting to fireStore .
+		// state values to persist and their transform functions to apply when persisting.
 		this.persistFields = {
 			title: (fieldValue) => fieldValue,
 			firstName: (fieldValue) => fieldValue,
@@ -53,30 +55,46 @@ class Settings extends React.Component {
 			city: (fieldValue) => fieldValue,
 			zipcode: (fieldValue) => fieldValue,
 			country: (fieldValue) => fieldValue,
-			companyId: parseInt,
+			companyName: (fieldValue) => fieldValue,
 			deliveryConditions: (fieldValue) => fieldValue,
 			userId: (fieldValue) => fieldValue,
 		};
 		this.isExistingUserSetting = false;
+
+		// we don't use fancy validation - uase this to determine validity of fields
+		this.assertFieldValid = {
+			title: (fieldValue) => fieldValue.length > 0,
+			firstName: (fieldValue) => fieldValue.length > 0,
+			lastName: (fieldValue) => fieldValue.length > 0,
+			address: (fieldValue) => fieldValue.length > 0,
+			city: (fieldValue) => fieldValue.length > 0,
+			zipcode: (fieldValue) => fieldValue.length > 0,
+			country: (fieldValue) => fieldValue.length > 0,
+			companyName: (fieldValue) => fieldValue.length > 0,
+			deliveryConditions: (fieldValue) => fieldValue.length > 0,
+			userId: (fieldValue) => fieldValue.length > 0,
+		};
 	}
 
 	componentDidMount = () => {
 		const settingsPromise$ = [];
+		// retrieve values
 		settingsPromise$.push(this.props.firebase.getUserSettings());
 		settingsPromise$.push(this.props.firebase.getCollection("companies", "name", ["id", "name"]));
 		Promise.all(settingsPromise$).then((values) => {
 			let stateValues;
 			if (values[0]) {
 				this.isExistingUserSetting = true;
-				// populate statekeys (as defined in this.persistFields) with usersettings
+				// populate object with retrieve usersettings (as defined in this.persistFields)
 				stateValues = Object.keys(this.persistFields).reduce((acc, key) => {
 					acc[key] = values[0][key];
 					return acc;
 				}, {});
+				// add the 20 character fireStore generated Id
 				stateValues.ID = values[0].ID;
 			} else {
 				this.isExistingUserSetting = false;
-				// set state keys (as defined in this.persistFields) to undefined
+				// set state keys (as defined in this.persistFields) to undefined since there is nothing retrieved
 				stateValues = Object.keys(this.persistFields).reduce((acc, key) => {
 					acc[key] = undefined;
 					return acc;
@@ -87,9 +105,10 @@ class Settings extends React.Component {
 				...stateValues,
 				companies: values[1],
 			}));
-			// retrieve the (session)storage class
+
+			// There might be stored session from an earlier visit. Retrieve the (session)storage
 			this.storage = this.context;
-			// copy stored state from sessionstorage to state
+			// copy stored statevalues to state
 			const storedState = this.storage.get("settingsState");
 			if (storedState) {
 				this.setState((state) => ({
@@ -101,7 +120,7 @@ class Settings extends React.Component {
 	};
 
 	/**
-	 * When user clicks 'New company' store current state and switch to Company component
+	 * When user clicks 'New company' store the current state so (s)he can continue when returning and switch to Company component
 	 */
 	handleNewCompany = () => {
 		// copy the state values that will be eventually stored to temporary storage. To be picked up when returning from creating a new company
@@ -114,10 +133,13 @@ class Settings extends React.Component {
 		storeValues.ID = this.state.ID;
 
 		this.storage.set("settingsState", storeValues);
-		// render Company component
+		// render Company component. prevLocation: return to this location when clicking Back / Save button; prevLocationName: display this text in Back / Save Button
 		this.props.history.push({
 			pathname: ROUTES.COMPANY,
-			params: { prevLocation: this.props.location.pathname, prevLocationName: "ROUTENAME.SETTINGS" },
+			params: {
+				prevLocation: this.props.location.pathname,
+				prevLocationName: "ROUTENAME.SETTINGS",
+			},
 		});
 	};
 
@@ -133,12 +155,12 @@ class Settings extends React.Component {
 	onCreateSettings = () => {
 		return Object.keys(this.persistFields).reduce(
 			(acc, key) => {
-				acc = this.assertFieldOfType[key](this.state[key]) // check if field is valid...
+				acc = this.assertFieldValid[key](this.state[key]) // check if field is valid...
 					? Object.assign(acc, { [key]: this.persistFields[key](this.state[key]) }) // if so, convert string to correct type
-					: Object.assign(acc, { error: true, keys: [...acc.keys, key] }); // else error
+					: Object.assign(acc, { error: { status: true, keys: [...acc.error.keys, key] } }); // else error
 				return acc;
 			},
-			{ eror: false, keys: [] }
+			{ error: { status: false, keys: [] } }
 		);
 	};
 
@@ -148,20 +170,18 @@ class Settings extends React.Component {
 	 * @sideEffect - sets this.state.settingsStatus if settings is not valid
 	 */
 	checkSettings = (settings) => {
-		if (settings.error) {
-			console.log("ERROR: ", settings);
-			this.setState({
-				settingsStatus: {
-					error: true,
-					message:
-						this.I18n.get("USERSETTINGS.SUBMIT.ERROR.MISSINGFIELDVALUES") +
-						" [ " +
-						settings.keys.join(", ") +
-						" ]",
-				},
-			});
+		if (settings.error.status) {
+			this.setStatusMessage(
+				"danger",
+				this.I18n.get("USERSETTINGS.SUBMIT.ERROR.MISSINGFIELDVALUES") +
+					" [ " +
+					settings.error.keys.join(", ") +
+					" ]"
+			);
 			return false;
 		} else {
+			// We don't want to store this key...
+			delete settings.error;
 			return settings;
 		}
 	};
@@ -174,13 +194,23 @@ class Settings extends React.Component {
 		if (settings) {
 			// add the default statustitle
 			this.props.firebase
-				.addDocumentToCollection("users", settings, settings.ID)
+				.addDocumentToCollection("users", settings, this.state.ID)
 				.then((docRef) => {
-					console.log("document ", docRef.id, " added");
+					console.log(`document ${docRef ? docRef.id + " added" : "updated"}`);
 					// remove the temporary state
 					this.storage.remove("settingsState");
+					// update statusMessage
+					this.setStatusMessage(
+						"success",
+						this.state.ID
+							? this.I18n.get("STATUSMESSAGE.DOCUMENTUPDATED")
+							: this.I18n.get("STATUSMESSAGE.DOCUMENTADDED")
+					);
 				})
-				.catch((e) => console.log("ERROR: ", e));
+				.catch((e) => {
+					console.log("ERROR: ", e);
+					this.setStatusMessage("danger", e.message);
+				});
 		}
 	};
 
@@ -202,6 +232,29 @@ class Settings extends React.Component {
 		this.I18n.setLanguage(lang);
 		this.setState({ language: lang });
 	};
+
+	/**
+	 * After an action, display message to user
+	 *
+	 * @param{string} type - the type of the message error-info-warn
+	 * @param{string} message - te message to display
+	 */
+	setStatusMessage = (type, message) => {
+		this.setState({
+			settingsStatus: {
+				type: type,
+				message: message,
+			},
+		});
+	};
+
+	onCancel = (e) => {
+		this.storage.remove("settingsState");
+		// React-Router has no Refresh functionality. This hack solves it
+		this.props.history.push("/temp");
+		this.props.history.goBack();
+	};
+
 	render() {
 		return this.state.showModal ? (
 			<ModalComponent
@@ -269,12 +322,9 @@ class Settings extends React.Component {
 							displayInput={true}
 							displayKey='name'
 							handleOnChange={this.onChange}
-							initialSelectedValue={this.state.companies.reduce(
-								(acc, c) => (c.id === this.state.companyId ? c.name : acc),
-								0
-							)}
+							displayValue={this.state.companyName}
 							labelText={this.I18n.get("USERSETTINGS.LABEL.COMPANY")}
-							name='companyId'
+							name='companyName'
 							onButtonClick={this.handleNewCompany}
 							valueKey='id'
 						/>
@@ -346,18 +396,30 @@ class Settings extends React.Component {
 						/>
 					</div>
 				</div>
-				<div className='row justify-content-end align-items-baseline pr-2 pt-3'>
-					<div className='text-white mr-3'>
-						{this.state.settingsStatus.error && this.state.settingsStatus.message}
+				<div className='row justify-content-end align-items-baseline flex-nowrap pr-2 pt-3'>
+					<div className='bg-light'>
+						{this.state.settingsStatus.message ? (
+							<span className={"text-" + this.state.settingsStatus.type}>
+								{this.state.settingsStatus.message}
+							</span>
+						) : null}
+					</div>
+					<div className=' mx-3'>
+						<Button
+							onClick={this.onCancel}
+							text={this.I18n.get("USERSETTINGS.BUTTON.CANCEL.TEXT")}
+							title={this.I18n.get("USERSETTINGS.BUTTON.CANCEL.TITLE")}
+						/>
 					</div>
 					<div>
 						<Button
 							onClick={this.onSubmit}
 							text={
 								this.isExistingUserSetting
-									? this.I18n.get("USERSETTINGS.BUTTON.UPDATE")
-									: this.I18n.get("USERSETTINGS.BUTTON.SAVE")
+									? this.I18n.get("USERSETTINGS.BUTTON.UPDATE.TEXT")
+									: this.I18n.get("USERSETTINGS.BUTTON.SAVE.TEXT")
 							}
+							title={this.I18n.get("USERSETTINGS.BUTTON.UPDATE.TITLE")}
 						/>
 					</div>
 				</div>
