@@ -25,7 +25,7 @@ const Input = ({
 	name,
 	type,
 }) => {
-	const onChange = (event) => {
+	const onBlur = (event) => {
 		handleOnChange(event.target.name, event.target.value);
 	};
 
@@ -41,10 +41,10 @@ const Input = ({
 			{displayInput ? (
 				<input
 					name={name}
-					onChange={onChange}
+					onBlur={onBlur}
 					step='any'
 					type={type}
-					value={displayValue}
+					defaultValue={displayValue}
 					style={extraStyles}
 				/>
 			) : (
