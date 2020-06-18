@@ -33,6 +33,7 @@ const AppRouter = () => (
 			<Route exact path={ROUTES.SIGN_IN} render={(props) => <SignIn {...props} />} />
 			<Route exact path={ROUTES.SIGN_UP} render={(props) => <SignUp {...props} />} />
 			<Route exact path={ROUTES.STATS} render={(props) => <Stats {...props} />} />
+			<Route exact path='/*' render={(props) => <Invoices {...props} />} />
 		</Switch>
 	</PersistenceContextProvider>
 );
