@@ -194,7 +194,6 @@ class Invoice extends React.Component {
 			return total;
 		}, 0);
 
-		// const totalVatAmount = typeof _vatrate != "undefined" ? total * (_vatrate / 100) : 0;
 		const totalVatAmount = total * (_vatrate / 100);
 
 		return {
