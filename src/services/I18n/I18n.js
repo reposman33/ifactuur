@@ -251,13 +251,37 @@ export class I18n {
 				},
 			},
 			BUTTON: {
-				SAVE: { en: "Save", nl: "Bewaar" },
-				UPDATE: { en: "Update", nl: "Bijwerken" },
+				SAVE: {
+					TEXT: { en: "Save", nl: "Bewaar" },
+					TITLE: { en: "Save the current usersettings", nl: "Sla de huidige instellingen op" },
+				},
+				UPDATE: {
+					TEXT: { en: "Update", nl: "Bijwerken" },
+					TITLE: { en: "Save the current usersettings", nl: "Sla de huidige instellingen op" },
+				},
+				CANCEL: {
+					TEXT: { en: "Cancel", nl: "Cancel" },
+					TITLE: { en: "Restore the original usersettings", nl: "Vertoon de originele instellingen" },
+				},
+			},
+			SUBMIT: {
+				ERROR: {
+					MISSINGFIELDVALUES: {
+						en: "Not all user settings are filled in. Please fill in missing values",
+						nl: "De pagina is niet volledig ingevuld. Vul a.u.b. de ontbrekende gegevens in.",
+					},
+				},
 			},
 		},
 		ROUTENAME: {
 			EXPENSE: { en: "expense", nl: "uitgave" },
 			INVOICE: { en: "invoice", nl: "factuur" },
+			SETTINGS: { en: "Usersettings", nl: "Instellingen" },
+		},
+		STATUSMESSAGE: {
+			DOCUMENTADDED: { en: "Document succesfully added", nl: "Document toegevoegd" },
+			DOCUMENTUPDATED: { en: "Document succesfully updated", nl: "Document gewijzigd" },
+			DOCUMENTCANCELLED: { en: "Changes removed", nl: "Wijzigingen verwijderd" },
 		},
 	};
 
