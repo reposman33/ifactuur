@@ -15,7 +15,7 @@ import styles from "./textarea.module.scss";
  */
 
 const Textarea = ({ cols, displayInput, displayValue, extraClasses, handleOnChange, labelText, name, rows }) => {
-	const onChange = (event) => {
+	const onBlur = (event) => {
 		handleOnChange(event.target.name, event.target.value);
 	};
 
@@ -29,7 +29,7 @@ const Textarea = ({ cols, displayInput, displayValue, extraClasses, handleOnChan
 				rows={rows}
 				disabled={!displayInput}
 				defaultValue={displayValue}
-				onChange={onChange}></textarea>
+				onBlur={onBlur}></textarea>
 		</div>
 	);
 };
