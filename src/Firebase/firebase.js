@@ -181,7 +181,7 @@ class Firebase {
 	/** Add OR update a document to/in a collection
 	 * @param{string} collection - the collection to add to / update
 	 * @param{object} doc - the document to add / update
-	 * @param{string} docId? - the id of the document to update
+	 * @param{string} docId? - the 20 charachter fireStore document Id to update
 	 */
 	addDocumentToCollection = (collection, doc, docId) =>
 		!!docId
@@ -198,13 +198,11 @@ class Firebase {
 	 * @param{string} collection - collectin to delete document form
 	 * @param{string} id - the 20 charachter fireStore document Id
 	 */
-	deleteDocument = (collection, id) => {
+	deleteDocument = (collection, id) =>
 		this.db
 			.collection(collection)
 			.doc(id)
 			.delete();
-	};
-
 	/**
 	 * returns a sorted list of unique years from all documents in a collection.Each year occurs once in the result.
 	 * @param{string} collection - the collection to get the years from
@@ -309,12 +307,12 @@ class Firebase {
 
 	// ===============================================================
 	// ===============================================================
-	// SETTINGS
+	// USERSETTINGS
 	// ===============================================================
 	// ===============================================================
 
 	/**
-	 * get all settings of a user. Retrieve the 20 character fireStore generated userId from sessionStorage where it is stored after authentication.
+	 * get all settings of a user. Retrieve the 20 character fireStore generated Id from sessionStorage where it is stored after authentication.
 	 * @returns {object} - the user data document
 	 */
 
@@ -325,7 +323,11 @@ class Firebase {
 			.get()
 			.then((querySnapshot) => {
 				let document;
-				querySnapshot.forEach((doc) => (document = doc.data()));
+				querySnapshot.forEach((doc) => {
+					document = doc.data();
+					document.ID = doc.id;
+					return document;
+				});
 				return document;
 			});
 	};
