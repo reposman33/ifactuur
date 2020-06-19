@@ -33,7 +33,7 @@ class SignInForm extends React.Component {
 					});
 					this.props.firebase.getUserSettings().then((userSettings) => {
 						// redirect to userSettings if first time and nothing filled in yet.
-						const route = userSettings && userSettings.companyId ? ROUTES.INVOICES : ROUTES.SETTINGS;
+						const route = userSettings && userSettings.companyName ? ROUTES.INVOICES : ROUTES.SETTINGS;
 						this.props.history.push({ pathname: route });
 					});
 				} else {
