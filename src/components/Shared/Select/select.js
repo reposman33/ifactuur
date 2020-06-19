@@ -47,6 +47,7 @@ const Select = ({
 	// convert to correct type to match data
 	const initialSelectedValue = data
 		// use equality op (==) to convert types because "9" should match 9
+		/* eslint eqeqeq: "off" */
 		.filter((ob) => ob[displayKey] == displayValue)
 		.reduce((acc, selectedOb) => selectedOb[valueKey], "");
 	return (
