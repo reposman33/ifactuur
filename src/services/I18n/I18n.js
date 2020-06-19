@@ -62,6 +62,7 @@ export class I18n {
 		EXPENSE: {
 			BUTTON: {
 				BACK: { en: "Back to overview", nl: "Terug naar overzicht" },
+				NEW_COMPANY: { en: "New company", nl: "Nieuw bedrijf" },
 				SAVE: { en: "Save and show overview", nl: "Bewaar en naar overzicht" },
 			},
 			LABEL: {
@@ -69,7 +70,6 @@ export class I18n {
 				COMPANY: { en: "Company", nl: "Bedrijf" },
 				DATE: { en: "Date", nl: "Datum" },
 				ITEM: { en: "Items/Services", nl: "Goederen/Diensten" },
-				NEW_COMPANY: { en: "New company", nl: "Nieuw bedrijf" },
 				TAX: { en: "Tax", nl: "BTW" },
 			},
 			SUBMIT: {

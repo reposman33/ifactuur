@@ -28,11 +28,12 @@ class Expense extends React.Component {
 			date: undefined,
 			description: undefined,
 			expenseStatus: {
-				error: false,
+				type: false,
 				message: "",
 			},
 			vatrate: undefined,
 			vatrates: [],
+			id: undefined,
 		};
 
 		// Transformation functions for fieldvalues before storing.
@@ -41,6 +42,7 @@ class Expense extends React.Component {
 			company: (fieldValue) => fieldValue,
 			date: (date) => new Date(date),
 			description: (fieldValue) => fieldValue,
+			id: parseInt,
 			vatrate: parseInt,
 		};
 		this.isExistingExpense = !!(!!this.props.location.state && !!this.props.location.state.id);
@@ -60,6 +62,7 @@ class Expense extends React.Component {
 			company: (value) => typeof value === "string" && value.length > 0,
 			date: (value) => typeof value === "string" && value.length > 0,
 			description: (value) => typeof value === "string" && value.length > 0,
+			id: (value) => typeof value === "number",
 			vatrate: (value) => typeof value === "string" && value.length > 0,
 		};
 	}
@@ -71,10 +74,13 @@ class Expense extends React.Component {
 			newExpensePromises$.push(this.props.firebase.getCollection("companies", "name", ["id", "name"]));
 			// retrieve VatRates
 			newExpensePromises$.push(this.props.firebase.getVatRates());
+			// retrieve a new id
+			newExpensePromises$.push(this.props.firebase.getNewId());
 			Promise.all(newExpensePromises$).then((values) => {
 				this.setState({
 					companies: values[0],
 					vatrates: values[1],
+					id: values[2],
 				});
 			});
 		} else {
@@ -153,12 +159,15 @@ class Expense extends React.Component {
 	 * @returns{object} expense - the expense, optionally with an error key
 	 */
 	onCreateExpense = () => {
-		return Object.keys(this.persistFields).reduce((acc, key) => {
-			acc = this.assertFieldOfType[key](this.state[key]) // check if field is valid...
-				? Object.assign(acc, { [key]: this.persistFields[key](this.state[key]) }) // if so, convert string to correct type
-				: Object.assign(acc, { error: true }); // else error
-			return acc;
-		}, {});
+		return Object.keys(this.persistFields).reduce(
+			(acc, key) => {
+				acc = this.assertFieldOfType[key](this.state[key]) // check if field is valid...
+					? Object.assign(acc, { [key]: this.persistFields[key](this.state[key]) }) // if so, convert string to correct type
+					: Object.assign(acc, { error: { status: true, keys: [...acc.error.keys, key] } }); // else error
+				return acc;
+			},
+			{ error: { status: false, keys: [] } }
+		);
 	};
 
 	/**
@@ -168,14 +177,13 @@ class Expense extends React.Component {
 	 */
 	checkExpense = (expense) => {
 		if (expense.error) {
-			this.setState({
-				expenseStatus: {
-					error: true,
-					message: this.I18n.get("EXPENSE.SUBMIT.ERROR.MISSINGFIELDVALUES"),
-				},
-			});
-			return false;
-		} else {
+			this.setStatusMessage(
+				"danger",
+				this.I18n.get("USERSETTINGS.SUBMIT.ERROR.MISSINGFIELDVALUES") +
+					" [ " +
+					expense.error.keys.join(", ") +
+					" ]"
+			);
 			return expense;
 		}
 	};
@@ -185,14 +193,46 @@ class Expense extends React.Component {
 	 * @returns void - calls fireStore as an sideEffect
 	 */
 	storeExpense = (expense) => {
-		if (expense) {
+		if (!expense.error.status) {
+			// we don't want to store the  error key
+			delete expense.error;
 			// add the current user id!
 			expense.userId = this.props.firebase.auth.currentUser.uid;
-			this.props.firebase.addDocumentToCollection("bills", expense).then((docRef) => {
-				console.log("document ", docRef.id, " added");
-				this.onListview();
-			});
+			this.props.firebase
+				.addDocumentToCollection("bills", expense)
+				.then((docRef) => {
+					console.log("document ", docRef.id, " added");
+					// remove the temporary state
+					this.storage.remove("expenseState");
+					// update statusMessage
+					this.setStatusMessage("success", this.I18n.get("STATUSMESSAGE.DOCUMENTADDED"));
+					// show new expense in listView ;
+					this.onListview();
+				})
+				.catch((e) => this.setStatusMessage("danger", e.message));
 		}
+	};
+
+	/**
+	 * After an action, display message to user
+	 *
+	 * @param{string} type - the type of the message error-info-warn
+	 * @param{string} message - te message to display
+	 */
+	setStatusMessage = (type, message) => {
+		this.setState({
+			expenseStatus: {
+				type: type,
+				message: message,
+			},
+		});
+	};
+
+	onCancel = (e) => {
+		this.storage.remove("expenseState");
+		// React-Router has no Refresh functionality. This hack solves it
+		this.props.history.push("/temp");
+		this.props.history.goBack();
 	};
 
 	render() {
@@ -262,21 +302,44 @@ class Expense extends React.Component {
 						/>
 					</div>
 				</div>
-				<div className='d-flex mb-2 justify-content-between'>
+
+				<div className='row align-items-baseline flex-nowrap pr-2 pt-3'>
 					<Button
 						extraStyles={{ marginLeft: "0.8rem" }}
-						extraClasses='m-3'
+						extraClasses='mr-auto'
 						onClick={this.onListview}
 						text={this.I18n.get("EXPENSE.BUTTON.BACK")}
 					/>
-					<Button
-						disabled={this.isExistingExpense}
-						extraStyles={{ marginRight: "0.8rem" }}
-						extraClasses='m-3'
-						onClick={this.onSubmit}
-						text={this.I18n.get("EXPENSE.BUTTON.SAVE")}
-					/>
+
+					<div className='bg-light ml-3'>
+						{this.state.expenseStatus.message ? (
+							<span className={"text-" + this.state.expenseStatus.type}>
+								{this.state.expenseStatus.message}
+							</span>
+						) : null}
+					</div>
+					{!this.isExistingExpense && (
+						<>
+							<div className=' mx-3'>
+								<Button
+									onClick={this.onCancel}
+									text={this.I18n.get("USERSETTINGS.BUTTON.CANCEL.TEXT")}
+									title={this.I18n.get("USERSETTINGS.BUTTON.CANCEL.TITLE")}
+								/>
+							</div>
+							<div>
+								<Button
+									disabled={this.isExistingExpense}
+									onClick={this.onSubmit}
+									text={this.I18n.get("EXPENSE.BUTTON.SAVE")}
+								/>
+							</div>
+						</>
+					)}
 				</div>
+
+				{/* <div className='d-flex mb-2 justify-content-between'>
+				</div> */}
 				<span className='d-block margin-auto text-center text-danger'>
 					{this.state.expenseStatus.error && this.state.expenseStatus.message}
 				</span>

@@ -163,22 +163,6 @@ class Firebase {
 				return document;
 			});
 
-	/**
-	 * this function returns the next higher value of the given field of type number in a collection
-	 * @param {string} collection - the collection to get the value from
-	 * @param {string} fieldName - the name of the field to get the value from
-	 * @returns {number}  - the fieldvalue + 1
-	 */
-	getNewInvoiceNr = (collection, fieldName) =>
-		this.db
-			.collection(collection)
-			.where("userId", "==", sessionStorage.getItem("userId"))
-			.orderBy("dateTimeCreated", "desc")
-			.orderBy("invoiceNr", "desc")
-			.limit(1)
-			.get()
-			.then((querySnapshot) => (querySnapshot.docs[0] ? querySnapshot.docs[0].data()[fieldName] + 1 : 1));
-
 	/** Add OR update a document to/in a collection
 	 * @param{string} collection - the collection to add to / update
 	 * @param{object} doc - the document to add / update
@@ -262,6 +246,23 @@ class Firebase {
 			dateFrom,
 			dateTo
 		);
+
+	/**
+	 * this function returns the next higher value of the id field
+	 * @param {string} collection - the collection to get the value from
+	 * @param {string} fieldName - the name of the field to get the value from
+	 * @returns {number}  - the fieldvalue + 1
+	 */
+	getNewId = () =>
+		this.db
+			.collection("bills")
+			.where("userId", "==", sessionStorage.getItem("userId"))
+			.orderBy("date", "desc")
+			.orderBy("id", "desc")
+			.limit(1)
+			.get()
+			.then((querySnapshot) => (querySnapshot.docs[0] ? querySnapshot.docs[0].data().id + 1 : 1));
+
 	// ===============================================================
 	// ===============================================================
 	// INVOICES
@@ -279,6 +280,23 @@ class Firebase {
 	 * Convert a Firestore Timestamp format to a JS Date object.
 	 * @param {object} invoice - the invoice document to convert Timestamp fieldValues from
 	 */
+
+	/**
+	 * this function returns the next higher value of the invoiceNr field
+	 * @param {string} collection - the collection to get the value from
+	 * @param {string} fieldName - the name of the field to get the value from
+	 * @returns {number}  - the fieldvalue + 1
+	 */
+	getNewInvoiceNr = () =>
+		this.db
+			.collection("invoices")
+			.where("userId", "==", sessionStorage.getItem("userId"))
+			.orderBy("dateTimeCreated", "desc")
+			.orderBy("invoiceNr", "desc")
+			.limit(1)
+			.get()
+			.then((querySnapshot) => (querySnapshot.docs[0] ? querySnapshot.docs[0].data().invoiceNr + 1 : 1));
+
 	convertTimestamps = (invoice) => {
 		// convert fireStore Timestamp to JavaScript Date object for a few fields
 		["dateTimeCreated", "dateTimePaid", "dateTimeSent", "dateTimePrinted", "periodFrom", "periodTo"].forEach(
