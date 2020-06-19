@@ -33,7 +33,7 @@ class Expenses extends React.Component {
 
 	// define the columns for the table
 	getColumns = () => [
-		{ dataField: "id", text: "#", headerStyle: { width: "4%" }, sort: true },
+		{ dataField: "id", text: "id", headerStyle: { width: "4%" }, sort: true },
 		{
 			dataField: "date",
 			formatter: (cell, row, rowIndex) => this.Utils.dateFormat.format(cell),
@@ -73,7 +73,7 @@ class Expenses extends React.Component {
 	table = {
 		defaultSorted: [
 			{
-				dataField: "date",
+				dataField: "id",
 				order: "desc",
 			},
 		],
