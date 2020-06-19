@@ -61,7 +61,11 @@ class Company extends React.Component {
 			url: "",
 			bank: "",
 			bankAccountNr: "",
-			bankAccountNameHolder: "",
+			bankAccountNameHolder: "", // to display messages to user we use this construct. type equals any Bootstrap 4.4.1 color class for text: https://getbootstrap.com/docs/4.4/utilities/colors/
+			settingsStatus: {
+				type: undefined,
+				message: "",
+			},
 		};
 		this.isExistingCompany = !!(!!this.props.location.state && this.props.location.state.id);
 	}
@@ -116,6 +120,21 @@ class Company extends React.Component {
 				this.onGoBack();
 			})
 			.catch((e) => console.log("ERROR: ", e));
+	};
+
+	/**
+	 * After an action, display message to user
+	 *
+	 * @param{string} type - the type of the message error-info-warn
+	 * @param{string} message - te message to display
+	 */
+	setStatusMessage = (type, message) => {
+		this.setState({
+			settingsStatus: {
+				type: type,
+				message: message,
+			},
+		});
 	};
 
 	render() {
@@ -180,7 +199,7 @@ class Company extends React.Component {
 					</div>
 				</div>
 				<div className='mb-3'>
-					<div className={"col d-flex flex-column " + styles.noBorderTop}>
+					<div className={"col d-flex flex-column pt-23 my-1" + styles.noBorderTop}>
 						<div className='d-flex justify-content-between pr-3 mr-3'>
 							<span className='d-flex align-items-center'>
 								<FontAwesomeIcon size='2x' icon='user-tie' />
@@ -294,35 +313,40 @@ class Company extends React.Component {
 								</div>
 							</div>
 						</div>
-						<div className='d-flex justify-content-between'>
-							{/* Button Overview */}
-							<Button
-								onClick={this.onGoBack}
-								text={
-									!!this.prevLocation
-										? this.I18n.get("COMPANY.BUTTON.BACKTOPREVIOUSLOCATION").replace(
-												"{1}",
-												this.I18n.get(this.prevLocationName)
-										  )
-										: this.I18n.get("COMPANY.BUTTON.BACKTOLISTVIEW")
-								}
-							/>
-							{/* Button Save */}
-							<Button
-								onClick={this.onSubmit}
-								text={
-									this.isExistingCompany
-										? this.I18n.get("COMPANY.BUTTON.UPDATE")
-										: !!this.prevLocation
-										? this.I18n.get("COMPANY.BUTTON.SAVEANDBACKTOPREVIOUSLOCATION").replace(
-												"{1}",
-												this.I18n.get(this.prevLocationName)
-										  )
-										: this.I18n.get("COMPANY.BUTTON.SAVEANDBACKTOLISTVIEW")
-								}
-								extraClasses='float-right'
-							/>
+					</div>
+					<div className='row align-items-baseline flex-nowrap pr-2'>
+						<Button
+							extraClasses='mr-auto'
+							onClick={this.onListview}
+							text={this.I18n.get("INVOICE.BUTTON.BACK")}
+							extraStyles={{ marginLeft: "0.8rem" }}
+						/>
+
+						<div className='bg-light ml-3'>
+							{this.state.settingsStatus.message ? (
+								<span className={"text-" + this.state.settingsStatus.type}>
+									{this.state.settingsStatus.message}
+								</span>
+							) : null}
 						</div>
+						{!this.isExistingInvoice && (
+							<>
+								<div className=' mx-3'>
+									<Button
+										onClick={this.onCancel}
+										text={this.I18n.get("USERSETTINGS.BUTTON.CANCEL.TEXT")}
+										title={this.I18n.get("USERSETTINGS.BUTTON.CANCEL.TITLE")}
+									/>
+								</div>
+								<div>
+									<Button
+										onClick={this.onSubmit}
+										text={this.I18n.get("USERSETTINGS.BUTTON.SAVE.TEXT")}
+										title={this.I18n.get("USERSETTINGS.BUTTON.UPDATE.TITLE")}
+									/>
+								</div>
+							</>
+						)}
 					</div>
 				</div>
 			</>
