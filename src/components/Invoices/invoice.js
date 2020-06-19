@@ -35,10 +35,6 @@ class Invoice extends React.Component {
 				{ id: 1, type: "credit" },
 				{ id: 2, type: "debet" },
 			],
-			invoiceStatus: {
-				error: false,
-				message: "",
-			},
 			// to display messages to user we use this construct. type equals any Bootstrap 4.4.1 color class for text: https://getbootstrap.com/docs/4.4/utilities/colors/
 			settingsStatus: {
 				type: undefined,
@@ -76,16 +72,16 @@ class Invoice extends React.Component {
 			ROWS: "rows",
 		};
 
-		// To assert the validity of a value use this map with assertions for each invoiceField. Note: this is output from DOMelements. E.g. <input type="date"> returns a DOMString
-		this.assertFieldOfType = {
-			companyName: (value) => typeof value === "string",
-			dateTimeCreated: (value) => typeof value === "string",
-			// NOT a Date but nice to know how to check for it: Object.prototype.toString.call(value) === "[object String]",
+		// To assert the validity of a value use this map with assertions for each invoiceField.
+		this.assertFieldValid = {
+			companyName: (value) => typeof value === "string" && value.length > 0,
+			dateTimeCreated: (value) => typeof value === "string" && value.length > 0,
+			// input type='date' is NOT a Date but nice to know how to check for it: Object.prototype.toString.call(value) === "[object String]",
 			invoiceNr: (value) => typeof value === "number",
 			rows: (value) => Array.isArray(value) && value.length > 0,
 			totals: (value) => value === Object(value) && Object.keys(value).length > 0 && value.totalWithVat, // check a numeric value has been submit
 			type: (value) => typeof value === "string",
-			VATRate: (value) => typeof value === "string",
+			VATRate: (value) => typeof value === "string" && value.length > 0,
 		};
 	}
 
@@ -127,7 +123,7 @@ class Invoice extends React.Component {
 	 * @param{string} value - value of the inputfield
 	 */
 	onChange = (name, value) => {
-		this.setState({ [name]: value });
+		this.setState(() => ({ [name]: value }));
 	};
 
 	/**
@@ -261,48 +257,76 @@ class Invoice extends React.Component {
 	 * @returns{object} invoice - the invoice, optionally with an error key
 	 */
 	onCreateInvoice = () => {
-		return Object.keys(this.persistFields).reduce((acc, key) => {
-			acc = this.assertFieldOfType[key](this.state[key]) // check if field is valid...
-				? Object.assign(acc, { [key]: this.persistFields[key](this.state[key]) }) // if so, convert string to correct type
-				: Object.assign(acc, { error: true }); // else error
-			return acc;
-		}, {});
+		return Object.keys(this.persistFields).reduce(
+			(acc, key) => {
+				acc = this.assertFieldValid[key](this.state[key]) // check if field is valid...
+					? Object.assign(acc, { [key]: this.persistFields[key](this.state[key]) }) // if so, convert string to correct type
+					: Object.assign(acc, { error: { status: true, keys: [...acc.error.keys, key] } }); // else error
+				return acc;
+			},
+			{ error: { status: false, keys: [] } }
+		);
 	};
 
 	/**
 	 * @param{object} invoice - the invoice. Pass if no error, setState if error
 	 * @returns{boolean|object} - false in case of error | invoice if no error
-	 * @sideEffect - sets this.state.invoiceStatus if invoice is not valid
+	 * @sideEffect - calls setStatusMessage if invoice is not valid
 	 */
 	checkInvoice = (invoice) => {
-		if (invoice.error) {
-			this.setState({
-				invoiceStatus: {
-					error: true,
-					message: this.I18n.get("INVOICE.SUBMIT.ERROR.MISSINGFIELDVALUES"),
-				},
-			});
-			return false;
+		if (invoice.error.status) {
+			this.setStatusMessage(
+				"danger",
+				this.I18n.get("USERSETTINGS.SUBMIT.ERROR.MISSINGFIELDVALUES") +
+					" [ " +
+					invoice.error.keys.join(", ") +
+					" ]"
+			);
+			return invoice;
 		} else {
 			return invoice;
 		}
 	};
 
 	/**
-	 * @param{boolean|object} false|invoice - this param is false if invoice is invalid | param is the invoice if invoice is valid.
+	 * @param{object} invoice - the invoice.
 	 * @returns void - calls fireStore as an sideEffect
 	 */
 	storeInvoice = (invoice) => {
-		if (invoice) {
-			// add the current user id!
+		if (invoice.error.status === false) {
+			// delete the error info
+			delete invoice.error;
+			// add the userId
 			invoice.userId = this.props.firebase.auth.currentUser.uid;
-			// add the default statustitle
-			invoice.statustitle = "created";
-			this.props.firebase.addDocumentToCollection("invoices", invoice).then((docRef) => {
-				console.log("document ", docRef.id, " added");
-				this.onListview();
-			});
+			this.props.firebase
+				.addDocumentToCollection("invoices", invoice)
+				.then((docRef) => {
+					console.log(`document ${docRef.id} added}`);
+					// remove the temporary state
+					this.storage.remove("invoiceState");
+					// update statusMessage
+					this.setStatusMessage("success", this.I18n.get("STATUSMESSAGE.DOCUMENTADDED"));
+				})
+				.catch((e) => {
+					console.log("ERROR: ", e);
+					this.setStatusMessage("danger", e.message);
+				});
 		}
+	};
+
+	/**
+	 * After an action, display message to user
+	 *
+	 * @param{string} type - the type of the message error-info-warn
+	 * @param{string} message - te message to display
+	 */
+	setStatusMessage = (type, message) => {
+		this.setState({
+			settingsStatus: {
+				type: type,
+				message: message,
+			},
+		});
 	};
 
 	onCancel = (e) => {
@@ -503,36 +527,32 @@ class Invoice extends React.Component {
 						extraStyles={{ marginLeft: "0.8rem" }}
 					/>
 
-					<div className='bg-light'>
+					<div className='bg-light ml-3'>
 						{this.state.settingsStatus.message ? (
 							<span className={"text-" + this.state.settingsStatus.type}>
 								{this.state.settingsStatus.message}
 							</span>
 						) : null}
 					</div>
-					<div className=' mx-3'>
-						<Button
-							onClick={this.onCancel}
-							text={this.I18n.get("USERSETTINGS.BUTTON.CANCEL.TEXT")}
-							title={this.I18n.get("USERSETTINGS.BUTTON.CANCEL.TITLE")}
-						/>
-					</div>
-					<div>
-						<Button
-							onClick={this.onSubmit}
-							text={
-								this.isExistingUserSetting
-									? this.I18n.get("USERSETTINGS.BUTTON.UPDATE.TEXT")
-									: this.I18n.get("USERSETTINGS.BUTTON.SAVE.TEXT")
-							}
-							title={this.I18n.get("USERSETTINGS.BUTTON.UPDATE.TITLE")}
-						/>
-					</div>
+					{!this.isExistingInvoice && (
+						<>
+							<div className=' mx-3'>
+								<Button
+									onClick={this.onCancel}
+									text={this.I18n.get("USERSETTINGS.BUTTON.CANCEL.TEXT")}
+									title={this.I18n.get("USERSETTINGS.BUTTON.CANCEL.TITLE")}
+								/>
+							</div>
+							<div>
+								<Button
+									onClick={this.onSubmit}
+									text={this.I18n.get("USERSETTINGS.BUTTON.SAVE.TEXT")}
+									title={this.I18n.get("USERSETTINGS.BUTTON.UPDATE.TITLE")}
+								/>
+							</div>
+						</>
+					)}
 				</div>
-
-				<span className='d-block margin-auto text-center text-danger'>
-					{this.state.invoiceStatus.error && this.state.invoiceStatus.message}
-				</span>
 			</div>
 		);
 	}
