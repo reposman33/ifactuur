@@ -38,7 +38,7 @@ class Settings extends React.Component {
 				{ title: this.I18n.get("TITLES.THEY"), id: 3 },
 			],
 			companies: [],
-			showModal: false,
+			showModal: this.props.location.state && this.props.location.state.showModal,
 			// to display messages to user we use this construct. type equals any Bootstrap 4.4.1 color class for text: https://getbootstrap.com/docs/4.4/utilities/colors/
 			settingsStatus: {
 				type: undefined,
@@ -267,7 +267,7 @@ class Settings extends React.Component {
 						onClick={this.hideModal}
 					/>
 				}
-				show={this.state.showModal}
+				showModal={this.state.showModal}
 				closeModal={this.hideModal}
 			/>
 		) : (
