@@ -70,8 +70,8 @@ class Invoices extends React.Component {
 	table = {
 		defaultSorted: [
 			{
-				dataField: "dateTimeCreated",
-				order: "asc",
+				dataField: "invoiceNr",
+				order: "desc",
 			},
 		],
 		defaultSortDirection: "desc",
@@ -187,27 +187,25 @@ class Invoices extends React.Component {
 						closeModal={this.hideModal}
 						body={
 							<InvoicePrint
-								Utils={this.Utils}
+								company={this.state.company}
 								invoiceNr={this.state.invoiceNr}
 								invoice={this.state.invoice}
-								company={this.state.company}
 								userSettings={this.state.userSettings}
 								userCompany={this.state.userCompany}
 							/>
 						}
-						closeModal={this.hideModal}
-						show={this.state.modal}
+						showModal={this.state.modal}
 					/>
 				)}
 				<BootstrapTable
 					bootstrap4
-					data={this.state.rowData}
 					classes={ReactBootstrapTableStyles.ReactBootstrapTable}
 					columns={this.getColumns()}
-					table={this.table}
+					data={this.state.rowData}
 					keyField='ID'
-					rowEvents={{ onClick: this.onRowClick }}
 					pagination={paginationFactory(this.paginationConfig)}></BootstrapTable>
+				rowEvents={{ onClick: this.onRowClick }}
+				table={this.table}
 				<Button
 					extraClasses='float-right mr-3'
 					onClick={this.handleNewInvoice}

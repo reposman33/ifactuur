@@ -4,7 +4,7 @@ import { PDFExport } from "@progress/kendo-react-pdf";
 import styles from "./invoicePrint.module.scss";
 /**
  * The printable invoice.
- * @param {Object} props (Utils,invoiceNr,invoice,company, userSettings, userCompany])
+ * @param {Object} props (invoiceNr,invoice,company, userSettings, userCompany])
  *
  */
 const InvoicePrint = (props) => {
