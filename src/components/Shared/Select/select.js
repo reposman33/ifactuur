@@ -44,8 +44,10 @@ const Select = ({
 	const selectStyle = buttonText ? { width: "50%" } : { margin: 0 };
 
 	//  display the current state value
+	// convert to correct type to match data
 	const initialSelectedValue = data
-		.filter((ob) => ob[displayKey] === displayValue)
+		// use equality op (==) to convert types because "9" should match 9
+		.filter((ob) => ob[displayKey] == displayValue)
 		.reduce((acc, selectedOb) => selectedOb[valueKey], "");
 	return (
 		<div
