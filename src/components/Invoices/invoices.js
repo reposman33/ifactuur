@@ -203,9 +203,9 @@ class Invoices extends React.Component {
 					columns={this.getColumns()}
 					data={this.state.rowData}
 					keyField='ID'
-					pagination={paginationFactory(this.paginationConfig)}></BootstrapTable>
-				rowEvents={{ onClick: this.onRowClick }}
-				table={this.table}
+					pagination={paginationFactory(this.paginationConfig)}
+					rowEvents={{ onClick: this.onRowClick }}
+					table={this.table}></BootstrapTable>
 				<Button
 					extraClasses='float-right mr-3'
 					onClick={this.handleNewInvoice}
