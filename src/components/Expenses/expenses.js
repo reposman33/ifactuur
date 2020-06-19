@@ -61,7 +61,7 @@ class Expenses extends React.Component {
 			text: this.I18n.get("INVOICES.TABLE.HEADERS.ACTIONS"),
 			isDummyField: true,
 			formatter: () => (
-				<span className={componentStyles.actionIcons}>
+				<span className={ReactBootstrapTableStyles.actionIcons}>
 					<FontAwesomeIcon icon='print' />
 					<FontAwesomeIcon icon='edit' />
 				</span>
