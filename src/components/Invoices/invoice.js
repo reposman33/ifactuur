@@ -298,6 +298,8 @@ class Invoice extends React.Component {
 			delete invoice.error;
 			// add the userId
 			invoice.userId = this.props.firebase.auth.currentUser.uid;
+			// set the initial status
+			invoice.statustitle = this.I18n.get("INVOICE.STATUSTITLE.CREATED");
 			this.props.firebase
 				.addDocumentToCollection("invoices", invoice)
 				.then((docRef) => {

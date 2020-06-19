@@ -117,6 +117,7 @@ export class I18n {
 				TOTAL: { en: "Total", nl: "Totaal" },
 				VATRATE: { en: "VAT", nl: "BTW" },
 			},
+			STATUSTITLE: { CREATED: { en: "Created", nl: "Aangemaakt" } },
 			SUBMIT: {
 				ERROR: {
 					MISSINGFIELDVALUES: {
