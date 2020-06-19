@@ -178,10 +178,8 @@ class Settings extends React.Component {
 					settings.error.keys.join(", ") +
 					" ]"
 			);
-			return false;
+			return settings;
 		} else {
-			// We don't want to store this key...
-			delete settings.error;
 			return settings;
 		}
 	};
@@ -191,9 +189,11 @@ class Settings extends React.Component {
 	 * @returns void - calls fireStore as an sideEffect
 	 */
 	storeSettings = (settings) => {
-		if (settings) {
-			// add the default statustitle
+		if (settings.error.status === false) {
+			// We don't want to store the error info...
+			delete settings.error;
 			this.props.firebase
+				// ... don't forget to add the default statustitle
 				.addDocumentToCollection("users", settings, this.state.ID)
 				.then((docRef) => {
 					console.log(`document ${docRef ? docRef.id + " added" : "updated"}`);
