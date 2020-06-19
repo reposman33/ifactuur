@@ -115,14 +115,18 @@ class Invoices extends React.Component {
 		// componentDidUpdate is triggred at every update. Only allow this to run when a new invoice print button is clicked by comparing the current invoiceNr with the last invoiceNr
 		if (this.state.invoiceNr !== this.state.prevInvoiceNr) {
 			this.props.firebase
+				// get the invoice to print...
 				.getDocumentFromCollectionByField("invoices", "invoiceNr", this.state.invoiceNr)
 				.then((invoice) =>
 					this.props.firebase
+						// ...then get the company that's being charged...
 						.getDocumentFromCollectionByField("companies", "name", invoice.companyName)
 						.then((company) =>
+							// ...get the user's settings---
 							this.props.firebase.getUserSettings().then((userSettings) =>
 								this.props.firebase
-									.getDocumentFromCollectionByField("companies", "id", userSettings.companyId)
+									// ...finally get the user's company
+									.getDocumentFromCollectionByField("companies", "name", userSettings.companyName)
 									.then((userCompany) =>
 										this.setState({
 											// prevent this to run for the same invoiceNr
