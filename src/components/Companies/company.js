@@ -67,18 +67,15 @@ class Company extends React.Component {
 	}
 
 	componentDidMount = () => {
-		if (!this.isExistingCompany) {
-			// new company, assign new id
-			this.props.firebase.getNewFieldValue("companies", "id").then((value) =>
-				this.setState({
-					id: value[0],
-				})
-			);
-		} else {
+		if (this.isExistingCompany) {
 			// assign all keys of retrieved document to state
 			this.props.firebase.getCompany(this.props.location.state.id).then((doc) => {
-				Object.keys(doc).map((documentKey) => this.setState({ [documentKey]: doc[documentKey] }));
+				const newState = Object.keys(doc).reduce((newState, documentKey) => {
+					newState[documentKey] = doc[documentKey];
+					return newState;
+				}, {});
 				this.setState({ ID: doc.ID });
+				this.setState(() => newState);
 			});
 		}
 	};
@@ -112,10 +109,13 @@ class Company extends React.Component {
 		// add the current user id!
 		company.userId = this.props.firebase.auth.currentUser.uid;
 
-		this.props.firebase.addDocumentToCollection("companies", company, this.state.ID).then((docRef) => {
-			console.log(`document ${this.state.ID ? "updated" : "added"}`);
-			this.onGoBack();
-		});
+		this.props.firebase
+			.addDocumentToCollection("companies", company, this.state.ID)
+			.then((docRef) => {
+				console.log(`document ${this.state.ID} ${this.state.ID ? "updated" : "added"}`);
+				this.onGoBack();
+			})
+			.catch((e) => console.log("ERROR: ", e));
 	};
 
 	render() {
