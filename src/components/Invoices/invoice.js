@@ -39,6 +39,11 @@ class Invoice extends React.Component {
 				error: false,
 				message: "",
 			},
+			// to display messages to user we use this construct. type equals any Bootstrap 4.4.1 color class for text: https://getbootstrap.com/docs/4.4/utilities/colors/
+			settingsStatus: {
+				type: undefined,
+				message: "",
+			},
 			totals: {},
 			VATRate: undefined,
 			VatRates: [],
@@ -300,6 +305,13 @@ class Invoice extends React.Component {
 		}
 	};
 
+	onCancel = (e) => {
+		this.storage.remove("invoiceState");
+		// React-Router has no Refresh functionality. This hack solves it
+		this.props.history.push("/temp");
+		this.props.history.goBack();
+	};
+
 	render() {
 		if (!this.state.rows) {
 			return;
@@ -482,19 +494,42 @@ class Invoice extends React.Component {
 						</div>
 					</div>
 				</div>
-				<div className='d-flex mb-2 justify-content-between'>
+
+				<div className='row align-items-baseline flex-nowrap pr-2 pt-3'>
 					<Button
+						extraClasses='mr-auto'
 						onClick={this.onListview}
 						text={this.I18n.get("INVOICE.BUTTON.BACK")}
 						extraStyles={{ marginLeft: "0.8rem" }}
 					/>
-					<Button
-						disabled={this.isExistingInvoice}
-						onClick={this.onSubmit}
-						text={this.I18n.get("INVOICE.BUTTON.SAVE")}
-						extraStyles={{ marginRight: "0.8rem" }}
-					/>
+
+					<div className='bg-light'>
+						{this.state.settingsStatus.message ? (
+							<span className={"text-" + this.state.settingsStatus.type}>
+								{this.state.settingsStatus.message}
+							</span>
+						) : null}
+					</div>
+					<div className=' mx-3'>
+						<Button
+							onClick={this.onCancel}
+							text={this.I18n.get("USERSETTINGS.BUTTON.CANCEL.TEXT")}
+							title={this.I18n.get("USERSETTINGS.BUTTON.CANCEL.TITLE")}
+						/>
+					</div>
+					<div>
+						<Button
+							onClick={this.onSubmit}
+							text={
+								this.isExistingUserSetting
+									? this.I18n.get("USERSETTINGS.BUTTON.UPDATE.TEXT")
+									: this.I18n.get("USERSETTINGS.BUTTON.SAVE.TEXT")
+							}
+							title={this.I18n.get("USERSETTINGS.BUTTON.UPDATE.TITLE")}
+						/>
+					</div>
 				</div>
+
 				<span className='d-block margin-auto text-center text-danger'>
 					{this.state.invoiceStatus.error && this.state.invoiceStatus.message}
 				</span>
