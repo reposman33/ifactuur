@@ -16,11 +16,15 @@ const InvoicePrint = (props) => {
 		.toFixed(2);
 	const vatAmount = (
 		(props.invoice.VATRate / 100) *
-		props.invoice.rows.reduce((sum, row) => (sum += row.uurtarief * row.uren), 0)
+		props.invoice.rows.reduce((sum, row) => (sum += row.uurtarief && row.uren ? row.uurtarief * row.uren : 0), 0)
 	).toFixed(2);
 	const totalAmount = (
-		(props.invoice.VATRate / 100) * props.invoice.rows.reduce((sum, row) => (sum += row.uurtarief * row.uren), 0) +
-		props.invoice.rows.reduce((sum, row) => (sum += row.uurtarief * row.uren), 0)
+		(props.invoice.VATRate / 100) *
+			props.invoice.rows.reduce(
+				(sum, row) => (sum += row.uurtarief && row.uren ? row.uurtarief * row.uren : 0),
+				0
+			) +
+		props.invoice.rows.reduce((sum, row) => (sum += row.uurtarief && row.uren ? row.uurtarief * row.uren : 0), 0)
 	).toFixed(2);
 
 	// useEffect(() => print(".modal-body"));
@@ -95,7 +99,9 @@ const InvoicePrint = (props) => {
 									<td className={styles.column1}>{row.omschrijving || ""}</td>
 									<td className={styles.column2}>{row.uren || ""}</td>
 									<td className={styles.column3}>{row.uurtarief || ""}</td>
-									<td className={styles.column4}>{(row.uurtarief * row.uren).toFixed(2)}</td>
+									<td className={styles.column4}>
+										{row.uurtarief && row.uren && (row.uurtarief * row.uren).toFixed(2)}
+									</td>
 								</tr>
 							))}
 							<tr>
