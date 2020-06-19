@@ -97,7 +97,7 @@ class Invoice extends React.Component {
 		} else {
 			const newInvoicePromises = [];
 			// retrieve last invoiceNr
-			newInvoicePromises.push(this.props.firebase.getNewFieldValue("invoices", "invoiceNr"));
+			newInvoicePromises.push(this.props.firebase.getNewInvoiceNr("invoices", "invoiceNr"));
 			// retrieve companies
 			newInvoicePromises.push(this.props.firebase.getCollection("companies", "name", ["id", "name"]));
 			// retrieve VatRates

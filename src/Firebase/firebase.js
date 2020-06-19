@@ -169,11 +169,12 @@ class Firebase {
 	 * @param {string} fieldName - the name of the field to get the value from
 	 * @returns {number}  - the fieldvalue + 1
 	 */
-	getNewFieldValue = (collection, fieldName) =>
+	getNewInvoiceNr = (collection, fieldName) =>
 		this.db
 			.collection(collection)
 			.where("userId", "==", sessionStorage.getItem("userId"))
-			.orderBy("id", "desc")
+			.orderBy("dateTimeCreated", "desc")
+			.orderBy("invoiceNr", "desc")
 			.limit(1)
 			.get()
 			.then((querySnapshot) => (querySnapshot.docs[0] ? querySnapshot.docs[0].data()[fieldName] + 1 : 1));
