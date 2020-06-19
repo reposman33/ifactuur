@@ -10,47 +10,47 @@ export class I18n {
 	_defaultLanguage = this._availableLanguages.includes(navigator.language) ? navigator.language : "nl";
 	_language = this._defaultLanguage;
 	_LANGUAGES = {
-		NAVIGATION: {
-			MENU_TITLE_INVOICES: { en: "Invoices", nl: "Facturen" },
-			MENU_TITLE_EXPENSES: { en: "Expenses", nl: "Uitgaven" },
-			MENU_TITLE_COMPANIES: { en: "Companies", nl: "Bedrijven" },
-			MENU_TITLE_SETTINGS: { en: "Settings", nl: "Instellingen" },
-			MENU_TITLE_STATS: { en: "Stats", nl: "Berekeningen" },
-		},
-
 		COMPANIES: {
-			TABLE: {
-				HEADERS: {
-					NAME: { en: "Name", nl: "Naam" },
-					CONTACT: { en: "Contact", nl: "Contactpersoon" },
-					CITY: { en: "City", nl: "Stad" },
-					ACTIONS: { en: "Actions", nl: "Bewerken" },
-				},
-			},
 			BUTTON: {
 				NEW: { en: "New company", nl: "Nieuw bedrijf" },
 			},
+			TABLE: {
+				HEADERS: {
+					ACTIONS: { en: "Actions", nl: "Bewerken" },
+					CITY: { en: "City", nl: "Stad" },
+					CONTACT: { en: "Contact", nl: "Contactpersoon" },
+					NAME: { en: "Name", nl: "Naam" },
+				},
+			},
 		},
 		COMPANY: {
+			BUTTON: {
+				BACKTOLISTVIEW: { en: "Back to overview", nl: "Terug naar overzicht" },
+				BACKTOPREVIOUSLOCATION: { en: "Back to {1}", nl: "Terug naar {1}" },
+				NEW: { en: "New", nl: "Nieuw" },
+				SAVEANDBACKTOLISTVIEW: { en: "Save and show overview", nl: "Bewaar en toon overzicht" },
+				SAVEANDBACKTOPREVIOUSLOCATION: { en: "Save and show {1}", nl: "Bewaar en toon {1}" },
+				UPDATE: { en: "Update", nl: "Bijwerken" },
+			},
 			LABEL: {
-				NAME: { en: "Company name", nl: "Bedrijfsnaam" },
 				ADDRESS: { en: "Address", nl: "Adres" },
-				ZIPCODE: { en: "Zipcode", nl: "Postcode" },
-				CITY: { en: "City", nl: "Stad" },
-				CONTACT: { en: "Contact", nl: "Contact persoon" },
-				CONTACT_TITLE: { en: "Title", nl: "Titel" },
-				CONTACT_TELEPHONE: { en: "Contact telephone", nl: "Contact telephone" },
-				COUNTRY: { en: "Country", nl: "Land" },
-				EMAIL: { en: "Email", nl: "E-Mail" },
-				FAX: { en: "Fax number", nl: "Fax nummer" },
-				BTWNR: { en: "VAT number", nl: "BTW nummer" },
-				KVKNR: { en: "COC registration number", nl: "KvK nummer" },
-				SALESTAXNR: { en: "Sales tax number", nl: "Omzetbelasting nummer" },
-				NOTES: { en: "Notes", nl: "Opmerkingen" },
-				URL: { en: "Website URL", nl: "Website URL" },
 				BANK: { en: "Bank", nl: "Bank" },
 				BANKACCOUNTNR: { en: "IBAN", nl: "IBAN" },
 				BANKACCOUNTNAMEHOLDER: { en: "IBAN name", nl: "IBAN tenaam stelling" },
+				BTWNR: { en: "VAT number", nl: "BTW nummer" },
+				CITY: { en: "City", nl: "Stad" },
+				CONTACT: { en: "Contact", nl: "Contact persoon" },
+				CONTACT_TELEPHONE: { en: "Contact telephone", nl: "Contact telephone" },
+				CONTACT_TITLE: { en: "Title", nl: "Titel" },
+				COUNTRY: { en: "Country", nl: "Land" },
+				EMAIL: { en: "Email", nl: "E-Mail" },
+				FAX: { en: "Fax number", nl: "Fax nummer" },
+				KVKNR: { en: "COC registration number", nl: "KvK nummer" },
+				NAME: { en: "Company name", nl: "Bedrijfsnaam" },
+				NOTES: { en: "Notes", nl: "Opmerkingen" },
+				SALESTAXNR: { en: "Sales tax number", nl: "Omzetbelasting nummer" },
+				URL: { en: "Website URL", nl: "Website URL" },
+				ZIPCODE: { en: "Zipcode", nl: "Postcode" },
 			},
 			PROMPT: {
 				DELETE: {
@@ -58,38 +58,19 @@ export class I18n {
 					nl: "Weet u zeker dat u dit bedrijf wil verwijderen uit iFactuur?",
 				},
 			},
-			BUTTON: {
-				SAVEANDBACKTOLISTVIEW: { en: "Save and show overview", nl: "Bewaar en toon overzicht" },
-				SAVEANDBACKTOPREVIOUSLOCATION: { en: "Save and show {1}", nl: "Bewaar en toon {1}" },
-				UPDATE: { en: "Update", nl: "Bijwerken" },
-				NEW: { en: "New", nl: "Nieuw" },
-				BACKTOLISTVIEW: { en: "Back to overview", nl: "Terug naar overzicht" },
-				BACKTOPREVIOUSLOCATION: { en: "Back to {1}", nl: "Terug naar {1}" },
-			},
-		},
-		EXPENSES: {
-			TABLE: {
-				HEADERS: {
-					DATE: { en: "Date", nl: "Datum" },
-					COMPANY: { en: "Company", nl: "Bedrijf" },
-					AMOUNT: { en: "Amount", nl: "Bedrag" },
-					ACTIONS: { en: "Actions", nl: "Bewerken" },
-				},
-			},
-			BUTTON: { NEW: { en: "New expense", nl: "Nieuwe uitgave" } },
 		},
 		EXPENSE: {
-			LABEL: {
-				DATE: { en: "Date", nl: "Datum" },
-				COMPANY: { en: "Company", nl: "Bedrijf" },
-				NEW_COMPANY: { en: "New company", nl: "Nieuw bedrijf" },
-				AMOUNT: { en: "Amount", nl: "Bedrag" },
-				ITEM: { en: "Items/Services", nl: "Goederen/Diensten" },
-				TAX: { en: "Tax", nl: "BTW" },
-			},
 			BUTTON: {
 				BACK: { en: "Back to overview", nl: "Terug naar overzicht" },
 				SAVE: { en: "Save and show overview", nl: "Bewaar en naar overzicht" },
+			},
+			LABEL: {
+				AMOUNT: { en: "Amount", nl: "Bedrag" },
+				COMPANY: { en: "Company", nl: "Bedrijf" },
+				DATE: { en: "Date", nl: "Datum" },
+				ITEM: { en: "Items/Services", nl: "Goederen/Diensten" },
+				NEW_COMPANY: { en: "New company", nl: "Nieuw bedrijf" },
+				TAX: { en: "Tax", nl: "BTW" },
 			},
 			SUBMIT: {
 				ERROR: {
@@ -100,44 +81,41 @@ export class I18n {
 				},
 			},
 		},
-
-		INVOICES: {
+		EXPENSES: {
+			BUTTON: { NEW: { en: "New expense", nl: "Nieuwe uitgave" } },
 			TABLE: {
 				HEADERS: {
 					ACTIONS: { en: "Actions", nl: "Bewerken" },
-					CLIENT: { en: "Client", nl: "Klant" },
+					AMOUNT: { en: "Amount", nl: "Bedrag" },
+					COMPANY: { en: "Company", nl: "Bedrijf" },
 					DATE: { en: "Date", nl: "Datum" },
-					STATUS: { en: "Status", nl: "Status" },
-					TYPE: { en: "Type", nl: "Soort" },
 				},
 			},
-			BUTTON: { NEW: { en: "New invoice", nl: "Nieuwe factuur" } },
 		},
 		INVOICE: {
-			TITLE: { en: "Invoice", nl: "Factuur" },
-			LABEL: {
-				INVOICE_DATE: { en: "Invoice date", nl: "Factuur datum" },
-				COMPANY: { en: "Company", nl: "Bedrijf" },
-				VATRATE: { en: "VAT", nl: "BTW" },
-				TOTAL: { en: "Total", nl: "Totaal" },
-				SUBTOTAL: { en: "Subtotal", nl: "Subtotaal" },
-				INVOICETYPE: { en: "Invoice type", nl: "Factuur type" },
+			BUTTON: {
+				BACK: { en: "Back to overview", nl: "Terug naar overzicht" },
+				DELETE: { en: "Delete", nl: "Verwijder" },
+				NEW_COMPANY: { en: "New company", nl: "Nieuw bedrijf" },
+				SAVE: { en: "Save and show overview", nl: "Bewaar en naar overzicht" },
 			},
 			COLUMNHEADER: {
-				SERVICES: { en: "Services delivered", nl: "Geleverde diensten" },
-				RATE: { en: "Hourly rate", nl: "Uurtarief" },
 				HOURS: { en: "Hours", nl: "Uren" },
+				RATE: { en: "Hourly rate", nl: "Uurtarief" },
+				SERVICES: { en: "Services delivered", nl: "Geleverde diensten" },
 				TOTAL: { en: "Total", nl: "Totaal" },
 			},
 			INPUT: {
-				VATRATE: { en: "Select...", nl: "Selecteer..." },
 				COMPANY: { en: "Select a company", nl: "Selecteer bedrijf" },
+				VATRATE: { en: "Select...", nl: "Selecteer..." },
 			},
-			BUTTON: {
-				BACK: { en: "Back to overview", nl: "Terug naar overzicht" },
-				NEW_COMPANY: { en: "New company", nl: "Nieuw bedrijf" },
-				DELETE: { en: "Delete", nl: "Verwijder" },
-				SAVE: { en: "Save and show overview", nl: "Bewaar en naar overzicht" },
+			LABEL: {
+				COMPANY: { en: "Company", nl: "Bedrijf" },
+				INVOICE_DATE: { en: "Invoice date", nl: "Factuur datum" },
+				INVOICETYPE: { en: "Invoice type", nl: "Factuur type" },
+				SUBTOTAL: { en: "Subtotal", nl: "Subtotaal" },
+				TOTAL: { en: "Total", nl: "Totaal" },
+				VATRATE: { en: "VAT", nl: "BTW" },
 			},
 			SUBMIT: {
 				ERROR: {
@@ -147,6 +125,7 @@ export class I18n {
 					},
 				},
 			},
+			TITLE: { en: "Invoice", nl: "Factuur" },
 		},
 		INVOICEPRINT: {
 			FOOTER: {
@@ -158,99 +137,101 @@ export class I18n {
 				},
 			},
 			LABELS: {
+				ATT: { en: "C.o.", nl: "T.a.v." },
 				DATE: { en: "Date", nl: "Datum" },
 				INVOICENR: { en: "Invoice nr", nl: "Factuurnr" },
-				ATT: { en: "C.o.", nl: "T.a.v." },
 			},
 			STATUSMESSAGE: { en: "This invoice is cancelled", nl: "Deze factuur is vervallen" },
-			TITLE: { en: "Invoice", nl: "Factuur" },
 			TABLE_HEADER: {
-				SERVICES: { en: "Services", nl: "Geleverde diensten" },
+				AMOUNT: { en: "Amount", nl: "Bedrag" },
 				HOURS: { en: "Hours", nl: "Uren" },
 				RATE: { en: "Rate", nl: "Tarief" },
-				AMOUNT: { en: "Amount", nl: "Bedrag" },
+				SERVICES: { en: "Services", nl: "Geleverde diensten" },
 				SUBTOTAL: { en: "Subtotal", nl: "Subtotaal" },
-				VAT_RATE: { en: "Vatrate", nl: "BTW-tarief" },
 				TOTAL: { en: "Total", nl: "Totaal" },
+				VAT_RATE: { en: "Vatrate", nl: "BTW-tarief" },
+			},
+			TITLE: { en: "Invoice", nl: "Factuur" },
+		},
+		INVOICES: {
+			BUTTON: { NEW: { en: "New invoice", nl: "Nieuwe factuur" } },
+			TABLE: {
+				HEADERS: {
+					ACTIONS: { en: "Actions", nl: "Bewerken" },
+					CLIENT: { en: "Client", nl: "Klant" },
+					DATE: { en: "Date", nl: "Datum" },
+					STATUS: { en: "Status", nl: "Status" },
+					TYPE: { en: "Type", nl: "Soort" },
+				},
 			},
 		},
+		NAVIGATION: {
+			MENU_TITLE_COMPANIES: { en: "Companies", nl: "Bedrijven" },
+			MENU_TITLE_EXPENSES: { en: "Expenses", nl: "Uitgaven" },
+			MENU_TITLE_INVOICES: { en: "Invoices", nl: "Facturen" },
+			MENU_TITLE_SETTINGS: { en: "Settings", nl: "Instellingen" },
+			MENU_TITLE_STATS: { en: "Stats", nl: "Berekeningen" },
+		},
 		PAGINATION: {
-			NEXT_PAGE: { en: "next page", nl: "volgende pagina" },
-			PREVIOUS_PAGE: { en: "previous page", nl: "vorige pagina" },
 			FIRST_PAGE: { en: "first page", nl: "eerste pagina" },
 			LAST_PAGE: { en: "last page", nl: "laatste pagina" },
+			NEXT_PAGE: { en: "next page", nl: "volgende pagina" },
+			PREVIOUS_PAGE: { en: "previous page", nl: "vorige pagina" },
 			TOTAL: {
 				en: "Showing row {from} to {to} of {size}",
 				nl: "Toon rij {from} tot {to} van {size}",
 			},
 		},
+		ROUTENAME: {
+			EXPENSE: { en: "expense", nl: "uitgave" },
+			INVOICE: { en: "invoice", nl: "factuur" },
+			SETTINGS: { en: "Usersettings", nl: "Instellingen" },
+		},
 		STATS: {
+			BUTTON: {
+				EXPORTDATA: { en: "Export", nl: "Export" },
+				SHOWTURNOVER: { en: "Show sales", nl: "Toon omzet" },
+				SHOWTURNOVERFORQUARTER: { en: "Turnover in quarter", nl: "Omzet in kwartaal" },
+				YEAR: { en: "Year", nl: "Jaar" },
+			},
 			LABELS: {
 				DATE: {
 					FROM: { en: "Date from", nl: "vanaf" },
 					TO: { en: "Date to", nl: "tot" },
 				},
+				TOTALEXPENSESVAT: { en: "Total VAT payed", nl: "Totale BTW betaald" },
+				TOTALTURNOVER: { en: "Total turnover", nl: "Totale omzet" },
 				TURNOVER: { en: "Calculate sales", nl: "Bereken omzet" },
 				VAT: { en: "Calculate value added tax", nl: "Bereken BTW" },
-				TOTALTURNOVER: { en: "Total turnover", nl: "Totale omzet" },
-				TOTALEXPENSESVAT: { en: "Total VAT payed", nl: "Totale BTW betaald" },
 			},
 			TABLE: {
 				HEADER: {
 					AMOUNT: { en: "Amount", nl: "Bedrag" },
 					CHARGEDTO: { en: "Charged to", nl: "Gefactureerd aan" },
-					PAYEDTO: { end: "Payed to", nl: "Betaald aan" },
 					DATE: { en: "Date", nl: "Datum" },
-					INVOICENR: { en: "Invoice", nl: "Factuur" },
 					ID: { en: "#", nl: "#" },
+					INVOICENR: { en: "Invoice", nl: "Factuur" },
+					PAYEDTO: { end: "Payed to", nl: "Betaald aan" },
 					VATAMOUNT: { en: "Vat", nl: "BTW" },
 				},
 				TITLE: {
-					TURNOVERINPERIOD: { en: "Turnover", nl: "Omzet" },
 					EXPENSESINPERIOD: { en: "Expenses", nl: "Uitgaven" },
+					TURNOVERINPERIOD: { en: "Turnover", nl: "Omzet" },
 				},
 			},
-			BUTTON: {
-				SHOWTURNOVER: { en: "Show sales", nl: "Toon omzet" },
-				SHOWTURNOVERFORQUARTER: { en: "Turnover in quarter", nl: "Omzet in kwartaal" },
-				YEAR: { en: "Year", nl: "Jaar" },
-				EXPORTDATA: { en: "Export", nl: "Export" },
-			},
+		},
+		STATUSMESSAGE: {
+			DOCUMENTADDED: { en: "Document succesfully added", nl: "Document toegevoegd" },
+			DOCUMENTCANCELLED: { en: "Changes removed", nl: "Wijzigingen verwijderd" },
+			DOCUMENTUPDATED: { en: "Document succesfully updated", nl: "Document gewijzigd" },
 		},
 		TITLES: { MR: { en: "Mr", nl: "Dhr" }, MRS: { en: "Ms", nl: "Mw" }, THEY: { en: "They", nl: "Zij" } },
 		USERSETTINGS: {
-			LABEL: {
-				TITLE: { en: "Title", nl: "Titel" },
-				FIRSTNAME: { en: "FirstName", nl: "Voornaam" },
-				LASTNAME: { en: "Lastname", nl: "Achternaam" },
-				ADDRESS: { en: "Address", nl: "Adres" },
-				ZIPCODE: { en: "Zipcode", nl: "Postcode" },
-				CITY: { en: "City", nl: "Stad" },
-				COUNTRY: { en: "Country", nl: "Land" },
-				DELIVERYCONDITIONS: { en: "Deliveryconditions", nl: "Leveringsvoorwaarden" },
-				COMPANY: { en: "Company", nl: "Bedrijf" },
-			},
-			MODAL: {
-				TEXT: {
-					en:
-						"No usersettings are filled in. These are needed in order to create invoices. Also please enter your company (choose menuoption 'Companies').",
-					nl:
-						"Er zijn nog geen gegevens van je ingevuld. Om facturen te kunnen maken zijn deze nodig. Voeg ook uw bedrijf toe (kies menuoptie 'Bedrijven').",
-				},
-				BUTTON: { TEXT: { en: "Add", nl: "Toevoegen" } },
-			},
-			REGISTRATIONS: {
-				TITLE: { en: "Registrations", nl: "Registraties" },
-				COC_NUMBER: { en: "CoC nr", nl: "KvK nr" },
-				VAT_NUMBER: { en: "VAT nr", nl: "BTW nr" },
-			},
-			DELIVERYCONDITIONS: {
-				TITLE: {
-					en: "Deliveryconditions",
-					nl: "Leveringsvoorwaarden",
-				},
-			},
 			BUTTON: {
+				CANCEL: {
+					TEXT: { en: "Cancel", nl: "Cancel" },
+					TITLE: { en: "Restore the original usersettings", nl: "Vertoon de originele instellingen" },
+				},
 				SAVE: {
 					TEXT: { en: "Save", nl: "Bewaar" },
 					TITLE: { en: "Save the current usersettings", nl: "Sla de huidige instellingen op" },
@@ -259,10 +240,37 @@ export class I18n {
 					TEXT: { en: "Update", nl: "Bijwerken" },
 					TITLE: { en: "Save the current usersettings", nl: "Sla de huidige instellingen op" },
 				},
-				CANCEL: {
-					TEXT: { en: "Cancel", nl: "Cancel" },
-					TITLE: { en: "Restore the original usersettings", nl: "Vertoon de originele instellingen" },
+			},
+			DELIVERYCONDITIONS: {
+				TITLE: {
+					en: "Deliveryconditions",
+					nl: "Leveringsvoorwaarden",
 				},
+			},
+			LABEL: {
+				ADDRESS: { en: "Address", nl: "Adres" },
+				CITY: { en: "City", nl: "Stad" },
+				COMPANY: { en: "Company", nl: "Bedrijf" },
+				COUNTRY: { en: "Country", nl: "Land" },
+				DELIVERYCONDITIONS: { en: "Deliveryconditions", nl: "Leveringsvoorwaarden" },
+				FIRSTNAME: { en: "FirstName", nl: "Voornaam" },
+				LASTNAME: { en: "Lastname", nl: "Achternaam" },
+				TITLE: { en: "Title", nl: "Titel" },
+				ZIPCODE: { en: "Zipcode", nl: "Postcode" },
+			},
+			MODAL: {
+				BUTTON: { TEXT: { en: "Add", nl: "Toevoegen" } },
+				TEXT: {
+					en:
+						"No usersettings are filled in. These are needed in order to create invoices. Also please enter your company (choose menuoption 'Companies').",
+					nl:
+						"Er zijn nog geen gegevens van je ingevuld. Om facturen te kunnen maken zijn deze nodig. Voeg ook uw bedrijf toe (kies menuoptie 'Bedrijven').",
+				},
+			},
+			REGISTRATIONS: {
+				COC_NUMBER: { en: "CoC nr", nl: "KvK nr" },
+				TITLE: { en: "Registrations", nl: "Registraties" },
+				VAT_NUMBER: { en: "VAT nr", nl: "BTW nr" },
 			},
 			SUBMIT: {
 				ERROR: {
@@ -273,26 +281,16 @@ export class I18n {
 				},
 			},
 		},
-		ROUTENAME: {
-			EXPENSE: { en: "expense", nl: "uitgave" },
-			INVOICE: { en: "invoice", nl: "factuur" },
-			SETTINGS: { en: "Usersettings", nl: "Instellingen" },
-		},
-		STATUSMESSAGE: {
-			DOCUMENTADDED: { en: "Document succesfully added", nl: "Document toegevoegd" },
-			DOCUMENTUPDATED: { en: "Document succesfully updated", nl: "Document gewijzigd" },
-			DOCUMENTCANCELLED: { en: "Changes removed", nl: "Wijzigingen verwijderd" },
-		},
 	};
-
-	getLocale = () => (navigator.language.search("en") > -1 ? "en" : navigator.language.search("nl") > -1 ? "nl" : "");
-
-	setLanguage = (lang) => (this._language = lang || this._defaultLanguage);
-
-	getSelectedLanguage = () => this._language;
 
 	get = (key) => {
 		const langOb = key.split(".").reduce((ob, key) => ob[key] || {}, this._LANGUAGES);
 		return langOb[this._language] || "--";
 	};
+
+	getLocale = () => (navigator.language.search("en") > -1 ? "en" : navigator.language.search("nl") > -1 ? "nl" : "");
+
+	getSelectedLanguage = () => this._language;
+
+	setLanguage = (lang) => (this._language = lang || this._defaultLanguage);
 }
