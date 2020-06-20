@@ -16,7 +16,7 @@ const LanguagePicker = (props) => {
 			<button data-lang='en' onClick={setLanguage} disabled={selectedLanguage === "en"}>
 				english
 			</button>
-			&nbsp;/
+			&nbsp;/&nbsp;
 			<button data-lang='nl' onClick={setLanguage} disabled={selectedLanguage === "nl"}>
 				nederlands
 			</button>
