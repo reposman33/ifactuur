@@ -27,7 +27,7 @@ class Invoices extends React.Component {
 	 *  ReactBootstrapTable2 Columns configuration
 	 */
 	getColumns = () => [
-		{ dataField: "invoiceNr", text: "#", headerStyle: { width: "8%" }, sort: true },
+		{ dataField: "invoiceNr", text: "id", headerStyle: { width: "8%" }, sort: true },
 		{
 			dataField: "dateTimeCreated",
 			formatter: (cell, row, rowIndex) => this.Utils.dateFormat.format(row.dateTimeCreated),
