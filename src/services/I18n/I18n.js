@@ -36,7 +36,7 @@ export class I18n {
 				ADDRESS: { en: "Address", nl: "Adres" },
 				BANK: { en: "Bank", nl: "Bank" },
 				BANKACCOUNTNR: { en: "IBAN", nl: "IBAN" },
-				BANKACCOUNTNAMEHOLDER: { en: "IBAN name", nl: "IBAN tenaam stelling" },
+				BANKACCOUNTNAME: { en: "In the name of", nl: "Op naam van" },
 				BTWNR: { en: "VAT number", nl: "BTW nummer" },
 				CITY: { en: "City", nl: "Stad" },
 				CONTACT: { en: "Contact", nl: "Contact persoon" },
