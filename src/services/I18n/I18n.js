@@ -263,9 +263,9 @@ export class I18n {
 				BUTTON: { TEXT: { en: "Add", nl: "Toevoegen" } },
 				TEXT: {
 					en:
-						"No usersettings are filled in. These are needed in order to create invoices. Also please enter your company (choose menuoption 'Companies').",
+						"No usersettings are filled in. These are needed in order to create invoices. Please also enter your company by choosing menuoption 'Companies'.",
 					nl:
-						"Er zijn nog geen gegevens van je ingevuld. Om facturen te kunnen maken zijn deze nodig. Voeg ook uw bedrijf toe (kies menuoptie 'Bedrijven').",
+						"Er zijn nog geen gegevens van je ingevuld. Om facturen te kunnen maken zijn deze nodig. Voeg ook je bedrijf toe via menuoptie 'Bedrijven'.",
 				},
 			},
 			REGISTRATIONS: {
