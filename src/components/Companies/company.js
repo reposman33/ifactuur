@@ -28,7 +28,6 @@ class Company extends React.Component {
 			contactTitle: (fieldValue) => fieldValue,
 			country: (fieldValue) => fieldValue,
 			email: (fieldValue) => fieldValue,
-			id: (fieldValue) => fieldValue,
 			kvknr: (fieldValue) => fieldValue,
 			name: (fieldValue) => fieldValue,
 			url: (fieldValue) => fieldValue,
