@@ -96,7 +96,7 @@ class Settings extends React.Component {
 				this.isExistingUserSetting = false;
 				// set state keys (as defined in this.persistFields) to undefined since there is nothing retrieved
 				stateValues = Object.keys(this.persistFields).reduce((acc, key) => {
-					acc[key] = undefined;
+					acc[key] = "";
 					return acc;
 				}, {});
 			}
