@@ -174,6 +174,7 @@ class Company extends React.Component {
 						"success",
 						this.I18n.get(this.state.ID ? "STATUSMESSAGE.DOCUMENTUPDATED" : "STATUSMESSAGE.DOCUMENTADDED")
 					);
+					this.onGoBack();
 				})
 				.catch((e) => {
 					console.log("ERROR: ", e);
@@ -194,6 +195,17 @@ class Company extends React.Component {
 				message: message,
 			},
 		});
+	};
+
+	onGoBack = () =>
+		this.props.history.push({
+			pathname: this.prevLocation || ROUTES.COMPANIES,
+		});
+
+	onCancel = (e) => {
+		// React-Router has no Refresh functionality. This hack solves it
+		this.props.history.push("/temp");
+		this.props.history.goBack();
 	};
 
 	render() {
@@ -426,10 +438,18 @@ class Company extends React.Component {
 				</div>
 
 				<div className='row flex-nowrap mt-3 pr-3'>
+					{/* LISTVIEW */}
 					<Button
 						extraClasses='mr-auto'
-						onClick={this.onListview}
-						text={this.I18n.get("INVOICE.BUTTON.BACK")}
+						onClick={this.onGoBack}
+						text={
+							!!this.prevLocation
+								? this.I18n.get("COMPANY.BUTTON.BACKTOPREVIOUSLOCATION").replace(
+										"{1}",
+										this.I18n.get(this.prevLocationName)
+								  )
+								: this.I18n.get("COMPANY.BUTTON.BACKTOLISTVIEW")
+						}
 						extraStyles={{ marginLeft: "0.8rem" }}
 					/>
 
@@ -443,6 +463,7 @@ class Company extends React.Component {
 					{!this.isExistingInvoice && (
 						<>
 							<div className=' mx-3'>
+								{/* CANCEL */}
 								<Button
 									onClick={this.onCancel}
 									text={this.I18n.get("USERSETTINGS.BUTTON.CANCEL.TEXT")}
@@ -450,18 +471,29 @@ class Company extends React.Component {
 								/>
 							</div>
 							<div>
+								{/* UPDATE / SAVE */}
 								<Button
 									onClick={this.onSubmit}
-									text={this.I18n.get(
-										this.state.ID
-											? "USERSETTINGS.BUTTON.UPDATE.TEXT"
-											: "USERSETTINGS.BUTTON.SAVE.TEXT"
-									)}
-									title={this.I18n.get(
-										this.state.ID
-											? "USERSETTINGS.BUTTON.UPDATE.TITLE"
-											: "USERSETTINGS.BUTTON.SAVE.TITLE"
-									)}
+									text={
+										this.isExistingCompany
+											? this.I18n.get("COMPANY.BUTTON.UPDATE")
+											: !!this.prevLocation
+											? this.I18n.get("COMPANY.BUTTON.SAVEANDBACKTOPREVIOUSLOCATION").replace(
+													"{1}",
+													this.I18n.get(this.prevLocationName)
+											  )
+											: this.I18n.get("COMPANY.BUTTON.SAVEANDBACKTOLISTVIEW")
+									}
+									title={
+										this.isExistingCompany
+											? this.I18n.get("COMPANY.BUTTON.UPDATE")
+											: !!this.prevLocation
+											? this.I18n.get("COMPANY.BUTTON.SAVEANDBACKTOPREVIOUSLOCATION").replace(
+													"{1}",
+													this.I18n.get(this.prevLocationName)
+											  )
+											: this.I18n.get("COMPANY.BUTTON.SAVEANDBACKTOLISTVIEW")
+									}
 								/>
 							</div>
 						</>
