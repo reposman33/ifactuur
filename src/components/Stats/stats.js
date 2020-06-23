@@ -16,7 +16,7 @@ class Stats extends React.Component {
 	constructor(props) {
 		super(props);
 		this.Utils = new Utils();
-		this.state = { startDate: undefined, endDate: undefined, years: [] };
+		this.state = { startDate: undefined, endDate: undefined, years: [], year: undefined };
 		this.I18n = new I18n();
 	}
 
@@ -334,6 +334,7 @@ class Stats extends React.Component {
 									labelText={this.I18n.get("STATS.BUTTON.YEAR")}
 									name='year'
 									displayInput={true}
+									displayValue={this.state.year}
 									data={this.state.years}
 									displayKey='value'
 									valueKey='id'
