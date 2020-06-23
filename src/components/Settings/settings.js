@@ -78,7 +78,7 @@ class Settings extends React.Component {
 		const settingsPromise$ = [];
 		// retrieve values
 		settingsPromise$.push(this.props.firebase.getUserSettings());
-		settingsPromise$.push(this.props.firebase.getCollection("companies", "name", ["id", "name"]));
+		settingsPromise$.push(this.props.firebase.getCollection("companies", "name", ["name"]));
 		Promise.all(settingsPromise$).then((values) => {
 			let stateValues;
 			if (values[0]) {
@@ -326,7 +326,7 @@ class Settings extends React.Component {
 							labelText={this.I18n.get("USERSETTINGS.LABEL.COMPANY")}
 							name='companyName'
 							onButtonClick={this.handleNewCompany}
-							valueKey='id'
+							valueKey='ID'
 						/>
 					</div>
 				</div>
