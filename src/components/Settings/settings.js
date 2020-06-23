@@ -57,7 +57,6 @@ class Settings extends React.Component {
 			country: (fieldValue) => fieldValue,
 			companyName: (fieldValue) => fieldValue,
 			deliveryConditions: (fieldValue) => fieldValue,
-			userId: (fieldValue) => fieldValue,
 		};
 		this.isExistingUserSetting = false;
 
@@ -72,7 +71,6 @@ class Settings extends React.Component {
 			country: (fieldValue) => fieldValue.length > 0,
 			companyName: (fieldValue) => fieldValue.length > 0,
 			deliveryConditions: (fieldValue) => fieldValue.length > 0,
-			userId: (fieldValue) => fieldValue.length > 0,
 		};
 	}
 
@@ -192,6 +190,8 @@ class Settings extends React.Component {
 		if (settings.error.status === false) {
 			// We don't want to store the error info...
 			delete settings.error;
+			// add the userId
+			settings.userId = this.props.firebase.auth.currentUser.uid;
 			this.props.firebase
 				// ... don't forget to add the default statustitle
 				.addDocumentToCollection("users", settings, this.state.ID)
