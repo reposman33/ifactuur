@@ -7,7 +7,7 @@ import styles from "./passwordReset.module.scss";
 class PasswordForget extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = { email: undefined, error: undefined, message: undefined };
+		this.state = { email: undefined, error: undefined, message: undefined, successMessage: undefined };
 	}
 
 	componentDidCatch(error, info) {
@@ -19,11 +19,12 @@ class PasswordForget extends React.Component {
 			.passwordReset(this.state.email)
 			.then((res) => {
 				this.setState({
-					message: "Success! Er is een e-mail met instructies verstuurd naar het opgegeven adres",
+					successMessage: "Success! Er is een e-mail met instructies verstuurd naar het opgegeven adres",
+					error: undefined,
 				});
 			})
 			.catch((error) => {
-				this.setState({ error: error });
+				this.setState({ error: error, successMessage: undefined });
 			});
 		ev.preventDefault();
 	};
@@ -38,7 +39,7 @@ class PasswordForget extends React.Component {
 	};
 
 	render() {
-		const { error, message } = this.state;
+		const { error, successMessage } = this.state;
 		const isInvalid = this.state.email === null || !this.validateEmail(this.state.email);
 		return (
 			<div className={styles.passwordResetContainer}>
@@ -54,9 +55,9 @@ class PasswordForget extends React.Component {
 							<input type='submit' disabled={isInvalid} onClick={this.onReset} />
 						</div>
 					</div>
+					{successMessage && <div className='text-success mx-1'>{successMessage}</div>}
+					{error && <div className={styles.alert}>{error.message}</div>}
 				</div>
-				{message && <div className='text-success mx-1'>{message}</div>}
-				{error && <div className={styles.alert}>{error}</div>}
 			</div>
 		);
 	}
