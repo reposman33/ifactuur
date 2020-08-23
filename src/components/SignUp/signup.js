@@ -10,7 +10,8 @@ const INITIAL_STATE = {
 	email: "",
 	password: "",
 	passwordRepeat: "",
-	error: "",
+	error: undefined,
+	successMessage: undefined,
 };
 
 class SignUpForm extends Component {
@@ -24,12 +25,12 @@ class SignUpForm extends Component {
 		const { email, password } = this.state;
 		this.props.firebase
 			.createUserWithEmailAndPassword(email, password)
-			.then((authUser) => {
-				this.setState({ ...INITIAL_STATE });
-				this.props.history.push(ROUTES.SIGN_IN);
+			.then((authuser) => {
+				// on succesfull registration a authuser object is returned in cb. withAuthentication / withAuthorization allow access based on this object.
+				this.props.history.push({ pathname: ROUTES.SETTINGS, state: { showModal: true } });
 			})
 			.catch((error) => {
-				this.setState({ error });
+				this.setState({ error: error, successMessage: undefined });
 			});
 		event.preventDefault();
 	};
@@ -39,7 +40,7 @@ class SignUpForm extends Component {
 	};
 
 	render() {
-		const { username, email, password, passwordRepeat, error } = this.state;
+		const { username, email, password, passwordRepeat, error, successMessage } = this.state;
 		const isInvalid = password !== passwordRepeat || password === "" || username === "" || email === "";
 
 		return (
@@ -104,7 +105,8 @@ class SignUpForm extends Component {
 						</tbody>
 					</table>
 				</div>
-				{error && <div className={styles.alert}>{error}</div>}
+				{successMessage && <div className={styles.alert}>{successMessage}</div>}
+				{error && <div className={styles.alert}>{error.message}</div>}
 			</div>
 		);
 	}
