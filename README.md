@@ -1,3 +1,7 @@
+# Netlify hosted
+
+[![Netlify Status](https://api.netlify.com/api/v1/badges/eb893292-e753-441b-bfb2-ca354ffaf503/deploy-status)](https://app.netlify.com/sites/uurtjefactuurtje/deploys)
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
