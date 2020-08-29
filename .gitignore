@@ -19,3 +19,5 @@ yarn-error.log*
 .history/
 src/invoices.json
 .env.development
+src/invoices.json
+src/_invoices.json
