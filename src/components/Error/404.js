@@ -12,9 +12,9 @@ const _404 = () => {
 			<h1 className={componentStyles.h1}>Oops! deze pagina bestaat niet...</h1>
 			<span className={componentStyles.link}>
 				Ga
-				<a href='#' onClick={back}>
+				<span className={componentStyles.clickable} onClick={back}>
 					terug
-				</a>
+				</span>
 				waar je vandaan kwam.
 			</span>
 		</div>
