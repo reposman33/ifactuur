@@ -1,7 +1,7 @@
 import * as componentStyles from "./_404.module.scss";
 import React from "react";
 
-const _404 = () => {
+const NotFound = () => {
 	const back = (e) => {
 		e.preventDefault();
 		window.history.back();
@@ -21,4 +21,4 @@ const _404 = () => {
 	);
 };
 
-export default _404;
+export default NotFound;
