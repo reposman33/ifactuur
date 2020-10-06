@@ -1,6 +1,7 @@
 export const SETTINGS = "/settings";
 export const EXPENSES = "/expenses";
 export const EXPENSE = "/expense";
+export const NOTFOUND = "/notfound";
 export const COMPANIES = "/companies";
 export const COMPANY = "/company";
 export const INVOICES = "/invoices";

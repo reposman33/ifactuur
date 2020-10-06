@@ -1,4 +1,4 @@
-import * as componentStyles from "./_404.module.scss";
+import * as componentStyles from "./notFound.module.scss";
 import React from "react";
 
 const NotFound = () => {

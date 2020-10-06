@@ -12,7 +12,7 @@ import PasswordChange from "../PasswordChange";
 import PasswordForget from "../PasswordReset/passwordReset";
 import SignIn from "../SignIn/signin";
 import SignUp from "../SignUp/signup";
-import NotFound from "../Error/404";
+import NotFound from "../Error/notFound";
 import { PersistenceContextProvider } from "../../constants/contexts";
 import { Storage } from "../../services/API/storage";
 
@@ -34,7 +34,7 @@ const AppRouter = () => (
 			<Route exact path={ROUTES.SIGN_IN} render={(props) => <SignIn {...props} />} />
 			<Route exact path={ROUTES.SIGN_UP} render={(props) => <SignUp {...props} />} />
 			<Route exact path={ROUTES.STATS} render={(props) => <Stats {...props} />} />
-			<Route exact path='/*' render={(props) => <NotFound {...props} />} />
+			<Route exact path={ROUTES.NOTFOUND} render={(props) => <NotFound {...props} />} />
 		</Switch>
 	</PersistenceContextProvider>
 );

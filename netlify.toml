@@ -1,5 +1,4 @@
 [[redirects]]
   from = "/*"
-  to = "/_404.html"
+  to = "/notfound"
   status = 404
-  force = true
