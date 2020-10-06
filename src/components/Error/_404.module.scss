@@ -11,16 +11,9 @@
 	margin: 4rem auto 0;
 	text-decoration: none;
 
-	.clickable {
+	a {
 		color: sienna;
-		cursor: pointer;
 		font-weight: bold;
 		margin: 0 0.7rem;
-		transition: color 0.5s ease-out;
-
-		&:hover {
-			color: lighten(sienna, 25);
-			transition: color 0.25s ease-out;
-		}
 	}
 }
