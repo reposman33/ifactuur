@@ -22,4 +22,8 @@
 		font-size: $label-font-size;
 		white-space: nowrap;
 	}
+
+	& .cursor-help {
+		cursor: help;
+	}
 }
