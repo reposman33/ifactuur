@@ -56,7 +56,7 @@ class App extends React.Component {
 
 	componentDidMount() {
 		console.log('config = ', config);
-		console.log('process.env.NODE_ENV = ', process.env.NODE_ENV);
+		console.log('process.env = ', process.env);
 		document.title = config.projectPublicName;
 		// add 'development' when in development mode
 		document.title +=  process.env.NODE_ENV === "development" ? process.env.NODE_ENV : "";
