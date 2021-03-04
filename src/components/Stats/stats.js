@@ -330,7 +330,7 @@ class Stats extends React.Component {
 							<div className='d-flex flex-row'>
 								<Select
 									container={false}
-									extraClasses='w-25'
+									extraClasses='w-25 align-items-center'
 									labelText={this.I18n.get("STATS.BUTTON.YEAR")}
 									name='year'
 									displayInput={true}

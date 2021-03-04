@@ -59,7 +59,7 @@ const Select = ({
 				(extraClasses ? " " + extraClasses : "")
 			}>
 			<label>{labelText}</label>
-			<span className='d-flex flex-row w-100'>
+			<span className='d-flex flex-row w-100 justify-content-center'>
 				{displayInput ? (
 					<>
 						<select
