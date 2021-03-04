@@ -23,7 +23,7 @@ import {
 import "./index.scss";
 
 const config = {
-	projectPublicName: process.env.REACT_APP_PROJECTPUBLICNAME,
+	projectPublicName: process.env.REACT_APP_FIREBASE_PROJECTPUBLICNAME,
 };
 
 class App extends React.Component {
@@ -59,7 +59,7 @@ class App extends React.Component {
 		console.log('process.env = ', process.env);
 		document.title = config.projectPublicName;
 		// add 'development' when in development mode
-		document.title +=  process.env.NODE_ENV === "development" ? process.env.NODE_ENV : "";
+		document.title +=  process.env.NODE_ENV === "development" ? " - " + process.env.NODE_ENV : "";
 	}
 
 	setLanguage = (lang) => {
