@@ -384,7 +384,7 @@ class Stats extends React.Component {
 							</div>
 							<Button
 								disabled={!this.state.quarter}
-								extraClasses='mt-3 align-self-center'
+								extraClasses='align-self-center'
 								onClick={this.onCalculateTurnoverByquarter}
 								text={this.I18n.get("STATS.BUTTON.SHOWTURNOVERFORQUARTER")}
 							/>

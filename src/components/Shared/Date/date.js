@@ -1,5 +1,6 @@
 import React from "react";
-import * as styles from "./date.module.scss";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import styles from "./date.module.scss";
 
 /**
  *
@@ -8,9 +9,9 @@ import * as styles from "./date.module.scss";
  * @param {string}	displayValue - text to display instead of allowing userInput
  * @param {string}	extraClasses - extra classes to apply to parent element
  * @param {function} handleOnChange - update parent state with user input
- * @param {string}	extraClasses - extra xlsses to apply to parent element
  * @param {string}	labelText - text to display as label
  * @param {string}	name - input type name
+ * @param {string}	helpText - Text to display when mouseover question mark icon
  */
 const DateComponent = ({
 	container = true,
@@ -20,6 +21,7 @@ const DateComponent = ({
 	handleOnChange,
 	labelText,
 	name,
+	helpText = "",
 }) => {
 	const onChange = (event) => {
 		handleOnChange(event.target.name, event.target.value);
@@ -35,9 +37,11 @@ const DateComponent = ({
 			}>
 			<label>{labelText}</label>
 			{displayInput ? (
+			<div className="d-flex flex-row">
 				<span className='d-flex flex-row justify-content-between'>
 					<input type='date' name={name} value={displayValue} onChange={onChange} />
-				</span>
+				</span> { helpText.length ? <FontAwesomeIcon icon='question-circle' size='sm' className={"ml-1 mt-2 " + styles['cursor-help']} title={helpText} /> : null}
+			</div>
 			) : (
 				<span className='d-flex flex-row justify-content-between'>{displayValue} </span>
 			)}
