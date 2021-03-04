@@ -1,7 +1,7 @@
 @import "../../constants/variables.scss";
 
 div.mainMenu {
-	background-color: #144573;
+	background-color: $navmenu-background-color;
 	border-top: 1px solid #444;
 	border-bottom: 1px solid #444;
 	border-radius: 5px;
@@ -31,7 +31,6 @@ div.mainMenu {
 
 			&.navMenuItemSelected {
 				background-color: white;
-
 				a {
 					color: blue;
 				}
