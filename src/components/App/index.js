@@ -22,6 +22,10 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import "./index.scss";
 
+const config = {
+	projectPublicName: process.env.REACT_APP_PROJECTPUBLICNAME,
+};
+
 class App extends React.Component {
 	constructor(props) {
 		super(props);
@@ -51,9 +55,11 @@ class App extends React.Component {
 	}
 
 	componentDidMount() {
-		document.title = process.env.REACT_APP_PROJECTPUBLICNAME;
+		console.log('config = ', config);
+		console.log('process.env.NODE_ENV = ', process.env.NODE_ENV);
+		document.title = config.projectPublicName;
 		// add 'development' when in development mode
-		document.title +=  process.env.NODE_ENV === "development" ? " - " +  process.env.NODE_ENV : "";
+		document.title +=  process.env.NODE_ENV === "development" ? process.env.NODE_ENV : "";
 	}
 
 	setLanguage = (lang) => {
