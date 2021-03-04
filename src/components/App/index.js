@@ -57,7 +57,7 @@ class App extends React.Component {
 	componentDidMount() {
 		document.title = config.projectPublicName;
 		// add 'development' when in development mode
-		document.title +=  process.env.NODE_ENV === "development" ? process.env.NODE_ENV : "";
+		// document.title +=  process.env.NODE_ENV === "development" ? process.env.NODE_ENV : "";
 	}
 
 	setLanguage = (lang) => {
