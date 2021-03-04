@@ -1,4 +1,5 @@
 import React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styles from "./input.module.scss";
 
 /**
@@ -11,7 +12,8 @@ import styles from "./input.module.scss";
  * @param {function} 	handleOnChange - update parent state with user input
  * @param {string}		labelText - text to display as label
  * @param {string}		name - input type name
- * @param {number}		type - type of input element
+ * @param {number}		type - type of input 
+ * @param {string}		helpText - Text to display when mouseover question mark iconelement
  */
 
 const Input = ({
@@ -24,6 +26,7 @@ const Input = ({
 	labelText,
 	name,
 	type,
+	helpText = "",
 }) => {
 	const onBlur = (event) => {
 		handleOnChange(event.target.name, event.target.value);
@@ -39,14 +42,17 @@ const Input = ({
 			}>
 			<label>{labelText}</label>
 			{displayInput ? (
-				<input
-					name={name}
-					onBlur={onBlur}
-					step='any'
-					type={type}
-					defaultValue={displayValue}
-					style={extraStyles}
-				/>
+				<div className="d-flex flex-row">
+					<input
+						name={name}
+						onBlur={onBlur}
+						step='any'
+						type={type}
+						defaultValue={displayValue}
+						style={extraStyles}
+					/>
+					{ helpText.length ? <FontAwesomeIcon icon='question-circle' size='sm' className={"m-1 " + styles['cursor-help']} title={helpText} /> : null}
+				</div>
 			) : (
 				<span>{!!displayValue ? displayValue : "--"}</span>
 			)}
