@@ -19,6 +19,8 @@ import {
 	faPhoneAlt,
 	faEnvelope,
 	faTimesCircle,
+	faQuestionCircle
+
 } from "@fortawesome/free-solid-svg-icons";
 import "./index.scss";
 
@@ -46,7 +48,8 @@ class App extends React.Component {
 			faLink,
 			faPhoneAlt,
 			faEnvelope,
-			faTimesCircle
+			faTimesCircle,
+			faQuestionCircle
 		);
 	}
 

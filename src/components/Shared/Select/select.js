@@ -1,4 +1,5 @@
 import React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styles from "./select.module.scss";
 /**
  *
@@ -16,6 +17,7 @@ import styles from "./select.module.scss";
  * @param {string}		name - input type name
  * @param {function} 	onButtonClick - execute when user clicks the button
  * @param {string}		valueKey - key holding the value data for the select option
+ * @param {string}		helpText - Text to display when mouseover question mark icon
  */
 const Select = ({
 	buttonText,
@@ -32,6 +34,7 @@ const Select = ({
 	name,
 	onButtonClick,
 	valueKey,
+	helpText = "",
 }) => {
 	const onChange = (event) => {
 		// Retrieve the id of the _textcontent_ of the selected menu option
@@ -79,6 +82,7 @@ const Select = ({
 								{buttonText}
 							</button>
 						)}
+						<FontAwesomeIcon icon='question-circle' size='sm' className={"m-1 " + styles['cursor-help']} title={helpText} />
 					</>
 				) : (
 					<span>{displayValue}</span>
