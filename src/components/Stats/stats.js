@@ -339,6 +339,7 @@ class Stats extends React.Component {
 									displayKey='value'
 									valueKey='id'
 									handleOnChange={this.onChange}
+									helpText={this.I18n.get("STATS.HELP.TURNOVERYEAR")}
 								/>
 								<Input
 									container={false}

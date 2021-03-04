@@ -220,6 +220,9 @@ export class I18n {
 					TURNOVERINPERIOD: { en: "Turnover", nl: "Omzet" },
 				},
 			},
+			HELP: {
+				TURNOVERYEAR: { en: "Select a year in which an invoice was issued", nl: "Selecteer een jaar waarin een factuur is verzonden" }
+			}
 		},
 		STATUSMESSAGE: {
 			DOCUMENTADDED: { en: "Document succesfully added", nl: "Document toegevoegd" },
