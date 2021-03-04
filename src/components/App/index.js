@@ -22,10 +22,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import "./index.scss";
 
-const config = {
-	projectPublicName: process.env.REACT_APP_PROJECTPUBLICNAME,
-};
-
 class App extends React.Component {
 	constructor(props) {
 		super(props);
