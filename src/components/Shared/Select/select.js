@@ -82,7 +82,7 @@ const Select = ({
 								{buttonText}
 							</button>
 						)}
-						<FontAwesomeIcon icon='question-circle' size='sm' className={"m-1 " + styles['cursor-help']} title={helpText} />
+					{helpText.length ? <FontAwesomeIcon icon='question-circle' size='sm' className={"m-1 " + styles['cursor-help']} title={helpText} /> : null}
 					</>
 				) : (
 					<span>{displayValue}</span>
