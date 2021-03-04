@@ -14,7 +14,7 @@ import * as styles from "./button.module.scss";
 const Button = ({ disabled = false, extraClasses, extraStyles, onClick, text, title = "" }) => {
 	return (
 		<button
-			className={(extraClasses ? extraClasses + " " : "") + "d-flex btn btn-primary " + styles.button}
+			className={(extraClasses ? extraClasses + " " : "") + "d-flex btn btn-primary justify-content-center " + styles.button}
 			style={extraStyles}
 			onClick={onClick}
 			disabled={disabled}
