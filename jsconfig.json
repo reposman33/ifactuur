@@ -1,1 +1,8 @@
 /** added for React intellisense - https://mattdufeu.co.uk/setup-intellisense-vscode-react-js/ */
+{
+	"typeAcquisition": {
+		"include": [
+			"jest"
+		]
+	}
+}
