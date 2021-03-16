@@ -1,13 +1,15 @@
 iFactuur - uurtjefactuurtje (public name) - uurtjefactuurtje.marcbakker.com (public url)
 ## IMPORTANT deploy notice
-use node version 10.0.0 to install this app with npm i / yarn else you get arcane build errors from node-gyp module
-using nvm:
-- nvm ls: available node versions
-- nvm install 10.0.0: install node v10.0.0
-- nvm use [version]: use installed version
-- nvm on: use nvm to manage node versions
+use node version 10.4.0 to install this app.
 
-do npm / yarn
+Perform these steps in a terminal window:
+- nvm ls: *first check if 10.4.0 is among the available node versions*
+- nvm install 10.4.0: *do this if you need to install node v10.4.0*
+- nvm use 10.4.0: *tell NVM to use version 10.4.0*
+- nvm on: *finally allow nvm to manage node*
+
+Now you can start the application by first running
+`npm install` or `yarn`
 
 # Netlify hosted
 
