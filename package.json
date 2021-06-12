@@ -25,7 +25,7 @@
 	},
 	"scripts": {
 		"start": "react-scripts start",
-		"build": "react-scripts build",
+		"build": "yarn netlify-lambda build src/lambda",
 		"test": "react-scripts test",
 		"eject": "react-scripts eject",
 		"typescript": "webpack"
