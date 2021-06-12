@@ -32,7 +32,7 @@ div.mainMenu {
 			&.navMenuItemSelected {
 				background-color: white;
 				a {
-					color: blue;
+					color: $link-color-selected;
 				}
 			}
 
