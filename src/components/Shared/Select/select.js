@@ -70,7 +70,6 @@ const Select = ({
 							onChange={onChange}
 							value={initialSelectedValue}
 							style={Object.assign(selectStyle, extraStyles)}>
-							<option key={""} value={""}></option>
 							{data.map((ob, i) => (
 								<option key={i} value={ob[valueKey]}>
 									{ob[displayKey]}
