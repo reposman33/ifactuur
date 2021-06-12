@@ -85,6 +85,7 @@ class SignUpForm extends Component {
 										name='passwordRepeat'
 										value={passwordRepeat}
 										onChange={this.onChange}
+										onPaste={(e) => e.preventDefault()}
 									/>
 								</td>
 							</tr>
