@@ -6,8 +6,8 @@ Perform these steps in a terminal window:
 - nvm ls: *first check if 10.4.0 is among the available node versions*
 - nvm install 10.4.0: *do this if you need to install node v10.4.0*
 - nvm use 10.4.0: *tell NVM to use version 10.4.0*
-- start the application by running `npm install`
-- once installed, run `npm start`
+- start the application by running `npm install` or `yarn`
+- once installed, run `npm start` or `yarn start`
 
 # Netlify hosted
 
