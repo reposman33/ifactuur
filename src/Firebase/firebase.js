@@ -19,7 +19,7 @@ class Firebase {
 		firebase.initializeApp(config);
 		this.auth = firebase.auth();
 		this.db = firebase.firestore();
-		this.userId = null;
+		this.user = null;
 	}
 
 	// ===============================================================
@@ -28,7 +28,10 @@ class Firebase {
 	// ===============================================================
 	// ===============================================================
 
-	createUserWithEmailAndPassword = (email, password) => this.auth.createUserWithEmailAndPassword(email, password);
+	createUserWithEmailAndPassword = (email, password) => {
+		this.auth.createUserWithEmailAndPassword(email, password);
+		this.user = this.auth.currentUser;
+	}
 
 	passwordReset = (email) => this.auth.sendPasswordResetEmail(email);
 
@@ -40,10 +43,8 @@ class Firebase {
 			.setPersistence(firebase.auth.Auth.Persistence.SESSION)
 			.then(() => this.auth.signInWithEmailAndPassword(email, password))
 			.then((res) => {
-				this.userId = res.user.uid;
 				if (res.user.uid) {
-					// store userId in sessionStorage
-					sessionStorage.setItem("userId", this.userId);
+					this.user = res.user;
 				}
 				return res;
 			})
@@ -53,8 +54,9 @@ class Firebase {
 
 	signOut = () => {
 		this.auth.signOut();
-		sessionStorage.removeItem("userId");
 	};
+
+	getCurrentUserId = () => this.user ? this.user.uid : null;
 
 	// ===============================================================
 	// ===============================================================
@@ -90,7 +92,7 @@ class Firebase {
 		const result = [];
 		return this.db
 			.collection(collection)
-			.where("userId", "==", sessionStorage.getItem("userId"))
+			.where("userId", "==", this.getCurrentUserId())
 			.orderBy(orderByField, "desc")
 			.get()
 			.then((querySnapshot) => {
@@ -256,7 +258,8 @@ class Firebase {
 	getNewId = () =>
 		this.db
 			.collection("bills")
-			.where("userId", "==", sessionStorage.getItem("userId"))
+			// .where("userId", "==", sessionStorage.getItem("userId"))
+			.where("userId", "==", this.getCurrentUserId())
 			.orderBy("date", "desc")
 			.orderBy("id", "desc")
 			.limit(1)
@@ -290,7 +293,8 @@ class Firebase {
 	getNewInvoiceNr = () =>
 		this.db
 			.collection("invoices")
-			.where("userId", "==", sessionStorage.getItem("userId"))
+			// .where("userId", "==", sessionStorage.getItem("userId"))
+			.where("userId", "==", this.getCurrentUserId())
 			.orderBy("dateTimeCreated", "desc")
 			.orderBy("invoiceNr", "desc")
 			.limit(1)
@@ -301,11 +305,9 @@ class Firebase {
 		// convert fireStore Timestamp to JavaScript Date object for a few fields
 		["dateTimeCreated", "dateTimePaid", "dateTimeSent", "dateTimePrinted", "periodFrom", "periodTo"].forEach(
 			(fieldName) =>
-				// IF fiedName exists in invoice, convert it...
-				(invoice[fieldName] = invoice[fieldName]
-					? this.Utils.dateFormat.format(invoice[fieldName].toDate())
-					: // ELSE leave it alone (null)
-					  invoice[fieldName])
+				(invoice[fieldName] = invoice[fieldName] ?
+					this.Utils.dateFormat.format(invoice[fieldName].toDate())
+					: invoice[fieldName])
 		);
 		return invoice;
 	};
@@ -338,7 +340,8 @@ class Firebase {
 	getUserSettings = () => {
 		return this.db
 			.collection("users")
-			.where("userId", "==", sessionStorage.getItem("userId"))
+			// .where("userId", "==", sessionStorage.getItem("userId"))
+			.where("userId", "==", this.getCurrentUserId())
 			.get()
 			.then((querySnapshot) => {
 				let document;
