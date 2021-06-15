@@ -1,5 +1,6 @@
 import React from "react";
 import { withFirebase } from "../../Firebase/index.js";
+import { I18n } from "../../services/I18n/I18n"
 import { Link } from "react-router-dom";
 import * as ROUTES from "../../constants/routes.js";
 import styles from "./passwordReset.module.scss";
@@ -8,6 +9,7 @@ class PasswordForget extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = { email: undefined, error: undefined, message: undefined, successMessage: undefined };
+		this.I18n = new I18n()
 	}
 
 	componentDidCatch(error, info) {
@@ -19,7 +21,7 @@ class PasswordForget extends React.Component {
 			.passwordReset(this.state.email)
 			.then((res) => {
 				this.setState({
-					successMessage: "Success! Er is een e-mail met instructies verstuurd naar het opgegeven adres",
+					successMessage: this.I18n.get("SIGNIN.PROMPT.PASSWORDFORGET"),
 					error: undefined,
 				});
 			})
@@ -52,7 +54,7 @@ class PasswordForget extends React.Component {
 					<div className='d-flex flex-column justify-content-between'>
 						<div className={styles.links + " d-flex flex-row justify-content-between"}>
 							<Link to={ROUTES.SIGN_IN}>Login</Link>
-							<input type='submit' disabled={isInvalid} onClick={this.onReset} />
+							<input type='submit' disabled={isInvalid} onClick={this.onReset} value={this.I18n.get("PASSWORDRESET.BUTTONS")} />
 						</div>
 					</div>
 					{successMessage && <div className='text-success mx-1'>{successMessage}</div>}
