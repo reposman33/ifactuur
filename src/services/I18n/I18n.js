@@ -224,6 +224,13 @@ export class I18n {
 				TURNOVERYEAR: { en: "Select a year in which an invoice was issued", nl: "Selecteer een jaar waarin een factuur is verzonden" }
 			}
 		},
+		SIGNIN: {
+			BUTTONS: {
+				SIGNIN_FACEBOOK: {en: "Continue with Facebook", nl: "Log in met Facebook"},
+				SIGNIN_GITHUB: {en: "Continue with Github", nl: "Log in met Github"},
+				SIGNIN_GOOGLE: {en: "Continue with Google", nl: "Log in met Google"},
+			}
+		},
 		STATUSMESSAGE: {
 			DOCUMENTADDED: { en: "Document succesfully added", nl: "Document toegevoegd" },
 			DOCUMENTCANCELLED: { en: "Changes removed", nl: "Wijzigingen verwijderd" },

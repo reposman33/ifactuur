@@ -18,8 +18,14 @@ class Firebase {
 		this.Utils = new Utils();
 		firebase.initializeApp(config);
 		this.auth = firebase.auth();
+		this.auth.useDeviceLanguage()
 		this.db = firebase.firestore();
 		this.user = null;
+		this.firebase = firebase
+		// configure federated signIn
+		this.FacebookAuthProvider = new firebase.auth.FacebookAuthProvider();
+		this.GoogleAuthProvider = new firebase.auth.GoogleAuthProvider();
+		this.GithubAuthProvider = new firebase.auth.GithubAuthProvider();
 	}
 
 	// ===============================================================
@@ -53,10 +59,12 @@ class Firebase {
 			});
 
 	signOut = () => {
-		this.auth.signOut();
+		this.auth.signOut()
+		.catch(err => console.log('ERROR signing out: ', err))
 	};
 
 	getCurrentUserId = () => this.user ? this.user.uid : null;
+	setUser = (user) => this.user = user
 
 	// ===============================================================
 	// ===============================================================

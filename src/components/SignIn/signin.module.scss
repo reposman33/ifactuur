@@ -2,7 +2,7 @@
 
 .signinContainer {
 	background-color: #f9f9f9;
-	margin: 10% auto;
+	margin: 10% auto 0;
 	width: 45%;
 
 	& .header {
@@ -41,17 +41,54 @@
 			}
 		}
 	}
+
 	.links a,
 	a:visited,
 	a:hover {
 		text-decoration: none;
-		font-weight: bold;
+		color: $link-color-active-light-background;
+
+		&:hover {
+			color: $link-color-hover-light-background;
+		}
 	}
 	.alert {
 		color: red;
-		display: inline-block;
 		font-style: italic;
-		margin: 0 1rem 1rem 1rem;
-		text-align: left;
+		font-size: 9pt;
+		margin: 0 1rem -.6rem;
+		text-align: center;
 	}
+}
+.socialMediaButtons {
+	align-content: flex-start;
+	display: flex;
+	justify-content: space-between;
+	margin: 0 auto;
+	width: 45%;
+
+	& button {
+		align-items: center;
+		background-color: $button_active-background-color;
+		display:flex;
+		flex-grow: 1;
+		justify-content: flex-start;
+		padding: .3rem  1rem;
+		border-radius: 1rem;
+		border: none;
+		color: white;
+		font-size:smaller;
+
+		&:nth-of-type(2) {
+			margin: 0 1rem;
+		}
+
+		&:hover {
+			color: $link-color-hover-dark-background;
+		}
+
+		& svg {
+			color: $button-svg-color
+		}
+	}	
 }
