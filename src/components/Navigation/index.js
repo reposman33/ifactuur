@@ -80,7 +80,7 @@ class NavigationForm extends React.Component {
 							}>
 							<Link to={ROUTES.STATS}>{this.I18n.get("NAVIGATION.MENU_TITLE_STATS")}</Link>
 						</li>
-						<li> {this.props.authUser && this.props.authUser.authUser && <SignOut />}</li>
+						<li> <SignOut /></li>
 					</ul>
 				</div>
 				<LanguagePicker setLanguage={this.props.setLanguage}></LanguagePicker>
