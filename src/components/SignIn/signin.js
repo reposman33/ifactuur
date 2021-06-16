@@ -1,11 +1,11 @@
 import React from "react";
 import { compose } from "recompose";
-import { withFirebase } from "../../Firebase/index.js";
+import { withFirebase } from "../../Firebase";
 import {I18n} from "../../services/I18n/I18n";
 import { Link } from "react-router-dom";
 import { withRouter } from "react-router-dom";
-import { SignUpLink } from "../SignUp/signup.js";
-import * as ROUTES from "../../constants/routes.js";
+import { SignUpLink } from "../SignUp/signup";
+import * as ROUTES from "../../constants/routes";
 import * as styles from "./signin.module.scss";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFacebook, faGithub, faGoogle } from '@fortawesome/free-brands-svg-icons'
