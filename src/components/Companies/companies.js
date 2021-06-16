@@ -6,7 +6,7 @@ import paginationFactory from "react-bootstrap-table2-paginator";
 import { Button } from "../Shared/Button/button";
 import { I18n } from "../../services/I18n/I18n";
 import * as ROUTES from "../../constants/routes";
-import { withFirebase } from "../../Firebase";
+import { firebaseContextConsumer } from "../../Firebase";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styles from "./../Shared/styles/react-bootstrap-table.module.scss";
 
@@ -140,4 +140,4 @@ class Companies extends React.Component {
 	}
 }
 
-export default withFirebase(Companies);
+export default firebaseContextConsumer(Companies);

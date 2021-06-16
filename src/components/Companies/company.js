@@ -4,7 +4,7 @@ import { Button } from "../Shared/Button/button";
 import { Input } from "../Shared/Input/input";
 import { I18n } from "../../services/I18n/I18n";
 import * as ROUTES from "../../constants/routes";
-import { withFirebase } from "../../Firebase";
+import { firebaseContextConsumer } from "../../Firebase";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styles from "./company.module.scss";
 
@@ -507,4 +507,4 @@ class Company extends React.Component {
 	}
 }
 
-export default withFirebase(Company);
+export default firebaseContextConsumer(Company);

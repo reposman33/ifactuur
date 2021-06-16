@@ -1,5 +1,5 @@
 import React from "react";
-import { withFirebase } from "../../Firebase/index.js";
+import { firebaseContextConsumer } from "../../Firebase/index.js";
 import { I18n } from "../../services/I18n/I18n"
 import { Link } from "react-router-dom";
 import * as ROUTES from "../../constants/routes.js";
@@ -65,4 +65,4 @@ class PasswordForget extends React.Component {
 	}
 }
 
-export default withFirebase(PasswordForget);
+export default firebaseContextConsumer(PasswordForget);

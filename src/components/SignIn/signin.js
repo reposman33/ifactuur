@@ -1,6 +1,6 @@
 import React from "react";
 import { compose } from "recompose";
-import { withFirebase } from "../../Firebase";
+import { firebaseContextConsumer } from "../../Firebase";
 import {I18n} from "../../services/I18n/I18n";
 import { Link } from "react-router-dom";
 import { withRouter } from "react-router-dom";
@@ -155,6 +155,6 @@ class SignInForm extends React.Component {
 	}
 }
 
-const SignInPage = compose(withRouter, withFirebase)(SignInForm);
+const SignInPage = compose(withRouter, firebaseContextConsumer)(SignInForm);
 
 export default SignInPage;

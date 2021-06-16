@@ -1,5 +1,5 @@
 import React from "react";
-import { withFirebase } from "../../Firebase/index.js";
+import { firebaseContextConsumer } from "../../Firebase/index.js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styles from "./signout.module.scss";
 
@@ -15,4 +15,4 @@ const SignOut = ({ firebase }) => {
 	</div>)
 }
 
-export default withFirebase(SignOut);
+export default firebaseContextConsumer(SignOut);

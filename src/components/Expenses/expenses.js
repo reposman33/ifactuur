@@ -6,7 +6,7 @@ import paginationFactory from "react-bootstrap-table2-paginator";
 import { I18n } from "../../services/I18n/I18n";
 import { Utils } from "./../../services/Utils";
 import * as ROUTES from "../../constants/routes";
-import { withFirebase } from "../../Firebase";
+import { firebaseContextConsumer } from "../../Firebase";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "../Shared/Button/button";
 import ReactBootstrapTableStyles from "./../Shared/styles/react-bootstrap-table.module.scss";
@@ -130,4 +130,4 @@ class Expenses extends React.Component {
 	}
 }
 
-export default withFirebase(Expenses);
+export default firebaseContextConsumer(Expenses);

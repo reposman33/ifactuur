@@ -1,5 +1,5 @@
 import React from "react";
-import { withFirebase } from "../../Firebase";
+import { firebaseContextConsumer } from "../../Firebase";
 import { PersistenceContext } from "../../constants/contexts";
 import { ModalComponent } from "../Shared/Modal/Modal";
 import { I18n } from "../../services/I18n/I18n";
@@ -427,4 +427,4 @@ class Settings extends React.Component {
 	}
 }
 
-export default withFirebase(Settings);
+export default firebaseContextConsumer(Settings);

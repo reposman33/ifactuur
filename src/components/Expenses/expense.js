@@ -7,7 +7,7 @@ import { Textarea } from "../Shared/Textarea/textarea";
 import { I18n } from "../../services/I18n/I18n";
 import { Utils } from "../../services/Utils";
 import * as ROUTES from "../../constants/routes";
-import { withFirebase } from "../../Firebase";
+import { firebaseContextConsumer } from "../../Firebase";
 import componentStyles from "./expense.module.scss";
 
 class Expense extends React.Component {
@@ -346,4 +346,4 @@ class Expense extends React.Component {
 	}
 }
 
-export default withFirebase(Expense);
+export default firebaseContextConsumer(Expense);

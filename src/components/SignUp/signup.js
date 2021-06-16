@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
 import * as ROUTES from "../../constants/routes.js";
-import { withFirebase } from "../../Firebase/index.js";
+import { firebaseContextConsumer } from "../../Firebase/index.js";
 import { compose } from "recompose";
 import * as styles from "./signup.module.scss";
 
@@ -119,5 +119,5 @@ const SignUpLink = () => (
 	</div>
 );
 
-export default compose(withRouter, withFirebase)(SignUpForm);
+export default compose(withRouter, firebaseContextConsumer)(SignUpForm);
 export { SignUpForm, SignUpLink };

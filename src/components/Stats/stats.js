@@ -4,7 +4,7 @@ import { Utils } from "../../services/Utils";
 import BootstrapTable from "react-bootstrap-table-next";
 import "react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css";
 import paginationFactory from "react-bootstrap-table2-paginator";
-import { withFirebase } from "../../Firebase";
+import { firebaseContextConsumer } from "../../Firebase";
 import { DateComponent } from "../Shared/Date/date";
 import { Button } from "../Shared/Button/button";
 import { Select } from "../Shared/Select/select";
@@ -462,4 +462,4 @@ class Stats extends React.Component {
 	}
 }
 
-export default withFirebase(Stats);
+export default firebaseContextConsumer(Stats);

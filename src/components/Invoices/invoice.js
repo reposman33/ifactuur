@@ -5,7 +5,7 @@ import { Select } from "../Shared/Select/select";
 import { I18n } from "../../services/I18n/I18n";
 import { Utils } from "../../services/Utils";
 import * as ROUTES from "../../constants/routes";
-import { withFirebase } from "../../Firebase";
+import { firebaseContextConsumer } from "../../Firebase";
 import componentStyles from "./invoice.module.scss";
 
 class Invoice extends React.Component {
@@ -558,4 +558,4 @@ class Invoice extends React.Component {
 	}
 }
 
-export default withFirebase(Invoice);
+export default firebaseContextConsumer(Invoice);

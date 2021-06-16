@@ -1,5 +1,5 @@
 import React from "react";
-import { withFirebase } from "../../Firebase/index.js";
+import { firebaseContextConsumer } from "../../Firebase/index.js";
 import "./index.scss";
 
 class PasswordChange extends React.Component {
@@ -90,4 +90,4 @@ class PasswordChange extends React.Component {
 	}
 }
 
-export default withFirebase(PasswordChange);
+export default firebaseContextConsumer(PasswordChange);
