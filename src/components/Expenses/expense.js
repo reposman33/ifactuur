@@ -6,13 +6,11 @@ import { Select } from "./../Shared/Select/select";
 import { Textarea } from "../Shared/Textarea/textarea";
 import { I18n } from "../../services/I18n/I18n";
 import { Utils } from "../../services/Utils";
-import { PersistenceContext } from "../../constants/contexts";
 import * as ROUTES from "../../constants/routes";
 import { withFirebase } from "../../Firebase";
 import componentStyles from "./expense.module.scss";
 
 class Expense extends React.Component {
-	static contextType = PersistenceContext;
 
 	constructor(props) {
 		super(props);

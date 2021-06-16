@@ -13,13 +13,10 @@ import PasswordForget from "../PasswordReset/passwordReset";
 import SignIn from "../SignIn/signin";
 import SignUp from "../SignUp/signup";
 import NotFound from "../Error/notFound";
-import { PersistenceContextProvider } from "../../constants/contexts";
-import { Storage } from "../../services/API/storage";
 
 import Stats from "../Stats/stats";
 
 const AppRouter = () => (
-	<PersistenceContextProvider value={new Storage()}>
 		<Switch>
 			<Redirect exact from='' to={ROUTES.INVOICES} />
 			<Route exact path={ROUTES.COMPANIES} render={(props) => <Companies {...props} />} />
@@ -36,7 +33,6 @@ const AppRouter = () => (
 			<Route exact path={ROUTES.STATS} render={(props) => <Stats {...props} />} />
 			<Route exact path={ROUTES.NOTFOUND} render={(props) => <NotFound {...props} />} />
 		</Switch>
-	</PersistenceContextProvider>
 );
 
 export { AppRouter };

@@ -4,13 +4,11 @@ import { DateComponent } from "../Shared/Date/date";
 import { Select } from "../Shared/Select/select";
 import { I18n } from "../../services/I18n/I18n";
 import { Utils } from "../../services/Utils";
-import { PersistenceContext } from "../../constants/contexts";
 import * as ROUTES from "../../constants/routes";
 import { withFirebase } from "../../Firebase";
 import componentStyles from "./invoice.module.scss";
 
 class Invoice extends React.Component {
-	static contextType = PersistenceContext;
 
 	constructor(props) {
 		super(props);

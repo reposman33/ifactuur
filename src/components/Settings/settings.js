@@ -1,6 +1,5 @@
 import React from "react";
 import { withFirebase } from "../../Firebase";
-import { PersistenceContext } from "../../constants/contexts";
 import { ModalComponent } from "../Shared/Modal/Modal";
 import { I18n } from "../../services/I18n/I18n";
 import * as ROUTES from "../../constants/routes";
@@ -12,7 +11,6 @@ import { LanguagePicker } from "../LanguagePicker/languagePicker";
 import "./settings.module.scss";
 
 class Settings extends React.Component {
-	static contextType = PersistenceContext;
 
 	constructor(props) {
 		super(props);

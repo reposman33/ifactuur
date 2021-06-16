@@ -74,14 +74,14 @@ class App extends React.Component {
 		}
 		return (
 			<Router>
-				<React.Fragment>
+				<>
 					<div className='navContainer'>
 						<Navigation setLanguage={this.setLanguage} />
 					</div>
 					<div className='container'>
 						<AppRouter />
 					</div>
-				</React.Fragment>
+				</>
 			</Router>
 		);
 	}
