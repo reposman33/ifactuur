@@ -5,19 +5,14 @@ import { firebaseContextConsumer } from "../../Firebase/index.js";
 import { withRouter } from "react-router-dom";
 import { AuthUserContext } from "./index.js";
 
-const withAuthorization = condition => Component => {
+const authorizationContextConsumer = (Component) => {
 	class WithAuthorization extends React.Component {
-		componentDidMount() {
-			if (!this.props.authUser) {
-				this.props.history.push(ROUTES.SIGN_IN);
-			}
-	
-			// Is listener needed? this.props.authUser is available...
-			// this.listener = this.props.firebase.auth.onAuthStateChanged(authUser => {
-			// 	if (!condition(authUser)) {
-			// 		this.props.history.push(ROUTES.SIGN_IN);
-			// 	}
-			// });
+		componentDidMount() {	
+		 this.listener = this.props.firebase.auth.onAuthStateChanged(authUser => {
+		 	if (!authUser || authUser.authUser === null) {
+		 		this.props.history.push(ROUTES.SIGN_IN);
+		 	}
+		 });
 		}
 
 		componentWillUnmount() {
@@ -27,7 +22,7 @@ const withAuthorization = condition => Component => {
 		render() {
 			return (
 				<AuthUserContext.Consumer>
-					{authUser => (condition(authUser) ? <Component {...this.props} /> : null)}
+					{authUser => ( authUser && authUser.authUser !== null) ? <Component {...this.props} /> : null}
 				</AuthUserContext.Consumer>
 			);
 		}
@@ -36,4 +31,4 @@ const withAuthorization = condition => Component => {
 	return compose(firebaseContextConsumer, withRouter)(WithAuthorization);
 };
 
-export default withAuthorization;
+export default authorizationContextConsumer;

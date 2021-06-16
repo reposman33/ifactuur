@@ -1,5 +1,5 @@
 import React from "react";
-import { AuthUserContext, withAuthentication, withAuthorization } from "../Session/index.js";
+import { AuthUserContext, withAuthentication, authorizationContextConsumer } from "../Session/index.js";
 import { compose } from "recompose";
 import * as ROUTES from "../../constants/routes.js";
 import { Link } from "react-router-dom";
@@ -89,12 +89,12 @@ class NavigationForm extends React.Component {
 	}
 }
 
-const AddAuthentication = (Component) => (props) => (
-	<AuthUserContext.Consumer>{(authUser) => <Component authUser={authUser} {...props} />}</AuthUserContext.Consumer>
+const authenticationContextConsumer = (Component) => (props) => (
+	<AuthUserContext.Consumer>
+		{(authUser) => <Component authUser={authUser} {...props} />}
+	</AuthUserContext.Consumer>
 );
 
-const authCondition = (authUser) => authUser && authUser.authUser !== null;
+const Navigation = compose(withAuthentication, authenticationContextConsumer)(NavigationForm);
 
-const Navigation = compose(withAuthentication, AddAuthentication)(NavigationForm);
-
-export default withAuthorization(authCondition)(Navigation);
+export default authorizationContextConsumer(Navigation);
