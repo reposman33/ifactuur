@@ -8,11 +8,6 @@ import { LanguagePicker } from "../LanguagePicker/languagePicker";
 import * as styles from "./index.module.scss";
 
 class NavigationForm extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {};
-	}
-
 	I18n = new I18n();
 
 	routes = {
