@@ -22,36 +22,13 @@ class SignInForm extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = { ...INITIAL_STATE };
-		this.federatedProviders = {
-			Facebook: this.props.firebase.FacebookAuthProvider,
-			Github: this.props.firebase.GithubAuthProvider,
-			Google: this.props.firebase.GoogleAuthProvider
-		};
 		this.I18n = new I18n();
 	}
 
-	signInWithProvider = (p) => {
-		const provider = this.federatedProviders[p]
-		this.onSignInWithProvider(provider)
-	}
-
-	onSignInWithProvider = (provider) => this.props.firebase.firebase
-		.auth()
-		.signInWithPopup(provider)
-		.then((result) => {
-			if (result.user) {
-				console.log('user = ', result.user);
-				// The signed-in user info.
-				this.props.firebase.setUser(result.user)
-				// This gives you a Facebook Access Token. You can use it to access the Facebook API.
-				// var accessToken = credential.accessToken;
-				this.continueLogin()
-			} else {
-				this.setState({ error: result.message });
-			}
-		})
+	signInWithProvider = (p) => 
+		this.props.firebase.signInWithProvider(p)
+		.then(() => this.continueLogin())
 		.catch((error) => {
-			// Handle Errors here.
 			this.setState({ error: error.message });
 		});
 
@@ -59,7 +36,8 @@ class SignInForm extends React.Component {
 		this.setState({
 			...INITIAL_STATE,
 		});
-		this.props.firebase.getUserSettings().then((userSettings) => {
+		this.props.firebase.getUserSettings()
+		.then((userSettings) => {
 			// redirect to userSettings if first time and nothing filled in yet.
 			const routeOb =
 				userSettings && userSettings.companyName

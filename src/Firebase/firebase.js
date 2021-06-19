@@ -23,9 +23,11 @@ class Firebase {
 		this.user = null;
 		this.firebase = firebase
 		// configure federated signIn
-		this.FacebookAuthProvider = new firebase.auth.FacebookAuthProvider();
-		this.GoogleAuthProvider = new firebase.auth.GoogleAuthProvider();
-		this.GithubAuthProvider = new firebase.auth.GithubAuthProvider();
+		this.federatedProviders = {
+			Facebook: new firebase.auth.FacebookAuthProvider(),
+			Github: new firebase.auth.GithubAuthProvider(),
+			Google: new firebase.auth.GoogleAuthProvider()
+		};
 	}
 
 	// ===============================================================
@@ -64,7 +66,25 @@ class Firebase {
 	};
 
 	getCurrentUserId = () => this.user ? this.user.uid : null;
+
 	setUser = (user) => this.user = user
+
+	// FEDERATED LOGIN / SIGN IN WITH...
+	signInWithProvider = (p) => {
+		const provider = this.federatedProviders[p]
+		return this.onSignInWithProvider(provider)
+	}
+
+	onSignInWithProvider = (provider) => this.firebase
+		.auth()
+		.signInWithPopup(provider)
+		.then((result) => {
+			if (result.user) {
+				this.setUser(result.user)
+				// This gives you a Facebook Access Token. You can use it to access the Facebook API.
+				// var accessToken = credential.accessToken;
+		}
+	})
 
 	// ===============================================================
 	// ===============================================================
@@ -348,7 +368,6 @@ class Firebase {
 	getUserSettings = () => {
 		return this.db
 			.collection("users")
-			// .where("userId", "==", sessionStorage.getItem("userId"))
 			.where("userId", "==", this.getCurrentUserId())
 			.get()
 			.then((querySnapshot) => {
