@@ -1,4 +1,19 @@
 iFactuur - uurtjefactuurtje (public name) - uurtjefactuurtje.marcbakker.com (public url)
+## Notes
+For authentication React Context API and HOCs (Higher Order Components) are used.
+- FirebaseContextProvider.Provider wraps App component (src/Firebase/context.js:FirebaseContext wraps <App> in /index.js);
+- AuthUserContext.Provider HOC wraps App component (src/components/Session/withAuthentication.js wraps class App in src/components/App/index.js). This component sets a listener on firebase.auth.onAuthStateChanged and uses this as the value for the Provider.
+- authorizationContextConsumer.js also sets a listener on onAuthStateChanged. AuthUserContext.Consumer only renders fed component if authUser exists. Side effect: whenever authentication state of user changes the callback redirects to SignIn component if user is not signed in (src/components/Session/authorizationContextConsumer wraps class NavigationForm in src/components/Navigation/index.js). NavigationForm class gets access to router props via authorizationContextConsumer;
+
+TL;DR
+
+authorizationContext.Consumer controls access to App.
+if user is _not_ signed in, authorizationContext.Consumer redirects to SignIn component and does _not_ display the signInForm it has been fed. If the user _is_ signed in no redirection happens and the fed signInForm component is displayed.
+
+withAuthentication = Provider pf authUser - authorizationContextConsumer is consumer of authUser and redirects to SignIn
+
+
+
 ## IMPORTANT deploy notice
 use node version 10.4.0 to install this app.
 
