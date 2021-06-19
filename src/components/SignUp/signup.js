@@ -26,7 +26,6 @@ class SignUpForm extends Component {
 		this.props.firebase
 			.createUserWithEmailAndPassword(email, password)
 			.then((authuser) => {
-				// on succesfull registration a authuser object is returned in cb. withAuthentication / withAuthorization render component / redirect to signIn component based on presence of this object.
 				this.props.history.push({ pathname: ROUTES.SETTINGS, state: { showModal: true } });
 			})
 			.catch((error) => {
