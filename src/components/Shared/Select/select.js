@@ -43,8 +43,7 @@ const Select = ({
 			.reduce((acc, selectedOption) => selectedOption.textContent, "");
 		handleOnChange(name, value);
 	};
-	// if a buttons needs displayhed, make room for it
-	const selectStyle = buttonText ? { width: "50%" } : { margin: 0 };
+	const selectStyle = { flexGrow: "1" };
 
 	//  display the current state value
 	// convert to correct type to match data
@@ -69,7 +68,7 @@ const Select = ({
 							name={name}
 							onChange={onChange}
 							value={initialSelectedValue}
-							style={Object.assign(selectStyle, extraStyles)}>
+							style={Object.assign({ flexGrow: "1" }, extraStyles)}>
 							{data.map((ob, i) => (
 								<option key={i} value={ob[valueKey]}>
 									{ob[displayKey]}
