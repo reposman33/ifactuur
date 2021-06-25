@@ -17,9 +17,9 @@ import { PersistenceContextProvider } from "../../constants/contexts";
 import { Storage } from "../../services/API/storage";
 
 import Stats from "../Stats/stats";
-
+const storage = new Storage()
 const AppRouter = () => (
-	<PersistenceContextProvider value={new Storage()}>
+	<PersistenceContextProvider value={storage}>
 		<Switch>
 			<Redirect exact from='' to={ROUTES.INVOICES} />
 			<Route exact path={ROUTES.COMPANIES} render={(props) => <Companies {...props} />} />

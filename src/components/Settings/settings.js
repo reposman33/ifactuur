@@ -17,8 +17,6 @@ class Settings extends React.Component {
 		super(props);
 
 		this.I18n = new I18n();
-		// to temporarily save the state when switching between pages we use services/API/storage.js via contextAPI
-		this.storage = undefined; // this.storage to be set in componentDidMount
 
 		this.state = {
 			address: "",
@@ -103,16 +101,14 @@ class Settings extends React.Component {
 				companies: values[1],
 			}));
 
-			// There might be stored session from an earlier visit. Retrieve the (session)storage
-			this.storage = this.context;
 			// copy stored statevalues to state
-			const storedState = this.storage.get("settingsState");
+			const storedState = this.props.storage.get("settingsState");
 			if (storedState) {
 				this.setState((state) => ({
 					...state,
 					...storedState,
 				}));
-				this.storage.clear()
+				 this.storage.clear()
 			}
 		});
 	};
@@ -312,7 +308,7 @@ class Settings extends React.Component {
 							/>
 						</div>
 					</div>
-					<div className='col d-flex p-3 w-25'>
+					<div className='col d-flex flex-grow-3 p-3'>
 						{/* COMPANIES */}
 						<Select
 							buttonText={this.I18n.get("INVOICE.BUTTON.NEW_COMPANY")}

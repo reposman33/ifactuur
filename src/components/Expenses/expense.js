@@ -8,6 +8,7 @@ import { I18n } from "../../services/I18n/I18n";
 import { Utils } from "../../services/Utils";
 import * as ROUTES from "../../constants/routes";
 import { firebaseContextConsumer } from "../../Firebase";
+import { PersistenceContextConsumer } from "../../constants/contexts";
 import componentStyles from "./expense.module.scss";
 
 class Expense extends React.Component {
@@ -16,7 +17,6 @@ class Expense extends React.Component {
 		super(props);
 		this.Utils = new Utils();
 		this.I18n = new I18n();
-		this.storage = undefined; // to be set in componentDidMount
 
 		// initialize state
 		this.state = {
@@ -93,11 +93,9 @@ class Expense extends React.Component {
 				});
 			});
 		}
-		// consume the persistence context
-		this.storage = this.context;
 
 		// overwrite the state when a previous state is stored
-		const storedState = this.storage.get("expenseState");
+		const storedState = this.props.storage.get("expenseState");
 		if (storedState) {
 			this.setState(storedState);
 		}
@@ -117,7 +115,7 @@ class Expense extends React.Component {
 	 */
 	onListview = () => {
 		// remove the temporary state
-		this.storage.remove("expenseState");
+		this.props.storage.remove("expenseState");
 
 		this.props.history.push({
 			pathname: ROUTES.EXPENSES,
@@ -130,7 +128,7 @@ class Expense extends React.Component {
 	handleNewCompany = () => {
 		// copy the state values that will be eventually stored to temporary storage. To be picked up when returning from creating a new company
 		const persistFields = Object.keys(this.persistFields);
-		this.storage.set(
+		this.props.storage.set(
 			"expenseState",
 			persistFields.reduce((acc, persistField) => {
 				acc[persistField] = this.state[persistField];
@@ -201,7 +199,7 @@ class Expense extends React.Component {
 				.then((docRef) => {
 					console.log("document ", docRef.id, " added");
 					// remove the temporary state
-					this.storage.remove("expenseState");
+					this.props.storage.remove("expenseState");
 					// update statusMessage
 					this.setStatusMessage("success", this.I18n.get("STATUSMESSAGE.DOCUMENTADDED"));
 					// show new expense in listView ;
@@ -227,7 +225,7 @@ class Expense extends React.Component {
 	};
 
 	onCancel = (e) => {
-		this.storage.remove("expenseState");
+		this.props.storage.remove("expenseState");
 		// React-Router has no Refresh functionality. This hack solves it
 		this.props.history.push("/temp");
 		this.props.history.goBack();
@@ -335,9 +333,6 @@ class Expense extends React.Component {
 						</>
 					)}
 				</div>
-
-				{/* <div className='d-flex mb-2 justify-content-between'>
-				</div> */}
 				<span className='d-block margin-auto text-center text-danger'>
 					{this.state.expenseStatus.error && this.state.expenseStatus.message}
 				</span>
@@ -346,4 +341,4 @@ class Expense extends React.Component {
 	}
 }
 
-export default firebaseContextConsumer(Expense);
+export default PersistenceContextConsumer(firebaseContextConsumer(Expense));

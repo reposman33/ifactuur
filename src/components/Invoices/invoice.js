@@ -6,6 +6,7 @@ import { I18n } from "../../services/I18n/I18n";
 import { Utils } from "../../services/Utils";
 import * as ROUTES from "../../constants/routes";
 import { firebaseContextConsumer } from "../../Firebase";
+import { PersistenceContextConsumer } from "../../constants/contexts";
 import componentStyles from "./invoice.module.scss";
 
 class Invoice extends React.Component {
@@ -15,7 +16,6 @@ class Invoice extends React.Component {
 
 		this.Utils = new Utils();
 		this.I18n = new I18n();
-		this.storage = undefined; // to be set in componentDidMount
 		this.isExistingInvoice = !!(!!this.props.location.state && this.props.location.state.id);
 		this.nrOfDescriptionRows = 10;
 
@@ -105,11 +105,8 @@ class Invoice extends React.Component {
 				this.setState({ invoiceNr: values[0], companies: values[1], VatRates: values[2] });
 			});
 		}
-		// retrieve the (session)storage class
-		this.storage = this.context;
-
 		// store the state in (session)storage
-		const storedState = this.storage.get("invoiceState");
+		const storedState = this.props.storage.get("invoiceState");
 		if (storedState) {
 			this.setState(storedState);
 		}
@@ -218,7 +215,7 @@ class Invoice extends React.Component {
 	 */
 	onListview = () => {
 		// remove the temporary state
-		this.storage.remove("invoiceState");
+		this.props.storage.remove("invoiceState");
 		this.props.history.push({
 			pathname: ROUTES.INVOICES,
 		});
@@ -231,7 +228,7 @@ class Invoice extends React.Component {
 		// copy the state values that will be eventually stored to temporary storage. To be picked up when returning from creating a new company
 		const persistFields = Object.keys(this.persistFields);
 		// store curernt state under key in (session)Storage
-		this.storage.set(
+		this.props.storage.set(
 			"invoiceState",
 			persistFields.reduce((acc, persistField) => {
 				acc[persistField] = this.state[persistField];
@@ -303,7 +300,7 @@ class Invoice extends React.Component {
 				.then((docRef) => {
 					console.log(`document ${docRef.id} added}`);
 					// remove the temporary state
-					this.storage.remove("invoiceState");
+					this.props.storage.remove("invoiceState");
 					// update statusMessage
 					this.setStatusMessage("success", this.I18n.get("STATUSMESSAGE.DOCUMENTADDED"));
 				})
@@ -330,7 +327,7 @@ class Invoice extends React.Component {
 	};
 
 	onCancel = (e) => {
-		this.storage.remove("invoiceState");
+		this.props.storage.remove("invoiceState");
 		// React-Router has no Refresh functionality. This hack solves it
 		this.props.history.push("/temp");
 		this.props.history.goBack();
@@ -558,4 +555,4 @@ class Invoice extends React.Component {
 	}
 }
 
-export default firebaseContextConsumer(Invoice);
+export default PersistenceContextConsumer(firebaseContextConsumer(Invoice));
