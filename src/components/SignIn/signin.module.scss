@@ -35,8 +35,14 @@
 		}
 
 		input[type="button"] {
+			background-color: $button_active-background-color;
+			border-radius: 1rem;
+			border: none;
+			color: white;
 			margin-top: 5px;
-			&.invalid {
+			padding: .3rem  1rem;
+
+				&.invalid {
 				color: #ccc;
 			}
 		}
