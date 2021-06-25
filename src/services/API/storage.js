@@ -35,6 +35,17 @@ class Storage extends React.Component {
 		}
 	}
 
+	clear() {
+		switch (this.storageMethod) {
+			case "SESSIONSTORAGE":
+				this.clearBrowserSession();
+				break;
+			default:
+				throw new Error("ERROR: no storagetype defined");
+		}
+
+	}
+
 	// Storage type specific Implementations
 
 	// Browser session
@@ -51,6 +62,10 @@ class Storage extends React.Component {
 
 	setFromBrowserSession(key, value) {
 		return sessionStorage.setItem(key, JSON.stringify(value));
+	}
+
+	clearBrowserSession() {
+		return sessionStorage.clear();
 	}
 }
 

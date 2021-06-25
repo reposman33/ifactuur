@@ -112,6 +112,7 @@ class Settings extends React.Component {
 					...state,
 					...storedState,
 				}));
+				this.storage.clear()
 			}
 		});
 	};
