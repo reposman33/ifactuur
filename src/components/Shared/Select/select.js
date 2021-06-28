@@ -43,7 +43,6 @@ const Select = ({
 			.reduce((acc, selectedOption) => selectedOption.textContent, "");
 		handleOnChange(name, value);
 	};
-	const selectStyle = { flexGrow: "1" };
 
 	//  display the current state value
 	// convert to correct type to match data
