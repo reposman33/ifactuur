@@ -1,6 +1,7 @@
 import React from "react";
 import { firebaseContextConsumer } from "../../Firebase";
-import { PersistenceContext } from "../../constants/contexts";
+import {PersistenceContextConsumer} from "../../constants/contexts"
+import {compose} from "recompose"
 import { ModalComponent } from "../Shared/Modal/Modal";
 import { I18n } from "../../services/I18n/I18n";
 import * as ROUTES from "../../constants/routes";
@@ -12,7 +13,6 @@ import { LanguagePicker } from "../LanguagePicker/languagePicker";
 import "./settings.module.scss";
 
 class Settings extends React.Component {
-	static contextType = PersistenceContext;
 	constructor(props) {
 		super(props);
 
@@ -108,7 +108,7 @@ class Settings extends React.Component {
 					...state,
 					...storedState,
 				}));
-				 this.storage.clear()
+				 this.props.storage.clear()
 			}
 		});
 	};
@@ -126,7 +126,7 @@ class Settings extends React.Component {
 		}, {});
 		storeValues.ID = this.state.ID;
 
-		this.storage.set("settingsState", storeValues);
+		this.props.storage.set("settingsState", storeValues);
 		// render Company component. prevLocation: return to this location when clicking Back / Save button; prevLocationName: display this text in Back / Save Button
 		this.props.history.push({
 			pathname: ROUTES.COMPANY,
@@ -194,7 +194,7 @@ class Settings extends React.Component {
 				.then((docRef) => {
 					console.log(`document ${docRef ? docRef.id + " added" : "updated"}`);
 					// remove the temporary state
-					this.storage.remove("settingsState");
+					this.props.storage.remove("settingsState");
 					// update statusMessage
 					this.setStatusMessage(
 						"success",
@@ -245,7 +245,7 @@ class Settings extends React.Component {
 	};
 
 	onCancel = (e) => {
-		this.storage.remove("settingsState");
+		this.props.storage.remove("settingsState");
 		// React-Router has no Refresh functionality. This hack solves it
 		this.props.history.push("/temp");
 		this.props.history.goBack();
@@ -423,5 +423,4 @@ class Settings extends React.Component {
 		);
 	}
 }
-
-export default firebaseContextConsumer(Settings);
+export default compose(PersistenceContextConsumer,firebaseContextConsumer)(Settings);
