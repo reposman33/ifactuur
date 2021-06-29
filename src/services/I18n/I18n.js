@@ -184,7 +184,7 @@ export class I18n {
 			},
 		},
 		PASSWORDRESET: {
-			BUTTONS: {en: "Reset password", nl: "Wachtwoord wijzgen"},
+			BUTTONS: { en: "Reset password", nl: "Wachtwoord wijzgen" },
 		},
 		ROUTENAME: {
 			EXPENSE: { en: "expense", nl: "uitgave" },
@@ -228,11 +228,11 @@ export class I18n {
 			}
 		},
 		SIGNIN: {
-			PROMPT: {PASSWORDFORGET: {en:"An email with instructions is sent to the specified email address", nl:"Er is een e-mail met instructies verstuurd naar het opgegeven e-mail adres"}},
+			PROMPT: { PASSWORDFORGET: { en:"An email with instructions is sent to the specified email address", nl:"Er is een e-mail met instructies verstuurd naar het opgegeven e-mail adres" } },
 			BUTTONS: {
-				SIGNIN_FACEBOOK: {en: "Continue with Facebook", nl: "Log in met Facebook"},
-				SIGNIN_GITHUB: {en: "Continue with Github", nl: "Log in met Github"},
-				SIGNIN_GOOGLE: {en: "Continue with Google", nl: "Log in met Google"}
+				SIGNIN_FACEBOOK: { en: "Continue with Facebook", nl: "Log in met Facebook" },
+				SIGNIN_GITHUB: { en: "Continue with Github", nl: "Log in met Github" },
+				SIGNIN_GOOGLE: { en: "Continue with Google", nl: "Log in met Google" }
 			}
 		},
 		STATUSMESSAGE: {

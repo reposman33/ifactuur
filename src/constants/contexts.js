@@ -4,7 +4,7 @@ import React from "react";
 export const PersistenceContext = React.createContext();
 export const PersistenceContextProvider = PersistenceContext.Provider;
 
-export const PersistenceContextConsumer = (Component) => ({...props}) => 
+export const PersistenceContextConsumer = (Component) => ({ ...props }) => 
 <PersistenceContext.Consumer>
   {(value) => <Component storage={value} {...props} />}
 </PersistenceContext.Consumer>;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { compose } from 'recompose';
 import { firebaseContextConsumer } from '../../Firebase';
-import {I18n} from '../../services/I18n/I18n';
+import { I18n } from '../../services/I18n/I18n';
 import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
 import { SignUpLink } from '../SignUp/signup';

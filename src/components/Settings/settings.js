@@ -1,7 +1,7 @@
 import React from "react";
 import { firebaseContextConsumer } from "../../Firebase";
-import {PersistenceContextConsumer} from "../../constants/contexts"
-import {compose} from "recompose"
+import { PersistenceContextConsumer } from "../../constants/contexts"
+import { compose } from "recompose"
 import { ModalComponent } from "../Shared/Modal/Modal";
 import { I18n } from "../../services/I18n/I18n";
 import * as ROUTES from "../../constants/routes";
