@@ -21,7 +21,7 @@ const storage = new Storage()
 const AppRouter = () => (
 	<PersistenceContextProvider value={storage}>
 		<Switch>
-			<Redirect exact from='' to={ROUTES.INVOICES} />
+			<Redirect exact from='' to={ROUTES.SIGN_IN} />
 			<Route exact path={ROUTES.COMPANIES} render={(props) => <Companies {...props} />} />
 			<Route exact path={ROUTES.COMPANY} render={(props) => <Company {...props} />} />
 			<Route exact path={ROUTES.SETTINGS} render={(props) => <Settings {...props} />} />
