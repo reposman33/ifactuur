@@ -12,7 +12,7 @@
 		"bootstrap": "^4.4.1",
 		"firebase": "^8.6.7",
 		"html2canvas": "^1.0.0-rc.5",
-		"jspdf": "^1.5.3",
+		"jspdf": "^2.3.1",
 		"node-sass": "^4.11.0",
 		"react": "^16.7.0",
 		"react-bootstrap": "^1.0.0",
