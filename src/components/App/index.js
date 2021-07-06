@@ -76,10 +76,10 @@ class App extends React.Component {
 			<Router>
 				<>
 					<div className='navContainer'>
-						<Navigation setLanguage={this.setLanguage} />
+						{Navigation ({ setLanguage: this.setLanguage })}
 					</div>
 					<div className='container'>
-						<AppRouter />
+						{AppRouter()}
 					</div>
 				</>
 			</Router>
