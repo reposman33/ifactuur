@@ -40,7 +40,7 @@ const Select = ({
 		// Retrieve the id of the _textcontent_ of the selected menu option
 		const value = Array.from(event.target.options)
 			.filter((option) => option.selected)
-			.reduce((acc, selectedOption) => selectedOption.textContent, "");
+			.reduce((acc, selectedOption) => selectedOption.textContent, data[0].textContent);
 		handleOnChange(name, value);
 	};
 
