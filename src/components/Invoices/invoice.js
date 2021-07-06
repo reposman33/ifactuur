@@ -102,7 +102,7 @@ class Invoice extends React.Component {
 			newInvoicePromises.push(this.props.firebase.getVatRates());
 
 			Promise.all(newInvoicePromises).then((values) => {
-				this.setState({ invoiceNr: values[0], companies: values[1], VatRates: values[2] });
+				this.setState({ invoiceNr: values[0], companies: values[1].sort((a,b) => a.name <= b.name ? 0 : 1), VatRates: values[2] });
 			});
 		}
 		// store the state in (session)storage
