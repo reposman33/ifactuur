@@ -15,12 +15,13 @@ withAuthentication = Provider pf authUser - authorizationContextConsumer is cons
 
 
 ## IMPORTANT deploy notice
-use node version 10.4.0 to install this app.
+
+use node version 11.0.0 to install this app.
 
 Perform these steps in a terminal window:
-- nvm ls: *first check if 10.4.0 is among the available node versions*
-- nvm install 10.4.0: *do this if you need to install node v10.4.0*
-- nvm use 10.4.0: *tell NVM to use version 10.4.0*
+- nvm ls: *first check if 11.0.0 is among the available node versions*
+- nvm install 11.0.0: *do this if you need to install node 11.0.0*
+- nvm use 11.0.0: *tell NVM to use version 11.0.0*
 - start the application by running `npm install` or `yarn`
 - once installed, run `npm start` or `yarn start`
 
